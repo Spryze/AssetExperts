@@ -16,6 +16,10 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useEffect } from 'react';
 import jwtService from '../../auth/services/jwtService';
+import { auth,provider} from './Config'; 
+import { signInWithPopup } from 'firebase/auth';
+
+import { useState } from 'react';
 
 /**
  * Form Validation Schema
@@ -34,7 +38,30 @@ const defaultValues = {
   remember: true,
 };
 
+
 function SignInPage() {
+  
+  
+  //google signin
+  const handleClick = () => {
+    try {
+      signInWithPopup(auth, provider)
+        .then((data) => {
+          document.cookie = `jwtToken=${data}; path=/`;
+          window.location.href = "/";
+        })
+        .catch((error) => {
+          // Handle Firebase authentication errors here
+          console.error("Firebase authentication error:", error);
+          // You can provide user-friendly feedback or handle the error in other ways
+        });
+    } catch (error) {
+      // Handle any synchronous errors that may occur
+      console.error("An error occurred:", error);
+      // You may want to provide user-friendly feedback here as well
+    }
+  };
+  
   const { control, formState, handleSubmit, setError, setValue } = useForm({
     mode: 'onChange',
     defaultValues,
@@ -176,6 +203,11 @@ function SignInPage() {
               <Button variant="outlined" className="flex-auto">
                 <RabitSvgIcon size={20} color="action">
                   feather:github
+                </RabitSvgIcon>
+              </Button>
+              <Button onClick={handleClick} variant="outlined" className="flex-auto">
+                <RabitSvgIcon size={20} color="action">
+                  feather:google
                 </RabitSvgIcon>
               </Button>
             </div>

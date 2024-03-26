@@ -40,6 +40,7 @@ class JwtService extends RabitUtils.EventEmitter {
 
     if (this.isAuthTokenValid(access_token)) {
       this.setSession(access_token);
+      
       this.emit('onAutoLogin', true);
     } else {
       this.setSession(null);
@@ -71,40 +72,62 @@ class JwtService extends RabitUtils.EventEmitter {
           },
         })
         .then((response) => {
+          console.log(response)
           if (response.data.user) {
             this.setSession(response.data.access_token);
             resolve(response.data.user);
             this.emit('onLogin', response.data.user);
+            console.log(response.data.user)
           } else {
             reject(response.data.error);
-          }
+            }
         });
     });
   };
 
   signInWithToken = () => {
     return new Promise((resolve, reject) => {
-      axios
-        .get(jwtServiceConfig.accessToken, {
-          data: {
-            access_token: this.getAccessToken(),
-          },
-        })
-        .then((response) => {
-          if (response.data.user) {
-            this.setSession(response.data.access_token);
-            resolve(response.data.user);
-          } else {
-            this.logout();
-            reject(new Error('Failed to login with token.'));
-          }
-        })
-        .catch((error) => {
-          this.logout();
-          reject(new Error('Failed to login with token.'));
-        });
+      try {
+        var storedData = localStorage.getItem('user');
+  
+        if (storedData) {
+          let user = JSON.parse(storedData);
+          let User = {
+            uid: user.uid,
+            role: user.role,
+            data: {
+              accessToken: user.data.accessToken,
+              displayName: user.data.displayName,
+            }
+          };
+          this.emit('onLogin', User);
+        } else {
+          axios.get(jwtServiceConfig.accessToken, {
+              data: {
+                access_token: this.getAccessToken(),
+              },
+            })
+            .then((response) => {
+              if (response.data.user) {
+                this.setSession(response.data.access_token);
+                resolve(response.data.user);
+              } else {
+                this.logout();
+                reject(new Error('Failed to login with token.'));
+              }
+            })
+            .catch((error) => {
+              this.logout();
+              reject(new Error('Failed to login with token.'));
+            });
+        }
+      } catch (error) {
+        console.error('Error occurred:', error);
+        reject(error);
+      }
     });
   };
+  
 
   updateUserData = (user) => {
     return axios.post(jwtServiceConfig.updateUser, {
@@ -142,7 +165,19 @@ class JwtService extends RabitUtils.EventEmitter {
   };
 
   getAccessToken = () => {
-    return window.localStorage.getItem('jwt_access_token');
+    const jwtAccessToken = window.localStorage.getItem('jwt_access_token');
+    const googleAccessToken = window.localStorage.getItem('google_access_token');
+    
+    if (jwtAccessToken) {
+        // Return JWT token if it exists
+        return jwtAccessToken;
+    } else if (googleAccessToken) {
+        // Return Google token if JWT token doesn't exist
+        return googleAccessToken;
+    } else {
+        // Return null if neither token exists
+        return null;
+    }
   };
 }
 

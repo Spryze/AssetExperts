@@ -7,12 +7,14 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+
 import { Link, NavLink } from 'react-router-dom';
 import RabitSvgIcon from '@rabit/core/RabitSvgIcon';
 import { selectUser } from 'app/store/userSlice';
 
 function UserMenu(props) {
   const user = useSelector(selectUser);
+  console.log(user)
 
   const [userMenu, setUserMenu] = useState(null);
 

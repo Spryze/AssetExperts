@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 import jwtService from '../../auth/services/jwtService';
 import { auth,provider} from './Config'; 
 import { signInWithPopup } from 'firebase/auth';
+import RabitUtils from '@rabit/utils/RabitUtils';
 
 import { useState } from 'react';
 
@@ -47,8 +48,25 @@ function SignInPage() {
     try {
       signInWithPopup(auth, provider)
         .then((data) => {
-          document.cookie = `jwtToken=${data}; path=/`;
-          window.location.href = "/";
+             
+          let user = {
+            uid: data.user.uid,
+              role: "admin",
+            data:{
+            
+              accessToken: data.user.accessToken,
+              displayName: data.user.displayName,
+              
+            }
+          };
+          console.log(user)
+          localStorage.setItem('google_access_token', data._tokenResponse.idToken);
+          localStorage.setItem('user', JSON.stringify(user));
+          
+          //jwtService.setSession(data._tokenResponse.idToken)
+          jwtService.emit('onLogin',user);
+          //console.log(user)
+          
         })
         .catch((error) => {
           // Handle Firebase authentication errors here

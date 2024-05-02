@@ -6,14 +6,25 @@ import { setInitialSettings } from 'app/store/rabit/settingsSlice';
 import { showMessage } from 'app/store/rabit/messageSlice';
 import settingsConfig from 'app/configs/settingsConfig';
 import jwtService from '../auth/services/jwtService';
+import { getAuth,onAuthStateChanged } from 'firebase/auth';
 
 export const setUser = createAsyncThunk('user/setUser', async (user, { dispatch, getState }) => {
   /*
     You can redirect the logged-in user to a specific route depending on his role
     */
-  if (user.loginRedirectUrl) {
-    settingsConfig.loginRedirectUrl = user.loginRedirectUrl; // for example 'apps/academy'
-  }
+  // if (user.loginRedirectUrl) {
+  //   settingsConfig.loginRedirectUrl = user.loginRedirectUrl; // for example 'apps/academy'
+  // }
+  const auth = getAuth();
+  onAuthStateChanged(auth,(user)=>{
+    if (user){
+      const uid=user.uid;
+      
+      settingsConfig.loginRedirectUrl = user.loginRedirectUrl;
+    }else{
+      console.log("user is not signedin")
+    }
+  });
 
   return user;
 });
@@ -51,6 +62,10 @@ export const updateUserShortcuts = createAsyncThunk(
 export const logoutUser = () => async (dispatch, getState) => {
   const { user } = getState();
 
+  history.push({
+    pathname: '/',
+  });
+  
   if (!user.role || user.role.length === 0) {
     // is guest
     return null;
@@ -59,7 +74,7 @@ export const logoutUser = () => async (dispatch, getState) => {
   history.push({
     pathname: '/',
   });
-
+  console.log('push to home page');
   dispatch(setInitialSettings());
 
   return dispatch(userLoggedOut());

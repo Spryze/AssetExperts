@@ -50,7 +50,7 @@ function NavbarStyle1Content(props) {
         <UserNavbarHeader />
 
         <Navigation layout="vertical" />
-
+        
         <div className="flex flex-0 items-center justify-center py-48 opacity-10">
           <img className="w-full max-w-64" src="assets/images/logo/logo.svg" alt="footer logo" />
         </div>

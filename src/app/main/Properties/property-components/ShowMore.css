@@ -1,0 +1,40 @@
+.showmore-container {
+    top: 40%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    width: 97%;
+    height: auto;
+  }
+  
+  @media (max-width: 900px) {
+    .showmore-container {
+      top: 30%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .showmore-container {
+      top: 25%;
+    }
+  }
+  @media (max-width: 500px) {
+    .showmore-container {
+      top: 23%;
+    }
+  }
+  @media (max-width: 320px) {
+    .showmore-container {
+      top: 20%;
+    }
+  }
+  @media (max-width: 240px) {
+    .showmore-container {
+      top: 19%;
+    }
+  }
+  .App {
+    font-family: sans-serif;
+    text-align: center;
+  }

@@ -2,9 +2,12 @@ import RabitUtils from '@rabit/utils/RabitUtils';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import jwtServiceConfig from './jwtServiceConfig';
+import { display } from '@mui/system';
+// import {FirebaseAuth} from 'firebase/FirebaseAuth';
+import { getAuth, signOut as googleSignOut} from 'firebase/auth';
 
 /* eslint-disable camelcase */
-
+  
 class JwtService extends RabitUtils.EventEmitter {
   init() {
     this.setInterceptors();
@@ -12,21 +15,21 @@ class JwtService extends RabitUtils.EventEmitter {
   }
 
   setInterceptors = () => {
-    axios.interceptors.response.use(
-      (response) => {
-        return response;
-      },
-      (err) => {
-        return new Promise((resolve, reject) => {
-          if (err.response.status === 401 && err.config && !err.config.__isRetryRequest) {
-            // if you ever get an unauthorized response, logout the user
-            this.emit('onAutoLogout', 'Invalid access_token');
-            this.setSession(null);
-          }
-          throw err;
-        });
-      }
-    );
+    // axios.interceptors.response.use(
+    //   (response) => {
+    //     return response;
+    //   },
+    //   (err) => {
+    //     return new Promise((resolve, reject) => {
+    //       if (err.response.status === 401 && err.config && !err.config.__isRetryRequest) {
+    //         // if you ever get an unauthorized response, logout the user
+    //         this.emit('onAutoLogout', 'Invalid access_token');
+    //         this.setSession(null);
+    //       }
+    //       throw err;
+    //     });
+    //   }
+    // );
   };
 
   handleAuthentication = () => {
@@ -74,7 +77,7 @@ class JwtService extends RabitUtils.EventEmitter {
         .then((response) => {
           console.log(response)
           if (response.data.user) {
-            this.setSession(response.data.access_token);
+            this.setSession(response.data.access_token,response.uid);
             resolve(response.data.user);
             this.emit('onLogin', response.data.user);
             console.log(response.data.user)
@@ -88,23 +91,24 @@ class JwtService extends RabitUtils.EventEmitter {
   signInWithToken = () => {
     return new Promise((resolve, reject) => {
       try {
-        var storedData = localStorage.getItem('user');
+        var storedData = localStorage.getItem('User');
   
         if (storedData) {
           let user = JSON.parse(storedData);
+          console.log(user)
           let User = {
             uid: user.uid,
             role: user.role,
             data: {
               accessToken: user.data.accessToken,
-              displayName: user.data.displayName,
+              // displayName: user.data.displayName,
             }
           };
           this.emit('onLogin', User);
         } else {
           axios.get(jwtServiceConfig.accessToken, {
               data: {
-                access_token: this.getAccessToken(),
+                accessToken: this.getAccessToken(),
               },
             })
             .then((response) => {
@@ -135,18 +139,51 @@ class JwtService extends RabitUtils.EventEmitter {
     });
   };
 
-  setSession = (access_token) => {
-    if (access_token) {
-      localStorage.setItem('jwt_access_token', access_token);
-      axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
+ 
+  setSession = (access_token, uid) => {
+    if (access_token && uid) {
+      // Construct the User object
+      const user = {
+        uid: uid,
+        role: "admin", // Assuming a default role
+        data: {
+          accessToken: access_token,
+          displayName: "Ramu",
+        },
+      };
+  
+      try {
+        // Set the User object in localStorage
+        localStorage.setItem('User', JSON.stringify(user));
+        localStorage.setItem('jwt_access_token', access_token);
+        // localStorage.setItem('google_access_token', access_token);
+        // localStorage.setItem('role', userRole);
+  
+        // Set Axios Authorization header
+        axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+      } catch (error) {
+        console.error("Error setting session:", error);
+      }
     } else {
+      // Clear localStorage and remove Authorization header
+      localStorage.removeItem('User');
       localStorage.removeItem('jwt_access_token');
-      delete axios.defaults.headers.common.Authorization;
+      localStorage.removeItem('role');
+      delete axios.defaults.headers.common['Authorization'];
     }
   };
+  
+
+  
+  
+  
 
   logout = () => {
     this.setSession(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('jwt_access_token');   
+    const auth = getAuth(); 
+    googleSignOut(auth);
     this.emit('onLogout', 'Logged out');
   };
 
@@ -166,14 +203,14 @@ class JwtService extends RabitUtils.EventEmitter {
 
   getAccessToken = () => {
     const jwtAccessToken = window.localStorage.getItem('jwt_access_token');
-    const googleAccessToken = window.localStorage.getItem('google_access_token');
+    // const googleAccessToken = window.localStorage.getItem('google_access_token');
     
     if (jwtAccessToken) {
         // Return JWT token if it exists
         return jwtAccessToken;
-    } else if (googleAccessToken) {
-        // Return Google token if JWT token doesn't exist
-        return googleAccessToken;
+    // } else if (googleAccessToken) {
+    //     // Return Google token if JWT token doesn't exist
+    //     return googleAccessToken;
     } else {
         // Return null if neither token exists
         return null;

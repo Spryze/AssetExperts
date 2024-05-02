@@ -37,6 +37,7 @@ const StyledList = styled(List)(({ theme }) => ({
 }));
 
 function RabitNavVerticalLayout1(props) {
+  
   const { navigation, layout, active, dense, className, onItemClick } = props;
   const dispatch = useDispatch();
 

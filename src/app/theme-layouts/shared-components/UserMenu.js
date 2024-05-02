@@ -14,7 +14,6 @@ import { selectUser } from 'app/store/userSlice';
 
 function UserMenu(props) {
   const user = useSelector(selectUser);
-  console.log(user)
 
   const [userMenu, setUserMenu] = useState(null);
 
@@ -46,7 +45,7 @@ function UserMenu(props) {
         {user.data.photoURL ? (
           <Avatar className="md:mx-4" alt="user photo" src={user.data.photoURL} />
         ) : (
-          <Avatar className="md:mx-4">{user.data.displayName[0]}</Avatar>
+          <Avatar className="md:mx-4">{user?.data?.displayName}</Avatar>
         )}
       </Button>
 

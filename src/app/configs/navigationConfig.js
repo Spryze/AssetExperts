@@ -16,6 +16,30 @@ const navigationConfig = [
     icon: 'heroicons-outline:star',
     url: 'example',
   },
+  {
+    id: 'properties',
+    title: 'Properties',
+    translate: 'PROPERTIES',
+    type: 'item',
+    icon: 'heroicons-outline:home',
+    url: 'properties',
+  },
+  {
+    id: 'add-properties',
+    title: 'AddProperties',
+    translate: 'Add-Properties',
+    type: 'item',
+    icon: 'heroicons-outline:plus',
+    url: 'Addproperty',
+  },
+  {
+    id: 'Search-Properties',
+    title: 'Search-Properties',
+    translate: 'Search-Properties',
+    type: 'item',
+    icon: 'heroicons-outline:search',
+    url: 'SearchProperty',
+  },
 ];
 
 export default navigationConfig;

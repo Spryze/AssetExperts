@@ -18,7 +18,9 @@ import { useEffect } from 'react';
 import jwtService from '../../auth/services/jwtService';
 import { auth,provider} from './Config'; 
 import { signInWithPopup } from 'firebase/auth';
+import { getAuth,signInWithEmailAndPassword } from 'firebase/auth';
 import RabitUtils from '@rabit/utils/RabitUtils';
+import Alert from "@mui/material/Alert";
 
 import { useState } from 'react';
 
@@ -43,6 +45,44 @@ const defaultValues = {
 function SignInPage() {
   
   
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      if (userAuth) {
+        
+        // console.log('User authenticated:', userAuth);
+        let user = {
+          uid: userAuth.uid,
+            role: "admin",
+          data:{
+          
+            accessToken: userAuth.accessToken,
+            displayName: "Ramu",
+            
+          }
+        };
+        // console.log(user)
+          
+          localStorage.setItem('user', JSON.stringify(user));
+          
+         
+          jwtService.emit('onLogin',user);
+      } else {
+        // User is not authenticated
+        console.log('User not authenticated');
+      }
+    })
+ 
+
+  const [message,setMessage]=useState(null)
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 3000);
+  
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+  
   //google signin
   const handleClick = () => {
     try {
@@ -63,20 +103,20 @@ function SignInPage() {
           localStorage.setItem('google_access_token', data._tokenResponse.idToken);
           localStorage.setItem('user', JSON.stringify(user));
           
-          //jwtService.setSession(data._tokenResponse.idToken)
+         
           jwtService.emit('onLogin',user);
-          //console.log(user)
+          
           
         })
         .catch((error) => {
-          // Handle Firebase authentication errors here
+          
           console.error("Firebase authentication error:", error);
-          // You can provide user-friendly feedback or handle the error in other ways
+          
         });
     } catch (error) {
-      // Handle any synchronous errors that may occur
+      
       console.error("An error occurred:", error);
-      // You may want to provide user-friendly feedback here as well
+      
     }
   };
   
@@ -88,26 +128,72 @@ function SignInPage() {
 
   const { isValid, dirtyFields, errors } = formState;
 
-  useEffect(() => {
-    setValue('email', 'admin@rabittheme.com', { shouldDirty: true, shouldValidate: true });
-    setValue('password', 'admin', { shouldDirty: true, shouldValidate: true });
-  }, [setValue]);
-
-  function onSubmit({ email, password }) {
-    jwtService
-      .signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        // No need to do anything, user data will be set at app/auth/AuthContext
-      })
-      .catch((_errors) => {
-        _errors.forEach((error) => {
-          setError(error.type, {
-            type: 'manual',
-            message: error.message,
-          });
-        });
-      });
+  // useEffect(() => {
+  //   setValue('email', 'admin@rabittheme.com', { shouldDirty: true, shouldValidate: true });
+  //   setValue('password', 'admin', { shouldDirty: true, shouldValidate: true });
+  // }, [setValue]);
+  const SignInWithEmailAndPassword = async (email, password) => {
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;  
+      console.log(user);
+      if (user) {
+        let User = {
+          uid: user.uid,
+          role: "admin",
+          data: {
+            accessToken: user.accessToken,
+            displayName: user.displayName,
+          }
+        };
+      
+        console.log(User); // Log the modified user object
+      
+        localStorage.setItem('user', JSON.stringify(User));
+      
+        
+      }
+       else {
+        setMessage("Wrong Credentials");
+        console.log("User not found");
+        // Optionally return an error message or handle it in the catch block
+        throw new Error("User not found");
+      }
+    } catch (error) {
+      setMessage("Wrong Credentials");
+      console.log("signin", error);
+      // Reject should be used to handle errors
+      throw error;
+    }
+  };
+  
+  async function onSubmit({ email, password }) {
+    try {
+      const response = await SignInWithEmailAndPassword(email, password);
+      console.log("response", response);
+      
+    } catch (error) {
+      console.log("Signin", error);
+      // Handle error
+    }
   }
+  
+    // jwtService
+    //   .signInWithEmailAndPassword(email, password)
+    //   .then((user) => {
+       
+    //   })
+    //   .catch((_errors) => {
+    //     _errors.forEach((error) => {
+    //       setError(error.type, {
+    //         type: 'manual',
+    //         message: error.message,
+    //       });
+    //     });
+    //   });
+  
+  
 
   return (
     <div className="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-1 min-w-0">
@@ -251,6 +337,24 @@ function SignInPage() {
 
         </div>
       </Box>
+      {message && (
+        <Alert
+          sx={{
+            position: "fixed",
+            top: "10px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "300px",
+            backgroundColor: "#dff0d8",
+            border: "1px solid #3c763d",
+            borderRadius: "5px",
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+          }}
+          severity={message.includes("failed") ? "error" : "success"}
+        >
+          {message}
+        </Alert>
+      )}
     </div>
   );
 }

@@ -9,6 +9,7 @@ function RabitPageCardedSidebarContent(props) {
   const contrastTheme = useSelector(selectContrastMainTheme(theme.palette.primary.main));
 
   return (
+    
     <RabitScrollbars enable={props.innerScroll}>
       {props.header && (
         <ThemeProvider theme={contrastTheme}>
@@ -25,6 +26,7 @@ function RabitPageCardedSidebarContent(props) {
       )}
 
       {props.content && <div className="RabitPageCarded-sidebarContent">{props.content}</div>}
+      
     </RabitScrollbars>
   );
 }

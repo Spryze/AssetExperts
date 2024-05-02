@@ -1,4 +1,4 @@
-import '@mock-api';
+// import '@mock-api';
 import BrowserRouter from '@rabit/core/BrowserRouter';
 import RabitLayout from '@rabit/core/RabitLayout';
 import RabitTheme from '@rabit/core/RabitTheme';

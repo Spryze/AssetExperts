@@ -71,7 +71,7 @@ const SearchProperty = () => {
 
       // Check if the fetch operation was successful
       if (fetchPropertyDetails.fulfilled.match(actionResult)) {
-        // navigate("/properties");
+        navigate("/properties");
       } else {
         console.error("Error fetching property details:", actionResult.error);
       }

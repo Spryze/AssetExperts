@@ -20,8 +20,12 @@ import ShareIcon from "@mui/icons-material/Share";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Category } from "@mui/icons-material";
-
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 const SearchProperty = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,6 +44,21 @@ const SearchProperty = () => {
   ];
 
   const [expanded, setExpanded] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [showFullText, setShowFullText] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const toggleShowFullText = (e) => {
+    e.stopPropagation();
+    setShowFullText(!showFullText);
+  };
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -52,7 +71,7 @@ const SearchProperty = () => {
 
       // Check if the fetch operation was successful
       if (fetchPropertyDetails.fulfilled.match(actionResult)) {
-        navigate("/properties");
+        // navigate("/properties");
       } else {
         console.error("Error fetching property details:", actionResult.error);
       }
@@ -70,9 +89,17 @@ const SearchProperty = () => {
   const [showFullDetails, setShowFullDetails] = useState(false);
   const maxCharacters = 5;
   const [showAllPlaces, setShowAllPlaces] = useState(false);
-  const toggleShowAllPlaces = (e) => {e.stopPropagation();setShowAllPlaces(!showAllPlaces)};
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const toggleShowAllPlaces = (e) => {
+    e.stopPropagation();
+    setDialogOpen(true);
+    setShowAllPlaces((prevShowAllPlaces) => !prevShowAllPlaces);
+  };
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
   const handleShowMore = (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     setShowFullDetails(!showFullDetails);
   };
 
@@ -244,51 +271,129 @@ const SearchProperty = () => {
                           )}
                         </Button>
                       )}
-                      
                     </Paper>
 
                     <Typography
-      variant="body2"
-      color="text.secondary"
-      sx={{ marginTop: "10px", fontSize: "12px" }}
-    >
-      {expanded
-        ? result.AboutProject
-        : result.AboutProject.substring(0, 80) + "..."}
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ marginTop: "10px", fontSize: "12px" }}
+                    >
+                      {expanded
+                        ? result.AboutProject
+                        : result.AboutProject.substring(0, 80) + "..."}
 
-      {!expanded && result.AboutProject.length > 80 && (
-        <span
-          style={{
-            cursor: "pointer",
-            color: "#007BFF",
-            marginLeft: "5px",
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleExpanded();
-          }}
-        >
-          {expanded ? "See Less" : "See More"}
-        </span>
-      )}
-    </Typography>
+                      {/* {!expanded && result.AboutProject.length > 80 && (
+                        <span
+                          style={{
+                            cursor: "pointer",
+                            color: "#007BFF",
+                            marginLeft: "5px",
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleExpanded();
+                          }}
+                        >
+                          {expanded ? "See Less" : "See More"}
+                        </span>
+                      )} */}
+
+                      <span style={{ color: "#0000FF" }} onClick={handleOpen}>
+                        See More
+                      </span>
+                      <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        BackdropProps={{
+                          invisible: true,
+                        }}
+                        sx={{
+                          "& .MuiPaper-root": {
+                            boxShadow: "none",
+                            width: "500px",
+                            top: "0px",
+                          },
+                        }}
+                      >
+                        <DialogContent>
+                          <p style={{ fontSize: "12px" }}>
+                            {result.AboutProject}
+                          </p>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}>Close</Button>
+                        </DialogActions>
+                      </Dialog>
+                    </Typography>
                     <Typography sx={{ fontSize: "12px", display: "flex" }}>
-        5 nearby places:{" "}
-        {result.AroundProject.map((item, index) => (
-          <div key={index} style={{ display: showAllPlaces || index < 2 ? "block" : "none" }}>
-            <p style={{background:"#F6F5F3",margin:"0 5px",padding:"0 3px"}}>{item.category} : {item.name}</p>
-          
-          </div>
-        ))}
-        {result.AroundProject.length > 2 && (
-          <span
-            style={{ cursor: "pointer", color: "#007BFF", marginLeft: "5px" }}
-            onClick={toggleShowAllPlaces}
-          >
-            {showAllPlaces ? "See less" : "See more"}
-          </span>
-        )}
-      </Typography>
+                      5 nearby places:{" "}
+                      {showAllPlaces
+                        ? result.AroundProject.map((item, i) => (
+                            <div key={i}>
+                              <p
+                                style={{
+                                  background: "#F6F5F3",
+                                  margin: "0 5px",
+                                  padding: "0 3px",
+                                }}
+                              >
+                                {item.category} : {item.name}
+                              </p>
+                            </div>
+                          ))
+                        : result.AroundProject.slice(0, 2).map((item, i) => (
+                            <div key={i}>
+                              <p
+                                style={{
+                                  background: "#F6F5F3",
+                                  margin: "0 5px",
+                                  padding: "0 3px",
+                                }}
+                              >
+                                {item.category} : {item.name}
+                              </p>
+                            </div>
+                          ))}
+                      {result.AroundProject.length > 2 && (
+                        <span
+                          style={{
+                            cursor: "pointer",
+                            color: "#007BFF",
+                            marginLeft: "5px",
+                          }}
+                          onClick={toggleShowAllPlaces}
+                        >
+                          { "See more"}
+                        </span>
+                      )}
+                    </Typography>
+                    <Dialog
+                      open={dialogOpen}
+                      onClose={handleDialogClose}
+                      BackdropProps={{
+                        invisible: true,
+                      }}
+                      sx={{
+                        "& .MuiPaper-root": {
+                          boxShadow: "none",
+                          width: "500px",
+                          top: "0px",
+                        },
+                      }}
+                    >
+                      <DialogTitle>More Nearby Places</DialogTitle>
+                      <DialogContent>
+                        {result?.AroundProject?.slice(0, 5).map((item, i) => (
+                          <p key={i}>
+                            {item.category} : {item.name}
+                          </p>
+                        ))}
+                      </DialogContent>
+
+                      <DialogActions>
+                        <Button onClick={handleDialogClose}>Close</Button>
+                      </DialogActions>
+                    </Dialog>
                   </div>
                 </div>
               </CardContent>

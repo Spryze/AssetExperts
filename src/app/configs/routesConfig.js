@@ -15,11 +15,11 @@ const routeConfigs = [ExampleConfig, SignOutConfig, SignInConfig, SignUpConfig,P
 
 const routes = [
   ...RabitUtils.generateRoutesFromConfigs(routeConfigs, settingsConfig.defaultAuth),
-  {
-    path: '/',
-    element: <Navigate to="/example" />,
-    auth: settingsConfig.defaultAuth,
-  },
+  // {
+  //   path: '/',
+  //   element: <Navigate to="/example" />,
+  //   auth: settingsConfig.defaultAuth,
+  // },
   {
     path: 'loading',
     element: <RabitLoading />,
@@ -32,14 +32,14 @@ const routes = [
     path: '*',
     element: <Navigate to="404" />,
   },
-  {
-    path: 'properties/:propertyId',
-    element: <Navigate to="/Properties" />,
-  },
-  {
-    path: 'Addproperty',
-    element: <Navigate to="/Addproperty" />,
-  },
+  // {
+  //   path: 'properties/:propertyId',
+  //   element: <Navigate to="/Properties" />,
+  // },
+  // {
+  //   path: 'Addproperty',
+  //   element: <Navigate to="/Addproperty" />,
+  // },
 ];
 
 export default routes;

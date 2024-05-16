@@ -218,7 +218,7 @@ class JwtService extends RabitUtils.EventEmitter {
     localStorage.removeItem('jwt_access_token');   
     const auth = getAuth(); 
     googleSignOut(auth);
-    window.location.href = '/signup';
+    window.location.href = '/';
     this.emit('onLogout', 'Logged out');
   };
 

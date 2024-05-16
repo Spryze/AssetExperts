@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { useParams } from "react-router-dom";
+import axios from "axios";
+import { reject } from "lodash";
+
 
 
 export const fetchProperties = createAsyncThunk(
@@ -35,9 +37,24 @@ export const fetchProperties = createAsyncThunk(
   }
 );
 
+export const fetchRecentTransactions = createAsyncThunk(
+  'property/fetchRecentTransactions',
+  async () => {
+    try {
+      const response = await axios.get("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/home")
+      console.log("response", response)
+      return response.data; // Return response data instead of the whole response object
+    } catch (error) {
+      return rejectWithValue(error.message); // Use rejectWithValue for returning error
+    }
+  }
+);
+
 
 const initialState = {
   properties: {},
+  recenttransactions:{},
+  
   
 };
 
@@ -64,20 +81,20 @@ const propertySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      
       .addCase(fetchProperties.fulfilled, (state, action) => {
-      
-        state.properties = action.payload; 
-        
+        state.properties = action.payload;
       })
-      
+      .addCase(fetchRecentTransactions.fulfilled, (state, action) => {
+        // Assuming action.payload contains the relevant data from the response
+        state.recenttransactions = action.payload;
+      })
   },
+  
 });
 
 
 export const { setProperties} = propertySlice.actions;
-
-// Exporting a selector function to access properties data from the Redux state
 export const selectProperties = (state) => state.properties.properties;
+export const selectrecenttransactions =(state)=> state.properties.recenttransactions;
 
 export default propertySlice.reducer;

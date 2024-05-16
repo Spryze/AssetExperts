@@ -6,6 +6,7 @@ import ar from 'src/app/configs/navigation-i18n/ar.js';
 import Property from './Property';
 import Addproperty from './Addproperty';
 import SearchProperty from './SearchProperty';
+import PropertyHome from './Pages/PropertyHome';
 
 i18next.addResourceBundle('en', 'propertyPage', en);
 i18next.addResourceBundle('tr', 'propertyPage', tr);
@@ -18,10 +19,14 @@ const PropertyConfig = {
     },
   },
   routes: [
-    // {
-    //   path: 'properties',
-    //   element: <Property />,
-    // },
+    {
+      path: 'properties',
+      element: <Property />,
+    },
+    {
+      path: '/',
+      element: <PropertyHome />
+    },
     {
       path: 'property/:propertyId',
       element: <Property />

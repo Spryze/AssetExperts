@@ -4,7 +4,9 @@ import "leaflet/dist/leaflet.css";
 import { Icon } from 'leaflet';
 import { useSelector } from 'react-redux';
 import { selectProperties } from './PropertySlice1';
+import Badge from '@mui/material/Badge';
 import { useNavigate } from 'react-router-dom';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import './maplocation.css'
 
 
@@ -70,14 +72,16 @@ const Maplocation = () => {
         {filteredRecommendedProps.map((item, index) => (
           // console.log(item);
           <Marker key={index} position={[item.latitude, item.longitude]} icon={recomendedmarkerIcon}>
-            
+            <Badge badgeContent={4} color="primary">
             <Popup >
-              <div style={{cursor:"pointer"}} onClick={()=>{handlePopupclick(item.property_id)}}>
-                <img src={item.prop_image} style={{height:"250px",width:"auto"}}/>
-              <h4><span style={{fontWeight:"bold", color:"#0090DA"}}>Property Location: </span>{item.landmark}, {item.district}</h4>
-              <h4><span style={{fontWeight:"bold", color:"#0090DA"}}>Property Area: </span>{item.area} {item.unit}s</h4>
+              <div style={{cursor:"pointer",height:"auto", width:"150px"}} onClick={()=>{handlePopupclick(item.property_id)}}>
+                <img src={item.prop_image} />
+                <div style={{display:"flex"}}><LocationOnIcon sx={{color:"#0090DA"}}/><h4 style={{textTransform:"capitalize",fontWeight:"bold"}}>{item.landmark}, {item.district}</h4></div>
+              <h4 style={{textTransform:"capitalize", fontWeight:"bold"}}> <span style={{color:"#0090DA"}}>Size :</span> {item.area} {item.unit}s</h4>
               </div>
             </Popup>
+            </Badge>
+
             <Tooltip  direction="right" offset={[0, 0]} opacity={1} permanent className={item.listing_type} >{"  ₹" + item.unit_price + "/" + item.unit}</Tooltip>
           </Marker>
         ))}

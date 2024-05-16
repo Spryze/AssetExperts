@@ -49,7 +49,8 @@ const defaultValues = {
 
 function SignInPage() {
   
- const dispatch = useDispatch()
+const navigate = useNavigate();
+ const dispatch = useDispatch();
     // const authentication = auth.onAuthStateChanged((userAuth) => {
     //   if (userAuth) {
         
@@ -142,8 +143,8 @@ function SignInPage() {
   
   async function onSubmit({ email, password }) {
     try {
-      await dispatch(signInWithEmailPassword({ email, password }));
-     
+       dispatch(signInWithEmailPassword({ email, password }));
+       navigate("/")
       
       
       

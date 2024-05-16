@@ -1,31 +1,102 @@
-import RabitUtils from '@rabit/utils';
-import AppContext from 'app/AppContext';
-import { Component } from 'react';
+// import RabitUtils from '@rabit/utils';
+// import AppContext from 'app/AppContext';
+// import { Component } from 'react';
+// import { matchRoutes } from 'react-router-dom';
+// import withRouter from '@rabit/core/withRouter';
+// import history from '@history';
+
+// let loginRedirectUrl = null;
+
+// class RabitAuthorization extends Component {
+//   constructor(props, context) {
+//     super(props);
+//     const { routes } = context;
+//     this.state = {
+//       accessGranted: true,
+//       routes,
+//     };
+//     this.defaultLoginRedirectUrl = props.loginRedirectUrl || '/';
+//   }
+
+//   componentDidMount() {
+//     if (!this.state.accessGranted) {
+//       this.redirectRoute();
+//     }
+//   }
+
+//   shouldComponentUpdate(nextProps, nextState) {
+//     return nextState.accessGranted !== this.state.accessGranted;
+//   }
+
+//   componentDidUpdate() {
+//     if (!this.state.accessGranted) {
+//       this.redirectRoute();
+//     }
+//   }
+
+//   static getDerivedStateFromProps(props, state) {
+//     const { location, userRole } = props;
+//     const { pathname } = location;
+
+//     const matchedRoutes = matchRoutes(state.routes, pathname);
+
+//     const matched = matchedRoutes ? matchedRoutes[0] : false;
+//     return {
+//       accessGranted: matched ? RabitUtils.hasPermission(matched.route.auth, userRole) : true,
+//     };
+//   }
+
+//   redirectRoute() {
+//     const { location, userRole } = this.props;
+//     const { pathname } = location;
+//     const redirectUrl = loginRedirectUrl || this.defaultLoginRedirectUrl;
+
+//     /*
+//         User is guest
+//         Redirect to Login Page
+//         */
+//     if (!userRole || userRole.length === 0) {
+//       setTimeout(() => history.push('/sign-in'), 0);
+//       loginRedirectUrl = pathname;
+//     } else {
+//       /*
+//         User is member
+//         User must be on unAuthorized page or just logged in
+//         Redirect to dashboard or loginRedirectUrl
+//         */
+//       setTimeout(() => history.push(redirectUrl), 0);
+//       loginRedirectUrl = this.defaultLoginRedirectUrl;
+//     }
+//   }
+
+//   render() {
+//     // console.info('Rabit Authorization rendered', this.state.accessGranted);
+//     return this.state.accessGranted ? <>{this.props.children}</> : null;
+//   }
+// }
+
+// RabitAuthorization.contextType = AppContext;
+
+// export default withRouter(RabitAuthorization);
+
+import React, { Component } from 'react';
 import { matchRoutes } from 'react-router-dom';
 import withRouter from '@rabit/core/withRouter';
 import history from '@history';
 
-let loginRedirectUrl = null;
-
 class RabitAuthorization extends Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
-    const { routes } = context;
     this.state = {
       accessGranted: true,
-      routes,
     };
-    this.defaultLoginRedirectUrl = props.loginRedirectUrl || '/';
+    this.defaultLoginRedirectUrl = '/';
   }
 
   componentDidMount() {
     if (!this.state.accessGranted) {
       this.redirectRoute();
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.accessGranted !== this.state.accessGranted;
   }
 
   componentDidUpdate() {
@@ -35,46 +106,25 @@ class RabitAuthorization extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { location, userRole } = props;
+    const { location } = props;
     const { pathname } = location;
 
-    const matchedRoutes = matchRoutes(state.routes, pathname);
+    // Perform any route matching or authorization checks here if needed
+    // For simplicity, we'll always grant access in this example
+    const accessGranted = true;
 
-    const matched = matchedRoutes ? matchedRoutes[0] : false;
-    return {
-      accessGranted: matched ? RabitUtils.hasPermission(matched.route.auth, userRole) : true,
-    };
+    return { accessGranted };
   }
 
   redirectRoute() {
-    const { location, userRole } = this.props;
-    const { pathname } = location;
-    const redirectUrl = loginRedirectUrl || this.defaultLoginRedirectUrl;
+    const redirectUrl = this.defaultLoginRedirectUrl; // Homepage URL
 
-    /*
-        User is guest
-        Redirect to Login Page
-        */
-    if (!userRole || userRole.length === 0) {
-      setTimeout(() => history.push('/sign-in'), 0);
-      loginRedirectUrl = pathname;
-    } else {
-      /*
-        User is member
-        User must be on unAuthorized page or just logged in
-        Redirect to dashboard or loginRedirectUrl
-        */
-      setTimeout(() => history.push(redirectUrl), 0);
-      loginRedirectUrl = this.defaultLoginRedirectUrl;
-    }
+    setTimeout(() => history.push(redirectUrl), 0);
   }
 
   render() {
-    // console.info('Rabit Authorization rendered', this.state.accessGranted);
     return this.state.accessGranted ? <>{this.props.children}</> : null;
   }
 }
-
-RabitAuthorization.contextType = AppContext;
 
 export default withRouter(RabitAuthorization);

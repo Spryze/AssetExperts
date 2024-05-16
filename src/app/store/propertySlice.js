@@ -58,8 +58,7 @@ const initialState = {
   properties: []
   // PropertyData.properties
   ,
-  selectedProperty: 
-  {"hi": "hello"},
+ 
 };
 
 const propertySlice = createSlice({
@@ -70,7 +69,7 @@ const propertySlice = createSlice({
       state.selectedProperty = action.payload;
     },
     updateSelectedProperty(state, action) {
-      // Update selectedProperty based on action payload
+     
       state.selectedProperty = { ...state.selectedProperty, ...action.payload };
     },
   },

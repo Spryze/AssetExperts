@@ -18,9 +18,13 @@ const PropertyConfig = {
     },
   },
   routes: [
+    // {
+    //   path: 'properties',
+    //   element: <Property />,
+    // },
     {
-      path: 'properties',
-      element: <Property />,
+      path: 'property/:propertyId',
+      element: <Property />
     },
     {
       path: 'Addproperty',

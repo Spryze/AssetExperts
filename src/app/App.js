@@ -3,7 +3,7 @@ import BrowserRouter from '@rabit/core/BrowserRouter';
 import RabitLayout from '@rabit/core/RabitLayout';
 import RabitTheme from '@rabit/core/RabitTheme';
 import { SnackbarProvider } from 'notistack';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import rtlPlugin from 'stylis-plugin-rtl';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
@@ -15,7 +15,11 @@ import RabitAuthorization from '@rabit/core/RabitAuthorization';
 import settingsConfig from 'app/configs/settingsConfig';
 import withAppProviders from './withAppProviders';
 import { AuthProvider } from './auth/AuthContext';
-
+import { useEffect } from 'react';
+import { setUser } from 'app/store/userSlice';
+import { CircularProgress } from '@mui/material';
+import { useState } from 'react';
+import { set } from 'lodash';
 // import axios from 'axios';
 /**
  * Axios HTTP Request defaults
@@ -25,6 +29,7 @@ import { AuthProvider } from './auth/AuthContext';
 // axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
 
 const emotionCacheOptions = {
+  
   rtl: {
     key: 'muirtl',
     stylisPlugins: [rtlPlugin],
@@ -38,12 +43,24 @@ const emotionCacheOptions = {
 };
 
 const App = () => {
+  const [loading, setLoading] = useState(false);
   const user = useSelector(selectUser);
+  console.log("user",user)
   const langDirection = useSelector(selectCurrentLanguageDirection);
   const mainTheme = useSelector(selectMainTheme);
+  const dispatch = useDispatch()
+
+  // useEffect(()=>{
+  //   setLoading(true)
+  //   dispatch(setUser())
+  //   setLoading(false)
+  // },[])
 
   return (
+   
+    
     <CacheProvider value={createCache(emotionCacheOptions[langDirection])}>
+      {loading && <CircularProgress/>}
       <RabitTheme theme={mainTheme} direction={langDirection}>
         <AuthProvider>
           <BrowserRouter>

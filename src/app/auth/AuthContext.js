@@ -14,20 +14,21 @@ function AuthProvider({ children }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    jwtService.on('onAutoLogin', () => {
-      dispatch(showMessage({ message: 'Signing in with JWT' }));
+    jwtService.on('onAutoLogin', (user) => {
+      // dispatch(showMessage({ message: 'Signing in with JWT' }));
+      success(user, 'Signed in');
 
       /**
        * Sign in and retrieve user data with stored token
        */
-      jwtService
-        .signInWithToken()
-        .then((user) => {
-          success(user, 'Signed in with JWT');
-        })
-        .catch((error) => {
-          pass(error.message);
-        });
+      // jwtService
+      //   .signInWithToken()
+      //   .then((user) => {
+      //     success(user, 'Signed in with JWT');
+      //   })
+      //   .catch((error) => {
+      //     pass(error.message);
+      //   });
     });
 
     jwtService.on('onLogin', (user) => {

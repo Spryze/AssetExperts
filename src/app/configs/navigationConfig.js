@@ -22,7 +22,7 @@ const navigationConfig = [
     translate: 'PROPERTIES',
     type: 'item',
     icon: 'heroicons-outline:home',
-    url: 'properties',
+    url: 'property/:propertyId',
   },
   {
     id: 'add-properties',

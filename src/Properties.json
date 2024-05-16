@@ -1,6 +1,8 @@
 {
   "properties": {
     "id": 1,
+    "DeveloperName":"Ramesh",
+    "DeveloperPhone":"987654321",
     "propertyName": "Omsree Skypark",
     "propertyAddyear":"2003",
     "TotalProjects":"10",
@@ -32,7 +34,7 @@
     "price": "₹ 1.45 Cr - 2.1 Cr ",
     "AboutProject":"Omsree Skypark is a residential project in Kompally, Hyderabad. It is set in an area of 3.99 Acres . Omsree Skypark offers Apartment. Available configurations include 3 BHK, 4 BHK. Apartment, as per the area plan, are in the size range of 1815.0 - 2850.0 sq.ft.. The property is Under Omsree Skypark is a residential project in Kompally, Hyderabad. It is set in an area of 3.99 Acres . Omsree Skypark offers Apartment. Available configurations include 3 BHK, 4 BHK. Apartment, as per the area plan, are in the size range of 1815.0 - 2850.0 sq.ft.. The property is Under Omsree Skypark is a residential project in Kompally, Hyderabad. It is set in an area of 3.99 Acres . Omsree Skypark offers Apartment. Available configurations include 3 BHK, 4 BHK. Apartment, as per the area plan, are in the size range of 1815.0 - 2850.0 sq.ft.. The property is Under",
     "generalPrice": "7.37 K - ₹7.99 K/sq.ft",
-    "emi-price": "₹71.99 K",
+    "emiprice": "₹71.99 K",
     
     "Property Services": [
       "Home Loans",
@@ -48,7 +50,7 @@
     "Availability": "Immediately Available",
     
     
-    "Power Back Up": "yes",
+    "PowerBackUp": "yes",
     "Facing": "East",
     "Pantry": "Wet Pantry",
     "Status": "Immediately",
@@ -102,8 +104,8 @@
      "DG Availability"],
     "images": [
       "/assets/images/properties/1.jpg",
-      "/assets/images/properties/1.jpg",
-      "/assets/images/properties/1.jpg"
+      "/assets/images/properties/around the prohect.jpg",
+      "/assets/images/properties/FloorPlan.jpg"
     ],
     "Propertyimages": [
       "/assets/images/properties/FloorPlan.jpg",

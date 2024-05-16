@@ -1,19 +1,17 @@
-import RabitDialog from '@rabit/core/RabitDialog';
-import { styled } from '@mui/material/styles';
-import RabitMessage from '@rabit/core/RabitMessage';
-import RabitSuspense from '@rabit/core/RabitSuspense';
-import AppContext from 'app/AppContext';
-import { memo, useContext } from 'react';
+import { memo, useContext, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRoutes } from 'react-router-dom';
 import { selectRabitCurrentLayoutConfig } from 'app/store/rabit/settingsSlice';
-
+import { styled } from '@mui/material/styles';
+import AppContext from 'app/AppContext';
+import FooterLayout1 from './components/FooterLayout1';
 import LeftSideLayout1 from './components/LeftSideLayout1';
 import NavbarWrapperLayout1 from './components/NavbarWrapperLayout1';
-
+import RabitDialog from '@rabit/core/RabitDialog';
+import RabitMessage from '@rabit/core/RabitMessage';
+import RabitSuspense from '@rabit/core/RabitSuspense';
 import ToolbarLayout1 from './components/ToolbarLayout1';
-
-
+import { debounce } from 'lodash';
 const Root = styled('div')(({ theme, config }) => ({
   ...(config.mode === 'boxed' && {
     clipPath: 'inset(0)',
@@ -34,6 +32,24 @@ function Layout1(props) {
   const config = useSelector(selectRabitCurrentLayoutConfig);
   const appContext = useContext(AppContext);
   const { routes } = appContext;
+  const mainContentRef = useRef(null);
+  const [showFooter, setShowFooter] = useState(false);
+
+  const debouncedHandleScroll = debounce(() => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement || document.body;
+    if (scrollTop + clientHeight >= scrollHeight - 1) {
+      setShowFooter(true);
+    } else {
+      setShowFooter(false);
+    }
+  }, 1000);
+
+  useEffect(() => {
+    window.addEventListener('scroll', debouncedHandleScroll);
+    return () => {
+      window.removeEventListener('scroll', debouncedHandleScroll);
+    };
+  }, [debouncedHandleScroll]);
 
   return (
     <Root id="rabit-layout" config={config} className="w-full flex">
@@ -42,27 +58,28 @@ function Layout1(props) {
       <div className="flex flex-auto min-w-0">
         {config.navbar.display && config.navbar.position === 'left' && <NavbarWrapperLayout1 />}
 
-        <main id="rabit-main" className="flex flex-col flex-auto min-h-full min-w-0 relative z-10">
+        <main
+          ref={mainContentRef}
+          id="rabit-main"
+          className="flex flex-col flex-auto min-h-full min-w-0 relative z-10 overflow-y-auto"
+        >
           {config.toolbar.display && (
             <ToolbarLayout1 className={config.toolbar.style === 'fixed' && 'sticky top-0'} />
           )}
 
           <div className="flex flex-col flex-auto min-h-0 relative z-10">
             <RabitDialog />
-
             <RabitSuspense>{useRoutes(routes)}</RabitSuspense>
-
             {props.children}
           </div>
 
-          {/* {config.footer.display && (
+          {showFooter && config.footer.display && (
             <FooterLayout1 className={config.footer.style === 'fixed' && 'sticky bottom-0'} />
-          )} */}
+          )}
         </main>
 
         {config.navbar.display && config.navbar.position === 'right' && <NavbarWrapperLayout1 />}
       </div>
-
 
       <RabitMessage />
     </Root>

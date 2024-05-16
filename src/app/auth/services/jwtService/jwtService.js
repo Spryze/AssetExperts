@@ -4,7 +4,8 @@ import jwtDecode from 'jwt-decode';
 import jwtServiceConfig from './jwtServiceConfig';
 import { display } from '@mui/system';
 // import {FirebaseAuth} from 'firebase/FirebaseAuth';
-import { getAuth, signOut as googleSignOut} from 'firebase/auth';
+import { getAuth, signOut as googleSignOut,onAuthStateChanged} from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 /* eslint-disable camelcase */
   
@@ -32,24 +33,56 @@ class JwtService extends RabitUtils.EventEmitter {
     // );
   };
 
-  handleAuthentication = () => {
-    const access_token = this.getAccessToken();
+  // handleAuthentication = () => {
+  //   const access_token = this.getAccessToken();
 
-    if (!access_token) {
-      this.emit('onNoAccessToken');
+  //   if (!access_token) {
+  //     this.emit('onNoAccessToken');
 
-      return;
-    }
+  //     return;
+  //   }
 
-    if (this.isAuthTokenValid(access_token)) {
-      this.setSession(access_token);
+  //   if (this.isAuthTokenValid(access_token)) {
+  //     this.setSession(access_token);
       
-      this.emit('onAutoLogin', true);
-    } else {
-      this.setSession(null);
-      this.emit('onAutoLogout', 'access_token expired');
-    }
+  //     this.emit('onAutoLogin', true);
+  //   } else {
+  //     this.setSession(null);
+  //     this.emit('onAutoLogout', 'access_token expired');
+  //   }
+  // };
+
+  handleAuthentication = () => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      console.log("onuserAuth",user);
+      if (user) {
+        let user1 = {
+          uid: user.uid,
+          role: "admin",
+          data: {
+            accessToken: user.accessToken,
+            displayName: "ramu"
+          }
+        };
+        localStorage.setItem('user1', JSON.stringify(user));
+        // this.emit('onAutoLogin'); 
+        this.emit('onAutoLogin', user);
+        // if (this.isAuthTokenValid(user.data.accessToken)) {
+        //   this.setSession(user.data.accessToken);
+        //   this.emit('onAutoLogin', true); 
+        //   console.log("Login")
+        // } else {
+        //   this.setSession(null);
+        //   this.emit('onAutoLogout', 'access_token expired');
+        // }
+      }
+      else {
+        this.emit('onLogout');
+      }
+    });
   };
+  
 
   createUser = (data) => {
     return new Promise((resolve, reject) => {
@@ -179,11 +212,13 @@ class JwtService extends RabitUtils.EventEmitter {
   
 
   logout = () => {
+    
     this.setSession(null);
     localStorage.removeItem('user');
     localStorage.removeItem('jwt_access_token');   
     const auth = getAuth(); 
     googleSignOut(auth);
+    window.location.href = '/signup';
     this.emit('onLogout', 'Logged out');
   };
 

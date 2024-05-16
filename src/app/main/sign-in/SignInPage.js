@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import _ from '@lodash';
 import RabitSvgIcon from '@rabit/core/RabitSvgIcon';
@@ -21,8 +21,13 @@ import { signInWithPopup } from 'firebase/auth';
 import { getAuth,signInWithEmailAndPassword } from 'firebase/auth';
 import RabitUtils from '@rabit/utils/RabitUtils';
 import Alert from "@mui/material/Alert";
+import { useDispatch } from 'react-redux';
+import { signInWithEmailPassword } from 'app/store/userSlice';
 
 import { useState } from 'react';
+
+
+
 
 /**
  * Form Validation Schema
@@ -44,36 +49,37 @@ const defaultValues = {
 
 function SignInPage() {
   
-  
-    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
-      if (userAuth) {
+ const dispatch = useDispatch()
+    // const authentication = auth.onAuthStateChanged((userAuth) => {
+    //   if (userAuth) {
         
-        // console.log('User authenticated:', userAuth);
-        let user = {
-          uid: userAuth.uid,
-            role: "admin",
-          data:{
+    //     // console.log('User authenticated:', userAuth);
+    //     let user = {
+    //       uid: userAuth.uid,
+    //         role: "admin",
+    //       data:{
           
-            accessToken: userAuth.accessToken,
-            displayName: "Ramu",
+    //         accessToken: userAuth.accessToken,
+    //         displayName: "Ramu",
             
-          }
-        };
-        // console.log(user)
+    //       }
+    //     };
+    //     // console.log(user)
           
-          localStorage.setItem('user', JSON.stringify(user));
+    //       localStorage.setItem('user', JSON.stringify(user));
           
          
-          jwtService.emit('onLogin',user);
-      } else {
-        // User is not authenticated
-        console.log('User not authenticated');
-      }
-    })
- 
+    //       jwtService.emit('onLogin',user);
+    //   } else {
+    //     // User is not authenticated
+    //     console.log('User not authenticated');
+    //   }
+    // })
+    // const Navigate = useNavigate();
 
   const [message,setMessage]=useState(null)
   useEffect(() => {
+    // authentication()
     if (message) {
       const timer = setTimeout(() => {
         setMessage(null);
@@ -81,7 +87,7 @@ function SignInPage() {
   
       return () => clearTimeout(timer);
     }
-  }, [message]);
+  }, []);
   
   //google signin
   const handleClick = () => {
@@ -132,46 +138,14 @@ function SignInPage() {
   //   setValue('email', 'admin@rabittheme.com', { shouldDirty: true, shouldValidate: true });
   //   setValue('password', 'admin', { shouldDirty: true, shouldValidate: true });
   // }, [setValue]);
-  const SignInWithEmailAndPassword = async (email, password) => {
-    try {
-      const auth = getAuth();
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;  
-      console.log(user);
-      if (user) {
-        let User = {
-          uid: user.uid,
-          role: "admin",
-          data: {
-            accessToken: user.accessToken,
-            displayName: user.displayName,
-          }
-        };
-      
-        console.log(User); // Log the modified user object
-      
-        localStorage.setItem('user', JSON.stringify(User));
-      
-        
-      }
-       else {
-        setMessage("Wrong Credentials");
-        console.log("User not found");
-        // Optionally return an error message or handle it in the catch block
-        throw new Error("User not found");
-      }
-    } catch (error) {
-      setMessage("Wrong Credentials");
-      console.log("signin", error);
-      // Reject should be used to handle errors
-      throw error;
-    }
-  };
+ 
   
   async function onSubmit({ email, password }) {
     try {
-      const response = await SignInWithEmailAndPassword(email, password);
-      console.log("response", response);
+      await dispatch(signInWithEmailPassword({ email, password }));
+     
+      
+      
       
     } catch (error) {
       console.log("Signin", error);

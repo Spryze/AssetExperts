@@ -7,6 +7,9 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import ShowMore from "./ShowMore";
+import PropertyCarousel from "./PropertyCarousel";
+import propertiesdata from 'src/Properties.json'
+
 
 const PropertyDetails = () => {
   // State variables
@@ -37,6 +40,7 @@ const PropertyDetails = () => {
 
   return (
     <Container>
+      <PropertyCarousel/>
       <Grid>
         <Box sx={{ marginTop: "40px" }}>
           {/* Property details */}

@@ -190,7 +190,7 @@ const SearchProperty = () => {
 
       <Grid container spacing={2} sx={{ margin: "20px 0" }}>
         {searchData?.map((result, index) => (
-          <Grid item key={index} xs={12} sm={6} md={8}>
+          <Grid  key={index} xs={12} sm={6} md={8}>
             <Card
               sx={{ height: "100%", cursor: "pointer" }}
               onClick={() => handleCardClick(result.property_id)}

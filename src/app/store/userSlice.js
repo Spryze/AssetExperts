@@ -2,32 +2,69 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import history from '@history';
 import _ from '@lodash';
+import { Navigate } from 'react-router-dom';
 import { setInitialSettings } from 'app/store/rabit/settingsSlice';
 import { showMessage } from 'app/store/rabit/messageSlice';
 import settingsConfig from 'app/configs/settingsConfig';
 import jwtService from '../auth/services/jwtService';
-import { getAuth,onAuthStateChanged } from 'firebase/auth';
+import { getAuth,onAuthStateChanged,signInWithEmailAndPassword } from 'firebase/auth';
+import { action } from 'mobx';
 
-export const setUser = createAsyncThunk('user/setUser', async (user, { dispatch, getState }) => {
-  /*
-    You can redirect the logged-in user to a specific route depending on his role
-    */
-  // if (user.loginRedirectUrl) {
-  //   settingsConfig.loginRedirectUrl = user.loginRedirectUrl; // for example 'apps/academy'
-  // }
-  const auth = getAuth();
-  onAuthStateChanged(auth,(user)=>{
-    if (user){
-      const uid=user.uid;
-      
-      settingsConfig.loginRedirectUrl = user.loginRedirectUrl;
-    }else{
-      console.log("user is not signedin")
-    }
+
+export const setUser = createAsyncThunk('user/setUser', async () => {
+  return new Promise((resolve, reject) => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (userAuth) => {
+      if (userAuth) {
+        let user = {
+          uid: userAuth.uid,
+          role: "admin",
+          data: {
+            accessToken: userAuth.accessToken,
+            displayName: "Ramu",
+          }
+        };
+
+        localStorage.setItem('user', JSON.stringify(user));
+        resolve(user); // Resolve with the user object
+      } else {
+        reject(new Error('User not authenticated')); 
+      }
+    });
   });
-
-  return user;
 });
+
+export const signInWithEmailPassword = createAsyncThunk(
+  'user/signInWithEmailAndPassword',
+  async ({ email, password }, { rejectWithValue }) => { 
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      if (user) {
+        let User = {
+          uid: user.uid,
+          role: "admin",
+          data: {
+            accessToken: user.accessToken,
+            displayName: user.displayName,
+          }
+        };
+        
+        localStorage.setItem('user', JSON.stringify(User));
+        
+        return User;
+      } else {
+        throw new Error("User not found");
+      }
+    } catch (error) {
+      // You can handle specific Firebase errors here
+      return rejectWithValue(error.message); // Dispatches a rejected action with the error message
+    }
+  }
+);
+
 
 export const updateUserSettings = createAsyncThunk(
   'user/updateSettings',
@@ -112,14 +149,23 @@ const userSlice = createSlice({
   reducers: {
     userLoggedOut: (state, action) => initialState,
   },
+  setUser: (state, action) => {
+    return {
+      ...state,
+      ...action.payload,
+    };
+  },
+
   extraReducers: {
     [updateUserSettings.fulfilled]: (state, action) => action.payload,
     [updateUserShortcuts.fulfilled]: (state, action) => action.payload,
     [setUser.fulfilled]: (state, action) => action.payload,
+    [signInWithEmailPassword.fulfilled]:(state,action)=>action.payload,
   },
 });
 
 export const { userLoggedOut } = userSlice.actions;
+
 
 export const selectUser = ({ user }) => user;
 

@@ -237,7 +237,6 @@ const PropertyHome = () => {
                 <div style={{ display: "flex", marginTop: "5px" }}>
                   <LocationOnIcon sx={{ color: "orange" }} />
                   <Typography sx={{ fontSize: "14px" }}>
-                    {"Hii"}
                     {`${item?.landmark}, ${item?.district}`}
                   </Typography>
                 </div>

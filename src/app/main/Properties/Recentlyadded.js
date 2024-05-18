@@ -22,21 +22,21 @@ const Recentlyadded = () => {
   }, []);
 
   const checkScroll = () => {
-    if (scrollContainerRef.current) {
+    if (scrollContainerRef?.current) {
       const container = scrollContainerRef.current;
-      setShowLeftArrow(container.scrollLeft > 0);
+      setShowLeftArrow(container?.scrollLeft > 0);
       setShowRightArrow(
-        container.scrollLeft < container.scrollWidth - container.clientWidth
+        container?.scrollLeft < container?.scrollWidth - container?.clientWidth
       );
     }
   };
 
   const startAutoScroll = () => {
-    scrollContainerRef.current.addEventListener("scroll", checkScroll);
+    scrollContainerRef?.current?.addEventListener("scroll", checkScroll);
   };
 
   const stopAutoScroll = () => {
-    scrollContainerRef.current.removeEventListener("scroll", checkScroll);
+    scrollContainerRef?.current?.removeEventListener("scroll", checkScroll);
   };
 
   const scrollLeft = () => {

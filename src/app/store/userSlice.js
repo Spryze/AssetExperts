@@ -99,19 +99,18 @@ export const updateUserShortcuts = createAsyncThunk(
 export const logoutUser = () => async (dispatch, getState) => {
   const { user } = getState();
 
-  history.push({
-    pathname: '/',
-  });
+  // history.push({
+  //   pathname: '/',
+  // });
   
-  if (!user.role || user.role.length === 0) {
-    // is guest
-    return null;
-  }
+  // if (!user.role || user.role.length === 0) {
+  //   // is guest
+  //   return null;
+  // }
 
-  history.push({
-    pathname: '/',
-  });
-  console.log('push to home page');
+  // history.push({
+  //   pathname: '/',
+  // });
   dispatch(setInitialSettings());
 
   return dispatch(userLoggedOut());
@@ -119,7 +118,6 @@ export const logoutUser = () => async (dispatch, getState) => {
 
 export const updateUserData = (user) => async (dispatch, getState) => {
   if (!user.role || user.role.length === 0) {
-    // is guest
     return;
   }
 
@@ -134,7 +132,7 @@ export const updateUserData = (user) => async (dispatch, getState) => {
 };
 
 const initialState = {
-  role: [], // guest
+  role: 'guest', // guest
   data: {
     // displayName: 'John Doe',
     // photoURL: 'assets/images/avatars/brian-hughes.jpg',

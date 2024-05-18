@@ -55,7 +55,6 @@ class JwtService extends RabitUtils.EventEmitter {
   handleAuthentication = () => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-      console.log("onuserAuth",user);
       if (user) {
         let user1 = {
           uid: user.uid,
@@ -211,13 +210,13 @@ class JwtService extends RabitUtils.EventEmitter {
   
   
 
-  logout = () => {
+  logout = async() =>   {
     
     this.setSession(null);
     localStorage.removeItem('user');
     localStorage.removeItem('jwt_access_token');   
     const auth = getAuth(); 
-    googleSignOut(auth);
+    await googleSignOut(auth);
     window.location.href = '/';
     this.emit('onLogout', 'Logged out');
   };

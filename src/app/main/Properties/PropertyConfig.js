@@ -7,6 +7,8 @@ import Property from './Property';
 import Addproperty from './Addproperty';
 import SearchProperty from './SearchProperty';
 import PropertyHome from './Pages/PropertyHome';
+import { auth } from '../sign-in/Config';
+import { authRoles } from 'src/app/auth';
 
 i18next.addResourceBundle('en', 'propertyPage', en);
 i18next.addResourceBundle('tr', 'propertyPage', tr);
@@ -18,6 +20,7 @@ const PropertyConfig = {
       config: {},
     },
   },
+  auth: authRoles.user,
   routes: [
     {
       path: 'properties',
@@ -29,7 +32,7 @@ const PropertyConfig = {
     },
     {
       path: 'property/:propertyId',
-      element: <Property />
+      element: <Property />,
     },
     {
       path: 'Addproperty',

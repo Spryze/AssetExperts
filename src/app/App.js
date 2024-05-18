@@ -15,18 +15,8 @@ import RabitAuthorization from '@rabit/core/RabitAuthorization';
 import settingsConfig from 'app/configs/settingsConfig';
 import withAppProviders from './withAppProviders';
 import { AuthProvider } from './auth/AuthContext';
-import { useEffect } from 'react';
-import { setUser } from 'app/store/userSlice';
 import { CircularProgress } from '@mui/material';
 import { useState } from 'react';
-import { set } from 'lodash';
-// import axios from 'axios';
-/**
- * Axios HTTP Request defaults
- */
-// axios.defaults.baseURL = "";
-// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-// axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
 
 const emotionCacheOptions = {
   
@@ -45,16 +35,10 @@ const emotionCacheOptions = {
 const App = () => {
   const [loading, setLoading] = useState(false);
   const user = useSelector(selectUser);
-  console.log("user",user)
   const langDirection = useSelector(selectCurrentLanguageDirection);
   const mainTheme = useSelector(selectMainTheme);
-  const dispatch = useDispatch()
 
-  // useEffect(()=>{
-  //   setLoading(true)
-  //   dispatch(setUser())
-  //   setLoading(false)
-  // },[])
+
 
   return (
    
@@ -66,6 +50,7 @@ const App = () => {
           <BrowserRouter>
             <RabitAuthorization
               userRole={user.role}
+
               loginRedirectUrl={settingsConfig.loginRedirectUrl}
             >
               <SnackbarProvider

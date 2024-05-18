@@ -9,6 +9,8 @@
 
 // class RabitAuthorization extends Component {
 //   constructor(props, context) {
+//     console.log(props)
+    
 //     super(props);
 //     const { routes } = context;
 //     this.state = {
@@ -19,7 +21,9 @@
 //   }
 
 //   componentDidMount() {
+    
 //     if (!this.state.accessGranted) {
+//       console.log(this.state.accessGranted)
 //       this.redirectRoute();
 //     }
 //   }
@@ -35,6 +39,7 @@
 //   }
 
 //   static getDerivedStateFromProps(props, state) {
+//     console.log("props",props, "state",state)
 //     const { location, userRole } = props;
 //     const { pathname } = location;
 
@@ -50,7 +55,7 @@
 //     const { location, userRole } = this.props;
 //     const { pathname } = location;
 //     const redirectUrl = loginRedirectUrl || this.defaultLoginRedirectUrl;
-
+  
 //     /*
 //         User is guest
 //         Redirect to Login Page
@@ -66,12 +71,14 @@
 //         */
 //       setTimeout(() => history.push(redirectUrl), 0);
 //       loginRedirectUrl = this.defaultLoginRedirectUrl;
+//       console.log("render")
 //     }
 //   }
 
 //   render() {
-//     // console.info('Rabit Authorization rendered', this.state.accessGranted);
+//     console.info('Rabit Authorization rendered', this.state.accessGranted);
 //     return this.state.accessGranted ? <>{this.props.children}</> : null;
+    
 //   }
 // }
 

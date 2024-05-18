@@ -16,14 +16,14 @@ const navigationConfig = [
     icon: 'heroicons-outline:star',
     url: 'example',
   },
-  {
-    id: 'properties',
-    title: 'Properties',
-    translate: 'PROPERTIES',
-    type: 'item',
-    icon: 'heroicons-outline:home',
-    url: 'property/:propertyId',
-  },
+  // {
+  //   id: 'properties',
+  //   title: 'Properties',
+  //   translate: 'PROPERTIES',
+  //   type: 'item',
+  //   icon: 'heroicons-outline:home',
+  //   url: 'property/:propertyId',
+  // },
   {
     id: 'add-properties',
     title: 'AddProperties',

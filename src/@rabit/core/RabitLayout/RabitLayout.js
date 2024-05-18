@@ -15,6 +15,7 @@ import { alpha } from '@mui/material/styles';
 
 const inputGlobalStyles = (
   <GlobalStyles
+  
     styles={(theme) => ({
       html: {
         backgroundColor: `${theme.palette.background.default}!important`,

@@ -189,7 +189,7 @@ function Property() {
   const handleChange = (event, newValue) => {
     setActiveTab(newValue);
     const sections = document.getElementsByClassName("card");
-    const sectionId = newValue; // Use the string value directly
+    const sectionId = newValue;
     const targetSection = document.getElementById(sectionId);
     if (targetSection) {
       targetSection.scrollIntoView({ behavior: "smooth" });

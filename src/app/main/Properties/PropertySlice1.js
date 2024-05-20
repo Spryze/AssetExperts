@@ -47,6 +47,18 @@ export const fetchRecentTransactions = createAsyncThunk(
     }
   }
 );
+export const SearchResults = createAsyncThunk(
+  'property/SearchResults',
+  async () => {
+    try {
+      const response = await axios.get("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/home")
+      return response.data; // Return response data instead of the whole response object
+    } catch (error) {
+      return rejectWithValue(error.message); // Use rejectWithValue for returning error
+    }
+  }
+);
+
 
 
 const initialState = {

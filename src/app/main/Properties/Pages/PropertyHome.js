@@ -1,27 +1,17 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchRecentTransactions,
-  selectRecentTransactions,
-  selectSearchResults,
-
-} from "../PropertySlice1";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  Box,
-  Tooltip,
-} from "@mui/material";
+import {  fetchRecentTransactions, selectRecentTransactions,selectSearchResults,} from "../PropertySlice1";
+import { Card,CardContent,Typography,Grid,Box,Tooltip} from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import SearchDialogue from "../SearchDialogue";
 
 
 const PropertyHome = () => {
   const dispatch = useDispatch();
   const recentTransactions = useSelector(selectRecentTransactions);
   const searchResults = useSelector(selectSearchResults);
-  console.log("searchResults",searchResults)
+
+
   useEffect(() => {
     dispatch(fetchRecentTransactions());
   }, [dispatch]);
@@ -34,7 +24,6 @@ const PropertyHome = () => {
       console.error("Unable to open new window/tab");
     }
   };
-
   const shuffleArray = (array) => {
     if (!array) return [];
     for (let i = array.length - 1; i > 0; i--) {
@@ -43,7 +32,6 @@ const PropertyHome = () => {
     }
     return array;
   };
-
   const Transactions = shuffleArray(
     recentTransactions?.property?.buy_properties.concat(
       recentTransactions?.property?.sell_properties
@@ -52,6 +40,7 @@ const PropertyHome = () => {
 
   return (
     <Box sx={{ margin: "20px" }}>
+      <SearchDialogue/>
       <Grid container spacing={1} sx={{ margin: "0" }}>
         {searchResults && (
           <div>
@@ -127,7 +116,6 @@ const PropertyHome = () => {
                     }}
                     onClick={() => handleClick(item.property_id)}
                   >
-                    {/* Rest of your card content */}
                     <CardContent>
                       <img
                         src={item?.prop_images[0]}

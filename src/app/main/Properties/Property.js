@@ -294,4 +294,4 @@ useEffect(() => {
   );
 }
 
-export default withReducer("properties1", reducer)(Property);
+export default Property;

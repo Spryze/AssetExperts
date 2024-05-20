@@ -217,10 +217,11 @@ const propertySlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProperties.fulfilled, (state, action) => {
-        state.properties = action.payload;
+        state.properties = action.payload.data,action.payload.recent_properties;
+        console.log("state.properties",state.properties)
       })
       .addCase(fetchRecentTransactions.fulfilled, (state, action) => {
-        // Assuming action.payload contains the relevant data from the response
+        
         state.recentTransactions = action.payload;
       })
   },

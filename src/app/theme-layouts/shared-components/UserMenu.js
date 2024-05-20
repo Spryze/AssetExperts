@@ -73,12 +73,12 @@ function UserMenu(props) {
               </ListItemIcon>
               <ListItemText primary="Sign In" />
             </MenuItem>
-            <MenuItem component={Link} to="/sign-up" role="button">
+            {/* <MenuItem component={Link} to="/sign-up" role="button">
               <ListItemIcon className="min-w-40">
                 <RabitSvgIcon>heroicons-outline:user-add </RabitSvgIcon>
               </ListItemIcon>
               <ListItemText primary="Sign up" />
-            </MenuItem>
+            </MenuItem> */}
           </>
         ) : (
           <>

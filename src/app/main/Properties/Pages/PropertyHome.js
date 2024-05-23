@@ -15,7 +15,7 @@ const PropertyHome = () => {
   useEffect(() => {
     dispatch(fetchRecentTransactions());
   }, [dispatch]);
-
+// 1
   const handleClick = (propertyId) => {
     const newWindow = window.open(`/property/${propertyId}`, "_blank");
     if (newWindow) {

@@ -22,7 +22,7 @@ export const fetchProperties = createAsyncThunk(
     }
   }
 );
-
+// 2
 
 export const fetchRecentTransactions = createAsyncThunk(
   'property/fetchRecentTransactions',

@@ -24,7 +24,7 @@ const SearchDialogue = () => {
     propertyType: '',
     transactionType: ''
   });
-
+// 3
   const handleChange = (event) => {
     const name = event.target.name;
     setFormData({

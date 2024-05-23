@@ -32,7 +32,7 @@ const BasicPropertyDetails = (props) => {
         {formik.errors.PropertyName && (
           <FormHelperText>{formik.errors.PropertyName}</FormHelperText>
         )}
-        {/* <FormControl/> */}
+       
       </Grid>
       <Grid item xs={12} md={6}>
         <FormControl
@@ -45,8 +45,8 @@ const BasicPropertyDetails = (props) => {
           <Select
             labelId="PropertyTypes"
             id="PropertyTypes"
-            value={formik.values.PropertyTypes}
-            name="PropertyTypes"
+            value={formik.values.p_type}
+            name="p_type"
             label="Property Types"
             onChange={formik.handleChange}
           >
@@ -69,15 +69,15 @@ const BasicPropertyDetails = (props) => {
       </Grid>
       <Grid item xs={12} md={6}>
         <TextField
-          name="Area"
-          label="Property Area"
+          name="dimensions"
+          label="Property Dimensions"
           variant="outlined"
           type="number"
           fullWidth
-          value={formik.values.PlotArea}
+          value={formik.values.dimensions}
           onChange={formik.handleChange}
-          error={formik.touched.PlotArea && Boolean(formik.errors.PlotArea)}
-          helperText={formik.touched.PlotArea && formik.errors.PlotArea}
+          error={formik.touched.size && Boolean(formik.errors.dimensions)}
+          helperText={formik.touched.PlotArea && formik.errors.dimensions}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -89,7 +89,7 @@ const BasicPropertyDetails = (props) => {
           <Select
             labelId="Units"
             id="Units"
-            value={formik.values.Units}
+            value={formik.values.unit}
             name="Units"
             label="Units"
             onChange={formik.handleChange}
@@ -151,59 +151,98 @@ const BasicPropertyDetails = (props) => {
           <FormHelperText>{formik.errors.Units}</FormHelperText>
         )}
       </Grid>
+
       <Grid item xs={12} md={6}>
         <TextField
-          name="Location"
-          label="Property Location"
+          name="State"
+          label="State"
           variant="outlined"
           type="text"
           fullWidth
-          error={Boolean(formik.touched.Location && formik.errors.Location)}
+          error={Boolean(formik.touched.Location && formik.errors.State)}
           onChange={formik.handleChange}
-          value={formik.values.Location}
+          value={formik.values.State}
         />
       </Grid>
       <Grid item xs={12} md={6}>
         <TextField
-          name="PropertyFacing"
-          label="Property Facing"
+          name="District"
+          label="District"
+          variant="outlined"
+          type="text"
+          fullWidth
+          error={Boolean(formik.touched.Location && formik.errors.District)}
+          onChange={formik.handleChange}
+          value={formik.values.District}
+        />
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <TextField
+          name="landmark"
+          label="landmark"
           variant="outlined"
           type="text"
           fullWidth
           error={Boolean(
-            formik.touched.PropertyFacing && formik.errors.PropertyFacing
+            formik.touched.PropertyFacing && formik.errors.landmark
           )}
           onChange={formik.handleChange}
-          value={formik.values.PropertyFacing}
+          value={formik.values.landmark}
         />
       </Grid>
       <Grid item xs={12} md={6}>
         <TextField
-          name="DepositAmount"
-          label="Deposit Amount"
+          name="Village"
+          label="Village"
+          variant="outlined"
+          type="text"
+          fullWidth
+          error={Boolean(
+            formik.touched.PropertyFacing && formik.errors.village
+          )}
+          onChange={formik.handleChange}
+          value={formik.values.village}
+        />
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <TextField
+          name="Price"
+          label="Price in ₹"
           variant="outlined"
           type="number"
           fullWidth
           error={Boolean(
-            formik.touched.DepositAmount && formik.errors.DepositAmount
+            formik.touched.DepositAmount && formik.errors.price
           )}
           onChange={formik.handleChange}
-          value={formik.values.DepositAmount}
+          value={formik.values.Price}
         />
       </Grid>
       <Grid item xs={12} md={6}>
         <TextField
-          name="phone"
-          label="Phone Number"
+          name="SurveyNumber"
+          label="Survey Number"
           variant="outlined"
           type="text"
           fullWidth
-          error={Boolean(formik.touched.Phone && formik.errors.Phone)}
+          error={Boolean(formik.touched.Phone && formik.errors.SurveyNumber)}
           onChange={formik.handleChange}
-          value={formik.values.Phone}
+          value={formik.values.SurveyNumber}
         />
       </Grid>
       <Grid item xs={12} md={6}>
+        <TextField
+          name="DocumentNumber"
+          label="Document Number"
+          variant="outlined"
+          type="text"
+          fullWidth
+          error={Boolean(formik.touched.Phone && formik.errors.DocumentNumber)}
+          onChange={formik.handleChange}
+          value={formik.values.DocumentNumber}
+        />
+      </Grid>
+      {/* <Grid item xs={12} md={6}>
         <FormControl
           fullWidth
           error={Boolean(
@@ -227,21 +266,21 @@ const BasicPropertyDetails = (props) => {
         {formik.errors.PropertyTypes && (
             <FormHelperText>{formik.errors.PropertyStatus}</FormHelperText>
           )}
-      </Grid>
+      </Grid>*/}
       <Grid item xs={12} md={6}>
         <TextField
-          name="AboutDeveloper"
-          label="About Developer"
+          name="AroundTheProperty"
+          label="Around The Property"
           variant="outlined"
           type="text"
           fullWidth
           error={Boolean(
-            formik.touched.AboutDeveloper && formik.errors.AboutDeveloper
+            formik.touched.AboutDeveloper && formik.errors.AroundTheProperty
           )}
           onChange={formik.handleChange}
-          value={formik.values.AboutDeveloper}
+          value={formik.values.AroundTheProperty}
         />
-      </Grid>
+      </Grid> 
 
       {formik.errors.submit && (
         <Grid item xs={12}>

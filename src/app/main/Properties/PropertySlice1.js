@@ -10,40 +10,28 @@ export const fetchProperties = createAsyncThunk(
     try {
       const url = `https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property_ind?prop_id=${property_id}`;
 
-      const response = await fetch(url, {
-        method: 'get',
-      });
+      const response = await axios.get(url); 
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error('Property data not received');
       }
 
-      const propertyDetails = await response.json();
-
-      // Open the API response in a new tab
-      // const responseString = JSON.stringify(propertyDetails);
-      // const newWindow = window.open('', '_blank');
-      // if (newWindow) {
-      //   newWindow.document.write(`<pre>${responseString}</pre>`);
-      // } else {
-      //   throw new Error('Popup blocked. Please allow popups for this site.');
-      // }
-
-      return propertyDetails;
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
 
+
 export const fetchRecentTransactions = createAsyncThunk(
   'property/fetchRecentTransactions',
   async () => {
     try {
       const response = await axios.get("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/home")
-      return response.data; // Return response data instead of the whole response object
+      return response.data; 
     } catch (error) {
-      return rejectWithValue(error.message); // Use rejectWithValue for returning error
+      return rejectWithValue(error.message); 
     }
   }
 );
@@ -52,12 +40,61 @@ export const SearchResults = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/home")
-      return response.data; // Return response data instead of the whole response object
+      return response.data; 
     } catch (error) {
-      return rejectWithValue(error.message); // Use rejectWithValue for returning error
+      return rejectWithValue(error.message);
     }
   }
 );
+
+
+
+
+
+export const addProperty = createAsyncThunk(
+  'property/addProperty',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user) throw new Error("User not found in local storage");
+
+      const cont_user_id = user.uid;
+      const data = { ...formData, cont_user_id };
+
+      console.log(data);
+
+      const response = await axios.post("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property", data);
+      console.log("response", response);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const AddImage = createAsyncThunk(
+  'property/AddImage',
+  async (formData) => {
+    const response = await axios.put('https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      
+      // Handle response
+      console.log('Response:', response);
+
+      if (response.status === 201) {
+        
+        window.alert('Upload successful');
+        Navigate('/');
+      } else {
+        throw new Error('Image Upload failed');
+      }
+  }
+);
+
+
 
 
 
@@ -229,7 +266,7 @@ const propertySlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProperties.fulfilled, (state, action) => {
-        state.properties = action.payload.data,action.payload.recent_properties;
+        state.properties = action.payload,action.payload.recent_properties;
         console.log("state.properties",state.properties)
       })
       .addCase(fetchRecentTransactions.fulfilled, (state, action) => {

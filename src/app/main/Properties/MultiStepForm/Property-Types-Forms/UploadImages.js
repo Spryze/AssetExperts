@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AddImage } from '../../PropertySlice1';
 
-const UploadImages = ({ property_id }) => {
+const UploadImages = ({ responseData }) => {
   const [imagePreviews, setImagePreviews] = useState([]);
   const [floorPlanPreviews, setFloorPlanPreviews] = useState([]);
 
-  const Navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleImageUpload = async (event) => {
     const files = event.target.files;
-    const imagesFormData = new FormData();
 
     for (let i = 0; i < files.length; i++) {
-      imagesFormData.append('images', files[i]);
-
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreviews((prevPreviews) => [...prevPreviews, reader.result]);
@@ -25,11 +24,8 @@ const UploadImages = ({ property_id }) => {
 
   const handleFloorPlanUpload = async (event) => {
     const files = event.target.files;
-    const floorPlansFormData = new FormData();
 
     for (let i = 0; i < files.length; i++) {
-      floorPlansFormData.append('floor_plans', files[i]);
-
       const reader = new FileReader();
       reader.onload = () => {
         setFloorPlanPreviews((prevPreviews) => [...prevPreviews, reader.result]);
@@ -40,45 +36,33 @@ const UploadImages = ({ property_id }) => {
 
   const upload = async () => {
     try {
-      // Handle image upload
       const imageFiles = document.getElementById('imageUpload').files;
-      const imagesFormData = new FormData();
-      for (let i = 0; i < imageFiles.length; i++) {
-        imagesFormData.append('images', imageFiles[i]);
-      }
-      imagesFormData.append('property_id', property_id);
-
-      const imageUploadResponse = await fetch('https://db93a4e7-afba-4acc-8fb6-24c6904c08a7-00-wzqnnh54dv12.sisko.replit.dev/property_image', {
-        method: 'POST',
-       
-        body: imagesFormData,
-      });
-
-      if (!imageUploadResponse.ok) {
-        throw new Error('Image Upload failed');
-      }
-
-      // Handle floor plan upload
       const floorPlanFiles = document.getElementById('floorPlanUpload').files;
-      const floorPlansFormData = new FormData();
+      const formData = new FormData();
+
+      // Add image files to form data with key "images"
+      for (let i = 0; i < imageFiles.length; i++) {
+        formData.append('images', imageFiles[i]);
+      }
+
+      // Add floor plan files to form data with key "images"
       for (let i = 0; i < floorPlanFiles.length; i++) {
-        floorPlansFormData.append('floor_plans', floorPlanFiles[i]);
-      }
-      floorPlansFormData.append('property_id', property_id);
-
-      const floorPlanUploadResponse = await fetch('YOUR_FLOOR_PLAN_UPLOAD_ENDPOINT', {
-        method: 'POST',
-        body: floorPlansFormData,
-      });
-
-      if (!floorPlanUploadResponse.ok) {
-        console.log('Floor Plan Upload failed');
+        formData.append('images', floorPlanFiles[i]);
       }
 
-      window.alert('Upload successful');
-      Navigate('/properties');
+      formData.append('p_id', responseData.p_id);
+      formData.append('req_user_id', responseData.req_user_id);
+      formData.append('user_id', responseData.user_id);
+
+
+      for (const pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      dispatch(AddImage(formData));
+      
     } catch (error) {
-      console.error('Error uploading files:', error);
+      // Handle error
+      console.error('Error:', error);
     }
   };
 

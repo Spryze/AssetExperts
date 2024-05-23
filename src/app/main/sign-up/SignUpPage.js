@@ -17,8 +17,8 @@ import Alert from "@mui/material/Alert";
 import Paper from "@mui/material/Paper";
 import FormHelperText from "@mui/material/FormHelperText";
 import jwtService from "../../auth/services/jwtService";
-//import { auth,provider } from '../sign-in/Config';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { signUpWithEmailAndPassword } from "app/store/userSlice";
 import { useEffect, useState } from "react";
 import { method } from "lodash";
 import axios from 'axios';
@@ -26,6 +26,9 @@ import axios from 'axios';
 /**
  * Form Validation Schema
  */
+
+
+
 const schema = yup.object().shape({
   displayName: yup.string().required("You must enter display name"),
   email: yup
@@ -62,6 +65,7 @@ function SignUpPage(displayName) {
   });
   const { isValid, dirtyFields, errors, setError } = formState;
   const [Message, setMessage] = useState(null);
+  const dispatch = useDispatch();
 
 useEffect(() => {
   if (Message) {
@@ -73,86 +77,65 @@ useEffect(() => {
   }
 }, [Message]);
 
-const signUpWithEmailAndPassword = (email, password, displayName) => {
-  const auth = getAuth();
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(async (userCredential) => {
-      const user = userCredential.user;
-      console.log("user", user);
-      if (user && user.uid) { 
-        const userData = {
-          user_name: displayName,
-          email: email,
-          uuid: user.uid
-        };
-        console.log("userdata",userData)
+// const signUpWithEmailAndPassword = (email, password, displayName) => {
+//   const auth = getAuth();
+//   createUserWithEmailAndPassword(auth, email, password)
+//     .then(async (userCredential) => {
+//       const user = userCredential.user;
+//       console.log("user", user);
+//       if (user && user.uid) { 
+//         const userData = {
+//           user_name: displayName,
+//           email: email,
+//           uuid: user.uid
+//         };
+//         console.log("userdata",userData)
 
-        try {
-          const response = await axios.post("https://db93a4e7-afba-4acc-8fb6-24c6904c08a7-00-wzqnnh54dv12.sisko.replit.dev/user", userData);
-          console.log(response)
-          // const response = await fetch("https://db93a4e7-afba-4acc-8fb6-24c6904c08a7-00-wzqnnh54dv12.sisko.replit.dev/", {
-          //   method: 'post',
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //   },
-          //   body: JSON.stringify(userData),
-          // });
+//         try {
+//           const response = await axios.post("https://db93a4e7-afba-4acc-8fb6-24c6904c08a7-00-wzqnnh54dv12.sisko.replit.dev/user", userData);
+//           console.log(response)
+//           // const response = await fetch("https://db93a4e7-afba-4acc-8fb6-24c6904c08a7-00-wzqnnh54dv12.sisko.replit.dev/", {
+//           //   method: 'post',
+//           //   headers: {
+//           //     "Content-Type": "application/json",
+//           //   },
+//           //   body: JSON.stringify(userData),
+//           // });
 
-          if (response.ok) {
-            console.log('Failed to send user data to server');
-          }
-          console.log('resonsponse ', response);
-          setMessage("Sign up Successful. ");
+//           if (response.ok) {
+//             console.log('Failed to send user data to server');
+//           }
+//           console.log('resonsponse ', response);
+//           setMessage("Sign up Successful. ");
           
          
-          setTimeout(() => {
-           jwtService.setSession(user.stsTokenManager.accessToken);
-           window.location.href = "/sign-in";
-          }, 3000);
-        } catch (error) {
-          setMessage("Error sending user data to server.");
-          console.error('Fetch error:', error);
-        }
-      } else {
-        setMessage("Sign up failed. Please check your information and try again.");
-      }
-    })
-    .catch((error) => {
-      setMessage("Sign up failed. Please check your information and try again.");
-      console.error('Signup error:', error.message);
-    });
-};
+//           setTimeout(() => {
+//            jwtService.setSession(user.stsTokenManager.accessToken);
+//            window.location.href = "/sign-in";
+//           }, 3000);
+//         } catch (error) {
+//           setMessage("Error sending user data to server.");
+//           console.error('Fetch error:', error);
+//         }
+//       } else {
+//         setMessage("Sign up failed. Please check your information and try again.");
+//       }
+//     })
+//     .catch((error) => {
+//       setMessage("Sign up failed. Please check your information and try again.");
+//       console.error('Signup error:', error.message);
+//     });
+// };
 
 
   
+const onSubmit = (data) => {
+  console.log("Form data:", data); 
+  const { email, password, displayName } = data;
+  dispatch(signUpWithEmailAndPassword({ email, password, displayName }));
+};
 
-  const onSubmit = ({ password, email,displayName }) => {
-   
-      const userCredential = signUpWithEmailAndPassword(email, password,displayName);
- 
-      
-   
 
-    // jwtService
-    //   .createUser({
-    //     displayName,
-    //     password,
-    //     email,
-    //   })
-    // createUserWithEmailAndPassword(auth,password,email)
-    //   .then((credentials) => {
-    //     console.log(credentials)
-    //     // No need to do anything, registered user data will be set at app/auth/AuthContext
-    //   })
-    //   .catch((_errors) => {
-    //     _errors.forEach((error) => {
-    //       setError(error.type, {
-    //         type: 'manual',
-    //         message: error.message,
-    //       });
-    //     });
-    //   });
-  };
 
   return (
     <div className="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-1 min-w-0">

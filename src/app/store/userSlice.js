@@ -7,8 +7,8 @@ import { setInitialSettings } from 'app/store/rabit/settingsSlice';
 import { showMessage } from 'app/store/rabit/messageSlice';
 import settingsConfig from 'app/configs/settingsConfig';
 import jwtService from '../auth/services/jwtService';
-import { getAuth,onAuthStateChanged,signInWithEmailAndPassword } from 'firebase/auth';
-import { action } from 'mobx';
+import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword } from 'firebase/auth';
+import axios from 'axios';
 
 
 export const setUser = createAsyncThunk('user/setUser', async () => {
@@ -34,6 +34,87 @@ export const setUser = createAsyncThunk('user/setUser', async () => {
   });
 });
 
+
+
+// export const signUpWithEmailAndPassword = createAsyncThunk(
+//   'user/SignupWithEmailPassword',
+//   async ({ email, password, displayName }) => {
+//     console.log("userSlice", email, password, displayName)
+//     try {
+//       const auth = getAuth();
+//       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+//       const user = userCredential.user;
+//       console.log("user", user);
+//       // if (user && user.uid) { 
+//       //   const userData = {
+//       //     user_name: displayName,
+//       //     email: email,
+//       //     uuid: user.uid
+//       //   };
+//       //   console.log("userdata", userData);
+
+//       //   const response = await axios.post("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user", userData);
+//       //   console.log(response);
+//       //   if (response.ok) {
+//       //     console.log('Failed to send user data to server');
+//       //   }
+//       //   console.log('response ', response);
+//       //   setMessage("Sign up Successful. ");
+        
+//       //   setTimeout(() => {
+//       //     jwtService.setSession(user.stsTokenManager.accessToken);
+//       //     window.location.href = "/sign-in";
+//       //   }, 3000);
+//       // } else {
+//       //   setMessage("Sign up failed. Please check your information and try again.");
+//       // }
+//     } catch (error) {
+//       setMessage("Error sending user data to server.");
+//       console.error('Fetch error:', error);
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );  
+
+
+export const signUpWithEmailAndPassword = createAsyncThunk(
+  'user/SignupWithEmailPassword',
+  async ({ email, password, displayName }, { rejectWithValue }) => {
+    console.log("userSlice", email, password, displayName);
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log("user", user);
+      if (user && user.uid) { 
+        const userData = {
+          name: displayName,
+          email: email,
+          id: user.uid
+        };
+        console.log("userdata", userData);
+        
+        const response = await axios.post("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user", userData);
+        console.log('response ', response);
+        
+        if (!response.ok) {
+          console.log('Failed to send user data to server');
+        }
+
+  
+
+      } else {
+        console.error('Failed to create user');
+        return rejectWithValue('Failed to create user');
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
 export const signInWithEmailPassword = createAsyncThunk(
   'user/signInWithEmailAndPassword',
   async ({ email, password }, { rejectWithValue }) => { 
@@ -53,6 +134,7 @@ export const signInWithEmailPassword = createAsyncThunk(
         };
         
         localStorage.setItem('user', JSON.stringify(User));
+        navigate("/")
         
         return User;
       } else {

@@ -22,6 +22,7 @@ import Recomendedproperties from "./Recomendedproperties";
 
 const PropertyOverview = () => {
     const propertyData = useSelector(selectProperties);
+    console.log("propertyData",propertyData)
     const [showMore, setShowMore] = useState(false);
     const propertyOverview = propertyData?.data?.property?.ad_info;
     const toggleShowMore = () => {

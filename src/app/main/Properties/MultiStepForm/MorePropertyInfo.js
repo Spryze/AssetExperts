@@ -1,18 +1,7 @@
 import React, { useState } from "react";
-import FormHelperText from "@mui/material/FormHelperText";
-import {
-  TextField,
-  FormControl,
-  Box,
-  Select,
-  MenuItem,
-  InputLabel,
-  Typography,
-  Button,
-  Grid,
-} from "@mui/material";
+import {  TextField, Grid,} from "@mui/material";
 import { styled } from "@mui/material/styles";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import UploadImages from "./Property-Types-Forms/UploadImages";
 
 const MorePropertyInfo = (props) => {
   const VisuallyHiddenInput = styled("input")({
@@ -27,10 +16,14 @@ const MorePropertyInfo = (props) => {
     width: 1,
   });
   const { formik } = props;
+  console.log("formik",formik)
+  
+
   return (
-    <Grid container spacing={2}>
+    <>
+    {/*<Grid container spacing={2}>
       
-      <Grid item xs={12} md={6}>
+       <Grid item xs={12} md={6}>
         <TextField
           name="PropertyHighlights"
           label="Property Highlights"
@@ -90,21 +83,7 @@ const MorePropertyInfo = (props) => {
           value={formik.values.propertyConfiguration}
         />
       </Grid>
-      <Grid item xs={12} md={6}>
-        <TextField
-          name="price"
-          label="Price"
-          variant="outlined"
-          type="number"
-          fullWidth
-          error={Boolean(
-            formik.touched.price &&
-              formik.errors.price
-          )}
-          onChange={formik.handleChange}
-          value={formik.values.price}
-        />
-      </Grid>
+      
       
       <Grid item xs={12} md={6}>
         <TextField
@@ -196,7 +175,10 @@ const MorePropertyInfo = (props) => {
           value={formik.values.locality}
         />
       </Grid>
-    </Grid>
+      
+    </Grid> */}
+    <UploadImages/>
+    </>
   );
 };
 

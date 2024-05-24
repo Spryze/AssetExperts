@@ -1,21 +1,61 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {  fetchRecentTransactions, selectRecentTransactions,selectSearchResults,} from "../PropertySlice1";
-import { Card,CardContent,Typography,Grid,Box,Tooltip} from "@mui/material";
+import {
+  fetchRecentTransactions,
+  selectRecentTransactions,
+  selectSearchResults,
+  SearchResults,
+} from "../PropertySlice1";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Box,
+  Tooltip,
+} from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SearchDialogue from "../SearchDialogue";
-
 
 const PropertyHome = () => {
   const dispatch = useDispatch();
   const recentTransactions = useSelector(selectRecentTransactions);
   const searchResults = useSelector(selectSearchResults);
+  const [searchCriteria, setSearchCriteria] = useState({});
+  const [noDataFound, setNoDataFound] = useState(false);
+  console.log("noDataFound",noDataFound)
 
 
+  
+  const DataNotFound = (response) => {
+    if (!response || Object.keys(response).length === 0) {
+      setNoDataFound(true); 
+    } else {
+      setNoDataFound(false); 
+    }
+  };
+  
   useEffect(() => {
     dispatch(fetchRecentTransactions());
   }, [dispatch]);
-// 1
+
+  const handleSearch = (criteria) => {
+    console.log("criteria",criteria)
+    setSearchCriteria(criteria);
+    dispatch(SearchResults(criteria))
+    .then((response) => {
+      console.log("response",response)
+      if (response.payload.data.property === 0) {
+        setNoDataFound(true);
+      } else {
+        setNoDataFound(false);
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching search results:", error);
+    });
+};
+
   const handleClick = (propertyId) => {
     const newWindow = window.open(`/property/${propertyId}`, "_blank");
     if (newWindow) {
@@ -24,6 +64,7 @@ const PropertyHome = () => {
       console.error("Unable to open new window/tab");
     }
   };
+
   const shuffleArray = (array) => {
     if (!array) return [];
     for (let i = array.length - 1; i > 0; i--) {
@@ -32,22 +73,52 @@ const PropertyHome = () => {
     }
     return array;
   };
+
+  const filterProperties = (properties, criteria) => {
+    return properties.filter((property) => {
+      if (criteria.type && property.type !== criteria.type) {
+        return false;
+      }
+
+      return true;
+    });
+  };
+
   const Transactions = shuffleArray(
-    recentTransactions?.property?.buy_properties.concat(
-      recentTransactions?.property?.sell_properties
-    ) || []
+    (recentTransactions?.property?.buy_properties || []).concat(
+      recentTransactions?.property?.sell_properties || []
+    )
   );
 
+  const SearchProperties = shuffleArray(
+    filterProperties(
+      (searchResults?.property?.buy_properties || []).concat(
+        searchResults?.property?.sell_properties || []
+      ),
+      searchCriteria
+    )
+  );
+  console.log("searchResults:", searchResults);
+  console.log("noDataFound:", noDataFound);
   return (
     <Box sx={{ margin: "20px" }}>
-      <SearchDialogue/>
+      
+      <SearchDialogue onSearch={DataNotFound} />
+
+      
+       {noDataFound && (
+      <Typography variant="h5" sx={{ backgroundColor: "orange", padding: "10px",textAlign:'center', borderRadius: "5px", color: "white" }}>
+        No data found
+      </Typography>
+    )}
       <Grid container spacing={1} sx={{ margin: "0" }}>
-        {searchResults && (
+       
+        {Object.keys(searchResults).length > 0 && (
           <div>
             <Typography variant="h6">Search Results</Typography>
             <hr style={{ margin: "10px 0px" }} />
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-              {searchResults?.map((item, index) => (
+              {searchResults.map((item, index) => (
                 <Tooltip
                   key={index}
                   title={item.listing_type}
@@ -63,9 +134,7 @@ const PropertyHome = () => {
                     }}
                     onClick={() => handleClick(item.property_id)}
                   >
-                    
                     <CardContent>
-                     
                       <img
                         src={item?.prop_images[0]}
                         alt="Property"
@@ -95,7 +164,7 @@ const PropertyHome = () => {
         )}
       </Grid>
       <Grid container spacing={1} sx={{ margin: "0" }}>
-        {Transactions && (
+        {Transactions.length > 0 && (
           <div>
             <Typography variant="h6">Recent Properties</Typography>
             <hr style={{ margin: "10px 0px" }} />

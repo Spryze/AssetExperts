@@ -5,7 +5,7 @@ import { Card,Typography } from '@mui/material'
 
 const MorePropertyDetails = () => {
   const propertyData = useSelector(selectProperties);
-  const propertyOverview = propertyData?.data?.property?.ad_info;
+
 
   const toggleShowMore = () => {
     setShowMore(!showMore);

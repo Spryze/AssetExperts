@@ -159,7 +159,7 @@ import { selectProperties } from "./PropertySlice1";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Amenities from "./Amenities";
-import Map from "./Maplocation";
+import Maplocation from "./Maplocation";
 import { useDispatch } from "react-redux";
 import { fetchProperties } from "./PropertySlice1";
 import Recomendedproperties from "./Recomendedproperties";
@@ -279,19 +279,16 @@ useEffect(() => {
           </div>
         </Grid>
         <Grid item xs={12} md={4}>
-          
           <ContactDetails />
         </Grid>
-        <Grid>
-        <Map color ="red"/>
-       
-        </Grid>
+        <Maplocation/>
         <Grid>
         <Recomendedproperties />
         </Grid>
       </Grid>
      
       <Recentlyadded />
+     
     </Container>
   );
 }

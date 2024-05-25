@@ -16,6 +16,9 @@ import {
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SearchDialogue from "../SearchDialogue";
+import { ToastContainer, toast } from "react-toastify";
+// import 'react-toastify/dist/';
+import "react-toastify/dist/ReactToastify.css";
 
 const PropertyHome = () => {
   const dispatch = useDispatch();
@@ -26,14 +29,17 @@ const PropertyHome = () => {
   console.log("noDataFound",noDataFound)
 
 
-  
   const DataNotFound = (response) => {
     if (!response || Object.keys(response).length === 0) {
-      setNoDataFound(true); 
+      setNoDataFound(true);
+      setTimeout(() => {
+        setNoDataFound(false);
+      }, 3000);
     } else {
-      setNoDataFound(false); 
+      setNoDataFound(false);
     }
   };
+  
   
   useEffect(() => {
     dispatch(fetchRecentTransactions());
@@ -101,14 +107,14 @@ const PropertyHome = () => {
   console.log("searchResults:", searchResults);
   console.log("noDataFound:", noDataFound);
   return (
-    <Box sx={{ margin: "20px" }}>
+    <Box sx={{ margin: "20px", position:"relative" }}>
       
       <SearchDialogue onSearch={DataNotFound} />
 
       
        {noDataFound && (
-      <Typography variant="h5" sx={{ backgroundColor: "orange", padding: "10px",textAlign:'center', borderRadius: "5px", color: "white" }}>
-        No data found
+      <Typography variant="h6" sx={{ backgroundColor: "orange", padding: "10px 50px",textAlign:'center', borderRadius: "5px",transform: "translate(-50%, -50%)", color: "white", position:"absolute", top:"20px",left:"50%" }}>
+        No Data Found
       </Typography>
     )}
       <Grid container spacing={1} sx={{ margin: "0" }}>

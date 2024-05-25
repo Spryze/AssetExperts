@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import _ from "@lodash";
 import AvatarGroup from "@mui/material/AvatarGroup";
@@ -16,7 +16,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import Alert from "@mui/material/Alert";
 import Paper from "@mui/material/Paper";
 import FormHelperText from "@mui/material/FormHelperText";
-import jwtService from "../../auth/services/jwtService";
+import { Navigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signUpWithEmailAndPassword } from "app/store/userSlice";
 import { useEffect, useState } from "react";
@@ -55,9 +55,9 @@ const defaultValues = {
   acceptTermsConditions: false,
 };
 
-function SignUpPage(displayName) {
+function SignUpPage() {
 
-  
+  const navigate = useNavigate();
   const { control, formState, handleSubmit, reset } = useForm({
     mode: "onChange",
     defaultValues,
@@ -132,7 +132,9 @@ useEffect(() => {
 const onSubmit = (data) => {
   console.log("Form data:", data); 
   const { email, password, displayName } = data;
-  dispatch(signUpWithEmailAndPassword({ email, password, displayName }));
+  dispatch(signUpWithEmailAndPassword({ email, password, displayName })) .then(() => {
+    navigate('/');  
+  });
 };
 
 

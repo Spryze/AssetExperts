@@ -7,10 +7,10 @@ import { selectProperties } from "../PropertySlice1";
 const PropertyCarousel = () => {
   const propertydata = useSelector(selectProperties);
   // console.log("propertydata",propertydata)
-  const images = propertydata?.images || []; 
+  const images = propertydata?.data?.images || []; 
 
   const [currentSlide, setCurrentSlide] = useState(0);
-
+console.log("hii")
   const nextSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length);
   };

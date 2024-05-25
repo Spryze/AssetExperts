@@ -286,10 +286,11 @@ useEffect(() => {
         <Recomendedproperties />
         </Grid>
         <Grid>
-        <Recentlyadded />
+        <Map color ="red"/>
         </Grid>
       </Grid>
-      <Map color ="red"/>
+     
+      <Recentlyadded />
     </Container>
   );
 }

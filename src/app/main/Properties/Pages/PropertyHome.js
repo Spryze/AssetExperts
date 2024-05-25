@@ -32,10 +32,10 @@ const PropertyHome = () => {
     }
     return array;
   };
-  const Transactions = shuffleArray(
+  const Transactions = 
     recentTransactions?.property?.buy_properties.concat(
       recentTransactions?.property?.sell_properties
-    ) || []
+     || []
   );
 
   return (

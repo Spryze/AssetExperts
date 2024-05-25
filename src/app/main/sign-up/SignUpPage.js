@@ -21,13 +21,11 @@ import { useDispatch } from "react-redux";
 import { signUpWithEmailAndPassword } from "app/store/userSlice";
 import { useEffect, useState } from "react";
 import { method } from "lodash";
-import axios from 'axios';
+import axios from "axios";
 
 /**
  * Form Validation Schema
  */
-
-
 
 const schema = yup.object().shape({
   displayName: yup.string().required("You must enter display name"),
@@ -50,13 +48,13 @@ const schema = yup.object().shape({
 const defaultValues = {
   displayName: "",
   email: "",
+  PhoneNo:"",
   password: "",
   passwordConfirm: "",
   acceptTermsConditions: false,
 };
 
 function SignUpPage() {
-
   const navigate = useNavigate();
   const { control, formState, handleSubmit, reset } = useForm({
     mode: "onChange",
@@ -67,77 +65,25 @@ function SignUpPage() {
   const [Message, setMessage] = useState(null);
   const dispatch = useDispatch();
 
-useEffect(() => {
-  if (Message) {
-    const timer = setTimeout(() => {
-      setMessage(null);
-    }, 3000);
+  useEffect(() => {
+    if (Message) {
+      const timer = setTimeout(() => {
+        setMessage(null);
+      }, 3000);
 
-    return () => clearTimeout(timer);
-  }
-}, [Message]);
+      return () => clearTimeout(timer);
+    }
+  }, [Message]);
 
-// const signUpWithEmailAndPassword = (email, password, displayName) => {
-//   const auth = getAuth();
-//   createUserWithEmailAndPassword(auth, email, password)
-//     .then(async (userCredential) => {
-//       const user = userCredential.user;
-//       console.log("user", user);
-//       if (user && user.uid) { 
-//         const userData = {
-//           user_name: displayName,
-//           email: email,
-//           uuid: user.uid
-//         };
-//         console.log("userdata",userData)
-
-//         try {
-//           const response = await axios.post("https://db93a4e7-afba-4acc-8fb6-24c6904c08a7-00-wzqnnh54dv12.sisko.replit.dev/user", userData);
-//           console.log(response)
-//           // const response = await fetch("https://db93a4e7-afba-4acc-8fb6-24c6904c08a7-00-wzqnnh54dv12.sisko.replit.dev/", {
-//           //   method: 'post',
-//           //   headers: {
-//           //     "Content-Type": "application/json",
-//           //   },
-//           //   body: JSON.stringify(userData),
-//           // });
-
-//           if (response.ok) {
-//             console.log('Failed to send user data to server');
-//           }
-//           console.log('resonsponse ', response);
-//           setMessage("Sign up Successful. ");
-          
-         
-//           setTimeout(() => {
-//            jwtService.setSession(user.stsTokenManager.accessToken);
-//            window.location.href = "/sign-in";
-//           }, 3000);
-//         } catch (error) {
-//           setMessage("Error sending user data to server.");
-//           console.error('Fetch error:', error);
-//         }
-//       } else {
-//         setMessage("Sign up failed. Please check your information and try again.");
-//       }
-//     })
-//     .catch((error) => {
-//       setMessage("Sign up failed. Please check your information and try again.");
-//       console.error('Signup error:', error.message);
-//     });
-// };
-
-
-  
-const onSubmit = (data) => {
-  console.log("Form data:", data); 
-  const { email, password, displayName } = data;
-  dispatch(signUpWithEmailAndPassword({ email, password, displayName })) .then(() => {
-    navigate('/');  
-  });
-};
-
-
+  const onSubmit = (data) => {
+    console.log("Form data:", data);
+    const { email, password, displayName } = data;
+    dispatch(signUpWithEmailAndPassword({ email, password, displayName })).then(
+      () => {
+        navigate("/");
+      }
+    );
+  };
 
   return (
     <div className="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-1 min-w-0">
@@ -182,6 +128,24 @@ const onSubmit = (data) => {
 
             <Controller
               name="email"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  className="mb-24"
+                  label="Email"
+                  type="email"
+                  error={!!errors.email}
+                  helperText={errors?.email?.message}
+                  variant="outlined"
+                  required
+                  fullWidth
+                />
+              )}
+            />
+
+            <Controller
+              name="PhoneNo"
               control={control}
               render={({ field }) => (
                 <TextField

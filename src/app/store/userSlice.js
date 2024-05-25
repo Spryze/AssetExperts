@@ -119,9 +119,8 @@ export const UserProfile = createAsyncThunk(
       const cont_user_id = user.uid;
       
       const userdata = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${cont_user_id}&req_user_id=${cont_user_id}`)
-      console.log("userdata", userdata.data); // Assuming userdata is the data you need
-      return userdata.data; // Assuming you want to return the data received from the API
-
+      console.log("userdata", userdata.data); 
+      return userdata.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }

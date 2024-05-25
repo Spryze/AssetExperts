@@ -77,33 +77,12 @@ const PropertyHome = () => {
     }
     return array;
   };
-
-  const filterProperties = (properties, criteria) => {
-    return properties.filter((property) => {
-      if (criteria.type && property.type !== criteria.type) {
-        return false;
-      }
-
-      return true;
-    });
-  };
-
   const Transactions = shuffleArray(
-    (recentTransactions?.property?.buy_properties || []).concat(
-      recentTransactions?.property?.sell_properties || []
-    )
+    recentTransactions?.property?.buy_properties.concat(
+      recentTransactions?.property?.sell_properties
+    ) || []
   );
 
-  const SearchProperties = shuffleArray(
-    filterProperties(
-      (searchResults?.property?.buy_properties || []).concat(
-        searchResults?.property?.sell_properties || []
-      ),
-      searchCriteria
-    )
-  );
-  console.log("searchResults:", searchResults);
-  console.log("noDataFound:", noDataFound);
   return (
     <Box sx={{ margin: "20px", position:"relative" }}>
       

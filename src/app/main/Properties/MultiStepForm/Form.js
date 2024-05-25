@@ -335,37 +335,39 @@ const Form = () => {
     survey_number: "",
     doc_num: "",
     AboutDeveloper: "",
-    PropertyHighlights: "",
+    ad_info: "",
     size: 0,
-    BoundryWall: "",
-    Furnished: "",
-    ApproveedBy: "",
-    Parking: "",
+    boundry_wall: "",
+    furnished: "",
+    approved_by: "",
+    parking: false,
     WaterSource: "",
     Flooring: "",
     PowerBackup: "",
-    NoOfOpenSides: "",
-    Registered: "",
+    no_Of_OpenSides: "",
     PropertyStatus: "",
+    status: "",
     RERAStatus: "",
     BouandaryWall: "",
     BHK: "",
     Lift: "",
     PropertyAge: "",
-    Comments:"",
-    Developments:"",
-    Disputes:"",
-    RegistrarLocation:"",
-    MediatorName:"",
-    MeidatorNumber:"",
-    OwnerName:"",
-    OwnerNumber:"",
-    Longitude:"",
-    Latitude:"",
-    Dimension:"",
-    Direction:"",
-    listing_type:"",
-    LoanEligibility:"",
+    comments: "",
+    developments: "",
+    disputes: "",
+    reg_loc: "",
+    reg_loc: "",
+    med_name: "",
+    med_num1: "",
+    med_num2: "",
+    own_name: "",
+    own_num1: "",
+    own_num2: "",
+    longitude: 0,
+    latitude: 0,
+    direction: "",
+    listing_type: "",
+    loan_eligibile: false,
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -387,9 +389,14 @@ const Form = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const parsedValue = ["price", "size", "latitude", "longitude"].includes(
+      name
+    )
+      ? parseFloat(value)
+      : value;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: parsedValue,
     });
   };
 
@@ -403,40 +410,50 @@ const Form = () => {
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
     const errors = validateForm();
     if (Object.keys(errors).length === 0) {
-      const resultAction = await dispatch(addProperty(formData));
- if (resultAction.type === addProperty.fulfilled.type) {
-        setResponseData(resultAction.payload);
-        setIsFormSubmitted(true);
-      } else {
-        console.error(resultAction.payload);
-      }
+      console.log("formData", formData);
+      const resultAction = dispatch(addProperty(formData)).then((response)=>{
+        if (response.payload.status === "success") {
+          setResponseData(response);
+          console.log("responseData")
+          setIsFormSubmitted(true);
+        } else {
+          console.error(resultAction.payload);
+        }
+      });
+      
     } else {
       setFormErrors(errors);
     }
   };
-  
+
   if (!user) {
-        return (
-          <div className="flex flex-col flex-auto items-center sm:justify-center min-w-0" style={{ height: "100vh" }}>
-            <Paper className="flex items-center w-full sm:w-auto min-h-full sm:min-h-auto rounded-0 py-32 px-16 sm:p-48 sm:rounded-2xl sm:shadow">
-              <div className="w-full max-w-320 sm:w-320 mx-auto sm:mx-0">
-                <img className="w-48 mx-auto" src="assets/images/logo/logo.svg" alt="logo" />
-    
-                <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight text-center">
-                  Please Login!
-                </Typography>
-              </div>
-            </Paper>
+    return (
+      <div
+        className="flex flex-col flex-auto items-center sm:justify-center min-w-0"
+        style={{ height: "100vh" }}
+      >
+        <Paper className="flex items-center w-full sm:w-auto min-h-full sm:min-h-auto rounded-0 py-32 px-16 sm:p-48 sm:rounded-2xl sm:shadow">
+          <div className="w-full max-w-320 sm:w-320 mx-auto sm:mx-0">
+            <img
+              className="w-48 mx-auto"
+              src="assets/images/logo/logo.svg"
+              alt="logo"
+            />
+
+            <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight text-center">
+              Please Login!
+            </Typography>
           </div>
-        );
-      }
+        </Paper>
+      </div>
+    );
+  }
 
   if (isFormSubmitted) {
-    return <UploadImages responseData={responseData.details} />;
+    return <UploadImages responseData={responseData} />;
   }
 
   return (
@@ -494,7 +511,6 @@ const Form = () => {
             fullWidth
           />
         </Grid>
-        
 
         <Grid item xs={12} sm={6}>
           <FormControl
@@ -563,8 +579,8 @@ const Form = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               label="Boundary Wall"
-              name="BouandaryWall"
-              value={formData.BouandaryWall}
+              name="boundry_wall"
+              value={formData.boundry_wall}
               onChange={handleChange}
               variant="outlined"
               fullWidth
@@ -577,8 +593,8 @@ const Form = () => {
               <InputLabel>No. of Open Sides</InputLabel>
               <Select
                 label="No. of Open Sides"
-                name="NoOfOpenSides"
-                value={formData.NoOfOpenSides}
+                name="no_Of_OpenSides"
+                value={formData.no_Of_OpenSides}
                 onChange={handleChange}
               >
                 <MenuItem value="1">1</MenuItem>
@@ -601,8 +617,8 @@ const Form = () => {
               <InputLabel>Furnished</InputLabel>
               <Select
                 label="Furnished"
-                name="Furnished"
-                value={formData.Furnished}
+                name="furnished"
+                value={formData.furnished}
                 onChange={handleChange}
               >
                 <MenuItem value="Yes">Yes</MenuItem>
@@ -696,30 +712,30 @@ const Form = () => {
         <Grid item xs={12} sm={6}>
           <TextField
             label="Dimension"
-            name="Dimension"
+            name="dimensions"
             type="text"
-            value={formData.Dimension}
+            value={formData.dimensions}
             onChange={handleChange}
             variant="outlined"
             fullWidth
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-        <FormControl fullWidth variant="outlined">
-              <InputLabel>Direction</InputLabel>
-              <Select
-                label="Direction"
-                name="Direction"
-                value={formData.Direction}
-                onChange={handleChange}
-              >
-                <MenuItem value="East">East</MenuItem>
-                <MenuItem value="West">West</MenuItem>
-                <MenuItem value="North">North</MenuItem>
-                <MenuItem value="West">South</MenuItem>
-              </Select>
-            </FormControl>
-            </Grid>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Direction</InputLabel>
+            <Select
+              label="Direction"
+              name="direction"
+              value={formData.direction}
+              onChange={handleChange}
+            >
+              <MenuItem value="East">East</MenuItem>
+              <MenuItem value="West">West</MenuItem>
+              <MenuItem value="North">North</MenuItem>
+              <MenuItem value="West">South</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             label="Document Number"
@@ -733,8 +749,8 @@ const Form = () => {
         <Grid item xs={12} sm={6}>
           <TextField
             label="Approoved By"
-            name="ApproveedBy"
-            value={formData.ApproveedBy}
+            name="approved_by"
+            value={formData.approved_by}
             onChange={handleChange}
             variant="outlined"
             multiline
@@ -744,9 +760,9 @@ const Form = () => {
         <Grid item xs={12} sm={6}>
           <TextField
             label="Comments"
-            name="Comments"
+            name="comments"
             type="text"
-            value={formData.Comments}
+            value={formData.comments}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -755,48 +771,48 @@ const Form = () => {
         <Grid item xs={12} sm={6}>
           <TextField
             label="Developments"
-            name="Developments"
+            name="developments"
             type="text"
-            value={formData.Developments}
+            value={formData.developments}
             onChange={handleChange}
             variant="outlined"
             fullWidth
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-        <FormControl fullWidth variant="outlined">
-              <InputLabel>Loan Eligibility</InputLabel>
-              <Select
-                label="Loan Eligibility"
-                name="LoanEligibility"
-                value={formData.LoanEligibility}
-                onChange={handleChange}
-              >
-                <MenuItem value="Yes">Yes</MenuItem>
-                <MenuItem value="No">No</MenuItem>
-              </Select>
-            </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-        <FormControl fullWidth variant="outlined">
-              <InputLabel>Listing Type</InputLabel>
-              <Select
-                label="Listing Type"
-                name="listing_type"
-                value={formData.listing_type}
-                onChange={handleChange}
-              >
-                <MenuItem value="buy">Buy</MenuItem>
-                <MenuItem value="sell">Sell</MenuItem>
-              </Select>
-            </FormControl>
-            </Grid>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Loan Eligibility</InputLabel>
+            <Select
+              label="Loan Eligibility"
+              name="loan_eligibile"
+              value={formData.loan_eligibile}
+              onChange={handleChange}
+            >
+              <MenuItem value={true}>Yes</MenuItem>
+              <MenuItem value={false}>No</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Listing Type</InputLabel>
+            <Select
+              label="Listing Type"
+              name="listing_type"
+              value={formData.listing_type}
+              onChange={handleChange}
+            >
+              <MenuItem value="buy">Buy</MenuItem>
+              <MenuItem value="sell">Sell</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             label="Disputes"
-            name="Disputes"
+            name="disputes"
             type="text"
-            value={formData.Disputes}
+            value={formData.disputes}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -805,9 +821,9 @@ const Form = () => {
         <Grid item xs={12} sm={6}>
           <TextField
             label="Registrar Location"
-            name="RegistrarLocation"
+            name="reg_loc"
             type="text"
-            value={formData.RegistrarLocation}
+            value={formData.reg_loc}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -816,9 +832,9 @@ const Form = () => {
         <Grid item xs={12} sm={6}>
           <TextField
             label="Mediator Name"
-            name="MediatorName"
+            name="med_name"
             type="text"
-            value={formData.MediatorName}
+            value={formData.med_name}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -826,10 +842,21 @@ const Form = () => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            label="MeidatorNumber"
-            name="MeidatorNumber"
+            label="Meidator Number1"
+            name="med_num1"
             type="number"
-            value={formData.MeidatorNumber}
+            value={formData.med_num1}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Meidator Number 2"
+            name="med_num2"
+            type="number"
+            value={formData.med_num2}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -838,9 +865,9 @@ const Form = () => {
         <Grid item xs={12} sm={6}>
           <TextField
             label="Owner Name"
-            name="OwnerName"
+            name="own_name"
             type="text"
-            value={formData.OwnerName}
+            value={formData.own_name}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -848,10 +875,21 @@ const Form = () => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            label="Owner Number"
-            name="OwnerNumber"
+            label="Owner Number 1"
+            name="own_num1"
             type="number"
-            value={formData.OwnerNumber}
+            value={formData.own_num1}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Owner Number 2"
+            name="own_num2"
+            type="number"
+            value={formData.own_num2}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -860,9 +898,9 @@ const Form = () => {
         <Grid item xs={12} sm={6}>
           <TextField
             label="Latitude"
-            name="Latitude"
+            name="latitude"
             type="number"
-            value={formData.Latitude}
+            value={formData.latitude}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -871,9 +909,9 @@ const Form = () => {
         <Grid item xs={12} sm={6}>
           <TextField
             label="Longitude"
-            name="Longitude"
+            name="longitude"
             type="number"
-            value={formData.Longitude}
+            value={formData.longitude}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -891,12 +929,12 @@ const Form = () => {
             fullWidth
           />
         </Grid>
-        
+
         <Grid item xs={12}>
           <TextField
-            label="Property Highlights"
-            name="PropertyHighlights"
-            value={formData.PropertyHighlights}
+            label="Property Information"
+            name="ad_info"
+            value={formData.ad_info}
             onChange={handleChange}
             variant="outlined"
             multiline

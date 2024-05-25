@@ -14,21 +14,35 @@ import axios from 'axios';
 export const setUser = createAsyncThunk('user/setUser', async () => {
   return new Promise((resolve, reject) => {
     const auth = getAuth();
-    onAuthStateChanged(auth, (userAuth) => {
-      if (userAuth) {
-        let user = {
-          uid: userAuth.uid,
-          role: "admin",
-          data: {
-            accessToken: userAuth.accessToken,
-            displayName: "Ramu",
-          }
-        };
-
-        localStorage.setItem('user', JSON.stringify(user));
-        resolve(user); // Resolve with the user object
-      } else {
-        reject(new Error('User not authenticated')); 
+    onAuthStateChanged(auth, async (userAuth) => {
+      try {
+        if (userAuth) {
+          const response = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${userAuth.uid}&req_user_id=${userAuth.uid}`);
+          const userData = response.data;
+          console.log("userdata", userData);
+          
+          let user = {
+            uid: userAuth.uid,
+            role: userData.profile.role,
+            data: {
+              accessToken: userAuth.accessToken,
+              displayName: userData.profile.name,
+              address:userData.profile.address,
+              comments:userData.profile.comments,
+              email:userData.profile.email,
+              phone_num_1:userData.profile.phone_num_1,
+              phone_num_2:userData.profile.phone_num_2,
+              profession:userData.profile.profession,
+              requirements:userData.profile.requirements,
+              
+            }
+          };
+          resolve(user); // Resolve with the user object
+        } else {
+          reject(new Error('User not authenticated')); 
+        }
+      } catch (error) {
+        reject(error);
       }
     });
   });
@@ -36,45 +50,27 @@ export const setUser = createAsyncThunk('user/setUser', async () => {
 
 
 
-// export const signUpWithEmailAndPassword = createAsyncThunk(
-//   'user/SignupWithEmailPassword',
-//   async ({ email, password, displayName }) => {
-//     console.log("userSlice", email, password, displayName)
-//     try {
-//       const auth = getAuth();
-//       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-//       const user = userCredential.user;
-//       console.log("user", user);
-//       // if (user && user.uid) { 
-//       //   const userData = {
-//       //     user_name: displayName,
-//       //     email: email,
-//       //     uuid: user.uid
-//       //   };
-//       //   console.log("userdata", userData);
+export const UpdateUser = createAsyncThunk(
+  'user/UpdateUser',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const cont_user_id = user.uid;
+      console.log("cont_user_id",cont_user_id)
+      console.log("formData",formData)
+      formData.user_id = cont_user_id;
+      formData.req_user_id = cont_user_id;
 
-//       //   const response = await axios.post("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user", userData);
-//       //   console.log(response);
-//       //   if (response.ok) {
-//       //     console.log('Failed to send user data to server');
-//       //   }
-//       //   console.log('response ', response);
-//       //   setMessage("Sign up Successful. ");
-        
-//       //   setTimeout(() => {
-//       //     jwtService.setSession(user.stsTokenManager.accessToken);
-//       //     window.location.href = "/sign-in";
-//       //   }, 3000);
-//       // } else {
-//       //   setMessage("Sign up failed. Please check your information and try again.");
-//       // }
-//     } catch (error) {
-//       setMessage("Error sending user data to server.");
-//       console.error('Fetch error:', error);
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );  
+      const response = await axios.put('https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user', formData);
+
+      return response.data;
+    } catch (error) {
+      console.error("Error in updating user", error);
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
+  }
+);
+
 
 
 export const signUpWithEmailAndPassword = createAsyncThunk(
@@ -113,6 +109,25 @@ export const signUpWithEmailAndPassword = createAsyncThunk(
     }
   }
 );
+
+export const UserProfile = createAsyncThunk(
+  'user/UserProfile',
+  async (_, { rejectWithValue }) => {
+    
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const cont_user_id = user.uid;
+      
+      const userdata = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${cont_user_id}&req_user_id=${cont_user_id}`)
+      console.log("userdata", userdata.data); 
+      return userdata.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
 
 
 export const signInWithEmailPassword = createAsyncThunk(

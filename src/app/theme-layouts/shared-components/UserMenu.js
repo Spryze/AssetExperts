@@ -82,7 +82,7 @@ function UserMenu(props) {
           </>
         ) : (
           <>
-            <MenuItem component={Link} to="/apps/profile" onClick={userMenuClose} role="button">
+            <MenuItem component={Link} to="/user/profile" onClick={userMenuClose} role="button">
               <ListItemIcon className="min-w-40">
                 <RabitSvgIcon>heroicons-outline:user-circle</RabitSvgIcon>
               </ListItemIcon>

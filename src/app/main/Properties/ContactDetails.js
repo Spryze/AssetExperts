@@ -14,7 +14,7 @@ const ContactDetails = () => {
   
 
   const makeCall = () => {
-    const telUrl = `tel:${propertyData?.data?.property?.med_num1}`;
+    const telUrl = `tel:${propertyData?.property?.med_num1}`;
     window.open(telUrl);
   };
 
@@ -24,9 +24,9 @@ const ContactDetails = () => {
         <Typography variant="h6"> Mediator Details</Typography>
         <div style={{ display: "flex", fontSize: "18px" }}>
           <Typography style={{ marginRight: "10px", textTransform: "capitalize" }}>
-            {propertyData?.data?.property?.med_name}:
+            {propertyData?.property?.med_name}:
           </Typography>
-          {shownumber ? ( <Typography>{(propertyData?.data?.property?.med_num1)}</Typography>):(<Typography>+91 **********</Typography>)}
+          {shownumber ? ( <Typography>{(propertyData?.property?.med_num1)}</Typography>):(<Typography>+91 **********</Typography>)}
         </div>
         <Button
         disabled = {disableButton}

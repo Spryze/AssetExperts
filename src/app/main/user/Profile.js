@@ -1,6 +1,6 @@
 import React from "react";
-import { Typography, Grid, Paper, Container,Button } from "@mui/material";
-import { useSelector } from "react-redux"; 
+import { Typography, Grid, Paper, Container, Button } from "@mui/material";
+import { useSelector } from "react-redux";
 import { selectUser } from "app/store/userSlice";
 import { useState } from "react";
 import UpdateProfile from "./UpdateProfile";
@@ -10,52 +10,151 @@ const ProfilePage = () => {
   console.log("profileData", profileData);
   const [openDialog, setOpenDialog] = useState(false);
   const handleUpdateProfileClick = () => {
-    setOpenDialog(true); 
+    setOpenDialog(true);
   };
 
   return (
-    <Container sx={{marginTop:"20px"}}>
+    <Container sx={{ marginTop: "20px" }}>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Typography variant="h5" gutterBottom>
-            Profile Details
-          </Typography>
-          
-        </Grid>
+        <Grid item xs={12}></Grid>
         {profileData && (
           <>
             <Grid item xs={12} md={6}>
-              <Paper elevation={3} style={{ padding: "20px" }}>
-                <Typography sx={{margin:"5px 0px"}} variant="h6" gutterBottom>
-                  Profile Information
-                </Typography>
-                <hr style={{marginBottom:"20px"}}/>
-                <Typography sx={{margin:"5px 0px"}} variant="body1">
-                  <strong>Name:</strong> {profileData.data.displayName}
-                </Typography>
-                <Typography sx={{margin:"5px 0px"}} variant="body1">
-                  <strong>Email:</strong> {profileData.data.email}
-                </Typography>
-                <Typography sx={{margin:"5px 0px"}}variant="body1">
-                  <strong>Phone 1:</strong> {profileData.data.phone_num_1}
-                </Typography>
-                <Typography sx={{margin:"5px 0px"}}variant="body1">
-                  <strong>Phone 2:</strong> {profileData.data.phone_num_2}
-                </Typography>
-                <Typography sx={{margin:"5px 0px"}} variant="body1">
-                  <strong>Role:</strong> {profileData.role}
-                </Typography>
-                <Typography sx={{margin:"5px 0px"}}variant="body1">
-                  <strong>Profession:</strong> {profileData.data.profession}
-                </Typography>
-                <Typography sx={{margin:"5px 0px"}}variant="body1">
-                  <strong>Address:</strong> {profileData.data.address}
-                </Typography>
-                <Typography sx={{margin:"5px 0px"}} variant="body1">
-                  <strong>Requirements:</strong> {profileData.data.requirements}
-                </Typography>
-               
-              </Paper>
+              {/* <Paper elevation={3} style={{ padding: "20px" }}> */}
+              <Typography sx={{ margin: "5px 0px" }} variant="h6" gutterBottom>
+                Profile Information
+              </Typography>
+              <hr style={{ marginBottom: "20px" }} />
+              <Typography
+                sx={{
+                  margin: "5px 0px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  background:"#ededed",
+                  padding:"10px",
+                  borderRadius:"10px"
+                }}
+                variant="body1"
+              >
+                <span>
+                  <strong>Name:</strong>
+                </span>
+                <span> {profileData.data.displayName}</span>
+              </Typography>
+              <Typography
+                sx={{
+                  margin: "5px 0px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding:"10px",
+                  borderRadius:"10px",
+                  background:"#ededed",
+                }}
+                variant="body1"
+              >
+                <span>
+                  <strong>Email:</strong>
+                </span>
+                <span>{profileData.data.email}</span>
+              </Typography>
+              <Typography
+                sx={{
+                  margin: "5px 0px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding:"10px",
+                  borderRadius:"10px",
+                  background:"#ededed",
+                }}
+                variant="body1"
+              >
+                <span>
+                  <strong>Phone 1:</strong>
+                </span>
+                <span>{profileData.data.phone_num_1}</span>
+              </Typography>
+              <Typography
+                sx={{
+                  margin: "5px 0px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding:"10px",
+                  borderRadius:"10px",
+                  background:"#ededed",
+                }}
+                variant="body1"
+              >
+                <span>
+                  <strong>Phone 2:</strong>
+                </span>
+                <span>{profileData.data.phone_num_2}</span>
+              </Typography>
+              <Typography
+                sx={{
+                  margin: "5px 0px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding:"10px",
+                  borderRadius:"10px",
+                  background:"#ededed",
+                }}
+                variant="body1"
+              >
+                <span>
+                  <strong>Role:</strong>
+                </span>
+                <span>{profileData.role}</span>
+              </Typography>
+              <Typography
+                sx={{
+                  margin: "5px 0px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding:"10px",
+                  borderRadius:"10px",
+                  background:"#ededed",
+                }}
+                variant="body1"
+              >
+                <span>
+                  <strong>Profession:</strong>
+                </span>
+                <span> {profileData.data.profession}</span>
+              </Typography>
+              <Typography
+                sx={{
+                  margin: "5px 0px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding:"10px",
+                  borderRadius:"10px",
+                  background:"#ededed",
+                }}
+                variant="body1"
+              >
+                <span>
+                  <strong>Address:</strong>
+                </span>
+                <span>{profileData.data.address}</span>
+              </Typography>
+              <Typography
+                sx={{
+                  margin: "5px 0px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding:"10px",
+                  borderRadius:"10px",
+                  background:"#ededed",
+                }}
+                variant="body1"
+              >
+                <span>
+                  <strong>Requirements:</strong>
+                </span>
+                <span> {profileData.data.requirements}</span>
+              </Typography>
+
+              {/* </Paper> */}
             </Grid>
             {/* <Grid item xs={12} md={6}>
               <Paper elevation={3} style={{ padding: "20px" }}>
@@ -76,7 +175,10 @@ const ProfilePage = () => {
           </>
         )}
       </Grid>
-      <UpdateProfile open={openDialog} handleClose={() => setOpenDialog(false)}  />
+      <UpdateProfile
+        open={openDialog}
+        handleClose={() => setOpenDialog(false)}
+      />
     </Container>
   );
 };

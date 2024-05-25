@@ -8,13 +8,21 @@ i18next.addResourceBundle('tr', 'navigation', tr);
 i18next.addResourceBundle('ar', 'navigation', ar);
 
 const navigationConfig = [
+  // {
+  //   id: 'example-component',
+  //   title: 'Home',
+  //   translate: 'EXAMPLE',
+  //   type: 'item',
+  //   icon: 'heroicons-outline:home',
+  //   url: 'Home',
+  // },
   {
     id: 'example-component',
-    title: 'Example',
-    translate: 'EXAMPLE',
+    title: 'Home',
+    translate: 'Home',
     type: 'item',
-    icon: 'heroicons-outline:star',
-    url: 'example',
+    icon: 'heroicons-outline:home',
+    url: '/',
   },
   // {
   //   id: 'properties',

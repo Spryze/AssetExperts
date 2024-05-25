@@ -16,9 +16,7 @@ import {
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SearchDialogue from "../SearchDialogue";
-import { ToastContainer, toast } from "react-toastify";
-// import 'react-toastify/dist/';
-import "react-toastify/dist/ReactToastify.css";
+
 
 const PropertyHome = () => {
   const dispatch = useDispatch();

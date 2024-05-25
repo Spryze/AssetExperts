@@ -46,13 +46,13 @@ const SearchDialogue = ({onSearch}) => {
     });
   };
 
-  const handleSwitchChange = (event) => {
-    const name = event.target.name;
-    setFormData({
-      ...formData,
-      [name]: event.target.checked,
-    });
-  };
+  // const handleSwitchChange = (event) => {
+  //   const name = event.target.name;
+  //   setFormData({
+  //     ...formData,
+  //     [name]: event.target.checked,
+  //   });
+  // };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -182,7 +182,7 @@ const handleSubmit = async () => {
                 <MenuItem value="NewleyLaunched">Newley Launched</MenuItem>
               </Select>
             </FormControl>
-            <FormControl sx={{ mt: 2, minWidth: '130px', margin: '0px 5px' }}>
+            <FormControl sx={{ mt: 2, minWidth: '150px', margin: '0px 10px' }}>
               <InputLabel id="budget-label">Budget ₹</InputLabel>
               <Select
                 labelId="budget-label"
@@ -192,12 +192,24 @@ const handleSubmit = async () => {
                 onChange={handleChange}
                 label="Budget ₹"
               >
-                <MenuItem value="20 Lac">₹20 Lac - ₹25 Lac</MenuItem>
-                <MenuItem value="25 Lac">₹25 Lac - ₹30 Lac</MenuItem>
-                <MenuItem value="30 Lac">₹30 Lac - ₹35 Lac</MenuItem>
-                <MenuItem value="35 Lac">₹35 Lac - ₹40 Lac</MenuItem>
-                <MenuItem value="40 Lac">₹40 Lac - ₹45 Lac</MenuItem>
-                <MenuItem value="45 Lac">₹45 Lac - ₹50 Lac</MenuItem>
+                <MenuItem value="20Lac">₹20 Lac - ₹25 Lac</MenuItem>
+                <MenuItem value="25Lac">₹25 Lac - ₹30 Lac</MenuItem>
+                <MenuItem value="30Lac">₹30 Lac - ₹35 Lac</MenuItem>
+                <MenuItem value="35Lac">₹35 Lac - ₹40 Lac</MenuItem>
+                <MenuItem value="40Lac">₹40 Lac - ₹45 Lac</MenuItem>
+                <MenuItem value="45Lac">₹45 Lac - ₹50 Lac</MenuItem>
+                <MenuItem value="50Lac">₹50 Lac - ₹55 Lac</MenuItem>
+                <MenuItem value="55Lac">₹55 Lac - ₹60 Lac</MenuItem>
+                <MenuItem value="60Lac">₹60 Lac - ₹65 Lac</MenuItem>
+                <MenuItem value="65Lac">₹65 Lac - ₹70 Lac</MenuItem>
+                <MenuItem value="70Lac">₹70 Lac - ₹75 Lac</MenuItem>
+                <MenuItem value="75Lac">₹75 Lac - ₹80 Lac</MenuItem>
+                <MenuItem value="80Lac">₹80 Lac - ₹85 Lac</MenuItem>
+                <MenuItem value="85Lac">₹85 Lac - ₹90 Lac</MenuItem>
+                <MenuItem value="90Lac">₹90 Lac - ₹95 Lac</MenuItem>
+                <MenuItem value="95Lac">₹95 Lac - ₹1Cr</MenuItem>
+                <MenuItem value="1Cr ">₹1Cr - ₹1.5Cr</MenuItem>
+                <MenuItem value="">₹45 Lac - ₹50 Lac</MenuItem>
                 <MenuItem value="50 Lac">₹50 Lac - ₹55 Lac</MenuItem>
                 <MenuItem value="55 Lac">₹55 Lac - ₹60 Lac</MenuItem>
                 <MenuItem value="60 Lac">₹60 Lac - ₹65 Lac</MenuItem>

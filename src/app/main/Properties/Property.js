@@ -283,10 +283,11 @@ useEffect(() => {
           <ContactDetails />
         </Grid>
         <Grid>
-        <Recomendedproperties />
+        <Map color ="red"/>
+       
         </Grid>
         <Grid>
-        <Map color ="red"/>
+        <Recomendedproperties />
         </Grid>
       </Grid>
      

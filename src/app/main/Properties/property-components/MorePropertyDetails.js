@@ -5,7 +5,7 @@ import { Card,Typography } from '@mui/material'
 
 const MorePropertyDetails = () => {
   const propertyData = useSelector(selectProperties);
-  const propertyOverview = propertyData?.property?.ad_info;
+  const propertyOverview = propertyData?.data?.property?.ad_info;
 
   const toggleShowMore = () => {
     setShowMore(!showMore);
@@ -20,7 +20,7 @@ const MorePropertyDetails = () => {
     <div style={{display:"flex"}}>
     <div style={{display:"flex", flexDirection:"column", margin:"0px 20px"}}>
     <Typography variant='p'sx={{margin:"10px 0", fontSize:"15px"}}>
-    Price per {propertyData?.property?.unit}
+    Price per {propertyData?.data?.property?.unit}
     </Typography>
     {/* <Typography variant='p'sx={{margin:"10px 0", fontSize:"15px"}}>
     General Price 
@@ -48,16 +48,16 @@ const MorePropertyDetails = () => {
     </Typography>
     </div>
     <div style={{display:"flex", flexDirection:"column", fontWeight:"500",}}>
-        <Typography variant='p' sx={{margin:"10px 0", fontSize:"15px"}}>:<span style={{marginLeft:"20px"}}> ₹ {propertyData?.property?.price}</span></Typography>
+        <Typography variant='p' sx={{margin:"10px 0", fontSize:"15px"}}>:<span style={{marginLeft:"20px"}}> ₹ {propertyData?.data?.property?.price}</span></Typography>
         {/* <Typography variant='p' sx={{margin:"10px 0", fontSize:"15px"}}>:<span> {propertyData?.properties?.price}</span></Typography> */}
         {/* <Typography variant='p' sx={{margin:"10px 0", fontSize:"15px"}}>:<span> {propertyData?.properties?.emiprice}</span></Typography> */}
         {/* <Typography variant='p' sx={{margin:"10px 0", fontSize:"15px"}}>:<span style={{marginLeft:"20px"}}> {propertyData?.properties?.Furnishing}</span></Typography> */}
         {/* <Typography variant='p' sx={{margin:"10px 0", fontSize:"15px"}}>:<span style={{marginLeft:"20px"}}> {propertyData?.properties?.PowerBackUp}</span></Typography>/ */}
-        <Typography variant='p' sx={{margin:"10px 0", fontSize:"15px"}}>:<span style={{textTransform:"capitalize",marginLeft:"20px"}}> {propertyData?.property?.direction}</span></Typography>
+        <Typography variant='p' sx={{margin:"10px 0", fontSize:"15px"}}>:<span style={{textTransform:"capitalize",marginLeft:"20px"}}> {propertyData?.data?.property?.direction}</span></Typography>
         {/* <Typography variant='p' sx={{margin:"10px 0", fontSize:"15px"}}>:<span style={{textTransform:"capitalize",marginLeft:"20px"}}> {propertyData?.data?.property?.landmark}</span></Typography> */}
         {/* <Typography variant='p' sx={{margin:"10px 0", fontSize:"15px"}}>:<span> {propertyData?.properties?.propertyDeveloper}</span></Typography> */}
         <Typography variant='p' sx={{ margin: "10px 0", fontSize: "15px", textTransform:"capitalize", }}>: <span style={{marginLeft:"20px"}}>
-    {`${propertyData?.property?.village}, ${propertyData?.property?.district}, ${propertyData?.property?.state}`}
+    {`${propertyData?.data?.property?.village}, ${propertyData?.data?.property?.district}, ${propertyData?.data?.property?.state}`}
   </span>
 </Typography>
 

@@ -143,7 +143,7 @@ const propertySlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProperties.fulfilled, (state, action) => {
-        state.properties = action.payload.data,action.payload.recent_properties;
+        state.properties = action.payload;
         console.log("state.properties",state.properties)
       })
       .addCase(fetchRecentTransactions.fulfilled, (state, action) => {

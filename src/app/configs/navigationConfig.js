@@ -40,14 +40,6 @@ const navigationConfig = [
     icon: 'heroicons-outline:plus',
     url: 'Addproperty',
   },
-  {
-    id: 'Search-Properties',
-    title: 'Search-Properties',
-    translate: 'Search-Properties',
-    type: 'item',
-    icon: 'heroicons-outline:search',
-    url: 'SearchProperty',
-  },
 ];
 
 export default navigationConfig;

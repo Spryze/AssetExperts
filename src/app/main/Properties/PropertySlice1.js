@@ -31,13 +31,13 @@ export const fetchProperties = createAsyncThunk(
   'property/fetchProperty',
   async (property_id, { rejectWithValue }) => {
     try {
-      console.log('Fetching property with ID:', property_id);
+      
       const url = `https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property_ind?prop_id=${property_id}`;
       const response = await fetch(url, { method: 'get' });
-      console.log("response",response)
+     
       if (!response.ok) throw new Error('Property data not received');
       const propertyDetails = await response.json();
-      console.log('Fetched property details:', propertyDetails);
+      
       return propertyDetails;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -80,8 +80,7 @@ export const SearchResults = createAsyncThunk(
         
       body:formData
       });
-      console.log("search response", response);
-
+      
       const data = response;
       if (!data || data.length === 0) {
         return rejectWithValue('No data found')
@@ -142,7 +141,7 @@ const propertySlice = createSlice({
     builder
       .addCase(fetchProperties.fulfilled, (state, action) => {
         state.properties = action.payload;
-        console.log("state.properties",state.properties)
+       
       })
       .addCase(fetchRecentTransactions.fulfilled, (state, action) => {
         

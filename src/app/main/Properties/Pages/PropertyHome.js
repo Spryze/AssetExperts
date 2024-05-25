@@ -44,11 +44,11 @@ const PropertyHome = () => {
   }, [dispatch]);
 
   const handleSearch = (criteria) => {
-    console.log("criteria",criteria)
+    
     setSearchCriteria(criteria);
     dispatch(SearchResults(criteria))
     .then((response) => {
-      console.log("response",response)
+      
       if (response.payload.data.property === 0) {
         setNoDataFound(true);
       } else {

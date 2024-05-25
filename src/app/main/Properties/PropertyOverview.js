@@ -24,7 +24,7 @@ const PropertyOverview = () => {
     const propertyData = useSelector(selectProperties);
     console.log("propertyData",propertyData)
     const [showMore, setShowMore] = useState(false);
-    const propertyOverview = propertyData?.data?.property?.ad_info;
+    const propertyOverview = propertyData?.property?.ad_info;
     const toggleShowMore = () => {
         setShowMore(!showMore);
       };

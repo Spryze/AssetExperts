@@ -16,11 +16,12 @@ import CheckIcon from "@mui/icons-material/Check";
 import Alert from "@mui/material/Alert";
 import Paper from "@mui/material/Paper";
 import FormHelperText from "@mui/material/FormHelperText";
-import { Navigate } from "react-router-dom";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
 import { useDispatch } from "react-redux";
 import { signUpWithEmailAndPassword } from "app/store/userSlice";
 import { useEffect, useState } from "react";
-import { method } from "lodash";
 import axios from "axios";
 
 /**
@@ -28,11 +29,15 @@ import axios from "axios";
  */
 
 const schema = yup.object().shape({
-  displayName: yup.string().required("You must enter display name"),
+  displayName: yup.string().required("You must enter a display name"),
   email: yup
     .string()
     .email("You must enter a valid email")
-    .required("You must enter a email"),
+    .required("You must enter an email"),
+  ph_num_1: yup
+    .string()
+    .matches(/^[0-9]+$/, "Phone number must be only digits")
+    .required("You must enter a phone number"),
   password: yup
     .string()
     .required("Please enter your password.")
@@ -43,12 +48,14 @@ const schema = yup.object().shape({
   acceptTermsConditions: yup
     .boolean()
     .oneOf([true], "The terms and conditions must be accepted."),
+  role: yup.string().required("You must select who you are"),
 });
 
 const defaultValues = {
   displayName: "",
   email: "",
-  PhoneNo:"",
+  ph_num_1: "",
+  role: "",
   password: "",
   passwordConfirm: "",
   acceptTermsConditions: false,
@@ -61,7 +68,7 @@ function SignUpPage() {
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { isValid, dirtyFields, errors, setError } = formState;
+  const { isValid, dirtyFields, errors } = formState;
   const [Message, setMessage] = useState(null);
   const dispatch = useDispatch();
 
@@ -78,9 +85,12 @@ function SignUpPage() {
   const onSubmit = (data) => {
     console.log("Form data:", data);
     const { email, password, displayName } = data;
-    dispatch(signUpWithEmailAndPassword({ email, password, displayName })).then(
-      () => {
-        navigate("/");
+    dispatch(signUpWithEmailAndPassword(data)).then(
+      (response) => {
+        if(response.status === 201){
+          navigate("/");
+        }
+        
       }
     );
   };
@@ -127,6 +137,24 @@ function SignUpPage() {
             />
 
             <Controller
+              name="ph_num_1"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  className="mb-24"
+                  label="Phone Number"
+                  type="number"
+                  error={!!errors.ph_num_1}
+                  helperText={errors?.ph_num_1?.message}
+                  variant="outlined"
+                  required
+                  fullWidth
+                />
+              )}
+            />
+
+            <Controller
               name="email"
               control={control}
               render={({ field }) => (
@@ -145,20 +173,22 @@ function SignUpPage() {
             />
 
             <Controller
-              name="PhoneNo"
+              name="role"
               control={control}
               render={({ field }) => (
-                <TextField
-                  {...field}
+                <FormControl
                   className="mb-24"
-                  label="Email"
-                  type="email"
-                  error={!!errors.email}
-                  helperText={errors?.email?.message}
-                  variant="outlined"
-                  required
                   fullWidth
-                />
+                  error={!!errors.role}
+                  variant="outlined"
+                >
+                  <InputLabel>Select Who You Are</InputLabel>
+                  <Select {...field} label="Select Who You Are">
+                    <MenuItem value="User">User</MenuItem>
+                    <MenuItem value="Agent">Agent</MenuItem>
+                  </Select>
+                  <FormHelperText>{errors?.role?.message}</FormHelperText>
+                </FormControl>
               )}
             />
 

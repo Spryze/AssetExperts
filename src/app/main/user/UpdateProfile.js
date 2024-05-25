@@ -14,8 +14,8 @@ export default function UpdateProfile() {
   const [emptySubmission, setEmptySubmission] = React.useState(false);
   const [formData, setFormData] = React.useState({
     name: '',
-    ph_num_1: 0,
-    ph_num_2: 0,
+    ph_num_1: '',
+    ph_num_2: '',
     profession: '',
     address: '',
     requirements: '',
@@ -35,36 +35,41 @@ export default function UpdateProfile() {
     const { name, value } = event.target;
     let parsedValue = value;
 
-    
+    // Convert phone number fields to integer
     if (name === 'ph_num_1' || name === 'ph_num_2') {
-        parsedValue = parseInt(value, 10); 
-        parsedValue = isNaN(parsedValue) ? '' : parsedValue; 
+      parsedValue = parseInt(value, 10);
+      parsedValue = isNaN(parsedValue) ? '' : parsedValue;
     }
 
     setFormData((prevData) => ({
-        ...prevData,
-        [name]: parsedValue,
+      ...prevData,
+      [name]: parsedValue,
     }));
-};
-
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
-    const hasUpdatedFields = Object.values(formData).some(value => value !== '');
-    console.log("formData",formData)
+    
+    // Check if at least one field is filled
+    const hasUpdatedFields = Object.values(formData).some(value => value !== '' && value !== 0);
+    
     if (hasUpdatedFields) {
       console.log(formData);
-      handleClose();
-      dispatch(UpdateUser(formData)); 
-      setEmptySubmission(true);
+      dispatch(UpdateUser(formData)).then((response) => {
+        console.log("response", response);
+        if (response.payload.status === "success") {
+          handleClose();
+          window.location.reload();
+        }
+      });
+    } else {
+      setEmptySubmission(true); 
     }
   };
-  
 
   return (
     <React.Fragment>
-      <Button sx={{marginTop:"20px"}} variant="outlined" onClick={handleClickOpen}>
+      <Button sx={{ margin: "20px 0px" }} variant="outlined" onClick={handleClickOpen}>
         Update Profile
       </Button>
       <Dialog
@@ -148,7 +153,7 @@ export default function UpdateProfile() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Submit</Button>
+          <Button variant='contained' type="submit">Submit</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

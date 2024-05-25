@@ -75,18 +75,20 @@ export const UpdateUser = createAsyncThunk(
 
 export const signUpWithEmailAndPassword = createAsyncThunk(
   'user/SignupWithEmailPassword',
-  async ({ email, password, displayName }, { rejectWithValue }) => {
-    console.log("userSlice", email, password, displayName);
+  async (data , { rejectWithValue }) => {
+    console.log("userSlice", data);
     try {
       const auth = getAuth();
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
       const user = userCredential.user;
       console.log("user", user);
       if (user && user.uid) { 
         const userData = {
-          name: displayName,
-          email: email,
-          id: user.uid
+          name: data.displayName,
+          email: data.email,
+          id: user.uid,
+          role:data.role,
+          ph_num_1:data.ph_num_1
         };
         console.log("userdata", userData);
         
@@ -136,9 +138,12 @@ export const signInWithEmailPassword = createAsyncThunk(
     try {
       const auth = getAuth();
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log("userCredential",userCredential)
       const user = userCredential.user;
       
       if (user) {
+        const userdata = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${user.uid}&req_user_id=${user.uid}`)
+        console.log("userdata",userdata)
         let User = {
           uid: user.uid,
           role: "admin",
@@ -149,15 +154,15 @@ export const signInWithEmailPassword = createAsyncThunk(
         };
         
         localStorage.setItem('user', JSON.stringify(User));
-        navigate("/")
+      
         
         return User;
       } else {
         throw new Error("User not found");
       }
     } catch (error) {
-      // You can handle specific Firebase errors here
-      return rejectWithValue(error.message); // Dispatches a rejected action with the error message
+
+      return rejectWithValue(error.message);
     }
   }
 );

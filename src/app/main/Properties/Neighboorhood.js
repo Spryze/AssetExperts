@@ -9,8 +9,8 @@ const Neighborhood = () => {
     console.log("propertyData",propertyData)
     
 
-    const hasDevelopments = propertyData?.data?.property?.developments &&
-        propertyData.data.property.developments
+    const hasDevelopments = propertyData?.property?.developments &&
+        propertyData.property.developments
 
     if (!hasDevelopments) {
         return null; 
@@ -23,7 +23,7 @@ const Neighborhood = () => {
                     Around The Property
                 </Typography>
                 <div style={{display:"flex", flexWrap:"wrap"}}>
-                    {propertyData?.data?.property?.developments.map((item, index) => {
+                    {propertyData?.property?.developments.map((item, index) => {
                         const trimmedItem = item
                         if (trimmedItem.length === 0) {
                             return null;

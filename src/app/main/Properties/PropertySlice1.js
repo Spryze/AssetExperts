@@ -11,9 +11,7 @@ export const addProperty = (propertyData) => {
   
 };
 
-export const AddImage = (image) => {
- 
-};
+
 const propertySlice1 = createSlice({
   name: 'property',
   initialState: {

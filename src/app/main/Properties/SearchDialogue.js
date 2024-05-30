@@ -70,10 +70,10 @@ const handleSubmit = async () => {
   setIsLoading(true);
   try {
     const result = await dispatch(SearchResults(formData)).unwrap();
-    console.log("result", result);
+    console.log("result",result);
 
-    if (result.data?.property?.length === 0) {
-      console.log("No data found");
+
+    if (result.property?.length === 0) {
       onSearch(null); 
     } else {
       onSearch(result.data); 

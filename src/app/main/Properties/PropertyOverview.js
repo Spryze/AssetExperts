@@ -22,13 +22,19 @@ import Recomendedproperties from "./Recomendedproperties";
 
 const PropertyOverview = () => {
     const propertyData = useSelector(selectProperties);
-    console.log("propertyData",propertyData)
+   
     const [showMore, setShowMore] = useState(false);
     const propertyOverview = propertyData?.data?.property?.ad_info;
     const toggleShowMore = () => {
         setShowMore(!showMore);
       };
   return (
+    <>
+    <Card sx={{ borderRadius: "10px", padding: "20px", marginBottom: "20px" }}>
+    <Typography variant='h6' sx={{textTransform:"capitalize"}}>
+    <span style={{fontWeight:"bold"}}> Listing Type:</span> {propertyData?.data?.property?.listing_type}
+    </Typography>
+  </Card>
     <Card
     className="card"
     id="overview"
@@ -51,50 +57,8 @@ const PropertyOverview = () => {
         </button>
       
     </Typography>
-    {/* {rows.map((row, rowIndex) => (
-      
-      <Box
-        key={rowIndex}
-        id={rowIndex}
-        className="scrollable-section"
-        sx={{ display: "flex", justifyContent: "space-around" }}
-      >
-        {row.map((item, index) => {
-          const key = Object.keys(item)[0];
-          const value = item[key];
-
-          return (
-            <div
-              key={index}
-              style={{
-                color: "black",
-                padding: "10px",
-                textAlign: "left",
-                margin: "20px 0px",
-              }}
-            >
-              <div>
-                <p>{key}</p>
-              </div>
-              <div>
-                <p style={{ fontWeight: "500" }}>{value}</p>
-              </div>
-            </div>
-          );
-        })}
-      </Box>
-    ))} */}
-    <hr />
-    <Button
-      sx={{
-        background: "orange",
-        borderRadius: "8px",
-        margin: "20px 10px",
-      }}
-    >
-      Contact Builder
-    </Button>
   </Card>
+  </>
   )
 }
 

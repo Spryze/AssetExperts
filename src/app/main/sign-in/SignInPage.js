@@ -1,174 +1,131 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Controller, useForm } from 'react-hook-form';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import { Link, useNavigate } from 'react-router-dom';
-import * as yup from 'yup';
-import _ from '@lodash';
-import RabitSvgIcon from '@rabit/core/RabitSvgIcon';
-import AvatarGroup from '@mui/material/AvatarGroup';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import { useEffect } from 'react';
-import jwtService from '../../auth/services/jwtService';
-import { auth,provider} from './Config'; 
-import { signInWithPopup } from 'firebase/auth';
-import { getAuth,signInWithEmailAndPassword } from 'firebase/auth';
-import RabitUtils from '@rabit/utils/RabitUtils';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Controller, useForm } from "react-hook-form";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { Link, useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import _ from "@lodash";
+import RabitSvgIcon from "@rabit/core/RabitSvgIcon";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import { useEffect } from "react";
+import jwtService from "../../auth/services/jwtService";
+import { auth, provider } from "./Config";
+import { signInWithPopup } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import RabitUtils from "@rabit/utils/RabitUtils";
 import Alert from "@mui/material/Alert";
-import { useDispatch } from 'react-redux';
-import { signInWithEmailPassword } from 'app/store/userSlice';
+import { useDispatch } from "react-redux";
+import { signInWithEmailPassword,signInWithPopupThunk } from "app/store/userSlice";
 
-import { useState } from 'react';
-
-
-
+import { useState } from "react";
 
 /**
  * Form Validation Schema
  */
 const schema = yup.object().shape({
-  email: yup.string().email('You must enter a valid email').required('You must enter a email'),
+  email: yup
+    .string()
+    .email("You must enter a valid email")
+    .required("You must enter a email"),
   password: yup
     .string()
-    .required('Please enter your password.')
-    .min(4, 'Password is too short - must be at least 4 chars.'),
+    .required("Please enter your password.")
+    .min(4, "Password is too short - must be at least 4 chars."),
 });
 
 const defaultValues = {
-  email: '',
-  password: '',
+  email: "",
+  password: "",
   remember: true,
 };
 
-
 function SignInPage() {
-  
-const navigate = useNavigate();
- const dispatch = useDispatch();
-    // const authentication = auth.onAuthStateChanged((userAuth) => {
-    //   if (userAuth) {
-        
-    //     // console.log('User authenticated:', userAuth);
-    //     let user = {
-    //       uid: userAuth.uid,
-    //         role: "admin",
-    //       data:{
-          
-    //         accessToken: userAuth.accessToken,
-    //         displayName: "Ramu",
-            
-    //       }
-    //     };
-    //     // console.log(user)
-          
-    //       localStorage.setItem('user', JSON.stringify(user));
-          
-         
-    //       jwtService.emit('onLogin',user);
-    //   } else {
-    //     // User is not authenticated
-    //     console.log('User not authenticated');
-    //   }
-    // })
-    // const Navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [error,seterror] = useState( false); 
 
-  const [message,setMessage]=useState(null)
+  const [message, setMessage] = useState(null);
   useEffect(() => {
     // authentication()
     if (message) {
       const timer = setTimeout(() => {
         setMessage(null);
       }, 3000);
-  
+
       return () => clearTimeout(timer);
     }
   }, []);
-  
+
   //google signin
   const handleClick = () => {
-    try {
-      signInWithPopup(auth, provider)
-        .then((data) => {
-             
-          let user = {
-            uid: data.user.uid,
-              role: "admin",
-            data:{
-            
-              accessToken: data.user.accessToken,
-              displayName: data.user.displayName,
-              
-            }
-          };
-          console.log(user)
-          localStorage.setItem('google_access_token', data._tokenResponse.idToken);
-          localStorage.setItem('user', JSON.stringify(user));
-          
-         
-          jwtService.emit('onLogin',user);
-          
-          
-        })
-        .catch((error) => {
-          
-          console.error("Firebase authentication error:", error);
-          
-        });
-    } catch (error) {
-      
-      console.error("An error occurred:", error);
-      
-    }
+    dispatch(signInWithPopupThunk({auth, provider})).then((response)=>{
+      navigate("/");
+      console.log("response",response)
+    });
+    // try {
+    //   signInWithPopup(auth, provider)
+    //     .then((data) => {
+
+    //       let user = {
+    //         uid: data.user.uid,
+    //         role: "admin",
+    //         data: {
+    //           accessToken: data.user.accessToken,
+    //           displayName: data.user.displayName,
+    //         },
+    //       };
+    //       console.log(user);
+    //       localStorage.setItem(
+    //         "google_access_token",
+    //         data._tokenResponse.idToken
+    //       );
+    //       localStorage.setItem("user", JSON.stringify(user));
+
+    //       jwtService.emit("onLogin", user);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Firebase authentication error:", error);
+    //     });
+    // } catch (error) {
+    //   console.error("An error occurred:", error);
+    // }
   };
-  
+
   const { control, formState, handleSubmit, setError, setValue } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     defaultValues,
     resolver: yupResolver(schema),
   });
 
   const { isValid, dirtyFields, errors } = formState;
 
-  // useEffect(() => {
-  //   setValue('email', 'admin@rabittheme.com', { shouldDirty: true, shouldValidate: true });
-  //   setValue('password', 'admin', { shouldDirty: true, shouldValidate: true });
-  // }, [setValue]);
- 
   
+
   async function onSubmit({ email, password }) {
     try {
-       dispatch(signInWithEmailPassword({ email, password }));
-       navigate("/")
-      
-      
-      
+      dispatch(signInWithEmailPassword({ email, password })).then(
+        (response) => {
+          console.log("response", response);
+          if (response.type === "user/signInWithEmailAndPassword/fulfilled") {
+            navigate("/");
+          } else {
+            seterror(true)
+            setTimeout(()=>{
+              seterror(false)
+            },3000)
+          }
+        }
+      );
     } catch (error) {
       console.log("Signin", error);
       // Handle error
     }
   }
-  
-    // jwtService
-    //   .signInWithEmailAndPassword(email, password)
-    //   .then((user) => {
-       
-    //   })
-    //   .catch((_errors) => {
-    //     _errors.forEach((error) => {
-    //       setError(error.type, {
-    //         type: 'manual',
-    //         message: error.message,
-    //       });
-    //     });
-    //   });
-  
-  
 
   return (
     <div className="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-1 min-w-0">
@@ -186,6 +143,7 @@ const navigate = useNavigate();
             </Link>
           </div>
 
+          {error && <Typography sx={{color:"red"}}>Invalid Credentials..</Typography>}
           <form
             name="loginForm"
             noValidate
@@ -243,7 +201,10 @@ const navigate = useNavigate();
                 )}
               />
 
-              <Link className="text-md font-medium" to="/pages/auth/forgot-password">
+              <Link
+                className="text-md font-medium"
+                to="/pages/auth/forgot-password"
+              >
                 Forgot password?
               </Link>
             </div>
@@ -284,7 +245,11 @@ const navigate = useNavigate();
                   feather:github
                 </RabitSvgIcon>
               </Button>
-              <Button onClick={handleClick} variant="outlined" className="flex-auto">
+              <Button
+                onClick={handleClick}
+                variant="outlined"
+                className="flex-auto"
+              >
                 <RabitSvgIcon size={20} color="action">
                   feather:google
                 </RabitSvgIcon>
@@ -296,20 +261,18 @@ const navigate = useNavigate();
 
       <Box
         className="relative hidden md:flex flex-auto items-center justify-center h-full p-64 lg:px-112 overflow-hidden"
-        sx={{ backgroundColor: 'primary.main' }}
+        sx={{ backgroundColor: "primary.main" }}
       >
-
-
         <div className="z-10 relative w-full max-w-2xl">
           <div className="text-7xl font-bold leading-none text-gray-100">
             <div>Welcome to</div>
             <div>our community</div>
           </div>
           <div className="mt-24 text-lg tracking-tight leading-6 text-gray-400">
-            Rabit helps developers to build organized and well coded dashboards full of beautiful and
-            rich modules. Join us and start building your application today.
+            Rabit helps developers to build organized and well coded dashboards
+            full of beautiful and rich modules. Join us and start building your
+            application today.
           </div>
-
         </div>
       </Box>
       {message && (

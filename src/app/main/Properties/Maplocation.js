@@ -25,7 +25,7 @@ function ChangeView({ center, zoom }) {
 const Maplocation = () => {
   
   const propertyData = useSelector(selectProperties);
-  console.log("selectProperties",propertyData)
+
   const initialLongitude = propertyData?.data?.property?.longitude || 0;
   const initialLatitude = propertyData?.data?.property?.latitude || 0;
 
@@ -44,7 +44,7 @@ const Maplocation = () => {
   const handlePopupclick = (property_id) => {
     const url = `/property/${property_id}`;
     window.open(url, "_blank");
-    console.log(property_id);
+
   };
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const Maplocation = () => {
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
       <Marker position={[latitude, longitude]} icon={markerIcon}>
-        {console.log("latitude", latitude, longitude)}
+     
         <Popup>
           {propertyData?.data?.property?.area}
           {[latitude, longitude]}

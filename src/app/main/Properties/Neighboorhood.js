@@ -6,13 +6,11 @@ import { Typography } from '@mui/material/';
 
 const Neighborhood = () => {
     const propertyData = useSelector(selectProperties);
-    console.log("propertyData",propertyData)
-    
 
-    const hasDevelopments = propertyData?.data?.property?.developments &&
-        propertyData.data.property.developments
+    const developments = propertyData?.data?.property?.developments;
 
-    if (!hasDevelopments) {
+    // Render only if developments array has items
+    if (!developments || developments.length === 0) {
         return null; 
     }
 
@@ -23,7 +21,7 @@ const Neighborhood = () => {
                     Around The Property
                 </Typography>
                 <div style={{display:"flex", flexWrap:"wrap"}}>
-                    {propertyData?.data?.property?.developments.map((item, index) => {
+                    {developments.map((item, index) => {
                         const trimmedItem = item
                         if (trimmedItem.length === 0) {
                             return null;

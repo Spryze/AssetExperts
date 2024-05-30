@@ -12,7 +12,6 @@ import Property from "./Property";
 const Recomendedproperties = () => {
   const dispatch = useDispatch();
   const propertyData = useSelector(selectProperties);
-  console.log("propertyData recomended",propertyData)
   const scrollContainerRef = useRef(null);
   let scrollInterval = useRef(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
@@ -132,7 +131,7 @@ const Recomendedproperties = () => {
               >{`${item?.listing_type}ing, ${item?.area}${item?.unit}s ${item?.prop_type}`}</Typography>
               <div style={{ display: "flex", marginTop: "5px" }}>
                 <LocationOnIcon sx={{ color: "orange" }} />
-                <Typography sx={{ fontSize: "14px" }}>
+                <Typography sx={{ fontSize: "14px",textTransform:"capitalize" }}>
                   {}
                   {`${item?.landmark}, ${item?.district}`}
                 </Typography>

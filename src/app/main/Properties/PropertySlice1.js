@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { reject } from "lodash";
+import BaseUrl from "app/configs/BaseUrl";
 
 
 
@@ -8,7 +8,7 @@ export const fetchProperties = createAsyncThunk(
   'property/fetchProperty',
   async (property_id, { rejectWithValue }) => {
     try {
-      const url = `https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property_ind?prop_id=${property_id}`;
+      const url = `${BaseUrl}/property_ind?prop_id=${property_id}`;
 
       const response = await axios.get(url); 
 
@@ -26,9 +26,9 @@ export const fetchProperties = createAsyncThunk(
 
 export const fetchRecentTransactions = createAsyncThunk(
   'property/fetchRecentTransactions',
-  async () => {
+  async (page) => {
     try {
-      const response = await axios.get("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/home")
+      const response = await axios.get(`${BaseUrl}/home?page=${page}`)
       return response.data; 
     } catch (error) {
       return rejectWithValue(error.message); 
@@ -39,7 +39,7 @@ export const SearchResults = createAsyncThunk(
   'property/SearchResults',
   async () => {
     try {
-      const response = await axios.get("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/home")
+      const response = await axios.get(`${BaseUrl}/home`)
       return response.data; 
     } catch (error) {
       return rejectWithValue(error.message);
@@ -61,10 +61,10 @@ export const addProperty = createAsyncThunk(
       const cont_user_id = user.uid;
       const data = { ...formData, cont_user_id };
 
-      console.log(data);
 
-      const response = await axios.post("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property", data);
-      console.log("response", response);
+
+      const response = await axios.post(`{BaseUrl}/property`, data);
+
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -75,14 +75,14 @@ export const addProperty = createAsyncThunk(
 export const AddImage = createAsyncThunk(
   'property/AddImage',
   async (formData) => {
-    const response = await axios.put('https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property', formData, {
+    const response = await axios.put(`${BaseUrl}/property`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       
       // Handle response
-      console.log('Response:', response);
+  
 
       if (response.status === 201) {
         
@@ -125,7 +125,7 @@ const propertySlice = createSlice({
       state.status = 'failed';
       state.error = action.payload;
     },
-    // Reducer logic to reset status and error
+   
     resetStatus(state) {
       state.status = 'idle';
       state.error = null;
@@ -134,12 +134,16 @@ const propertySlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProperties.fulfilled, (state, action) => {
-        state.properties = action.payload,
-        console.log("state.properties",state.properties)
+        state.properties = action.payload
+      
       })
       .addCase(fetchRecentTransactions.fulfilled, (state, action) => {
-        
-        state.recentTransactions = action.payload;
+        state.recentTransactions = [
+          ...state.recentTransactions,
+          ...action.payload.property.buy_properties,
+          ...action.payload.property.sell_properties
+        ];
+        state.status = 'succeeded';
       })
   },
   

@@ -20,6 +20,7 @@ const ContactDetails = () => {
 
   return (
     <>
+      
       <Card sx={{ borderRadius: "10px", padding: "20px", marginBottom: "20px" }}>
         <Typography variant="h6"> Mediator Details</Typography>
         <div style={{ display: "flex", fontSize: "18px" }}>

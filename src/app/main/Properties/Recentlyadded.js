@@ -131,7 +131,7 @@ const Recentlyadded = () => {
               >{`${item?.listing_type}ing, ${item?.area}${item?.unit}s ${item?.prop_type}`}</Typography>
               <div style={{ display: "flex", marginTop: "10px" }}>
                 <LocationOnIcon sx={{ color: "orange" }} />
-                <Typography sx={{ fontSize: "14px",textTransform:"capitalize" }}>
+                <Typography sx={{ fontSize: "14px" }}>
                   {`${item?.landmark}, ${item?.district}`}
                 </Typography>
               </div>

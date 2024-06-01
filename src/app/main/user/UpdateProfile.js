@@ -6,42 +6,20 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useDispatch, useSelector } from 'react-redux';
-import { UpdateUser, selectUser } from 'app/store/userSlice';
-import { useState,useEffect } from 'react';
-
+import { useDispatch } from 'react-redux';
+import { UpdateUser } from 'app/store/userSlice';
 
 export default function UpdateProfile() {
-  const [open, setOpen] = useState(false);
-  const [emptySubmission, setEmptySubmission] = useState(false);
-  const UserData = useSelector(selectUser);
-  const [formData, setFormData] = useState({
+  const [open, setOpen] = React.useState(false);
+  const [emptySubmission, setEmptySubmission] = React.useState(false);
+  const [formData, setFormData] = React.useState({
     name: '',
     ph_num_1: '',
     ph_num_2: '',
     profession: '',
     address: '',
     requirements: '',
-    user_id: '',
-    req_user_id: '',
   });
-  
-
-  useEffect(() => {
-    if (UserData) {
-      setFormData({
-        name: UserData.data.displayName || '',
-        ph_num_1: UserData.data.phone_num_1 || '',
-        ph_num_2: UserData.data.phone_num_2 || '',
-        profession: UserData.data.profession || '',
-        address: UserData.data.address || '',
-        requirements: UserData.data.requirements || '',
-        user_id: UserData.uid,
-        req_user_id: UserData.uid,
-      });
-    }
-  }, [UserData]);
-
   const dispatch = useDispatch();
 
   const handleClickOpen = () => {
@@ -76,11 +54,12 @@ export default function UpdateProfile() {
     const hasUpdatedFields = Object.values(formData).some(value => value !== '' && value !== 0);
     
     if (hasUpdatedFields) {
-     
+      console.log(formData);
       dispatch(UpdateUser(formData)).then((response) => {
-        console.log("response",response)
-        if (response.type === "user/UpdateUser/fulfilled") {
+        console.log("response", response);
+        if (response.payload.status === "success") {
           handleClose();
+          window.location.reload();
         }
       });
     } else {

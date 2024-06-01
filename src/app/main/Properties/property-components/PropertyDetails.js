@@ -18,15 +18,32 @@ const PropertyDetails = () => {
   const [imagePath, setImagePath] = useState([]);
   const [showMoreVisible, setShowMoreVisible] = useState(false); // State variable for Show More visibility
 
+  // Redux state
   const property = useSelector(selectSelectedProperty);
   console.log(property)
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+      
+  //       setProperties(Properties);
+  //       setImagePath(Properties.images);
+  //       setConfiguration(Properties.propertyConfiguration);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+        
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [Properties]);
 
   return (
     <Container>
       <PropertyCarousel/>
       <Grid>
         <Box sx={{ marginTop: "40px" }}>
+          {/* Property details */}
           <Grid container sx={{ margin: "20px" }}>
             <Grid item xs={12} md={6} lg={6} sm={6}>
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>

@@ -1,200 +1,130 @@
 /* eslint import/no-extraneous-dependencies: off */
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import history from "@history";
-import BaseUrl from "app/configs/BaseUrl";
-import _ from "@lodash";
-import { Navigate } from "react-router-dom";
-import { setInitialSettings } from "app/store/rabit/settingsSlice";
-import { showMessage } from "app/store/rabit/messageSlice";
-import settingsConfig from "app/configs/settingsConfig";
-import jwtService from "../auth/services/jwtService";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
-import axios from "axios";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import history from '@history';
+import _ from '@lodash';
+import { Navigate } from 'react-router-dom';
+import { setInitialSettings } from 'app/store/rabit/settingsSlice';
+import { showMessage } from 'app/store/rabit/messageSlice';
+import settingsConfig from 'app/configs/settingsConfig';
+import jwtService from '../auth/services/jwtService';
+import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword } from 'firebase/auth';
+import axios from 'axios';
 
-export const setUser = createAsyncThunk(
-  "user/setUser",
-  async (_, { rejectWithValue }) => {
-    try {
-      const auth = getAuth();
-      const userAuth = await new Promise((resolve, reject) => {
-        onAuthStateChanged(auth, (user) => {
-          if (user) {
-            resolve(user);
-          } else {
-            reject(new Error("User not authenticated"));
-          }
-        });
-      });
 
-      if (userAuth) {
-        try {
-          const response = await axios.get(
-            `${BaseUrl}/user?user_id=${userAuth.uid}&req_user_id=${userAuth.uid}`
-          );
-
+export const setUser = createAsyncThunk('user/setUser', async () => {
+  return new Promise((resolve, reject) => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, async (userAuth) => {
+      try {
+        if (userAuth) {
+          const response = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${userAuth.uid}&req_user_id=${userAuth.uid}`);
           const userData = response.data;
-          console.log("userData",)
+          console.log("userdata", userData);
+          
           let user = {
             uid: userAuth.uid,
             role: userData.profile.role,
             data: {
+              accessToken: userAuth.accessToken,
               displayName: userData.profile.name,
-              address: userData.profile.address,
-              comments: userData.profile.comments,
-              email: userData.profile.email,
-              phone_num_1: userData.profile.phone_num_1,
-              phone_num_2: userData.profile.phone_num_2,
-              profession: userData.profile.profession,
-              requirements: userData.profile.requirements,
-            },
+              address:userData.profile.address,
+              comments:userData.profile.comments,
+              email:userData.profile.email,
+              phone_num_1:userData.profile.phone_num_1,
+              phone_num_2:userData.profile.phone_num_2,
+              profession:userData.profile.profession,
+              requirements:userData.profile.requirements,
+              
+            }
           };
-
-          return user;
-        
-        } catch (error) {
-          console.log("error", error);
-          if ((error.statusText === "Unauthorized")) {
-            const userData = {
-              name: userAuth.displayName,
-              email: userAuth.email,
-              id: userAuth.uid,
-            };
-            const response = await axios.post(
-              `${BaseUrl}/user`,userData
-            );
-          
-            let user = {
-              uid: userAuth.uid,
-              role:response.data.data.role,
-              data: {
-                accessToken: userAuth.accessToken,
-                displayName:response.data.data.name,
-                address: userData.profile.address,
-                email: response.data.data.email,
-                phone_num_1: userData.profile.ph_num_1,
-                
-              },
-            };
-            console.log('user',user)
-            return user;
-          }
-          setUser();
+          resolve(user); // Resolve with the user object
+        } else {
+          reject(new Error('User not authenticated')); 
         }
-      } else {
-        throw new Error("User not authenticated");
+      } catch (error) {
+        reject(error);
       }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
+    });
+  });
+});
+
+
 
 export const UpdateUser = createAsyncThunk(
-  "user/UpdateUser",
+  'user/UpdateUser',
   async (formData, { rejectWithValue }) => {
     try {
-        const response = await axios.put(
-        `${BaseUrl}/user`,
-        formData
-      );
-      console.log("response",response)
-      let user = {
-       
-        data: {
-        
-          displayName:response.data.data.name,
-          address: response.data.data.address,
-          profession:response.data.data.profession,
-          email: response.data.data.email,
-          phone_num_1: response.data.data.phone_num_1,
-          phone_num_2: response.data.data.phone_num_2,
-          requirements:response.data.data.requirements,
-          
-        },
-      };
-      return user;
+      const user = JSON.parse(localStorage.getItem("user"));
+      const cont_user_id = user.uid;
+      console.log("cont_user_id",cont_user_id)
+      console.log("formData",formData)
+      formData.user_id = cont_user_id;
+      formData.req_user_id = cont_user_id;
+
+      const response = await axios.put('https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user', formData);
+
+      return response.data;
     } catch (error) {
       console.error("Error in updating user", error);
-      return rejectWithValue(
-        error.response ? error.response.data : error.message
-      );
+      return rejectWithValue(error.response ? error.response.data : error.message);
     }
   }
 );
 
-export const signInWithPopupThunk = createAsyncThunk(
-  "user/signInWithPopup",
-  async ({ auth, provider }, thunkAPI) => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      return result.user;
-    } catch (error) {
-      thunkAPI.dispatch(showMessage({ message: error.message }));
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+
 
 export const signUpWithEmailAndPassword = createAsyncThunk(
-  "user/SignupWithEmailPassword",
-  async (data, { rejectWithValue }) => {
+  'user/SignupWithEmailPassword',
+  async (data , { rejectWithValue }) => {
     console.log("userSlice", data);
     try {
       const auth = getAuth();
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
       const user = userCredential.user;
       console.log("user", user);
-      if (user && user.uid) {
+      if (user && user.uid) { 
         const userData = {
           name: data.displayName,
           email: data.email,
           id: user.uid,
-          role: data.role,
-          ph_num_1: data.ph_num_1,
+          role:data.role,
+          ph_num_1:data.ph_num_1
         };
         console.log("userdata", userData);
-
-        const response = await axios.post(
-          `${BaseUrl}/user`,
-          userData
-        );
-        console.log("response ", response);
-
-        if (!response.ok) {
-          console.log("Failed to send user data to server");
+        try {
+        const response = await axios.post("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user", userData);
+        console.log('response ', response);
         }
+        catch{
+          
+        }
+        if (!response.ok) {
+          console.log('Failed to send user data to server');
+        }
+
+  
+
       } else {
-        console.error("Failed to create user");
-        return rejectWithValue("Failed to create user");
+        console.error('Failed to create user');
+        return rejectWithValue('Failed to create user');
       }
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error('Error:', error.message);
       return rejectWithValue(error.message);
     }
   }
 );
 
 export const UserProfile = createAsyncThunk(
-  "user/UserProfile",
+  'user/UserProfile',
   async (_, { rejectWithValue }) => {
+    
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const cont_user_id = user.uid;
-
-      const userdata = await axios.get(
-        `${BaseUrl}/user?user_id=${cont_user_id}&req_user_id=${cont_user_id}`
-      );
-      console.log("userdata", userdata.data);
+      
+      const userdata = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${cont_user_id}&req_user_id=${cont_user_id}`)
+      console.log("userdata", userdata.data); 
       return userdata.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -202,47 +132,47 @@ export const UserProfile = createAsyncThunk(
   }
 );
 
+
+
+
 export const signInWithEmailPassword = createAsyncThunk(
-  "user/signInWithEmailAndPassword",
-  async ({ email, password }, { rejectWithValue }) => {
+  'user/signInWithEmailAndPassword',
+  async ({ email, password }, { rejectWithValue }) => { 
     try {
       const auth = getAuth();
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log("userCredential", userCredential);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log("userCredential",userCredential)
       const user = userCredential.user;
-
+      
       if (user) {
-        const userdata = await axios.get(
-          `${BaseUrl}/user?user_id=${user.uid}&req_user_id=${user.uid}`
-        );
-        console.log("userdata", userdata);
+        const userdata = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${user.uid}&req_user_id=${user.uid}`)
+        console.log("userdata",userdata)
         let User = {
           uid: user.uid,
           role: "admin",
           data: {
             accessToken: user.accessToken,
             displayName: user.displayName,
-          },
+          }
         };
-
-        localStorage.setItem("user", JSON.stringify(User));
-
+        
+        localStorage.setItem('user', JSON.stringify(User));
+      
+        
         return User;
       } else {
         throw new Error("User not found");
       }
     } catch (error) {
+
       return rejectWithValue(error.message);
     }
   }
 );
 
+
 export const updateUserSettings = createAsyncThunk(
-  "user/updateSettings",
+  'user/updateSettings',
   async (settings, { dispatch, getState }) => {
     const { user } = getState();
     const newUser = _.merge({}, user, { data: { settings } });
@@ -254,7 +184,7 @@ export const updateUserSettings = createAsyncThunk(
 );
 
 export const updateUserShortcuts = createAsyncThunk(
-  "user/updateShortucts",
+  'user/updateShortucts',
   async (shortcuts, { dispatch, getState }) => {
     const { user } = getState();
     const newUser = {
@@ -277,7 +207,7 @@ export const logoutUser = () => async (dispatch, getState) => {
   // history.push({
   //   pathname: '/',
   // });
-
+  
   // if (!user.role || user.role.length === 0) {
   //   // is guest
   //   return null;
@@ -299,7 +229,7 @@ export const updateUserData = (user) => async (dispatch, getState) => {
   jwtService
     .updateUserData(user)
     .then(() => {
-      dispatch(showMessage({ message: "User data saved with api" }));
+      dispatch(showMessage({ message: 'User data saved with api' }));
     })
     .catch((error) => {
       dispatch(showMessage({ message: error.message }));
@@ -307,13 +237,17 @@ export const updateUserData = (user) => async (dispatch, getState) => {
 };
 
 const initialState = {
-  role: "guest", // guest
+  role: 'guest', // guest
   data: {
+    // displayName: 'John Doe',
+    // photoURL: 'assets/images/avatars/brian-hughes.jpg',
+    // email: 'johndoe@withinpixels.com',
+    // shortcuts: ['apps.calendar', 'apps.mailbox', 'apps.contacts', 'apps.tasks'],
   },
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     userLoggedOut: (state, action) => initialState,
@@ -325,29 +259,19 @@ const userSlice = createSlice({
     };
   },
 
-  extraReducers: (builder) => {
-    builder
-      .addCase(updateUserSettings.fulfilled, (state, action) => action.payload)
-      .addCase(updateUserShortcuts.fulfilled, (state, action) => action.payload)
-      .addCase(setUser.fulfilled, (state, action) => action.payload)
-      .addCase(signInWithEmailPassword.fulfilled, (state, action) => action.payload)
-      .addCase(UpdateUser.fulfilled, (state, action) => {
-        console.log("action", action.payload);
-        return {
-          ...state,
-          ...action.payload,
-        };
-      })
-    
-       
+  extraReducers: {
+    [updateUserSettings.fulfilled]: (state, action) => action.payload,
+    [updateUserShortcuts.fulfilled]: (state, action) => action.payload,
+    [setUser.fulfilled]: (state, action) => action.payload,
+    [signInWithEmailPassword.fulfilled]:(state,action)=>action.payload,
   },
 });
 
 export const { userLoggedOut } = userSlice.actions;
+
 
 export const selectUser = ({ user }) => user;
 
 export const selectUserShortcuts = ({ user }) => user.data.shortcuts;
 
 export default userSlice.reducer;
-

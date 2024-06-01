@@ -260,7 +260,7 @@
 
 // export default PropertyHome;
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchRecentTransactions,
@@ -278,30 +278,19 @@ import {
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SearchDialogue from "../SearchDialogue";
-import DefaultImg from "src/assets/Default/DegaultImg.gif";
-
-const debounce = (func, delay) => {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      func(...args);
-    }, delay);
-  };
-};
 
 const PropertyHome = () => {
   const dispatch = useDispatch();
   const recentTransactions = useSelector(selectRecentTransactions);
   console.log("recentTransactions", recentTransactions);
   const searchResults = useSelector(selectSearchResults);
+  console.log("searchResults",searchResults)
   const [searchCriteria, setSearchCriteria] = useState({});
   const [noDataFound, setNoDataFound] = useState(false);
   const [page, setPage] = useState(1);
+console.log("page",page)
 
-  console.log("page", page);
-
-  const DataNotFound = useCallback((response) => {
+  const DataNotFound = (response) => {
     if (!response || Object.keys(response).length === 0) {
       setNoDataFound(true);
       setTimeout(() => {
@@ -312,41 +301,32 @@ const PropertyHome = () => {
     }
   }, []);
 
-  const handleScroll = useCallback(
-    debounce(() => {
-      if (
-        window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 5
-      ) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    }, 200),
-    []
-  );
+  const handleScroll = useCallback(() => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight-5) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, []);
 
   useEffect(() => {
-    dispatch(fetchRecentTransactions(page));
-  }, [dispatch, page]);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+    dispatch(fetchRecentTransactions());
+  }, [dispatch]);
 
   const handleSearch = (criteria) => {
+    
     setSearchCriteria(criteria);
     dispatch(SearchResults(criteria))
-      .then((response) => {
-        if (response.payload.data.property.length === 0) {
-          setNoDataFound(true);
-        } else {
-          setNoDataFound(false);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching search results:", error);
-      });
-  };
+    .then((response) => {
+      
+      if (response.payload.data.property === 0) {
+        setNoDataFound(true);
+      } else {
+        setNoDataFound(false);
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching search results:", error);
+    });
+};
 
   const handleClick = (propertyId) => {
     const newWindow = window.open(`/property/${propertyId}`, "_blank");
@@ -357,22 +337,23 @@ const PropertyHome = () => {
     }
   };
 
+  const shuffleArray = (array) => {
+    if (!array) return [];
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+  const Transactions = shuffleArray(
+    recentTransactions?.property?.buy_properties.concat(
+      recentTransactions?.property?.sell_properties
+    ) || []
+  );
+
   return (
     <Box sx={{ margin: "20px", position: "relative" }}>
-      <Box
-      // sx={{
-      //   position: "fixed",
-      //   top: 60,
-      //   left:279,
-      //   width: "100%",
-      //   zIndex: 1000,
-      //   backgroundColor: "white",
-      //   padding: "20px",
-      //   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-      // }}
-      >
-        <SearchDialogue onSearch={DataNotFound} />
-      </Box>
+      <SearchDialogue onSearch={DataNotFound} />
       {noDataFound && (
         <Typography
           variant="h6"
@@ -381,29 +362,24 @@ const PropertyHome = () => {
             padding: "10px 50px",
             textAlign: "center",
             borderRadius: "5px",
+            transform: "translate(-50%, -50%)",
             color: "white",
-            position: "fixed",
-            top: "60px",
+            position: "absolute",
+            top: "20px",
             left: "50%",
-            transform: "translateX(-50%)",
-            zIndex: 1000,
           }}
         >
           No Data Found
         </Typography>
       )}
-      <Grid container spacing={1} sx={{ margin: "0", marginTop: "120px" }}>
+      <Grid container spacing={1} sx={{ margin: "0" }}>
         {Object.keys(searchResults).length > 0 && (
           <div>
             <Typography variant="h6">Search Results</Typography>
             <hr style={{ margin: "10px 0px" }} />
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               {searchResults.map((item, index) => (
-                <Tooltip
-                  key={index}
-                  title={item.listing_type}
-                  sx={{ fontSize: "20px" }}
-                >
+                <Tooltip key={index} title={item.listing_type} sx={{ fontSize: "20px" }}>
                   <Card
                     sx={{
                       flex: "0 0 auto",
@@ -454,63 +430,14 @@ const PropertyHome = () => {
           </div>
         )}
       </Grid>
-      <Box
-      sx={{
-        background:
-          "linear-gradient(90deg, rgba(233,233,233,1) 0%, rgba(255,255,255,1) 100%)",
-        height: "60vh",
-        width: "100%",
-        maxWidth: "100%",
-        borderRadius: "30px",
-        position: "relative",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <Grid container spacing={2} sx={{ width: '100%', }}>
-        <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <Box sx={{ textAlign: 'center' }}>
-            <h1 className="BigText">Easy Way To Find a Perfect Property</h1>
-            <p style={{fontSize:"20px",textAlign:"left",margin:"20px 0 0 30px"}}>We provide a complete service for the sale, purchase of real estate..</p>
-          </Box>
-        </Grid>
-        <Grid item xs={12} md={6} sx={{ position: 'relative' }}>
-          <img
-            src="/assets/images/properties/pexels-binyaminmellish-1396122-removebg-preview copy.png"
-            alt="Girl in a jacket"
-            style={{
-              position: "absolute",
-              bottom: "-191px",
-              right: "-33px",
-              maxWidth: '100%',
-             
-            
-            }}
-          />
-        </Grid>
-      </Grid>
-    </Box>
-
-      <Grid container spacing={1} sx={{ marginTop: "20px" }}>
+      <Grid container spacing={1} sx={{ margin: "0" }}>
         {recentTransactions.length > 0 && (
           <div>
             <Typography variant="h6">Recent Properties</Typography>
             <hr style={{ margin: "10px 0px" }} />
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-                flexWrap: "wrap",
-                justifyContent: "center",
-              }}
-            >
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               {recentTransactions.map((item, index) => (
-                <Tooltip
-                  key={index}
-                  title={item.listing_type}
-                  sx={{ fontSize: "20px" }}
-                >
+                <Tooltip key={index} title={item.listing_type} sx={{ fontSize: "20px" }}>
                   <Card
                     sx={{
                       flex: "0 0 auto",
@@ -539,21 +466,19 @@ const PropertyHome = () => {
                           },
                         }}
                       />
-                      <div>
-                        <Typography
-                          sx={{
-                            fontSize: "15px",
-                            textTransform: "capitalize",
-                            fontWeight: "500",
-                            margin: "10px 0px 0px 10px",
-                            fontWeight: "600",
-                          }}
-                        >
-                          {`${
-                            item?.listing_type === "buy"
-                              ? "Wanted"
-                              : `${item?.listing_type}ing`
-                          }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
+                      <Typography
+                        sx={{
+                          fontSize: "20px",
+                          textTransform: "capitalize",
+                          marginLeft: "25px",
+                          fontWeight: "500",
+                          marginTop: "10px",
+                        }}
+                      >{`${item?.listing_type}ing, ${item?.area}${item?.unit}s ${item?.prop_type}`}</Typography>
+                      <div style={{ display: "flex", marginTop: "5px" }}>
+                        <LocationOnIcon sx={{ color: "orange" }} />
+                        <Typography sx={{ fontSize: "14px",textTransform:"capitalize" }}>
+                          {`${item?.landmark}, ${item?.district}`}
                         </Typography>
                         <Box sx={{ display: "flex" }}>
                           <LocationOnIcon sx={{ color: "orange" }} />

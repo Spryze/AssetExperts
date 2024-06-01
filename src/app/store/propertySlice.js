@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import PropertyData from '../../Properties.json';
-import BaseUrl from 'app/configs/BaseUrl';
 
 // Mock asynchronous fetch for property details
 export const fetchPropertyDetails = createAsyncThunk(
@@ -8,7 +7,7 @@ export const fetchPropertyDetails = createAsyncThunk(
   async (property_id, { rejectWithValue }) => {
     try {
       console.log(property_id)
-      const url = `${BaseUrl}/property?property_id=${property_id}`;
+      const url = `https://db93a4e7-afba-4acc-8fb6-24c6904c08a7-00-wzqnnh54dv12.sisko.replit.dev/property?property_id=${property_id}`;
       const response = await fetch(url, {
         method: 'get',
       });
@@ -33,7 +32,7 @@ export const updatePropertyDetails = createAsyncThunk(
       const state = getState();
       const selectedProperty = state.properties.selectedProperty;
       // Example URL for updating property details
-      const url = `${BaseUrl}/updateProperty/${property_id}`;
+      const url = `https://example.com/updateProperty/${property_id}`;
       const response = await fetch(url, {
         method: 'PUT',
         headers: {

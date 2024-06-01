@@ -87,8 +87,7 @@ function SignUpPage() {
     const { email, password, displayName } = data;
     dispatch(signUpWithEmailAndPassword(data)).then(
       (response) => {
-        console.log("response",response)
-        if(response.type === "user/SignupWithEmailPassword/fulfilled"){
+        if(response.status === 201){
           navigate("/");
         }
         

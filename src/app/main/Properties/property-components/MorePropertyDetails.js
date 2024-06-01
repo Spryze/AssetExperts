@@ -14,20 +14,11 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const MorePropertyDetails = () => {
   const propertyData = useSelector(selectProperties);
-  console.log("propertyData", propertyData);
-  const [propertyType, setPropertyType] = useState("");
-  console.log("propertyType", propertyType);
+
 
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
-
-  useEffect(() => {
-    if (propertyData?.data?.property?.p_type) {
-      setPropertyType(propertyData.data.property.p_type);
-    }
-  }, [propertyData]);
-
   return (
     <>
       <Card
@@ -211,4 +202,4 @@ const MorePropertyDetails = () => {
   );
 };
 
-export default MorePropertyDetails;
+export default MorePropertyDetails

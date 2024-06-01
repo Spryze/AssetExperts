@@ -5,6 +5,7 @@ import RabitSplashScreen from '@rabit/core/RabitSplashScreen';
 import { showMessage } from 'app/store/rabit/messageSlice';
 import { logoutUser, setUser } from 'app/store/userSlice';
 import jwtService from './services/jwtService';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = React.createContext();
 
@@ -60,7 +61,7 @@ function AuthProvider({ children }) {
 
       Promise.all([
         dispatch(setUser(user)),
-        // You can receive data in here before app initialization
+        
       ]).then((values) => {
         setWaitAuthCheck(false);
         setIsAuthenticated(true);

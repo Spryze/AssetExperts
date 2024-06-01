@@ -55,9 +55,6 @@ const UploadImages = ({ responseData }) => {
       formData.append('user_id', responseData.payload.details.user_id);
 
 
-      for (const pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-      }
       dispatch(AddImage(formData)).then((response)=>{
         console.log("response",response);
        if(response.meta.requestStatus === "fulfilled"){

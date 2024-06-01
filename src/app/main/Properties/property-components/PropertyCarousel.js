@@ -10,7 +10,7 @@ const PropertyCarousel = () => {
   const images = propertydata?.data?.images || []; 
 
   const [currentSlide, setCurrentSlide] = useState(0);
-console.log("hii")
+
   const nextSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide + 1) % images.length);
   };

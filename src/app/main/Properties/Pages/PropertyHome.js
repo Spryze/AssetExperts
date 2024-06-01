@@ -295,14 +295,16 @@ const PropertyHome = () => {
   const recentTransactions = useSelector(selectRecentTransactions);
   console.log("recentTransactions", recentTransactions);
   const searchResults = useSelector(selectSearchResults);
-  console.log("searchResults",searchResults)
+  console.log("searchResults", searchResults);
   const [searchCriteria, setSearchCriteria] = useState({});
   const [noDataFound, setNoDataFound] = useState(false);
   const [page, setPage] = useState(1);
 
   console.log("page", page);
-  const transactions = recentTransactions?.property?.buy_properties?.concat(recentTransactions?.property?.sell_properties)
-  console.log("transactions",transactions)
+  const transactions = recentTransactions?.property?.buy_properties?.concat(
+    recentTransactions?.property?.sell_properties
+  );
+  console.log("transactions", transactions);
   const DataNotFound = useCallback((response) => {
     if (!response || Object.keys(response).length === 0) {
       setNoDataFound(true);
@@ -362,19 +364,60 @@ const PropertyHome = () => {
   return (
     <Box sx={{ margin: "20px", position: "relative" }}>
       <Box
-      // sx={{
-      //   position: "fixed",
-      //   top: 60,
-      //   left:279,
-      //   width: "100%",
-      //   zIndex: 1000,
-      //   backgroundColor: "white",
-      //   padding: "20px",
-      //   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-      // }}
+        sx={{
+          background:
+            "linear-gradient(90deg, rgba(233,233,233,1) 0%, rgba(255,255,255,1) 100%)",
+          height: "60vh",
+          width: "100%",
+          maxWidth: "100%",
+          borderRadius: "30px",
+          position: "relative",
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+        }}
       >
-        <SearchDialogue onSearch={DataNotFound} />
+        <Grid container spacing={2} sx={{ width: "100%" }}>
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Box sx={{ textAlign: "center" }}>
+              <h1 className="BigText">Easy Way To Find a Perfect Property</h1>
+              <p
+                style={{
+                  fontSize: "20px",
+                  textAlign: "left",
+                  margin: "20px 0 0 30px",
+                }}
+              >
+                We provide a complete service for the sale, purchase of real
+                estate..
+              </p>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={6} sx={{ position: "relative" }}>
+            <img
+              src="/assets/images/properties/pexels-binyaminmellish-1396122-removebg-preview copy.png"
+              alt="Girl in a jacket"
+              style={{
+                position: "absolute",
+                bottom: "-191px",
+                right: "-33px",
+                maxWidth: "100%",
+              }}
+            />
+          </Grid>
+          <SearchDialogue onSearch={DataNotFound} />
+        </Grid>
       </Box>
+
       {noDataFound && (
         <Typography
           variant="h6"
@@ -394,7 +437,7 @@ const PropertyHome = () => {
           No Data Found
         </Typography>
       )}
-      <Grid container spacing={1} >
+      <Grid container spacing={1}>
         {Object.keys(searchResults)?.length > 0 && (
           <div>
             <Typography variant="h6">Search Results</Typography>
@@ -456,48 +499,11 @@ const PropertyHome = () => {
           </div>
         )}
       </Grid>
-      <Box
-      sx={{
-        background:
-          "linear-gradient(90deg, rgba(233,233,233,1) 0%, rgba(255,255,255,1) 100%)",
-        height: "60vh",
-        width: "100%",
-        maxWidth: "100%",
-        borderRadius: "30px",
-        position: "relative",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      <Grid container spacing={2} sx={{ width: '100%', }}>
-        <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <Box sx={{ textAlign: 'center' }}>
-            <h1 className="BigText">Easy Way To Find a Perfect Property</h1>
-            <p style={{fontSize:"20px",textAlign:"left",margin:"20px 0 0 30px"}}>We provide a complete service for the sale, purchase of real estate..</p>
-          </Box>
-        </Grid>
-        <Grid item xs={12} md={6} sx={{ position: 'relative' }}>
-          <img
-            src="/assets/images/properties/pexels-binyaminmellish-1396122-removebg-preview copy.png"
-            alt="Girl in a jacket"
-            style={{
-              position: "absolute",
-              bottom: "-191px",
-              right: "-33px",
-              maxWidth: '100%',
-             
-            
-            }}
-          />
-        </Grid>
-      </Grid>
-    </Box>
 
       <Grid container spacing={1} sx={{ marginTop: "20px" }}>
         {recentTransactions.length > 0 && (
           <div>
-            <Typography variant="h6">Recent Properties</Typography>
+            
             <hr style={{ margin: "10px 0px" }} />
             <div
               style={{
@@ -507,6 +513,7 @@ const PropertyHome = () => {
                 justifyContent: "center",
               }}
             >
+              <Typography variant="h6">Recent Properties</Typography>
               {recentTransactions.map((item, index) => (
                 <Tooltip
                   key={index}

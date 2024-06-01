@@ -127,7 +127,7 @@ const SearchDialogue = ({ onSearch }) => {
           display: "flex",
           alignItems: "end",
           padding: "2px 10px",
-          marginBottom: "30px",
+          margin: "20px 30px",
         }}
       >
         <TextField

@@ -6,7 +6,6 @@ import { selectProperties } from "../PropertySlice1";
 
 const PropertyCarousel = () => {
   const propertydata = useSelector(selectProperties);
-  // console.log("propertydata",propertydata)
   const images = propertydata?.data?.images || []; 
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -36,15 +35,35 @@ const PropertyCarousel = () => {
   }
 
   return (
-    <div style={{ position: "relative", marginBottom: "40px" }}>
-      <Box display="flex" justifyContent="center">
+    <div style={{ position: "relative", margin: "40px 0px" }}>
+      <Box>
+       
         <CardMedia
           component="img"
           image={images[currentSlide]}
           alt="Activity Image"
-          style={{ marginTop: "16px", width: "1000px", height: "400px" }}
+          style={{ width: "-webkit-fill-available", height: "400px" }}
         />
+         <h6
+          className="small-text"
+          style={{
+            background: "#FFA500",
+            padding: "10px 25px",
+            borderRadius: "0px 10px 10px 0px",
+            textAlign: "center",
+            bottom:"0",
+            fontSize:"20px",
+            display: "inline-block",
+            position:"absolute",
+            textTransform:"capitalize",
+            fontWeight:"600",
+            
+          }}
+        >
+          Listing Type: {propertydata?.data?.property?.listing_type === 'buy'?("Wanted"):(propertydata?.data?.property?.listing_type)}
+        </h6>
       </Box>
+
       {images.length > 1 && (
         <>
           <Box display="flex" justifyContent="center" mt={2}>

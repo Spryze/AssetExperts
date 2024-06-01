@@ -17,7 +17,7 @@ const Neighborhood = () => {
     return (
         <div>
             <Card id="neighboorhood" className="card">
-                <Typography variant='h6' sx={{margin:"25px 0px 0px 25px"}}>
+                <Typography className='heading-text' variant='h6' sx={{margin:"25px 0px 0px 25px"}}>
                     Around The Property
                 </Typography>
                 <div style={{display:"flex", flexWrap:"wrap"}}>

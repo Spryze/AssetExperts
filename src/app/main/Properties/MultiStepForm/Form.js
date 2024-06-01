@@ -1,6 +1,18 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import {TextField,Button,Box,Grid,Select,MenuItem,FormControl,InputLabel,Paper,Typography,FormHelperText} from "@mui/material";
+import {
+  TextField,
+  Button,
+  Box,
+  Grid,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Paper,
+  Typography,
+  FormHelperText,
+} from "@mui/material";
 import { addProperty } from "../PropertySlice1";
 import { useSelector } from "react-redux";
 import { selectUser } from "app/store/userSlice";
@@ -8,7 +20,7 @@ import UploadImages from "./Property-Types-Forms/UploadImages";
 
 const Form = () => {
   const dispatch = useDispatch();
-  const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
 
   const [formData, setFormData] = useState({
     propertyName: "",
@@ -26,19 +38,19 @@ const Form = () => {
     ad_info: "",
     size: 0,
     boundry_wall: "",
-    furnished: "",
+    furnshied: "",
     approved_by: "",
     parking: false,
     WaterSource: "",
     Flooring: "",
     PowerBackup: "",
-    no_Of_OpenSides: "",
+    num_open_sides: "",
     PropertyStatus: "",
     status: "",
-    RERAStatus: "",
-    BouandaryWall: "",
+    rera: "",
+    bound_wall: "",
     BHK: "",
-    Lift: "",
+    lift: "",
     PropertyAge: "",
     comments: "",
     developments: "",
@@ -56,6 +68,7 @@ const Form = () => {
     direction: "",
     listing_type: "",
     loan_eligibile: false,
+    No_bed_rooms: "",
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -102,16 +115,15 @@ const Form = () => {
     const errors = validateForm();
     if (Object.keys(errors).length === 0) {
       console.log("formData", formData);
-      const resultAction = dispatch(addProperty(formData)).then((response)=>{
+      const resultAction = dispatch(addProperty(formData)).then((response) => {
         if (response.payload.status === "success") {
           setResponseData(response);
-          console.log("responseData")
+          console.log("responseData",response);
           setIsFormSubmitted(true);
         } else {
           console.error(resultAction.payload);
         }
       });
-      
     } else {
       setFormErrors(errors);
     }
@@ -150,7 +162,36 @@ const Form = () => {
       onSubmit={handleSubmit}
       sx={{ flexGrow: 1, width: "100%", maxWidth: 800, margin: "20px auto" }}
     >
-      <Grid container spacing={2}>
+      <Typography variant="h6" sx={{}}>Add Property</Typography>
+      <hr/>
+      <Grid container spacing={2} sx={{marginTop:"10px"}}>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Listing Type</InputLabel>
+            <Select
+              label="Listing Type"
+              name="listing_type"
+              value={formData.listing_type}
+              onChange={handleChange}
+            >
+              <MenuItem value="buy">Buy</MenuItem>
+              <MenuItem value="sell">Sell</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Property Name"
+            name="propertyName"
+            value={formData.propertyName}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+            required
+            error={!!formErrors.propertyName}
+            helperText={formErrors.propertyName}
+          />
+        </Grid>
         <Grid item xs={12} sm={6}>
           <FormControl
             fullWidth
@@ -174,32 +215,6 @@ const Form = () => {
             <FormHelperText>{formErrors.p_type}</FormHelperText>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Property Name"
-            name="propertyName"
-            value={formData.propertyName}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-            required
-            error={!!formErrors.propertyName}
-            helperText={formErrors.propertyName}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Size"
-            name="size"
-            type="number"
-            value={formData.size}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
-
         <Grid item xs={12} sm={6}>
           <FormControl
             fullWidth
@@ -225,9 +240,10 @@ const Form = () => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            label="State"
-            name="state"
-            value={formData.state}
+            label="Size"
+            name="size"
+            type="number"
+            value={formData.size}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -235,65 +251,33 @@ const Form = () => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            label="District"
-            name="district"
-            value={formData.district}
+            label="Dimension"
+            name="dimensions"
+            type="text"
+            value={formData.dimensions}
             onChange={handleChange}
             variant="outlined"
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Village"
-            name="village"
-            value={formData.village}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Landmark"
-            name="landmark"
-            value={formData.landmark}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
-        {formData.p_type === "Plot" && (
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Boundary Wall"
-              name="boundry_wall"
-              value={formData.boundry_wall}
-              onChange={handleChange}
-              variant="outlined"
-              fullWidth
-            />
-          </Grid>
-        )}
-        {formData.p_type === "Plot" && (
+        {formData.p_type === "Flat" && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
-              <InputLabel>No. of Open Sides</InputLabel>
+              <InputLabel>No. of Bed Rooms</InputLabel>
               <Select
-                label="No. of Open Sides"
-                name="no_Of_OpenSides"
-                value={formData.no_Of_OpenSides}
+                label="No. of Bed Room"
+                name="No_bed_rooms"
+                value={formData.No_bed_rooms}
                 onChange={handleChange}
               >
-                <MenuItem value="1">1</MenuItem>
-                <MenuItem value="2">2</MenuItem>
-                <MenuItem value="3">3</MenuItem>
-                <MenuItem value="4">4</MenuItem>
+                <MenuItem value="1">1 BHK</MenuItem>
+                <MenuItem value="2">2 BHK</MenuItem>
               </Select>
               <FormHelperText>{formErrors.unit}</FormHelperText>
             </FormControl>
           </Grid>
         )}
+
         {(formData.p_type === "Flat" ||
           formData.p_type === "PG" ||
           formData.p_type === "Office Place" ||
@@ -305,8 +289,8 @@ const Form = () => {
               <InputLabel>Furnished</InputLabel>
               <Select
                 label="Furnished"
-                name="furnished"
-                value={formData.furnished}
+                name="furnshied"
+                value={formData.furnshied}
                 onChange={handleChange}
               >
                 <MenuItem value="Yes">Yes</MenuItem>
@@ -315,14 +299,53 @@ const Form = () => {
             </FormControl>
           </Grid>
         )}
+
+        {formData.p_type === "Plot" && (
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>Boundary Wall</InputLabel>
+              <Select
+               label="Boundary Wall"
+                name="bound_wall"
+                value={formData.bound_wall}
+                onChange={handleChange}
+              >
+                <MenuItem value="Yes">Yes</MenuItem>
+                <MenuItem value="No">No</MenuItem>
+                
+              </Select>
+              <FormHelperText>{formErrors.unit}</FormHelperText>
+            </FormControl>
+          </Grid>
+        )}
+        {formData.p_type === "Plot" && (
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>No. of Open Road Sides</InputLabel>
+              <Select
+                label="No. of Open Road Sides"
+                name="num_open_sides"
+                value={formData.num_open_sides}
+                onChange={handleChange}
+              >
+                <MenuItem value="1">1</MenuItem>
+                <MenuItem value="2">2</MenuItem>
+                <MenuItem value="3">3</MenuItem>
+                <MenuItem value="4">4</MenuItem>
+              </Select>
+              <FormHelperText>{formErrors.unit}</FormHelperText>
+            </FormControl>
+          </Grid>
+        )}
+
         {formData.p_type === "Flat" && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>RERA Status</InputLabel>
               <Select
                 label="RERA Status"
-                name="RERAStatus"
-                value={formData.RERAStatus}
+                name="rera"
+                value={formData.rera}
                 onChange={handleChange}
               >
                 <MenuItem value="Registered">Registered</MenuItem>
@@ -362,8 +385,8 @@ const Form = () => {
               <InputLabel>Lift</InputLabel>
               <Select
                 label="Lift"
-                name="Lift"
-                value={formData.Lift}
+                name="lift"
+                value={formData.lift}
                 onChange={handleChange}
               >
                 <MenuItem value="Yes">Yes</MenuItem>
@@ -372,6 +395,46 @@ const Form = () => {
             </FormControl>
           </Grid>
         )}
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Village"
+            name="village"
+            value={formData.village}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Landmark"
+            name="landmark"
+            value={formData.landmark}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="District"
+            name="district"
+            value={formData.district}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="State"
+            name="state"
+            value={formData.state}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+          />
+        </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             label="Price"
@@ -397,17 +460,7 @@ const Form = () => {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Dimension"
-            name="dimensions"
-            type="text"
-            value={formData.dimensions}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
+        
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth variant="outlined">
             <InputLabel>Direction</InputLabel>
@@ -481,20 +534,7 @@ const Form = () => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>Listing Type</InputLabel>
-            <Select
-              label="Listing Type"
-              name="listing_type"
-              value={formData.listing_type}
-              onChange={handleChange}
-            >
-              <MenuItem value="buy">Buy</MenuItem>
-              <MenuItem value="sell">Sell</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
+
         <Grid item xs={12} sm={6}>
           <TextField
             label="Disputes"

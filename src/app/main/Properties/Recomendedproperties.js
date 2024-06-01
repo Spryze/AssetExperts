@@ -5,7 +5,6 @@ import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { fetchProperties } from "./PropertySlice1";
 import { useDispatch } from "react-redux";
 import Property from "./Property";
 
@@ -18,11 +17,11 @@ const Recomendedproperties = () => {
   const [showRightArrow, setShowRightArrow] = useState(true);
 
   const handleClick = (propertyId) => {
-    const newWindow = window.open(`/property/${propertyId}`, '_blank');
+    const newWindow = window.open(`/property/${propertyId}`, "_blank");
     if (newWindow) {
       newWindow.focus();
     } else {
-      console.error('Unable to open new window/tab');
+      console.error("Unable to open new window/tab");
     }
   };
 
@@ -37,14 +36,16 @@ const Recomendedproperties = () => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
       setShowLeftArrow(container.scrollLeft > 0);
-      setShowRightArrow(container.scrollLeft < container.scrollWidth - container.clientWidth);
+      setShowRightArrow(
+        container.scrollLeft < container.scrollWidth - container.clientWidth
+      );
     }
   };
 
   const startAutoScroll = () => {
     scrollInterval.current = setInterval(() => {
       scrollRight();
-    }, 3000); 
+    }, 3000);
   };
 
   const stopAutoScroll = () => {
@@ -76,13 +77,11 @@ const Recomendedproperties = () => {
       data-tab-id="recomended"
       className="card"
       style={{ position: "relative", overflowX: "hidden", margin: "10px 0px" }}
-      onMouseEnter={stopAutoScroll} 
+      onMouseEnter={stopAutoScroll}
       onMouseLeave={startAutoScroll}
     >
-      <Typography variant="h6">
-        Recomended Properties
-      </Typography>
-      <hr style={{margin:"10px 0px"}}/>
+      <Typography variant="h6">Nearby Properties</Typography>
+      <hr style={{ margin: "10px 0px" }} />
       <IconButton
         style={{
           position: "absolute",
@@ -111,28 +110,49 @@ const Recomendedproperties = () => {
         {propertyData?.recomended_prop?.map((item, index) => (
           <Card
             key={index}
-            style={{ flex: "0 0 auto", height: "auto", width: "300px",cursor:"pointer"}}
-            onClick={() => handleClick(item.property_id)} 
+            style={{
+              flex: "0 0 auto",
+              height: "auto",
+              width: "300px",
+              cursor: "pointer",
+              padding: "0px",
+              borderRadius: "5px",
+            }}
+            onClick={() => handleClick(item.property_id)}
           >
-            <CardContent>
+            <CardContent sx={{ padding: "0px" }}>
               <img
                 src={item?.prop_image[0]}
                 alt="Property"
-                style={{ width: "100%", height: "200px", objectFit: "cover" }}
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  objectFit: "cover",
+                  transition: "transform 0.3s ease-in-out", // Apply transition effect here
+                  "&:hover": {
+                    transform: "scale(1.05)",
+                  },
+                }}
               />
               <Typography
                 sx={{
-                  fontSize: "20px",
+                  fontSize: "15px",
                   textTransform: "capitalize",
-                  marginLeft: "25px",
                   fontWeight: "500",
-                  marginTop:"10px",
+                  margin: "10px 0px 0px 10px",
+                  fontWeight: "600",
                 }}
               >{`${item?.listing_type}ing, ${item?.area}${item?.unit}s ${item?.prop_type}`}</Typography>
               <div style={{ display: "flex", marginTop: "5px" }}>
                 <LocationOnIcon sx={{ color: "orange" }} />
-                <Typography sx={{ fontSize: "14px",textTransform:"capitalize" }}>
-                  {}
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    textTransform: "capitalize",
+                    fontWeight: "600",
+                    color: "#707273",
+                  }}
+                >
                   {`${item?.landmark}, ${item?.district}`}
                 </Typography>
               </div>

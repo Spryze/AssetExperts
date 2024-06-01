@@ -63,7 +63,7 @@ export const addProperty = createAsyncThunk(
 
 
 
-      const response = await axios.post(`{BaseUrl}/property`, data);
+      const response = await axios.post(`${BaseUrl}/property`, data);
 
       return response.data;
     } catch (error) {

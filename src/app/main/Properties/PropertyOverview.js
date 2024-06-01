@@ -30,11 +30,14 @@ const PropertyOverview = () => {
       };
   return (
     <>
-    <Card sx={{ borderRadius: "10px", padding: "20px", marginBottom: "20px" }}>
-    <Typography variant='h6' sx={{textTransform:"capitalize"}}>
-    <span style={{fontWeight:"bold"}}> Listing Type:</span> {propertyData?.data?.property?.listing_type}
-    </Typography>
-  </Card>
+    
+    {/* <h6 className="small-text" style={{textTransform:"capitalize"}}>
+    <span style={{fontWeight:"bold",marginLeft:"20px",background:"aliceblue",padding:"25px" }}> Listing Type: {propertyData?.data?.property?.listing_type}</span>
+    </h6> */}
+    {/* <h6 className="small-text" style={{background:"aliceblue",padding:"25px" }}>
+    Listing Type: {propertyData?.data?.property?.listing_type}
+    </h6> */}
+
     <Card
     className="card"
     id="overview"
@@ -45,9 +48,9 @@ const PropertyOverview = () => {
       padding: "30px",
     }}
   >
-    <Typography variant="h6">Property Overview</Typography>
+    <Typography className="heading-text" variant="h6">Property Overview</Typography>
     <hr />
-    <Typography sx={{ padding: "30px", fontSize: "16px" }}>
+    <Typography sx={{ marginTop:"20px", fontSize: "16px" }}>
    
         {showMore
           ? propertyOverview

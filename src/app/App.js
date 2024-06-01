@@ -17,6 +17,8 @@ import withAppProviders from './withAppProviders';
 import { AuthProvider } from './auth/AuthContext';
 import { CircularProgress } from '@mui/material';
 import { useState } from 'react';
+import  'src/styles/style.css'
+
 
 const emotionCacheOptions = {
   

@@ -12,7 +12,7 @@ const ContactSeller = () => {
   // console.log("Properties",Properties)
   return (
     <Box sx={{ padding:"30px",boxShadow:"2px 2px 4px rgba(0, 0, 0, 0.1)",backgroundColor:"white",borderRadius:"5px", }}>
-      <Typography variant="h6">Request a call</Typography>
+      <Typography className="heading-text" >Request a call</Typography>
       <hr/>
       <Box sx={{display:"flex"}}>
         
@@ -20,7 +20,7 @@ const ContactSeller = () => {
         </Box>
         <Box>
         
-        <h5 style={{ marginTop: "10px", fontWeight: "bold" }}>
+        <h5 className="heading-text">
           Please Share Your Contact
         </h5>
         </Box>

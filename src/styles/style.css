@@ -1,0 +1,22 @@
+.small-text{
+    font-size: 15px;
+}
+.heading-text{
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.detailsFlex{
+    display: flex;
+    justify-content: space-between;
+    margin: 1px 0px;
+    background: aliceblue;
+    padding: 20px 19px;
+}
+.BigText{
+    font-size: 40px;
+    font-weight: bold;
+    margin: 20px 0 0 30px !important;
+    text-align: left;
+}

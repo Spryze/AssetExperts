@@ -5,7 +5,8 @@ import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { fetchProperties } from "./PropertySlice1";
+import DegaultImg from "src/assets/Default/DegaultImg.gif"
+
 
 const Recentlyadded = () => {
   const propertyData = useSelector(selectProperties);
@@ -42,7 +43,7 @@ const Recentlyadded = () => {
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        left: -200,
+        left: -310,
         behavior: "smooth",
       });
     }
@@ -51,7 +52,7 @@ const Recentlyadded = () => {
   const scrollRight = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        left: 200,
+        left: 310,
         behavior: "smooth",
       });
     }
@@ -105,24 +106,27 @@ const Recentlyadded = () => {
             onClick={() => handleClick(item.property_id)}
             style={{
               flex: "0 0 auto",
-              height: "325px",
+              height: "auto",
               width: "300px",
               cursor: "pointer",
+              padding: "0px",
+              borderRadius: "5px",
             }}
           >
-            <CardContent>
+            <CardContent sx={{padding:"0px"}}>
               <img
-                src={item?.prop_images[0]}
+                src={item?.prop_images[0] || DegaultImg}
                 alt="Property"
                 style={{ width: "100%", height: "200px", objectFit: "cover" }}
+                
               />
               <Typography
                 sx={{
-                  fontSize: "20px",
+                  fontSize: "15px",
                   textTransform: "capitalize",
-                  marginLeft: "25px",
                   fontWeight: "500",
-                  marginTop: "10px",
+                  margin: "10px 0px 0px 10px",
+                  fontWeight: "600"
                 }}
               >{`${item?.listing_type}ing, ${item?.area}${item?.unit}s ${item?.prop_type}`}</Typography>
               <div style={{ display: "flex", marginTop: "10px" }}>

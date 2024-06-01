@@ -1,58 +1,70 @@
-import * as React from 'react';
-import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import CloseIcon from '@mui/icons-material/Close';
-import TextField from '@mui/material/TextField';
-import { useDispatch } from 'react-redux';
-import { SearchResults} from './PropertySlice1';
-import CircularProgress from '@mui/material/CircularProgress';
-import Backdrop from '@mui/material/Backdrop';
+import * as React from "react";
+import { useState } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import CloseIcon from "@mui/icons-material/Close";
+import TextField from "@mui/material/TextField";
+import { useDispatch, useSelector } from "react-redux";
+import { SearchResults } from "./PropertySlice1";
+import CircularProgress from "@mui/material/CircularProgress";
+import Backdrop from "@mui/material/Backdrop";
+import statesData from "./statesData.json";
+import PriceDetails from "./PriceDetails.json";
 
-const SearchDialogue = ({onSearch}) => {
+const SearchDialogue = ({ onSearch }) => {
   const [open, setOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [responseData,setresponseData]= useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [responseData, setresponseData] = useState("");
   const [formData, setFormData] = useState({
-    
-    
-    p_type: '',
-    listing_type: '',
-    price: '',
-    state: '',
-    district: '',
-    approved_by: '',
+    p_type: "",
+    listing_type: "",
+    price_range: "",
+    state: "",
+    district: "",
+    approved_by: "",
+    status: "",
+    landmark: "",
+    loan_eligible: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  // const isLoading = useSelector((state) => state.property.status === 'loading');
   const [data, setData] = useState(null);
   const [noDataFound, setNoDataFound] = useState(false);
-
-  const dispatch = useDispatch(); 
+  const [districtOptions, setDistrictOptions] = useState([]);
+  // const error = useSelector((state) => state.property.error);
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
-    const name = event.target.name;
-    setFormData({
-      ...formData,
-      [name]: event.target.value,
-    });
-  };
+    const { name, value } = event.target;
 
-  // const handleSwitchChange = (event) => {
-  //   const name = event.target.name;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: event.target.checked,
-  //   });
-  // };
+    console.log(`Changing ${name} to ${value}`);
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+
+    if (name === "state") {
+      const selectedState = statesData.states.find(
+        (state) => state.name === value
+      );
+      setDistrictOptions(selectedState ? selectedState.district : []);
+      // Reset district when state changes
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        district: "",
+      }));
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -62,94 +74,110 @@ const SearchDialogue = ({onSearch}) => {
     setOpen(false);
   };
 
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    try {
+      const priceRangeString = formData.price_range;
+      console.log(priceRangeString);
   
-
+      const [minString, maxString] = priceRangeString.split("-");
+      const min = parseInt(minString, 10);
+      const max = parseInt(maxString, 10);
   
-
-const handleSubmit = async () => {
-  setIsLoading(true);
-  try {
-    const result = await dispatch(SearchResults(formData)).unwrap();
-    console.log("result", result);
-
-    if (result.data?.property?.length === 0) {
-      console.log("No data found");
-      onSearch(null); 
-    } else {
-      onSearch(result.data); 
+      const payload = {
+        ...formData,
+        price_range: {
+          min: min,
+          max: max,
+        },
+      };
+  
+      console.log("Payload:", JSON.stringify(payload, null, 2));
+  
+      const result = await dispatch(SearchResults(payload)).unwrap();
+      console.log("Search Result:", result);
+  
+      if (!result || !result.data || result.data.property.length === 0) {
+        console.log("No properties found");
+        setNoDataFound(true);
+        onSearch(null);
+      } else {
+        setNoDataFound(false);
+        onSearch(result.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch data:", error.message);
+      setNoDataFound(true);
+      onSearch(null);
+    } finally {
+      setIsLoading(false);
+      handleClose();
     }
-  } catch (error) {
-    console.error('Failed to fetch data:', error);
-    onSearch(null); 
-  } finally {
-    setIsLoading(false);
-    handleClose();
-  }
-};
-
-
-
-
-
-
+  };
+  
 
   const handleSearch = () => {
-    console.log('Search query:', searchQuery);
-    
+    console.log("Search query:", searchQuery);
   };
 
   return (
     <React.Fragment>
-      <Box sx={{ display: 'flex', alignItems: 'end',padding: '2px 10px', marginBottom: '30px' }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "end",
+          padding: "2px 10px",
+          marginBottom: "30px",
+        }}
+      >
         <TextField
           variant="outlined"
           size="medium"
           placeholder="Search ..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{ marginRight: '120px', width: '600px' ,fontSize: '45px'}}
+          onClick={handleClickOpen}
+          // value={searchQuery}
+          // onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{ marginRight: "120px", width: "600px", fontSize: "45px" }}
         />
         <Button
           variant="contained"
           onClick={handleSearch}
-          sx={{ padding: '5px 20px', backgroundColor: '#4caf50', '&:hover': { backgroundColor: '#45a049' } }}
+          sx={{
+            padding: "5px 20px",
+            backgroundColor: "#4caf50",
+            "&:hover": { backgroundColor: "#45a049" },
+          }}
         >
           Search
         </Button>
-        <Button
-          variant="contained"
-          onClick={handleClickOpen}
-          sx={{ marginLeft: '20px', padding: '5px 15px', backgroundColor: '#ff9900', '&:hover': { backgroundColor: '#ffa733' } }}
-        >
-          Options
-        </Button>
       </Box>
 
-      
       <Dialog
         fullWidth={formData.fullWidth}
         maxWidth={formData.maxWidth}
         open={open}
         onClose={handleClose}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
           <DialogTitle>Choose Your Requirements</DialogTitle>
-          <CloseIcon sx={{ cursor: 'pointer', margin: '10px' }} onClick={handleClose} />
+          <CloseIcon
+            sx={{ cursor: "pointer", margin: "10px" }}
+            onClick={handleClose}
+          />
         </div>
         <DialogContent>
-        
-
           <Box>
             <FormControl fullWidth>
               <InputLabel id="property-type-label">Property Types</InputLabel>
               <Select
                 labelId="property-type-label"
-                id="property-type"
+                id="property-type-select"
                 name="p_type"
                 value={formData.p_type}
-                label="Property Types"
+                label="Property select"
                 onChange={handleChange}
               >
+                <MenuItem value=" ">Any</MenuItem>
                 <MenuItem value="plot">Plots</MenuItem>
                 <MenuItem value="flat">Flats</MenuItem>
                 <MenuItem value="land">Lands</MenuItem>
@@ -165,66 +193,50 @@ const handleSubmit = async () => {
             </FormControl>
           </Box>
 
-          <Box sx={{ marginTop: '10px' }}>
-            <FormControl sx={{ mt: 2, minWidth: '200px', margin: '0px 5px' }}>
-              <InputLabel>Transaction Type</InputLabel>
+          <Box sx={{ marginTop: "10px" }}>
+            <FormControl sx={{ mt: 2, minWidth: "200px", margin: "4px 5px" }}>
+              <InputLabel>Listing Type</InputLabel>
               <Select
                 name="listing_type"
                 value={formData.listing_type}
                 onChange={handleChange}
-                label="Transaction Type"
+                label="Listing Type"
               >
+                <MenuItem value=" ">Any</MenuItem>
                 <MenuItem value="sell">Sell</MenuItem>
                 <MenuItem value="buy">Buy</MenuItem>
                 <MenuItem value="rent">Rent</MenuItem>
-                <MenuItem value="UnderConstruction">Under Construction</MenuItem>
-                <MenuItem value="ReadyToMove">Ready To Move</MenuItem>
-                <MenuItem value="NewleyLaunched">Newley Launched</MenuItem>
+                <MenuItem value="UnderConstruction">
+                  Under Construction
+                </MenuItem>
               </Select>
             </FormControl>
-            <FormControl sx={{ mt: 2, minWidth: '150px', margin: '0px 10px' }}>
+
+            <FormControl sx={{ mt: 2, minWidth: "180px", margin: "4px 5px" }}>
               <InputLabel id="budget-label">Budget ₹</InputLabel>
               <Select
-                labelId="budget-label"
+                labelId="price_range"
                 id="budget"
-                name="price"
-                value={formData.price}
+                name="price_range"
+                value={formData.price_range}
                 onChange={handleChange}
                 label="Budget ₹"
               >
-                <MenuItem value="20Lac">₹20 Lac - ₹25 Lac</MenuItem>
-                <MenuItem value="25Lac">₹25 Lac - ₹30 Lac</MenuItem>
-                <MenuItem value="30Lac">₹30 Lac - ₹35 Lac</MenuItem>
-                <MenuItem value="35Lac">₹35 Lac - ₹40 Lac</MenuItem>
-                <MenuItem value="40Lac">₹40 Lac - ₹45 Lac</MenuItem>
-                <MenuItem value="45Lac">₹45 Lac - ₹50 Lac</MenuItem>
-                <MenuItem value="50Lac">₹50 Lac - ₹55 Lac</MenuItem>
-                <MenuItem value="55Lac">₹55 Lac - ₹60 Lac</MenuItem>
-                <MenuItem value="60Lac">₹60 Lac - ₹65 Lac</MenuItem>
-                <MenuItem value="65Lac">₹65 Lac - ₹70 Lac</MenuItem>
-                <MenuItem value="70Lac">₹70 Lac - ₹75 Lac</MenuItem>
-                <MenuItem value="75Lac">₹75 Lac - ₹80 Lac</MenuItem>
-                <MenuItem value="80Lac">₹80 Lac - ₹85 Lac</MenuItem>
-                <MenuItem value="85Lac">₹85 Lac - ₹90 Lac</MenuItem>
-                <MenuItem value="90Lac">₹90 Lac - ₹95 Lac</MenuItem>
-                <MenuItem value="95Lac">₹95 Lac - ₹1Cr</MenuItem>
-                <MenuItem value="1Cr ">₹1Cr - ₹1.5Cr</MenuItem>
-                <MenuItem value="">₹45 Lac - ₹50 Lac</MenuItem>
-                <MenuItem value="50 Lac">₹50 Lac - ₹55 Lac</MenuItem>
-                <MenuItem value="55 Lac">₹55 Lac - ₹60 Lac</MenuItem>
-                <MenuItem value="60 Lac">₹60 Lac - ₹65 Lac</MenuItem>
-                <MenuItem value="65 Lac">₹65 Lac - ₹70 Lac</MenuItem>
-                <MenuItem value="70 Lac">₹70 Lac - ₹75 Lac</MenuItem>
-                <MenuItem value="75 Lac">₹75 Lac - ₹80 Lac</MenuItem>
-                <MenuItem value="80 Lac">₹80 Lac - ₹85 Lac</MenuItem>
-                <MenuItem value="85 Lac">₹85 Lac - ₹90 Lac</MenuItem>
-                <MenuItem value="90 Lac">₹90 Lac - ₹95 Lac</MenuItem>
-                <MenuItem value="95 Lac">₹95 Lac - ₹1Cr</MenuItem>
-                <MenuItem value="1Cr ">₹1Cr - ₹1.5Cr</MenuItem>
-                
+                {Object.keys(PriceDetails.PriceDetails).map((key) => (
+                  <MenuItem key={key} value={key}>
+                    {key === "Any"
+                      ? "Any"
+                      : `₹${PriceDetails.PriceDetails[
+                          key
+                        ].min.toLocaleString()} - ₹${PriceDetails.PriceDetails[
+                          key
+                        ].max.toLocaleString()}`}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
-            <FormControl sx={{ minWidth: '140px' }}>
+
+            <FormControl sx={{ minWidth: "140px", mt: 2, margin: "4px 5px" }}>
               <InputLabel>Select State</InputLabel>
               <Select
                 name="state"
@@ -232,65 +244,100 @@ const handleSubmit = async () => {
                 onChange={handleChange}
                 label="Select State"
               >
-                <MenuItem value="Telangana">Telangana</MenuItem>
-                <MenuItem value="AndhraPradesh">Andhra Pradesh</MenuItem>
-                <MenuItem value="Tamil Nadu">Tamil Nadu</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ mt: 2, minWidth: '130px', margin: '6px 5px' }}>
-              <InputLabel>District</InputLabel>
-              <Select
-                name="district"
-                value={formData.district}
-                onChange={handleChange}
-                label="Select District"
-              >
-                <MenuItem value="visakhapatnam">visakhapatnam</MenuItem>
-                <MenuItem value="hyderabad">hyderabad</MenuItem>
-                <MenuItem value="vizianagaram">vizianagaram</MenuItem>
-                <MenuItem value="srikakulam">srikakulam</MenuItem>
-                <MenuItem value="west godavari">west godavari</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ mt: 2, minWidth: '130px', margin: '6px 5px' }}>
-              <InputLabel>Approved</InputLabel>
-              <Select
-                name="approved_by"
-                value={formData.approved_by}
-                onChange={handleChange}
-                label="Select Approved"
-              >
-                <MenuItem value="Default">Default</MenuItem>
-                <MenuItem value="Panchayat">Panchayat</MenuItem>
-                <MenuItem value="Vuda">Vuda</MenuItem>
-                <MenuItem value="Rera">Rera</MenuItem>
+                {statesData.states.map((state) => (
+                  <MenuItem key={state.id} value={state.name}>
+                    {state.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Box>
+
+          <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+            <InputLabel>District</InputLabel>
+            <Select
+              name="district"
+              value={formData.district}
+              onChange={handleChange}
+              label="Select District"
+            >
+              {districtOptions.map((district) => (
+                <MenuItem key={district} value={district}>
+                  {district}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+            <InputLabel>Landmark</InputLabel>
+            <Select
+              name="Landmark"
+              value={formData.landmark}
+              onChange={handleChange}
+              label="Select Landmark"
+            >
+              {/* i want to change the params to this code base */}
+              <MenuItem value=" ">Any</MenuItem>
+              <MenuItem value="Panchayat">palasa</MenuItem>
+              <MenuItem value="Vuda">Beside National highway</MenuItem>
+              <MenuItem value="Rera">gajuwaka</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+            <InputLabel>Approved</InputLabel>
+            <Select
+              name="approved_by"
+              value={formData.approved_by}
+              onChange={handleChange}
+              label="Select Approved"
+            >
+              <MenuItem value=" ">Any</MenuItem>
+              <MenuItem value="Panchayat">Panchayat</MenuItem>
+              <MenuItem value="Vuda">Vuda</MenuItem>
+              <MenuItem value="Rera">Rera</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ mt: 2, minWidth: "140px", margin: "6px 5px" }}>
+            <InputLabel>Loan Eligibility</InputLabel>
+            <Select
+              name="Loan Eligibility"
+              value={formData.loan_eligible}
+              onChange={handleChange}
+              label="Select Loan Eligibility"
+            >
+              <MenuItem value=" ">Any</MenuItem>
+              <MenuItem value="true">Yes</MenuItem>
+              <MenuItem value="false">No</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
-        
+
         <DialogActions>
-          <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <Box
+            sx={{ display: "flex", justifyContent: "center", width: "100%" }}
+          >
             {isLoading ? (
               <CircularProgress />
             ) : (
-              <Button onClick={ handleSubmit }>Submit</Button>
+              <Button
+                onClick={handleSubmit}
+                style={{ backgroundColor: "#1D2432", color: "white" }}
+              >
+                Submit
+              </Button>
             )}
           </Box>
         </DialogActions>
       </Dialog>
-      {isLoading &&(<Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={true}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>)}
-      
+      {isLoading && (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
     </React.Fragment>
-    
-     
-    
-    
   );
 };
 

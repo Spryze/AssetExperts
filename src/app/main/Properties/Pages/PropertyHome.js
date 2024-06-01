@@ -22,6 +22,7 @@ const PropertyHome = () => {
   const dispatch = useDispatch();
   const recentTransactions = useSelector(selectRecentTransactions);
   const searchResults = useSelector(selectSearchResults);
+  console.log("searchResults",searchResults)
   const [searchCriteria, setSearchCriteria] = useState({});
   const [noDataFound, setNoDataFound] = useState(false);
   console.log("noDataFound",noDataFound)
@@ -101,7 +102,7 @@ const PropertyHome = () => {
             <Typography variant="h6">Search Results</Typography>
             <hr style={{ margin: "10px 0px" }} />
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-              {searchResults.map((item, index) => (
+              {searchResults?.property?.map((item, index) => (
                 <Tooltip
                   key={index}
                   title={item.listing_type}

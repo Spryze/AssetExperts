@@ -91,10 +91,13 @@ export const signUpWithEmailAndPassword = createAsyncThunk(
           ph_num_1:data.ph_num_1
         };
         console.log("userdata", userData);
-        
+        try {
         const response = await axios.post("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user", userData);
         console.log('response ', response);
-        
+        }
+        catch{
+          
+        }
         if (!response.ok) {
           console.log('Failed to send user data to server');
         }

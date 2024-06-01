@@ -29,7 +29,8 @@ export const fetchRecentTransactions = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/home")
-      return response.data; 
+      const transactions = response.data.property.buy_properties.concat(response.data.property.sell_properties)
+      return transactions; 
     } catch (error) {
       return rejectWithValue(error.message); 
     }
@@ -52,7 +53,7 @@ export const SearchResults = createAsyncThunk(
       if (response.status !== 200) {
         throw new Error('Failed to fetch search results');
       }
-      return response.data;
+      return response.data.property;
     } catch (error) {
       console.error('Error in SearchResults Thunk:', error.response?.data || error.message);
       return rejectWithValue(error.response?.data || error.message);
@@ -161,9 +162,9 @@ const propertySlice = createSlice({
       })
       
       .addCase(fetchRecentTransactions.fulfilled, (state, action) => {
-        
-        state.recentTransactions = action.payload;
+        state.recentTransactions = [...state.recentTransactions, ...action.payload];
       })
+      
   },
   
 });

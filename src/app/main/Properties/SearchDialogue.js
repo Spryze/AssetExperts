@@ -139,7 +139,7 @@ const SearchDialogue = ({ onSearch }) => {
           // onChange={(e) => setSearchQuery(e.target.value)}
           sx={{ marginRight: "120px", width: "600px", fontSize: "45px" }}
         />
-        <Button
+        {/* <Button
           variant="contained"
           onClick={handleSearch}
           sx={{
@@ -149,7 +149,7 @@ const SearchDialogue = ({ onSearch }) => {
           }}
         >
           Search
-        </Button>
+        </Button> */}
       </Box>
 
       <Dialog

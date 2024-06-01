@@ -19,7 +19,6 @@ import { useDispatch } from "react-redux";
 import { fetchProperties } from "./PropertySlice1";
 import Recomendedproperties from "./Recomendedproperties";
 
-
 const PropertyOverview = () => {
     const propertyData = useSelector(selectProperties);
     console.log("propertyData",propertyData)
@@ -104,7 +103,8 @@ const PropertyOverview = () => {
       Contact Builder
     </Button>
   </Card>
-  )
-}
+  </>
+  );
+};
 
-export default PropertyOverview
+export default PropertyOverview;

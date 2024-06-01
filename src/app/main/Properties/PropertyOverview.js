@@ -103,8 +103,7 @@ const PropertyOverview = () => {
       Contact Builder
     </Button>
   </Card>
-  </>
-  );
-};
+  )
+}
 
 export default PropertyOverview;

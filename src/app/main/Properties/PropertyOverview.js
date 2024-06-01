@@ -104,6 +104,7 @@ const PropertyOverview = () => {
       Contact Builder
     </Button>
   </Card>
+  </>
   )
 }
 

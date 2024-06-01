@@ -48,7 +48,7 @@ export const SearchResults = createAsyncThunk(
           'Content-Type': 'application/json'
         }
       });
-      console.log("Response from Backend:", response.data);
+      // console.log("Response from Backend:", response.data);
       if (response.status !== 200) {
         throw new Error('Failed to fetch search results');
       }

@@ -25,7 +25,7 @@ const PropertyHome = () => {
   console.log("searchResults",searchResults)
   const [searchCriteria, setSearchCriteria] = useState({});
   const [noDataFound, setNoDataFound] = useState(false);
-  console.log("noDataFound",noDataFound)
+  // console.log("noDataFound",noDataFound)
 
 
   const DataNotFound = (response) => {

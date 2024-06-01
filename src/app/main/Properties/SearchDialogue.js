@@ -78,7 +78,7 @@ const SearchDialogue = ({ onSearch }) => {
     setIsLoading(true);
     try {
       const priceRangeString = formData.price_range;
-      console.log(priceRangeString);
+      // console.log(priceRangeString);
   
       const [minString, maxString] = priceRangeString.split("-");
       const min = parseInt(minString, 10);
@@ -95,10 +95,10 @@ const SearchDialogue = ({ onSearch }) => {
       console.log("Payload:", JSON.stringify(payload, null, 2));
   
       const result = await dispatch(SearchResults(payload)).unwrap();
-      console.log("Search Result:", result);
+      // console.log("Search Result:", result);
   
       if (!result || !result.data || result.data.property.length === 0) {
-        console.log("No properties found");
+        // console.log("No properties found");
         setNoDataFound(true);
         onSearch(null);
       } else {
@@ -276,7 +276,7 @@ const SearchDialogue = ({ onSearch }) => {
               onChange={handleChange}
               label="Select Landmark"
             >
-              {/* i want to change the params to this code base */}
+              
               <MenuItem value=" ">Any</MenuItem>
               <MenuItem value="Panchayat">palasa</MenuItem>
               <MenuItem value="Vuda">Beside National highway</MenuItem>

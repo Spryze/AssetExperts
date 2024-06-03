@@ -256,7 +256,7 @@ function Property() {
       )}
       <PropertyCarousel />
       <Grid container spacing={5}>
-        <Grid item xs={12} md={8} sx={{ overflowY: "auto" }}>
+        <Grid item xs={12} md={8} >
           {/* <Box sx={{ position: "sticky", top: 0, zIndex: 1000, bgcolor: "#ffffff" }}>
             <Tabs
               value={activeTab}
@@ -273,7 +273,7 @@ function Property() {
               
             </Tabs>
           </Box> */}
-          <div style={{ overflowY: "auto", height: "calc(100vh - 120px)" }}>
+          <div >
             <AllDetails />
           </div>
         </Grid>

@@ -43,7 +43,7 @@ const PropertyOverview = () => {
     sx={{
       background: "white",
       borderRadius: "10px",
-      margin: "20px 0px",
+      // margin: "20px 0px",
       padding: "30px",
     }}
   >

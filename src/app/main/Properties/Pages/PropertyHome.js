@@ -276,6 +276,7 @@ import {
   Grid,
   Box,
   Tooltip,
+  Paper,
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SearchDialogue from "../SearchDialogue";
@@ -509,10 +510,11 @@ const PropertyHome = () => {
           We Are Available In Your Local cities..
         </Typography>
         <div
+        className="Local-cities"
           style={{
             display: "flex",
             flexWrap: "wrap",
-            justifyContent: "space-between",
+            justifyContent: "space-around",
           }}
         >
           <Card
@@ -532,15 +534,63 @@ const PropertyHome = () => {
             >
               <Typography
                 sx={{
-                  fontSize: "15px",
+                  fontSize: "18px",
                   textTransform: "capitalize",
                   fontWeight: "600",
                   textAlign: "center",
                   position: "absolute",
-                  top: "50%",
+                  top: "20%",
                   left: "50%",
                   transform: "translate(-50%, -50%)",
                   zIndex: "10",
+                  background:"white",
+                  padding: "3px 76px",
+
+                }}
+              >
+                Srikakulam
+              </Typography>
+              <img
+                src="assets/images/properties/Srikakulam.jpg"
+                alt="Property"
+                style={{
+                  width: "100%",
+                  height: "400px",
+                  objectFit: "cover",
+                  borderRadius: "5px",
+                }}
+              />
+            </CardContent>
+          </Card>
+          <Card
+            sx={{
+              flex: "0 0 auto",
+              width: "250px",
+              height: "400px",
+              position: "relative",
+              borderRadius: "5px",
+              justifyContent: "center",
+              overflow: "hidden",
+              margin:"20px 0",
+
+            }}
+          >
+            <CardContent
+              sx={{ padding: "0px", position: "relative", height: "100%" }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "18px",
+                  textTransform: "capitalize",
+                  fontWeight: "600",
+                  textAlign: "center",
+                  position: "absolute",
+                  top: "20%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  zIndex: "10",
+                  background:"white",
+                  padding: "3px 76px",
                 }}
               >
                 Visakhapatnam
@@ -574,21 +624,23 @@ const PropertyHome = () => {
             >
               <Typography
                 sx={{
-                  fontSize: "15px",
+                  fontSize: "18px",
                   textTransform: "capitalize",
                   fontWeight: "600",
                   textAlign: "center",
                   position: "absolute",
-                  top: "50%",
+                  top: "20%",
                   left: "50%",
                   transform: "translate(-50%, -50%)",
                   zIndex: "10",
+                  background:"white",
+                  padding: "3px 76px",
                 }}
               >
-                Visakhapatnam
+                Vizianagaram
               </Typography>
               <img
-                src="assets/images/properties/visakhapatnam.jpg"
+                src="assets/images/properties/vizayanagaram.jpg"
                 alt="Property"
                 style={{
                   width: "100%",
@@ -608,7 +660,7 @@ const PropertyHome = () => {
               borderRadius: "5px",
               justifyContent: "center",
               overflow: "hidden",
-              margin:"20px 0"
+              margin:"20px 0",
             }}
           >
             <CardContent
@@ -616,63 +668,24 @@ const PropertyHome = () => {
             >
               <Typography
                 sx={{
-                  fontSize: "15px",
+                  fontSize: "18px",
                   textTransform: "capitalize",
                   fontWeight: "600",
                   textAlign: "center",
                   position: "absolute",
-                  top: "50%",
+                  top: "20%",
                   left: "50%",
                   transform: "translate(-50%, -50%)",
                   zIndex: "10",
+                  background:"white",
+                  padding: "3px 76px",
+                  width:"max-content"
                 }}
               >
-                Visakhapatnam
+                East Godavari
               </Typography>
               <img
-                src="assets/images/properties/visakhapatnam.jpg"
-                alt="Property"
-                style={{
-                  width: "100%",
-                  height: "400px",
-                  objectFit: "cover",
-                  borderRadius: "5px",
-                }}
-              />
-            </CardContent>
-          </Card>
-          <Card
-            sx={{
-              flex: "0 0 auto",
-              width: "250px",
-              height: "400px",
-              position: "relative",
-              borderRadius: "5px",
-              justifyContent: "center",
-              overflow: "hidden",
-              margin:"20px 0"
-            }}
-          >
-            <CardContent
-              sx={{ padding: "0px", position: "relative", height: "100%" }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "15px",
-                  textTransform: "capitalize",
-                  fontWeight: "600",
-                  textAlign: "center",
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  zIndex: "10",
-                }}
-              >
-                Visakhapatnam
-              </Typography>
-              <img
-                src="assets/images/properties/visakhapatnam.jpg"
+                src="assets/images/properties/Godavari_old_and_new_bridges.jpg"
                 alt="Property"
                 style={{
                   width: "100%",
@@ -695,7 +708,7 @@ const PropertyHome = () => {
             <div
               style={{
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "space-around",
                 flexWrap: "wrap",
                 // justifyContent: "center",
               }}
@@ -715,7 +728,8 @@ const PropertyHome = () => {
                       position: "relative",
                       padding: "0px",
                       borderRadius: "5px",
-                      margin: "5px 0px",
+                      // margin: "5px 0px",
+                      marginTop:"30px"
                     }}
                     onClick={() => handleClick(item.property_id)}
                   >
@@ -726,6 +740,7 @@ const PropertyHome = () => {
                         alt="Property"
                         sx={{
                           width: "100%",
+                          position:"relative",
                           height: "200px",
                           objectFit: "cover",
                           borderRadius: "5px",
@@ -735,6 +750,7 @@ const PropertyHome = () => {
                           },
                         }}
                       />
+                      <Paper sx={{fontWeight:"600", position:"absolute",padding:"10px", top:"0",borderRadius:"0px 0px 5px 0px"}}>{ "₹" + item?.unit_price}</Paper>
                       <div>
                         <Typography
                           sx={{

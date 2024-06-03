@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -8,17 +9,21 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch } from 'react-redux';
 import { UpdateUser } from 'app/store/userSlice';
+import { selectUser } from 'app/store/userSlice';
+import { useSelector } from 'react-redux';
 
 export default function UpdateProfile() {
-  const [open, setOpen] = React.useState(false);
-  const [emptySubmission, setEmptySubmission] = React.useState(false);
-  const [formData, setFormData] = React.useState({
-    name: '',
-    ph_num_1: '',
-    ph_num_2: '',
-    profession: '',
-    address: '',
-    requirements: '',
+  const UserData = useSelector(selectUser); 
+  console.log('UserData',UserData)
+  const [open, setOpen] = useState(false);
+  const [emptySubmission, setEmptySubmission] = useState(false);
+  const [formData, setFormData] = useState({
+    name: UserData?.data?.displayName,
+    ph_num_1: UserData?.data?.phone_num_1,
+    ph_num_2: UserData?.data?.phone_num_2,
+    profession: UserData?.data?.profession,
+    address: UserData?.data?.address,
+    requirements: UserData?.data?.requirements,
   });
   const dispatch = useDispatch();
 
@@ -59,7 +64,7 @@ export default function UpdateProfile() {
         console.log("response", response);
         if (response.payload.status === "success") {
           handleClose();
-          window.location.reload();
+          // window.location.reload();
         }
       });
     } else {

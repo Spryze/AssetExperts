@@ -9,14 +9,17 @@ import settingsConfig from 'app/configs/settingsConfig';
 import jwtService from '../auth/services/jwtService';
 import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword } from 'firebase/auth';
 import axios from 'axios';
+import { action } from 'mobx';
 
 
 export const setUser = createAsyncThunk('user/setUser', async () => {
   return new Promise((resolve, reject) => {
     const auth = getAuth();
     onAuthStateChanged(auth, async (userAuth) => {
+      // console.log("userAuth",userAuth)
       try {
         if (userAuth) {
+          console.log(userAuth.uid)
           const response = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${userAuth.uid}&req_user_id=${userAuth.uid}`);
           const userData = response.data;
           console.log("userdata", userData);
@@ -264,6 +267,7 @@ const userSlice = createSlice({
     [updateUserShortcuts.fulfilled]: (state, action) => action.payload,
     [setUser.fulfilled]: (state, action) => action.payload,
     [signInWithEmailPassword.fulfilled]:(state,action)=>action.payload,
+    [UpdateUser.fulfilled]:(state,action) => action.payload,
   },
 });
 

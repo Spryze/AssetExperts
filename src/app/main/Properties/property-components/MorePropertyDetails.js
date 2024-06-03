@@ -14,7 +14,8 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const MorePropertyDetails = () => {
   const propertyData = useSelector(selectProperties);
-
+  console.log(propertyData)
+  const propertyType = propertyData?.data?.property?.p_type
 
   const toggleShowMore = () => {
     setShowMore(!showMore);

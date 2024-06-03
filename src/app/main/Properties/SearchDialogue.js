@@ -12,7 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { SearchResults } from "./PropertySlice1";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
@@ -22,7 +22,7 @@ import PriceDetails from "./PriceDetails.json";
 const SearchDialogue = ({ onSearch }) => {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [responseData, setresponseData] = useState("");
+  const [responseData, setResponseData] = useState("");
   const [formData, setFormData] = useState({
     p_type: "",
     listing_type: "",
@@ -36,17 +36,13 @@ const SearchDialogue = ({ onSearch }) => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  // const isLoading = useSelector((state) => state.property.status === 'loading');
   const [data, setData] = useState(null);
   const [noDataFound, setNoDataFound] = useState(false);
   const [districtOptions, setDistrictOptions] = useState([]);
-  // const error = useSelector((state) => state.property.error);
   const dispatch = useDispatch();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
-    console.log(`Changing ${name} to ${value}`);
 
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -58,7 +54,6 @@ const SearchDialogue = ({ onSearch }) => {
         (state) => state.name === value
       );
       setDistrictOptions(selectedState ? selectedState.district : []);
-      // Reset district when state changes
       setFormData((prevFormData) => ({
         ...prevFormData,
         district: "",
@@ -78,12 +73,10 @@ const SearchDialogue = ({ onSearch }) => {
     setIsLoading(true);
     try {
       const priceRangeString = formData.price_range;
-      // console.log(priceRangeString);
-  
       const [minString, maxString] = priceRangeString.split("-");
       const min = parseInt(minString, 10);
       const max = parseInt(maxString, 10);
-  
+
       const payload = {
         ...formData,
         price_range: {
@@ -91,14 +84,10 @@ const SearchDialogue = ({ onSearch }) => {
           max: max,
         },
       };
-  
-      console.log("Payload:", JSON.stringify(payload, null, 2));
-  
+
       const result = await dispatch(SearchResults(payload)).unwrap();
-      // console.log("Search Result:", result);
-  
+
       if (!result || !result.data || result.data.property.length === 0) {
-        // console.log("No properties found");
         setNoDataFound(true);
         onSearch(null);
       } else {
@@ -114,15 +103,11 @@ const SearchDialogue = ({ onSearch }) => {
       handleClose();
     }
   };
-  
-
-  const handleSearch = () => {
-    console.log("Search query:", searchQuery);
-  };
 
   return (
     <React.Fragment>
       <Box
+      className="SearchBox"
         sx={{
           display: "flex",
           alignItems: "end",
@@ -135,36 +120,27 @@ const SearchDialogue = ({ onSearch }) => {
           size="medium"
           placeholder="Search ..."
           onClick={handleClickOpen}
-          // value={searchQuery}
-          // onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{ marginRight: "120px", width: "600px", fontSize: "45px" }}
-        />
-        {/* <Button
-          variant="contained"
-          onClick={handleSearch}
           sx={{
-            padding: "5px 20px",
-            backgroundColor: "#4caf50",
-            "&:hover": { backgroundColor: "#45a049" },
+            marginRight: { xs: "0", sm: "120px" },
+            width: { xs: "100%", sm: "600px" },
+            fontSize: "45px",
           }}
-        >
-          Search
-        </Button> */}
+        />
       </Box>
 
       <Dialog
-        fullWidth={formData.fullWidth}
-        maxWidth={formData.maxWidth}
+        fullWidth={true}
+        maxWidth="md"
         open={open}
         onClose={handleClose}
       >
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <DialogTitle>Choose Your Requirements</DialogTitle>
           <CloseIcon
             sx={{ cursor: "pointer", margin: "10px" }}
             onClick={handleClose}
           />
-        </div>
+        </Box>
         <DialogContent>
           <Box>
             <FormControl fullWidth>
@@ -206,9 +182,7 @@ const SearchDialogue = ({ onSearch }) => {
                 <MenuItem value="sell">Sell</MenuItem>
                 <MenuItem value="buy">Buy</MenuItem>
                 <MenuItem value="rent">Rent</MenuItem>
-                <MenuItem value="UnderConstruction">
-                  Under Construction
-                </MenuItem>
+                <MenuItem value="UnderConstruction">Under Construction</MenuItem>
               </Select>
             </FormControl>
 
@@ -226,11 +200,7 @@ const SearchDialogue = ({ onSearch }) => {
                   <MenuItem key={key} value={key}>
                     {key === "Any"
                       ? "Any"
-                      : `₹${PriceDetails.PriceDetails[
-                          key
-                        ].min.toLocaleString()} - ₹${PriceDetails.PriceDetails[
-                          key
-                        ].max.toLocaleString()}`}
+                      : `₹${PriceDetails.PriceDetails[key].min.toLocaleString()} - ₹${PriceDetails.PriceDetails[key].max.toLocaleString()}`}
                   </MenuItem>
                 ))}
               </Select>
@@ -271,16 +241,15 @@ const SearchDialogue = ({ onSearch }) => {
           <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
             <InputLabel>Landmark</InputLabel>
             <Select
-              name="Landmark"
+              name="landmark"
               value={formData.landmark}
               onChange={handleChange}
               label="Select Landmark"
             >
-              
               <MenuItem value=" ">Any</MenuItem>
-              <MenuItem value="Panchayat">palasa</MenuItem>
-              <MenuItem value="Vuda">Beside National highway</MenuItem>
-              <MenuItem value="Rera">gajuwaka</MenuItem>
+              <MenuItem value="Panchayat">Palasa</MenuItem>
+              <MenuItem value="Vuda">Beside National Highway</MenuItem>
+              <MenuItem value="Rera">Gajuwaka</MenuItem>
             </Select>
           </FormControl>
           <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
@@ -300,7 +269,7 @@ const SearchDialogue = ({ onSearch }) => {
           <FormControl sx={{ mt: 2, minWidth: "140px", margin: "6px 5px" }}>
             <InputLabel>Loan Eligibility</InputLabel>
             <Select
-              name="Loan Eligibility"
+              name="loan_eligible"
               value={formData.loan_eligible}
               onChange={handleChange}
               label="Select Loan Eligibility"
@@ -313,15 +282,13 @@ const SearchDialogue = ({ onSearch }) => {
         </DialogContent>
 
         <DialogActions>
-          <Box
-            sx={{ display: "flex", justifyContent: "center", width: "100%" }}
-          >
+          <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
             {isLoading ? (
               <CircularProgress />
             ) : (
               <Button
                 onClick={handleSubmit}
-                style={{ backgroundColor: "#1D2432", color: "white" }}
+                sx={{ backgroundColor: "#1D2432", color: "white" }}
               >
                 Submit
               </Button>
@@ -330,10 +297,7 @@ const SearchDialogue = ({ onSearch }) => {
         </DialogActions>
       </Dialog>
       {isLoading && (
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={true}
-        >
+        <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true}>
           <CircularProgress color="inherit" />
         </Backdrop>
       )}

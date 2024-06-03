@@ -11,7 +11,7 @@ import Property from "./Property";
 const Recomendedproperties = () => {
   const dispatch = useDispatch();
   const propertyData = useSelector(selectProperties);
-  console.log("propertyData recomended",propertyData)
+  // console.log("propertyData recomended",propertyData)
   const scrollContainerRef = useRef(null);
   let scrollInterval = useRef(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);

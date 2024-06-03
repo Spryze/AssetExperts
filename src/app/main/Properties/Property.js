@@ -159,7 +159,7 @@ import { selectProperties } from "./PropertySlice1";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Amenities from "./Amenities";
-import Maplocation from "./Maplocation";
+import Map from "./Maplocation";
 import { useDispatch } from "react-redux";
 import { fetchProperties } from "./PropertySlice1";
 import Recomendedproperties from "./Recomendedproperties";
@@ -168,20 +168,16 @@ import AllDetails from "./AllDetails";
 import ContactDetails from "./ContactDetails";
 import { useParams } from "react-router-dom";
 
-
-
 function Property() {
-  
   const propertiesData = useSelector(selectProperties);
   const [propertyData, setPropertyData] = useState({});
-  const { propertyId } = useParams()
-  
+  const { propertyId } = useParams();
+
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
- 
+
   const [showMore, setShowMore] = useState(false);
   const dispatch = useDispatch();
-
 
   console.log("propertiesData", propertiesData);
   console.log("propertyId", propertyId);
@@ -195,65 +191,69 @@ function Property() {
       targetSection.scrollIntoView({ behavior: "smooth" });
     }
   };
-  
 
-useEffect(()=>{
-  if(!propertiesData)
-    {
+  useEffect(() => {
+    console.log("Hello");
+    if (!propertiesData) {
       const propdata = propertiesData.get(propertyId);
-      if (propdata)
-        {
-          setPropertyData(propdata);
-          setLoading(false);
-        }
-      
-    }
-},[propertiesData]);
-
- 
-
-useEffect(() => {
-
-
-    {
-      console.log('dispatch properties ');
-      dispatch(fetchProperties(propertyId)).then(()=>{
+      if (propdata) {
+        setPropertyData(propdata);
         setLoading(false);
-      });
+      }
     }
+  }, [propertiesData]);
+
+  useEffect(() => {
+    console.log("dispatch properties ");
+    dispatch(fetchProperties(propertyId)).then(() => {
+      setLoading(false);
+    });
+
     setLoading(true);
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Assuming each card has a unique ID or data attribute
-          setActiveTab(entry.target.dataset.tabId);
-        }
-      });
-    },
-    { threshold: 1 } // Adjust threshold as needed
-  );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Assuming each card has a unique ID or data attribute
+            setActiveTab(entry.target.dataset.tabId);
+          }
+        });
+      },
+      { threshold: 1 } // Adjust threshold as needed
+    );
 
-  // Observe all cards within each tab
-  const cards = document.querySelectorAll(".card");
-  cards.forEach((card) => {
-    observer.observe(card);
-  });
+    // Observe all cards within each tab
+    const cards = document.querySelectorAll(".card");
+    cards.forEach((card) => {
+      observer.observe(card);
+    });
 
-  return () => {
-    observer.disconnect();
-  };
-}, []);
-
- 
-
- 
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
-    <Container maxWidth="lg" sx={{ background: "#F5F5F5",position:"relative" }}>
-      {loading && <CircularProgress sx={{position:"absolute",zIndex:"1" ,top:"10%",left:"50%",}} />}
-      {loading && <div style={{width:"100%",height:"100vh",background:"white",opacity:"0.5"}}></div>}
+    <Container
+      maxWidth="lg"
+      sx={{ background: "#F5F5F5", position: "relative" }}
+    >
+      {loading && (
+        <CircularProgress
+          sx={{ position: "absolute", zIndex: "1", top: "10%", left: "50%" }}
+        />
+      )}
+      {loading && (
+        <div
+          style={{
+            width: "100%",
+            height: "100vh",
+            background: "white",
+            opacity: "0.5",
+          }}
+        ></div>
+      )}
       <PropertyCarousel />
       <Grid container spacing={5}>
         <Grid item xs={12} md={8} sx={{ overflowY: "auto" }}>
@@ -274,21 +274,21 @@ useEffect(() => {
             </Tabs>
           </Box> */}
           <div style={{ overflowY: "auto", height: "calc(100vh - 120px)" }}>
-            
             <AllDetails />
           </div>
         </Grid>
         <Grid item xs={12} md={4}>
           <ContactDetails />
         </Grid>
-        <Maplocation/>
+
+        <Map color="red" />
+
         <Grid>
-        <Recomendedproperties />
+          <Recomendedproperties />
         </Grid>
       </Grid>
-     
+
       <Recentlyadded />
-     
     </Container>
   );
 }

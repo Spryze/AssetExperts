@@ -1,22 +1,53 @@
-.small-text{
-    font-size: 15px;
+.small-text {
+  font-size: 15px;
 }
-.heading-text{
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 10px;
+.heading-text {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
-.detailsFlex{
-    display: flex;
-    justify-content: space-between;
-    margin: 1px 0px;
-    background: aliceblue;
-    padding: 20px 19px;
+.detailsFlex {
+  display: flex;
+  justify-content: space-between;
+  margin: 1px 0px;
+  background: aliceblue;
+  padding: 20px 19px;
 }
-.BigText{
-    font-size: 40px;
-    font-weight: bold;
-    margin: 20px 0 0 30px !important;
-    text-align: left;
+.BigText {
+  font-size: 40px;
+  font-weight: bold;
+  margin: 20px 0 0 30px !important;
+  text-align: left;
+}
+.Text-Center {
+  text-align: center !important;
+}
+
+@media only screen and (max-width: 425px) {
+  .HomeImage {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 425px) {
+  .HomeImage {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .HomeImage {
+    opacity: 0.2 !important;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .HomeImage {
+    bottom: -100px;
+    right: -26px;
+  }
+}
+
+@media only screen and (max-width: 1432px) {
+  .SearchBox {
+    width: 530px;
+  }
 }

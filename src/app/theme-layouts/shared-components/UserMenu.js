@@ -34,11 +34,11 @@ function UserMenu(props) {
       >
         <div className="hidden md:flex flex-col mx-4 items-end">
           <Typography component="span" className="font-semibold flex">
-            {user.data.displayName}
+            {user?.data?.displayName}
           </Typography>
           <Typography className="text-11 font-medium capitalize" color="text.secondary">
-            {user.role.toString()}
-            {(!user.role || (Array.isArray(user.role) && user.role.length === 0)) && 'Guest'}
+            {user?.role?.toString()}
+            {(!user?.role || (Array.isArray(user?.role) && user?.role?.length === 0)) && 'Guest'}
           </Typography>
         </div>
 
@@ -65,7 +65,7 @@ function UserMenu(props) {
           paper: 'py-8',
         }}
       >
-        {user.role =='guest' || user.role.length === 0 ? (
+        {user?.role =='guest' || user?.role?.length === 0 ? (
           <>
             <MenuItem component={Link} to="/sign-in" role="button">
               <ListItemIcon className="min-w-40">

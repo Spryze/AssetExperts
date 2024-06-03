@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "app/store/userSlice";
 import { useState } from "react";
 import UpdateProfile from "./UpdateProfile";
+import { useEffect } from "react";
 
 const ProfilePage = () => {
   const profileData = useSelector(selectUser);
@@ -12,6 +13,8 @@ const ProfilePage = () => {
   const handleUpdateProfileClick = () => {
     setOpenDialog(true);
   };
+
+  useEffect(()=>{},[[profileData]])
 
   return (
     <Container sx={{ marginTop: "20px" }}>

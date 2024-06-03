@@ -6,7 +6,7 @@ import { Typography } from '@mui/material/';
 
 const Neighborhood = () => {
     const propertyData = useSelector(selectProperties);
-    console.log("propertyData",propertyData)
+    // console.log("propertyData",propertyData)
     
 
     const hasDevelopments = propertyData?.data?.property?.developments &&

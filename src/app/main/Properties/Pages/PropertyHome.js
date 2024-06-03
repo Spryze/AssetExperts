@@ -271,6 +271,7 @@ import {
 import {
   Card,
   CardContent,
+  CardMedia,
   Typography,
   Grid,
   Box,
@@ -367,7 +368,7 @@ const PropertyHome = () => {
         sx={{
           background:
             "linear-gradient(90deg, rgba(233,233,233,1) 0%, rgba(255,255,255,1) 100%)",
-          height: "60vh",
+          // height: "60vh",
           width: "100%",
           maxWidth: "100%",
           borderRadius: "30px",
@@ -404,6 +405,7 @@ const PropertyHome = () => {
           </Grid>
           <Grid item xs={12} md={6} sx={{ position: "relative" }}>
             <img
+            className="HomeImage"
               src="/assets/images/properties/pexels-binyaminmellish-1396122-removebg-preview copy.png"
               alt="Girl in a jacket"
               style={{
@@ -499,21 +501,205 @@ const PropertyHome = () => {
           </div>
         )}
       </Grid>
-
+      <div>
+        <Typography
+          className="heading-text Text-Center"
+          sx={{ margin: "40px 0px" }}
+        >
+          We Are Available In Your Local cities..
+        </Typography>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+          }}
+        >
+          <Card
+            sx={{
+              flex: "0 0 auto",
+              width: "250px",
+              height: "400px",
+              position: "relative",
+              borderRadius: "5px",
+              justifyContent: "center",
+              overflow: "hidden",
+              margin:"20px 0"
+            }}
+          >
+            <CardContent
+              sx={{ padding: "0px", position: "relative", height: "100%" }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "15px",
+                  textTransform: "capitalize",
+                  fontWeight: "600",
+                  textAlign: "center",
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  zIndex: "10",
+                }}
+              >
+                Visakhapatnam
+              </Typography>
+              <img
+                src="assets/images/properties/visakhapatnam.jpg"
+                alt="Property"
+                style={{
+                  width: "100%",
+                  height: "400px",
+                  objectFit: "cover",
+                  borderRadius: "5px",
+                }}
+              />
+            </CardContent>
+          </Card>
+          <Card
+            sx={{
+              flex: "0 0 auto",
+              width: "250px",
+              height: "400px",
+              position: "relative",
+              borderRadius: "5px",
+              justifyContent: "center",
+              overflow: "hidden",
+              margin:"20px 0"
+            }}
+          >
+            <CardContent
+              sx={{ padding: "0px", position: "relative", height: "100%" }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "15px",
+                  textTransform: "capitalize",
+                  fontWeight: "600",
+                  textAlign: "center",
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  zIndex: "10",
+                }}
+              >
+                Visakhapatnam
+              </Typography>
+              <img
+                src="assets/images/properties/visakhapatnam.jpg"
+                alt="Property"
+                style={{
+                  width: "100%",
+                  height: "400px",
+                  objectFit: "cover",
+                  borderRadius: "5px",
+                }}
+              />
+            </CardContent>
+          </Card>
+          <Card
+            sx={{
+              flex: "0 0 auto",
+              width: "250px",
+              height: "400px",
+              position: "relative",
+              borderRadius: "5px",
+              justifyContent: "center",
+              overflow: "hidden",
+              margin:"20px 0"
+            }}
+          >
+            <CardContent
+              sx={{ padding: "0px", position: "relative", height: "100%" }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "15px",
+                  textTransform: "capitalize",
+                  fontWeight: "600",
+                  textAlign: "center",
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  zIndex: "10",
+                }}
+              >
+                Visakhapatnam
+              </Typography>
+              <img
+                src="assets/images/properties/visakhapatnam.jpg"
+                alt="Property"
+                style={{
+                  width: "100%",
+                  height: "400px",
+                  objectFit: "cover",
+                  borderRadius: "5px",
+                }}
+              />
+            </CardContent>
+          </Card>
+          <Card
+            sx={{
+              flex: "0 0 auto",
+              width: "250px",
+              height: "400px",
+              position: "relative",
+              borderRadius: "5px",
+              justifyContent: "center",
+              overflow: "hidden",
+              margin:"20px 0"
+            }}
+          >
+            <CardContent
+              sx={{ padding: "0px", position: "relative", height: "100%" }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "15px",
+                  textTransform: "capitalize",
+                  fontWeight: "600",
+                  textAlign: "center",
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  zIndex: "10",
+                }}
+              >
+                Visakhapatnam
+              </Typography>
+              <img
+                src="assets/images/properties/visakhapatnam.jpg"
+                alt="Property"
+                style={{
+                  width: "100%",
+                  height: "400px",
+                  objectFit: "cover",
+                  borderRadius: "5px",
+                }}
+              />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
       <Grid container spacing={1} sx={{ marginTop: "20px" }}>
         {recentTransactions.length > 0 && (
           <div>
-            
             <hr style={{ margin: "10px 0px" }} />
+            <Typography variant="h6" sx={{ marginBottom: "10px" }}>
+              Recent Properties
+            </Typography>
             <div
               style={{
                 display: "flex",
-                gap: "10px",
+                justifyContent: "space-between",
                 flexWrap: "wrap",
-                justifyContent: "center",
+                // justifyContent: "center",
               }}
             >
-              <Typography variant="h6">Recent Properties</Typography>
               {recentTransactions.map((item, index) => (
                 <Tooltip
                   key={index}
@@ -529,6 +715,7 @@ const PropertyHome = () => {
                       position: "relative",
                       padding: "0px",
                       borderRadius: "5px",
+                      margin: "5px 0px",
                     }}
                     onClick={() => handleClick(item.property_id)}
                   >

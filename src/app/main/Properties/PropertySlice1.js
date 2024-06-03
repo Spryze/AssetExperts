@@ -126,7 +126,7 @@ const propertySlice = createSlice({
    
     setProperties(state, action) {
       state.properties[action.payload?.data?.property?.property_id] = action.payload;
-     
+      console.log
       
     },
     propertySearch(state,action){

@@ -55,7 +55,6 @@ const defaultValues = {
   displayName: "",
   email: "",
   ph_num_1: "",
-  role: "",
   password: "",
   passwordConfirm: "",
   acceptTermsConditions: false,
@@ -171,27 +170,6 @@ function SignUpPage() {
                 />
               )}
             />
-
-            <Controller
-              name="role"
-              control={control}
-              render={({ field }) => (
-                <FormControl
-                  className="mb-24"
-                  fullWidth
-                  error={!!errors.role}
-                  variant="outlined"
-                >
-                  <InputLabel>Select Who You Are</InputLabel>
-                  <Select {...field} label="Select Who You Are">
-                    <MenuItem value="User">User</MenuItem>
-                    <MenuItem value="Agent">Agent</MenuItem>
-                  </Select>
-                  <FormHelperText>{errors?.role?.message}</FormHelperText>
-                </FormControl>
-              )}
-            />
-
             <Controller
               name="password"
               control={control}

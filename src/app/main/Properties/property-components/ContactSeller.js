@@ -37,6 +37,7 @@ const ContactSeller = () => {
         >
           <TextField id="standard-basic" label="Name" variant="standard" />
           <TextField id="standard-basic" label="Phone" variant="standard" />
+          <TextField id="standard-basic" label="E mail" variant="standard" />
         </Box>
         {/* <Box sx={{ display: "flex",margin:"20px 0" }}>
           <Checkbox />

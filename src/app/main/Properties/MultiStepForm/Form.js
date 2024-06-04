@@ -69,6 +69,7 @@ const Form = () => {
     listing_type: "",
     loan_eligibile: false,
     No_bed_rooms: "",
+    govt_price:"",
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -90,7 +91,7 @@ const Form = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const parsedValue = ["price", "size", "latitude", "longitude"].includes(
+    const parsedValue = ["price", "size", "latitude", "longitude",].includes(
       name
     )
       ? parseFloat(value)
@@ -107,6 +108,7 @@ const Form = () => {
       errors.propertyName = "Property Name is required";
     if (!formData.p_type) errors.p_type = "Property Type is required";
     if (!formData.price) errors.price = "Price is required";
+    if (!formData.govt_price) errors.govt_price = "Government Price is required";
     return errors;
   };
 
@@ -437,7 +439,7 @@ const Form = () => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            label="Price"
+            label="Price (₹)"
             name="price"
             type="number"
             value={formData.price}
@@ -643,6 +645,19 @@ const Form = () => {
             onChange={handleChange}
             variant="outlined"
             fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Government Price (₹)"
+            name="govt_price"
+            type="float"
+            value={formData.govt_price}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+            error={!!formErrors.govt_price}
+            helperText={formErrors.govt_price}
           />
         </Grid>
         <Grid item xs={12}>

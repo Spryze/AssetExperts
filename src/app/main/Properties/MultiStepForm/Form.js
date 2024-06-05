@@ -68,6 +68,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
     listing_type: "" ||propertyData?.propertyData?.listing_type,
     loan_eligibile: false ||propertyData?.propertyData?.loan_eligibile,
     No_bed_rooms: ""||propertyData?.propertyData?.No_bed_rooms,
+    govt_price:""||propertyData?.propertyData?.No_bed_rooms,
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -109,6 +110,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
       errors.propertyName = "Property Name is required";
     if (!formData.p_type) errors.p_type = "Property Type is required";
     if (!formData.price) errors.price = "Price is required";
+    if (!formData.govt_price) errors.govt_price = "Government Price is required";
     return errors;
   };
 
@@ -131,6 +133,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
       setFormErrors(errors);
     }
   };
+  
 
   if (!user) {
     return (
@@ -441,7 +444,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            label="Price"
+            label="Price (₹)"
             name="price"
             type="number"
             value={formData.price}
@@ -647,6 +650,18 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
             onChange={handleChange}
             variant="outlined"
             fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label="Government Price (₹)"
+            name="govt_price"
+            type="float"
+            value={formData.govt_price}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+
           />
         </Grid>
         <Grid item xs={12}>

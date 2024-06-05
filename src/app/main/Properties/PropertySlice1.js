@@ -70,6 +70,7 @@ export const addProperty = createAsyncThunk(
       if (!user) throw new Error("User not found in local storage");
 
       const cont_user_id = user.uid;
+      console.log("user.uid",user.uid)
       const data = { ...formData, cont_user_id };
 
       console.log(data);
@@ -82,6 +83,35 @@ export const addProperty = createAsyncThunk(
     }
   }
 );
+export const updateProperty = createAsyncThunk(
+  'property/updateProperty',
+  async ({ formData, p_id }, { rejectWithValue }) => {
+    console.log("p_id", p_id);
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user) throw new Error("User not found in local storage");
+
+      const user_id = user.uid;
+      const req_user_id = user.uid;
+      const data = { ...formData, user_id, req_user_id, p_id };
+
+      console.log(data);
+
+      const response = await axios.put(
+        "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property",
+        data,
+        // {
+        //   headers: {
+        //     'Content-Type': 'multipart/form-data'
+        //   }
+        // }
+      );
+      console.log("response", response);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  });
 
 export const AddImage = createAsyncThunk(
   'property/AddImage',
@@ -157,8 +187,7 @@ const propertySlice = createSlice({
         state.error = action.payload;
       })
       .addCase(fetchProperties.fulfilled, (state, action) => {
-        state.properties = action.payload,
-        console.log("state.properties",state.properties)
+        state.properties = action.payload
       })
       
       .addCase(fetchRecentTransactions.fulfilled, (state, action) => {

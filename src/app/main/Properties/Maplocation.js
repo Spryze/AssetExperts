@@ -72,7 +72,16 @@ const Maplocation = () => {
           {propertyData?.data?.property?.area}
           {[latitude, longitude]}
         </Popup>
-   
+        <Tooltip
+            direction="right"
+            offset={[0, 0]}
+            opacity={1}
+            permanent
+            className="buy"
+            
+          >
+            {"  ₹" + propertyData?.data?.property?.price + "/" +  propertyData?.data?.property?.unit}
+          </Tooltip>
       </Marker>
 
     
@@ -114,7 +123,7 @@ const Maplocation = () => {
             offset={[0, 0]}
             opacity={1}
             permanent
-            className={item.listing_type}
+            className="sell"
           >
             {"  ₹" + item.unit_price + "/" + item.unit}
           </Tooltip>

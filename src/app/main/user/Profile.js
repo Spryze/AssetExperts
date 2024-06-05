@@ -14,7 +14,8 @@ const ProfilePage = () => {
     setOpenDialog(true);
   };
 
-  useEffect(()=>{},[[profileData]])
+  useEffect(()=>{},[[profileData]]);
+ 
 
   return (
     <Container sx={{ marginTop: "20px" }}>
@@ -153,6 +154,22 @@ const ProfilePage = () => {
               >
                 <span>
                   <strong>Requirements:</strong>
+                </span>
+                <span> {profileData.data.requirements}</span>
+              </Typography>
+              <Typography
+                sx={{
+                  margin: "5px 0px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding:"10px",
+                  borderRadius:"10px",
+                  background:"#ededed",
+                }}
+                variant="body1"
+              >
+                <span>
+                  <strong>My Properties</strong>
                 </span>
                 <span> {profileData.data.requirements}</span>
               </Typography>

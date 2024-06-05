@@ -19,10 +19,10 @@ export const setUser = createAsyncThunk('user/setUser', async () => {
       // console.log("userAuth",userAuth)
       try {
         if (userAuth) {
-          console.log(userAuth.uid)
+          
           const response = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${userAuth.uid}&req_user_id=${userAuth.uid}`);
           const userData = response.data;
-          console.log("userdata", userData);
+        
           
           let user = {
             uid: userAuth.uid,
@@ -36,7 +36,7 @@ export const setUser = createAsyncThunk('user/setUser', async () => {
               phone_num_1:userData.profile.phone_num_1,
               phone_num_2:userData.profile.phone_num_2,
               profession:userData.profile.profession,
-              requirements:userData.profile.requirements,
+              myProperties :userData.profile.properties
               
             }
           };

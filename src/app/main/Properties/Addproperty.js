@@ -13,7 +13,8 @@ import { TextField, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import Form from "./MultiStepForm/Form";
-const Addproperty = () => {
+
+const Addproperty = (propertyData) => {
   
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -30,36 +31,9 @@ const Addproperty = () => {
 
   
   return (
-    <Container>
-      {/* <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="scrollable auto tabs example"
-        >
-          <Tab label="Basic Information" />
-          <Tab label="Location On Map" />
-          <Tab label="Gallery Images" />
-          <Tab label="Floor Plans" />
-          <Tab label="Agent Information" />
-          <Tab label="Energy Performance" />
-          <Tab label="Misc" />
-          <Tab label="Beside" />
-          <Tab label="Location" />
-          
-        </Tabs>
-       
-        
-      </Box> */}
-      {/* <Basicinformation/> */}
-      <Form/>
+    <Container sx={{position:"absolute",left:"20px", top:"20px",background:"white"}}>
+      
+      <Form propertyData={propertyData}/>
 
     </Container>
   );

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   TextField,
   Button,
@@ -13,72 +13,76 @@ import {
   Typography,
   FormHelperText,
 } from "@mui/material";
-import { addProperty } from "../PropertySlice1";
-import { useSelector } from "react-redux";
+import { addProperty, updateProperty } from "../PropertySlice1";
 import { selectUser } from "app/store/userSlice";
 import UploadImages from "./Property-Types-Forms/UploadImages";
 
-const Form = () => {
+const Form = ({ isEditMode = false, propertyData = {} }) => {
+  console.log("propertyData",propertyData,"isEditMode",)
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
   const [formData, setFormData] = useState({
-    propertyName: "",
-    p_type: "",
-    dimensions: "",
-    unit: "",
-    state: "",
-    district: "",
-    village: "",
-    landmark: "",
-    price: 0,
-    survey_number: "",
-    doc_num: "",
-    AboutDeveloper: "",
-    ad_info: "",
-    size: 0,
-    boundry_wall: "",
-    furnshied: "",
-    approved_by: "",
-    parking: false,
-    WaterSource: "",
-    Flooring: "",
-    PowerBackup: "",
-    num_open_sides: "",
-    PropertyStatus: "",
-    status: "",
-    rera: "",
-    bound_wall: "",
-    BHK: "",
-    lift: "",
-    PropertyAge: "",
-    comments: "",
-    developments: "",
-    disputes: "",
-    reg_loc: "",
-    reg_loc: "",
-    med_name: "",
-    med_num1: "",
-    med_num2: "",
-    own_name: "",
-    own_num1: "",
-    own_num2: "",
-    longitude: 0,
-    latitude: 0,
-    direction: "",
-    listing_type: "",
-    loan_eligibile: false,
-    No_bed_rooms: "",
+    prop_name: "" ||propertyData?.propertyData?.propertyName,
+    p_type: "" ||propertyData?.propertyData?.p_type,
+    dimensions: ""||propertyData?.propertyData?.dimensions,
+    unit: ""||propertyData?.propertyData?.unit,
+    state: ""||propertyData?.propertyData?.state,
+    district: ""||propertyData?.propertyData?.district,
+    village: ""||propertyData?.propertyData?.village,
+    landmark: ""||propertyData?.propertyData?.landmark,
+    price: 0 ||propertyData?.propertyData?.price,
+    survey_number: "" ||propertyData?.propertyData?.survey_number,
+    doc_num: "" ||propertyData?.propertyData?.doc_num,
+    AboutDeveloper: "" ||propertyData?.propertyData?.AboutDeveloper,
+    ad_info: "" ||propertyData?.propertyData?.ad_info,
+    size: 0 ||propertyData?.propertyData?.size,
+    boundry_wall: "" ||propertyData?.propertyData?.boundry_wall,
+    furnshied: "" ||propertyData?.propertyData?.furnshied,
+    approved_by: "" ||propertyData?.propertyData?.approved_by,
+    parking: false ||propertyData?.propertyData?.parking,
+    WaterSource: "" ||propertyData?.propertyData?.WaterSource,
+    Flooring: "" ||propertyData?.propertyData?.Flooring,
+    PowerBackup: "" ||propertyData?.propertyData?.PowerBackup,
+    num_open_sides: "" ||propertyData?.propertyData?.num_open_sides,
+    PropertyStatus: "" ||propertyData?.propertyData?.PropertyStatus,
+    status: "" ||propertyData?.propertyData?.status,
+    rera: "" ||propertyData?.propertyData?.rera,
+    bound_wall: "" ||propertyData?.propertyData?.bound_wall,
+    BHK: "" ||propertyData?.propertyData?.BHK,
+    lift: "" ||propertyData?.propertyData?.lift,
+    PropertyAge: "" ||propertyData?.propertyData?.PropertyAge,
+    comments: "" ||propertyData?.propertyData?.comments,
+    developments: "" ||propertyData?.propertyData?.developments,
+    disputes: "" ||propertyData?.propertyData?.disputes,
+    reg_loc: "" ||propertyData?.propertyData?.reg_loc,
+    med_name: "" ||propertyData?.propertyData?.med_name,
+    med_num1: "" ||propertyData?.propertyData?.med_num1,
+    med_num2: "" ||propertyData?.propertyData?.med_num2,
+    own_name: "" ||propertyData?.propertyData?.own_name,
+    own_num1: "" ||propertyData?.propertyData?.own_num1,
+    own_num2: "" ||propertyData?.propertyData?.own_num2,
+    longitude: 0 ||propertyData?.propertyData?.longitude,
+    latitude: 0 ||propertyData?.propertyData?.latitude,
+    direction: "" ||propertyData?.propertyData?.direction,
+    listing_type: "" ||propertyData?.propertyData?.listing_type,
+    loan_eligibile: false ||propertyData?.propertyData?.loan_eligibile,
+    No_bed_rooms: ""||propertyData?.propertyData?.No_bed_rooms,
   });
 
   const [formErrors, setFormErrors] = useState({});
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [responseData, setResponseData] = useState(null);
 
+  useEffect(() => {
+    if (isEditMode && propertyData) {
+      setFormData({ ...propertyData });
+    }
+  }, [isEditMode, propertyData]);
+
   const propertyTypes = [
     "Plot",
     "Flat",
-    // "wareHouse",
     "PG",
     "Office Place",
     "Co Working Place",
@@ -86,13 +90,11 @@ const Form = () => {
     "Agricultural Lands",
     "Independent House",
   ];
-  const Units = ["sq.ft", "Sq.yards", "Sq.ft", "ready", "sq.Ft"];
+  const Units = ["sq.ft", "Sq.yards", "Sq.m", "Acres"];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const parsedValue = ["price", "size", "latitude", "longitude"].includes(
-      name
-    )
+    const parsedValue = ["price", "size", "latitude", "longitude"].includes(name)
       ? parseFloat(value)
       : value;
     setFormData({
@@ -114,11 +116,12 @@ const Form = () => {
     e.preventDefault();
     const errors = validateForm();
     if (Object.keys(errors).length === 0) {
-      console.log("formData", formData);
-      const resultAction = dispatch(addProperty(formData)).then((response) => {
+      const action = propertyData?.isEditMode ? updateProperty : addProperty;
+      const p_id = propertyData?.propertyData?.property_id;
+      console.log("p_id",p_id)
+      const resultAction = dispatch(action({formData,p_id})).then((response) => {
         if (response.payload.status === "success") {
           setResponseData(response);
-          console.log("responseData",response);
           setIsFormSubmitted(true);
         } else {
           console.error(resultAction.payload);
@@ -156,13 +159,14 @@ const Form = () => {
     return <UploadImages responseData={responseData} />;
   }
 
+
   return (
     <Box
       component="form"
       onSubmit={handleSubmit}
       sx={{ flexGrow: 1, width: "100%", maxWidth: 800, margin: "20px auto" }}
     >
-      <Typography variant="h6" sx={{}}>Add Property</Typography>
+      {propertyData?.isEditMode === true ?   <Typography variant="h6" sx={{}}>Edit Property</Typography> : <Typography variant="h6" sx={{}}>Add Property</Typography> }
       <hr/>
       <Grid container spacing={2} sx={{marginTop:"10px"}}>
         <Grid item xs={12} sm={6}>

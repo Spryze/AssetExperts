@@ -21,7 +21,7 @@ import Recomendedproperties from "./Recomendedproperties";
 
 const PropertyOverview = () => {
     const propertyData = useSelector(selectProperties);
-    console.log("propertyData",propertyData)
+   
     const [showMore, setShowMore] = useState(false);
     const propertyOverview = propertyData?.data?.property?.ad_info;
     const toggleShowMore = () => {
@@ -93,7 +93,7 @@ const PropertyOverview = () => {
       </Box>
     ))} */}
     <hr />
-    <Button
+    {/* <Button
       sx={{
         background: "orange",
         borderRadius: "8px",
@@ -101,7 +101,7 @@ const PropertyOverview = () => {
       }}
     >
       Contact Builder
-    </Button>
+    </Button> */}
   </Card>
   </>
   ); 

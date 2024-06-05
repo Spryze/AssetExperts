@@ -69,7 +69,7 @@ const UploadImages = ({ responseData }) => {
   };
 
   return (
-    <div>
+    <div style={{height:"100vh",backgroundColor:"white"}}>
       <h3 style={{ margin: '20px 0' }}>Add Property Images</h3>
       <input id="imageUpload" type="file" multiple onChange={handleImageUpload} />
       <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap' }}>

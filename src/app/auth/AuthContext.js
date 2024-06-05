@@ -56,7 +56,7 @@ function AuthProvider({ children }) {
 
     function success(user, message) {
       if (message) {
-        dispatch(showMessage({ message }));
+        // dispatch(showMessage({ message }));
       }
 
       Promise.all([

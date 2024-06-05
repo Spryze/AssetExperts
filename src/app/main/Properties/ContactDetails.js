@@ -5,31 +5,47 @@ import { selectProperties } from "./PropertySlice1";
 import ContactSeller from "./property-components/ContactSeller";
 import { selectUser } from "app/store/userSlice";
 
+import { useState } from "react";
+
 const ContactDetails = () => {
   const propertyData = useSelector(selectProperties);
   const user = useSelector(selectUser);
+
   const shownumber = user.role != "guest";
   const disableButton = user.role === "guest";
-  
-  
+
 
   const makeCall = () => {
     const telUrl = `tel:${propertyData?.data?.property?.med_num1}`;
     window.open(telUrl);
   };
+  
+
+
 
   return (
     <>
-      <Card sx={{ borderRadius: "10px", padding: "20px", marginBottom: "20px" }}>
-        <Typography className="heading-text" variant="h6"> Mediator Details</Typography>
+      <Card
+        sx={{ borderRadius: "10px", padding: "20px", marginBottom: "20px",position:"relative" }}
+      >
+        <Typography className="heading-text" variant="h6">
+          {" "}
+          Mediator Details
+        </Typography>
         <div style={{ display: "flex", fontSize: "18px" }}>
-          <Typography style={{ marginRight: "10px", textTransform: "capitalize" }}>
+          <Typography
+            style={{ marginRight: "10px", textTransform: "capitalize" }}
+          >
             {propertyData?.data?.property?.med_name}:
           </Typography>
-          {shownumber ? ( <Typography>{(propertyData?.data?.property?.med_num1)}</Typography>):(<Typography>+91 **********</Typography>)}
+          {shownumber ? (
+            <Typography>{propertyData?.data?.property?.med_num1}</Typography>
+          ) : (
+            <Typography>+91 **********</Typography>
+          )}
         </div>
         <Button
-        disabled = {disableButton}
+          disabled={disableButton}
           sx={{
             background: "orange",
             borderRadius: "8px",
@@ -41,6 +57,7 @@ const ContactDetails = () => {
         </Button>
       </Card>
       <ContactSeller />
+      
     </>
   );
 };

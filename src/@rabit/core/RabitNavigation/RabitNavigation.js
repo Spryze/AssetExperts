@@ -74,6 +74,7 @@ function RabitNavigation(props) {
         {props.layout === 'horizontal' && <RabitNavHorizontalLayout1 {...options} />}
         {props.layout === 'vertical' && <RabitNavVerticalLayout1 {...options} />}
         {props.layout === 'vertical-2' && <RabitNavVerticalLayout2 {...options} />}
+        
       </>
     );
   }

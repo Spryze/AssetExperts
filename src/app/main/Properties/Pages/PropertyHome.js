@@ -728,8 +728,8 @@ const PropertyHome = () => {
                       position: "relative",
                       padding: "0px",
                       borderRadius: "5px",
-                      // margin: "5px 0px",
-                      marginTop:"30px"
+                      margin: "30px 0px",
+                      
                     }}
                     onClick={() => handleClick(item.property_id)}
                   >
@@ -750,7 +750,7 @@ const PropertyHome = () => {
                           },
                         }}
                       />
-                      <Paper sx={{fontWeight:"600", position:"absolute",padding:"10px", top:"0",borderRadius:"0px 0px 5px 0px"}}>{ "₹" + item?.unit_price}</Paper>
+                      {item?.listing_type !== "buy" && (<Paper sx={{fontWeight:"600", position:"absolute",padding:"10px", top:"0",borderRadius:"0px 0px 5px 0px", background: "linear-gradient(90deg, rgba(233,233,233,1) 100%, rgba(255,255,255,1) 100%)"}}>{ "₹" + item?.unit_price}</Paper>)}
                       <div>
                         <Typography
                           sx={{
@@ -758,7 +758,7 @@ const PropertyHome = () => {
                             textTransform: "capitalize",
                             fontWeight: "500",
                             margin: "10px 0px 0px 10px",
-                            fontWeight: "600",
+                            fontWeight: "700",
                           }}
                         >
                           {`${

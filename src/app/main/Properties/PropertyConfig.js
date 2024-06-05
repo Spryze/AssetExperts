@@ -7,6 +7,7 @@ import Property from './Property';
 import Addproperty from './Addproperty';
 import SearchProperty from './SearchProperty';
 import PropertyHome from './Pages/PropertyHome';
+import MyProperties from './Pages/MyProperties';
 import { auth } from '../sign-in/Config';
 import { authRoles } from 'src/app/auth';
 
@@ -41,6 +42,10 @@ const PropertyConfig = {
     {
       path: 'SearchProperty',
       element: <SearchProperty />,
+    },
+    {
+      path: 'MyProperties',
+      element: <MyProperties />,
     },
   ],
 };

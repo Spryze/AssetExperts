@@ -72,10 +72,10 @@ function Layout1(props) {
             <RabitSuspense>{useRoutes(routes)}</RabitSuspense>
             {props.children}
           </div>
-
+{/* 
           {showFooter && config.footer.display && (
             <FooterLayout1 className={config.footer.style === 'fixed' && 'sticky bottom-0'} />
-          )}
+          )} */}
         </main>
 
         {config.navbar.display && config.navbar.position === 'right' && <NavbarWrapperLayout1 />}

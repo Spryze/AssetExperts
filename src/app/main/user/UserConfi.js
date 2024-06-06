@@ -5,7 +5,7 @@ import tr from 'src/app/configs/navigation-i18n/tr.js';
 import ar from 'src/app/configs/navigation-i18n/ar.js';
 import Profile from './Profile';
 import Users from './Users';
-import MyProperties from '../Properties/Pages/MyProperties';
+import ManageProperties from '../Properties/Pages/ManageProperties';
 import { authRoles } from 'src/app/auth';
 
 i18next.addResourceBundle('en', 'propertyPage', en);
@@ -28,17 +28,18 @@ const userConfig = {
   ],
   auth: authRoles.admin,
   routes: [
-    {
-      path: '/manage',
-      element: <Profile />,
-    },
+  
     {
       path: '/manage/users',
       element: <Users />,
     },
     {
       path: '/manage/properties',
-      element: <MyProperties />,
+      element: <ManageProperties />,
+    },
+    {
+      path: '/user/profile',
+      element: <Profile />,
     },
     
   ],

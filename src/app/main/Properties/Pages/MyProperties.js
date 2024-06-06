@@ -156,6 +156,7 @@ const MyProperties = () => {
       )}
       {isEditMode && (
         <Addproperty
+        isEditMode={isEditMode}
           propertyData={selectedProperty}
           onClose={handleCloseForm}
         />

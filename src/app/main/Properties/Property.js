@@ -126,6 +126,7 @@ const propertyData = propertiesData?.data?.property;
           )}
           {isEditMode && (
             <Addproperty
+              isEditMode={isEditMode}
               propertyData={propertyData}
               onClose={handleCloseForm}
             />

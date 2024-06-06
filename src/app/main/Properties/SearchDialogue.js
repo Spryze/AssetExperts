@@ -89,15 +89,15 @@ const SearchDialogue = ({ onSearch }) => {
 
       if (!result || !result.data || result.data.property.length === 0) {
         setNoDataFound(true);
-        onSearch(null);
+        // onSearch(null);
       } else {
         setNoDataFound(false);
         onSearch(result.data);
       }
     } catch (error) {
-      console.error("Failed to fetch data:", error.message);
+      console.error("Failed to fetch data:", error);
       setNoDataFound(true);
-      onSearch(null);
+      // onSearch(null);
     } finally {
       setIsLoading(false);
       handleClose();

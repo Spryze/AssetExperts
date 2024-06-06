@@ -40,7 +40,6 @@ const navigationConfig = [
     auth: authRoles.staff,
     type: 'collapse',
     icon: 'heroicons-outline:user-group',
-    url: '/manage',
     children: [
       {
         id: 'manage.users',

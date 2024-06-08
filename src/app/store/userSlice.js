@@ -323,7 +323,7 @@ export const setUser = createAsyncThunk('user/setUser', async () => {
               
             }
           };
-          resolve(user); // Resolve with the user object
+          resolve(user);
         } else {
           reject(new Error('User not authenticated')); 
         }
@@ -405,8 +405,8 @@ export const UserProfile = createAsyncThunk(
       const cont_user_id = user.uid;
       
       const userdata = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${cont_user_id}&req_user_id=${cont_user_id}`)
-      console.log("userdata", userdata.data); // Assuming userdata is the data you need
-      return userdata.data; // Assuming you want to return the data received from the API
+      console.log("userdata", userdata.data); 
+      return userdata.data; 
 
     } catch (error) {
       return rejectWithValue(error.message);
@@ -426,17 +426,26 @@ export const signInWithEmailPassword = createAsyncThunk(
       const user = userCredential.user;
       
       if (user) {
+        const userData = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${user.uid}&req_user_id=${user.uid}`)
+        // console.log("userdata",userdata)
         let User = {
           uid: user.uid,
-          role: "admin",
+          role: userData.data.profile.role,
           data: {
             accessToken: user.accessToken,
-            displayName: user.displayName,
+            displayName: userData.data.profile.name,
+              address:userData.data.profile.address,
+              comments:userData.data.profile.comments,
+              email:userData.data.profile.email,
+              phone_num_1:userData.data.profile.phone_num_1,
+              phone_num_2:userData.data.profile.phone_num_2,
+              profession:userData.data.profile.profession,
+              requirements:userData.data.profile.requirements,
           }
         };
         
         localStorage.setItem('user', JSON.stringify(User));
-        navigate("/")
+        // Navigate("/")
         
         return User;
       } else {

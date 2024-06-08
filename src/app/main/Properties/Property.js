@@ -17,10 +17,12 @@ import ContactDetails from "./ContactDetails";
 import { useParams } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 
+
 function Property() {
   const user = useSelector(selectUser);
+  console.log("user",user)
   const propertiesData = useSelector(selectProperties);
-  // const [propertyData, setPropertyData] = useState();
+  
 const propertyData = propertiesData?.data?.property;
   console.log("propertyData",propertyData)
   const { propertyId } = useParams();
@@ -33,7 +35,7 @@ const propertyData = propertiesData?.data?.property;
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
-  const isPropertyInUserProperties = UserPropertyIDs.includes(PropertyID);
+  const isPropertyInUserProperties = UserPropertyIDs?.includes(PropertyID);
   const dispatch = useDispatch();
 
 
@@ -95,14 +97,14 @@ const propertyData = propertiesData?.data?.property;
           }}
         ></div>
       )}
-      {!isEditMode && <PropertyCarousel />}
+      {!isEditMode  && <PropertyCarousel />}
       <Grid container spacing={5}>
         <Grid item xs={12} md={8}>
           <div>{!isEditMode && <AllDetails />}</div>
         </Grid>
         <Grid item xs={12} md={4}>
           {!isEditMode && <ContactDetails />}
-          {isPropertyInUserProperties && (
+          {isPropertyInUserProperties || user.role === "admin" && (
             <Button
               variant="contained"
               onClick={() => {
@@ -124,7 +126,7 @@ const propertyData = propertiesData?.data?.property;
               Edit Property
             </Button>
           )}
-          {isEditMode && (
+          {isEditMode  && (
             <Addproperty
               isEditMode={isEditMode}
               propertyData={propertyData}

@@ -1,42 +1,88 @@
+// import * as React from "react";
+// import Typography from "@mui/material/Typography";
+// import Container from "@mui/material/Container";
+// import Form from "./MultiStepForm/Form";
+// import { useSelector } from "react-redux";
+// import { selectUser } from "app/store/userSlice";
+// import { Paper } from "@mui/material";
+// const Addproperty = (propertyData) => {
+// const user = useSelector(selectUser);
+// console.log("user",user)
+
+//   return (
+//     <Container
+//       sx={{
+//         position: "absolute",
+//         left: "20px",
+//         top: "20px",
+//         background: "white",
+//       }}
+//     >
+//       {user?.role === "guest" && (<div className="flex flex-col flex-auto items-center sm:justify-center min-w-0">
+//         <Paper className="flex items-center w-full sm:w-auto min-h-full sm:min-h-auto rounded-0 py-32 px-16 sm:p-48 sm:rounded-2xl sm:shadow">
+//           <div className="w-full max-w-320 sm:w-320 mx-auto sm:mx-0">
+//             <img
+//               className="w-48 mx-auto"
+//               src="assets/images/logo/logo.svg"
+//               alt="logo"
+//             />
+
+//             <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight text-center">
+//               You have signed out!
+//             </Typography>
+//           </div>
+//         </Paper>
+//       </div>)}
+
+//       <Form propertyData={propertyData} />
+//     </Container>
+//   );
+// };
+
+// export default Addproperty;
+
+
 import * as React from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import FormControl from "@mui/material/FormControl";
-import Box from "@mui/material/Box";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import { TextField, Paper } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { useState } from "react";
 import Form from "./MultiStepForm/Form";
+import { useSelector } from "react-redux";
+import { selectUser } from "app/store/userSlice";
+import { Paper } from "@mui/material";
 
-const Addproperty = (propertyData) => {
-  
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
+const AddProperty = (propertyData) => {
+  const user = useSelector(selectUser);
+  console.log("user", user);
 
-  const [value, setValue] = useState(0);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  
   return (
-    <Container sx={{position:"absolute",left:"20px", top:"20px",background:"white"}}>
-      
-      <Form propertyData={propertyData}/>
-
+    <Container
+      sx={{
+        position: "absolute",
+        left: "20px",
+        top: "20px",
+        // background: "white",
+      }}
+    >
+      {user?.role === "guest" ? (
+        <div className="flex flex-col flex-auto items-center sm:justify-center min-w-0">
+          <Paper className="flex items-center w-full sm:w-auto min-h-full sm:min-h-auto rounded-0 py-32 px-16 sm:p-48 sm:rounded-2xl sm:shadow">
+            <div className="w-full max-w-320 sm:w-320 mx-auto sm:mx-0">
+              <img
+                className="w-48 mx-auto"
+                src="assets/images/logo/logo.svg"
+                alt="logo"
+              />
+              <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight text-center">
+                Please Login!
+              </Typography>
+            </div>
+          </Paper>
+        </div>
+      ) : (
+        <Form propertyData={propertyData} />
+      )}
     </Container>
   );
 };
 
-export default Addproperty;
+export default AddProperty;

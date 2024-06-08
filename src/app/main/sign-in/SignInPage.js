@@ -143,8 +143,13 @@ const navigate = useNavigate();
   
   async function onSubmit({ email, password }) {
     try {
-       dispatch(signInWithEmailPassword({ email, password }));
-       navigate("/")
+       dispatch(signInWithEmailPassword({ email, password })).then(response =>{
+        console.log(response)
+        if(response.meta.requestStatus === "fulfilled"){
+          navigate("/")
+        }
+       });
+ 
       
       
       

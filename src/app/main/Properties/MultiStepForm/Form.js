@@ -26,7 +26,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
 
   const [formData, setFormData] = useState({
     prop_name: "" || propertyData?.propertyData?.propertyName,
-    p_type: "" || propertyData?.propertyData?.p_type,
+    p_type: propertyData?.propertyData?.p_type || "",
     dimensions: "" || propertyData?.propertyData?.dimensions,
     unit: "" || propertyData?.propertyData?.unit,
     state: "" || propertyData?.propertyData?.state,
@@ -54,8 +54,8 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
     BHK: "" || propertyData?.propertyData?.BHK,
     lift: "" || propertyData?.propertyData?.lift,
     PropertyAge: "" || propertyData?.propertyData?.PropertyAge,
-    Internal_comments: "" || propertyData?.propertyData?.Internal_comments,
-    Property_Comments: "" || propertyData?.propertyData?.Property_Comments,
+    comments: "" || propertyData?.propertyData?.comments,
+    v_comments: "" || propertyData?.propertyData?.v_comments,
     developments: "" || propertyData?.propertyData?.developments,
     disputes: "" || propertyData?.propertyData?.disputes,
     reg_loc: "" || propertyData?.propertyData?.reg_loc,
@@ -87,23 +87,24 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
   }, [isEditMode, propertyData]);
 
   const propertyTypes = [
-    "Plot",
-    "Flat",
+    "plot",
+    "flat",
+    "land",
     "PG",
-    "Office Place",
-    "Co Working Place",
-    "Student Hostels",
-    "Agricultural Lands",
-    "Independent House",
+    "office place",
+    "co working place",
+    "student hostels",
+    "agricultural lands",
+    "independent house",
   ];
-  const Units = ["sq.ft", "Sq.yards", "Sq.m", "Acres"];
+  const Units = ["sq.ft", "sqyd", "sq.m", "acres"];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const parsedValue = ["price", "size", "latitude", "longitude"].includes(
-      name
-    )
+    const parsedValue = ["price", "size", "latitude", "longitude"].includes(name)
       ? parseFloat(value)
+      : name === "loan_eligibile"
+      ? value === "true"
       : value;
     setFormData({
       ...formData,
@@ -525,9 +526,9 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
           <Grid item xs={12} sm={6}>
             <TextField
               label="Internal Comments"
-              name="Internal_comments"
+              name="comments"
               type="text"
-              value={formData.Internal_comments}
+              value={formData.comments}
               onChange={handleChange}
               variant="outlined"
               fullWidth
@@ -540,7 +541,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
               <InputLabel>Property Rating</InputLabel>
               <Select
                 label="property rating"
-                name="Property_Rating"
+                name="rating"
                 value={formData.rating}
                 onChange={handleChange}
               >
@@ -548,7 +549,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
                 <MenuItem value="2">2</MenuItem>
                 <MenuItem value="3">3</MenuItem>
                 <MenuItem value="4">4</MenuItem>
-                <MenuItem value="4">5</MenuItem>
+                <MenuItem value="5">5</MenuItem>
               </Select>
               <FormHelperText>{formErrors.unit}</FormHelperText>
             </FormControl>
@@ -558,9 +559,9 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
           <Grid item xs={12} sm={6}>
             <TextField
               label="Property Comments"
-              name="Property_Comments"
+              name="v_comments"
               type="text"
-              value={formData.Property_Comments}
+              value={formData.v_comments}
               onChange={handleChange}
               variant="outlined"
               fullWidth
@@ -581,12 +582,13 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth variant="outlined">
-            <InputLabel>Loan Eligibility</InputLabel>
+            <InputLabel>Loan Eligible</InputLabel>
             <Select
-              label="Loan Eligibility"
+              label="Loan Eligible"
               name="loan_eligibile"
               value={formData.loan_eligibile}
               onChange={handleChange}
+              required
             >
               <MenuItem value={true}>Yes</MenuItem>
               <MenuItem value={false}>No</MenuItem>

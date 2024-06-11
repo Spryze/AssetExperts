@@ -28,9 +28,10 @@ export const fetchRecentTransactions = createAsyncThunk(
   'property/fetchRecentTransactions',
   async () => {
     try {
-      const response = await axios.get("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/home")
-      const transactions = response.data.property.buy_properties.concat(response.data.property.sell_properties)
+      const response = await axios.get("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/home");
+      const transactions = response.data.property.buy_properties.concat(response.data.property.sell_properties);
       return transactions; 
+      
     } catch (error) {
       return rejectWithValue(error.message); 
     }
@@ -41,32 +42,41 @@ export const fetchRecentTransactions = createAsyncThunk(
 
 export const SearchResults = createAsyncThunk(
   'property/SearchResults',
-  async (formData, { rejectWithValue }) => {
+  async ({ formData, offset }, { rejectWithValue, fulfillWithValue, }) => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem('user'));
       const req_by = user.uid;
       
-      console.log("formData",formData)
-  
-      const Data =  {
-        req_by : req_by,
-        body: formData
-      };
-   
+      console.log('formData', formData);
 
-      const response = await axios.post("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/search", Data, {
-        headers: {
-          'Content-Type': 'application/json'
+      const Data = {
+        req_by: req_by,
+        offset: offset, 
+        body: formData,
+      };
+      console.log("formdata going to backend",Data)
+      const response = await axios.post(
+        'https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/search',
+        Data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
         }
-      });
-      // console.log("Response from Backend:", response.data);
+      );
+
       if (response.status !== 200) {
         throw new Error('Failed to fetch search results');
       }
-      console.log("response",response)
-      return response.data.property;
+
+      console.log('response', response.data);
+      return fulfillWithValue({
+        properties: response.data.property,
+        totalProperties: response.data.total_properties 
+      });
     } catch (error) {
       console.error('Error in SearchResults Thunk:', error.response?.data || error.message);
+      // Use rejectWithValue to indicate a failed response
       return rejectWithValue(error.response?.data || error.message);
     }
   }
@@ -187,17 +197,13 @@ const propertySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(SearchResults.pending, (state) => {
-        state.status = 'loading';
-      })
+
       .addCase(SearchResults.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.searchResults = action.payload;
+       
+        state.searchResults = [...state.searchResults, ...action.payload.properties];
+        state.totalProperties = action.payload.totalProperties;
       })
-      .addCase(SearchResults.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload;
-      })
+   
       .addCase(fetchProperties.fulfilled, (state, action) => {
         state.properties = action.payload
       })
@@ -216,6 +222,7 @@ export const { setProperties, propertySearch, setError, resetStatus } = property
 export const selectProperties = (state) => state.properties.properties;
 export const selectRecentTransactions =(state)=> state.properties.recentTransactions;
 export const selectSearchResults = (state)=>state.properties.searchResults;
+export const totalProperties = (state)=>state.properties.totalProperties;
 export const selectPropertyStatus = (state) => state.property.status;
 export const selectPropertyError = (state) => state.property.error;
 export default propertySlice.reducer;

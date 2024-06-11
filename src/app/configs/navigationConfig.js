@@ -36,7 +36,7 @@ const navigationConfig = [
   {
     id: 'manage',
     title: 'Manage',
-    translate: 'MANAGE',
+    translate: 'Manage',
     auth: authRoles.staff,
     type: 'collapse',
     icon: 'heroicons-outline:user-group',

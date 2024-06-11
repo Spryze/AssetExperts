@@ -21,7 +21,7 @@ import PriceDetails from "./PriceDetails.json";
 import { selectUser } from "app/store/userSlice";
 import { useSelector } from "react-redux";
 
-const SearchDialogue = ({ onSearch }) => {
+const SearchDialogue = ({FormData},{onSearch}) => {
   const [open, setOpen] = useState(false);
   const user = useSelector(selectUser);
 
@@ -33,23 +33,26 @@ const SearchDialogue = ({ onSearch }) => {
     district: "",
     approved_by: "",
     status: "",
-    landmark: "",
+    // landmark: "",
     loan_eligible: "",
     updated_by: "",
     notified: 0,
     v_status: false,
     own_name: "",
     med_name: "",
+    offset:0,
   };
 
   const [formData, setFormData] = useState(initialFormData);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState(null);
+  const [offset, setoffset] = useState(0);
   const [noDataFound, setNoDataFound] = useState(false);
   const [districtOptions, setDistrictOptions] = useState([]);
   const dispatch = useDispatch();
 
+
+ 
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -99,8 +102,9 @@ const SearchDialogue = ({ onSearch }) => {
           max: max,
         },
       };
+      FormData(payload); 
 
-      const result = await dispatch(SearchResults(payload)).unwrap();
+      const result = await dispatch(SearchResults({ formData: payload, offset: 0 })).unwrap();
 
       if (!result || !result.data || result.data.property.length === 0) {
         setNoDataFound(true);
@@ -126,6 +130,7 @@ const SearchDialogue = ({ onSearch }) => {
           alignItems: "end",
           padding: "2px 10px",
           margin: "20px 30px",
+          textTransform:"capitalize",
         }}
       >
         <TextField
@@ -195,8 +200,19 @@ const SearchDialogue = ({ onSearch }) => {
                 </MenuItem>
               </Select>
             </FormControl>
+            
+              <TextField
+                label="Budget"
+                placeholder="add - between values"
+                name="price_range"
+                value={formData.price_range}
+                onChange={handleChange}
+                variant="outlined"
+                sx={{ margin: "6px" }}
+              />
+            
 
-            <FormControl sx={{ mt: 2, minWidth: "180px", margin: "4px 5px" }}>
+            {/* <FormControl sx={{ mt: 2, minWidth: "180px", margin: "4px 5px" }}>
               <InputLabel id="budget-label">Budget ₹</InputLabel>
               <Select
                 labelId="price_range"
@@ -218,7 +234,7 @@ const SearchDialogue = ({ onSearch }) => {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
+            </FormControl> */}
 
             <FormControl sx={{ minWidth: "140px", mt: 2, margin: "4px 5px" }}>
               <InputLabel>Select State</InputLabel>
@@ -251,7 +267,7 @@ const SearchDialogue = ({ onSearch }) => {
                 ))}
               </Select>
             </FormControl>
-            <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+            {/* <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
               <InputLabel>Landmark</InputLabel>
               <Select
                 name="landmark"
@@ -264,7 +280,7 @@ const SearchDialogue = ({ onSearch }) => {
                 <MenuItem value="Vuda">Beside National Highway</MenuItem>
                 <MenuItem value="Rera">Gajuwaka</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
             <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
               <InputLabel>Approved</InputLabel>
               <Select

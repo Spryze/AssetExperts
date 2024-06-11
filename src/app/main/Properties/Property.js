@@ -104,7 +104,7 @@ const propertyData = propertiesData?.data?.property;
         </Grid>
         <Grid item xs={12} md={4}>
           {!isEditMode && <ContactDetails />}
-          {isPropertyInUserProperties || user.role === "admin" && (
+          {isPropertyInUserProperties || user.role === "admin" &&  !isEditMode && (
             <Button
               variant="contained"
               onClick={() => {

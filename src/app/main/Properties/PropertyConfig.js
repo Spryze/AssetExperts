@@ -10,7 +10,7 @@ import PropertyHome from './Pages/PropertyHome';
 import MyProperties from './Pages/MyProperties';
 import { auth } from '../sign-in/Config';
 import { authRoles } from 'src/app/auth';
-
+import SearchResult from '../user/SearchResultForm';
 i18next.addResourceBundle('en', 'propertyPage', en);
 i18next.addResourceBundle('tr', 'propertyPage', tr);
 i18next.addResourceBundle('ar', 'propertyPage', ar);
@@ -46,6 +46,10 @@ const PropertyConfig = {
     {
       path: 'MyProperties',
       element: <MyProperties />,
+    },
+    {
+      path: 'SearchResult',
+      element: <SearchResult />,
     },
   ],
 };

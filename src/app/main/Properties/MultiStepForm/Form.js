@@ -133,7 +133,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
       const resultAction = dispatch(action({ formData, p_id })).then(
         (response) => {
           console.log("response", response);
-          if (response.payload.message === "Property updated successfully") {
+          if (response.payload.message === "property added successfully") {
             setResponseData(response.payload);
             setIsFormSubmitted(true);
           } else {

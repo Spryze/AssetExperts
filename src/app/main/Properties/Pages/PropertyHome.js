@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchRecentTransactions,selectRecentTransactions,selectSearchResults,SearchResults,totalProperties} from "../PropertySlice1";
+import { fetchRecentTransactions,selectRecentTransactions,selectNormalSearchResults,SearchResults,selectnormaltotalResults} from "../PropertySlice1";
 import {Card,CardContent,Typography,Grid,Box,Paper,Button} from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SearchDialogue from "../SearchDialogue";
 import DefaultImg from "src/assets/Default/DegaultImg.gif";
 import CircularProgress from '@mui/material/CircularProgress';
+import { differenceInDays, parseISO } from 'date-fns';
 
 
 const debounce = (func, delay) => {
@@ -22,15 +23,16 @@ const PropertyHome = () => {
   const dispatch = useDispatch();
   const recentTransactions = useSelector(selectRecentTransactions);
   console.log("recentTransactions", recentTransactions);
-  const searchResults = useSelector(selectSearchResults);
+  const searchResults = useSelector(selectNormalSearchResults);
   console.log("searchResults", searchResults);
   const [formData, setformData] = useState(null);
   const [noDataFound, setNoDataFound] = useState(false);
   const [offset, setoffset] = useState(0);
   const [page, setPage] = useState(0);
   const [Loading,setLoading] = useState(false);
-
-  const total_properties = useSelector(totalProperties)
+  const isAdminSearch = false;
+  const total_properties = useSelector(selectnormaltotalResults)
+  const PropertyState = "ExistingProperty";
 
   const HandleFormData = (data) => {
     console.log("data", data);
@@ -39,7 +41,7 @@ const PropertyHome = () => {
   const SeeMoreResults = () => {
     console.log("offset, formData", offset, formData);
     setLoading(true);
-    dispatch(SearchResults({ formData: formData, offset: offset }))
+    dispatch(SearchResults({ formData: formData, offset: offset,isAdminSearch:isAdminSearch,PropertyState:PropertyState }))
       .then((response) => {
         console.log("response of admin", response);
         setLoading(false); 
@@ -57,7 +59,7 @@ const PropertyHome = () => {
   );
   console.log("transactions", transactions);
   const DataNotFound = useCallback((response) => {
-    if (!response || Object.keys(response).length === 0) {
+    if (!response || response.properties.length === 0) {
       setNoDataFound(true);
       setTimeout(() => {
         setNoDataFound(false);
@@ -67,6 +69,11 @@ const PropertyHome = () => {
     }
   }, []);
 
+  const calculateDaysAgo = (dateString) => {
+    const parsedDate = parseISO(dateString);
+    const now = new Date();
+    return differenceInDays(now, parsedDate);
+  };
   const handleScroll = useCallback(
     debounce(() => {
       if (
@@ -166,7 +173,7 @@ const PropertyHome = () => {
               }}
             />
           </Grid>
-          <SearchDialogue FormData={HandleFormData} onSearch={DataNotFound} />
+          <SearchDialogue FormData={HandleFormData} onSearch={DataNotFound} isAdminSearch={isAdminSearch} />
         </Grid>
       </Box>
 
@@ -180,7 +187,7 @@ const PropertyHome = () => {
             borderRadius: "5px",
             color: "white",
             position: "fixed",
-            top: "60px",
+            top: "100px",
             left: "50%",
             transform: "translateX(-50%)",
             zIndex: 1000,
@@ -246,7 +253,7 @@ const PropertyHome = () => {
                           "linear-gradient(90deg, rgba(233,233,233,1) 100%, rgba(255,255,255,1) 100%)",
                       }}
                     >
-                      Added on: {item?.p_created_on?.split(" ")[0]}
+                      Listed {item?.p_created_on && `${calculateDaysAgo(item.p_created_on)} days ago`}
                     </Paper>
                     {item?.listing_type !== "buy" && (
                       <Paper
@@ -610,7 +617,7 @@ const PropertyHome = () => {
                             color: "black",
                           }}
                         >
-                          Added On :{item?.p_created_on?.split(" ")[0]}
+                          Listed {item?.p_created_on && `${calculateDaysAgo(item.p_created_on)} days ago`}
                         </Typography>
                       </Box>
                     </div>

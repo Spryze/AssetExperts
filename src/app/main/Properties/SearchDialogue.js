@@ -21,38 +21,37 @@ import PriceDetails from "./PriceDetails.json";
 import { selectUser } from "app/store/userSlice";
 import { useSelector } from "react-redux";
 
-const SearchDialogue = ({FormData},{onSearch}) => {
+const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
+  console.log("onSearch",onSearch)
   const [open, setOpen] = useState(false);
   const user = useSelector(selectUser);
+  const PropertyState = "NewProperty";
 
   const initialFormData = {
     p_type: "",
     listing_type: "",
-    price_range: "",
+    min_price: "",
+    max_price: "",
     state: "",
     district: "",
     approved_by: "",
     status: "",
-    // landmark: "",
     loan_eligible: "",
     updated_by: "",
     notified: 0,
     v_status: false,
     own_name: "",
     med_name: "",
-    offset:0,
+    landmark:"",
+    offset: 0,
   };
 
   const [formData, setFormData] = useState(initialFormData);
-
   const [isLoading, setIsLoading] = useState(false);
-  const [offset, setoffset] = useState(0);
   const [noDataFound, setNoDataFound] = useState(false);
   const [districtOptions, setDistrictOptions] = useState([]);
   const dispatch = useDispatch();
 
-
- 
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -79,7 +78,7 @@ const SearchDialogue = ({FormData},{onSearch}) => {
 
   const handleClose = () => {
     setOpen(false);
-    resetForm(); // Reset the form when the dialog is closed
+    resetForm();
   };
 
   const resetForm = () => {
@@ -90,28 +89,31 @@ const SearchDialogue = ({FormData},{onSearch}) => {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      const priceRangeString = formData.price_range;
-      const [minString, maxString] = priceRangeString.split("-");
-      const min = parseInt(minString, 10);
-      const max = parseInt(maxString, 10);
-
       const payload = {
         ...formData,
         price_range: {
-          min: min,
-          max: max,
+          min: parseInt(formData.min_price, 10),
+          max: parseInt(formData.max_price, 10),
         },
       };
-      FormData(payload); 
+      FormData(payload);
 
-      const result = await dispatch(SearchResults({ formData: payload, offset: 0 })).unwrap();
-
-      if (!result || !result.data || result.data.property.length === 0) {
-        setNoDataFound(true);
-        onSearch(result);
-      } else {
-        setNoDataFound(false);
-      }
+      const result = await dispatch(
+        SearchResults({
+          formData: payload,
+          offset: 0,
+          isAdminSearch: isAdminSearch,
+          PropertyState: PropertyState,
+        })
+      ).unwrap();
+      onSearch(result);
+// {console.log('result',result)}
+//       if (!result || !result.data || result.properties.length === 0) {
+//         setNoDataFound(true);
+//         onSearch(result);
+//       } else {
+//         setNoDataFound(false);
+//       }
     } catch (error) {
       console.error("Failed to fetch data:", error);
       setNoDataFound(true);
@@ -130,7 +132,7 @@ const SearchDialogue = ({FormData},{onSearch}) => {
           alignItems: "end",
           padding: "2px 10px",
           margin: "20px 30px",
-          textTransform:"capitalize",
+          textTransform: "capitalize",
         }}
       >
         <TextField
@@ -146,7 +148,7 @@ const SearchDialogue = ({FormData},{onSearch}) => {
         />
       </Box>
 
-      <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose}>
+      <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose} sx={{textTransform:"capitalize"}}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <DialogTitle>Choose Your Requirements</DialogTitle>
           <CloseIcon
@@ -191,7 +193,7 @@ const SearchDialogue = ({FormData},{onSearch}) => {
                 onChange={handleChange}
                 label="Listing Type"
               >
-                <MenuItem value=" ">Any</MenuItem>
+              
                 <MenuItem value="sell">Sell</MenuItem>
                 <MenuItem value="buy">Buy</MenuItem>
                 <MenuItem value="rent">Rent</MenuItem>
@@ -200,17 +202,26 @@ const SearchDialogue = ({FormData},{onSearch}) => {
                 </MenuItem>
               </Select>
             </FormControl>
-            
-              <TextField
-                label="Budget"
-                placeholder="add - between values"
-                name="price_range"
-                value={formData.price_range}
-                onChange={handleChange}
-                variant="outlined"
-                sx={{ margin: "6px" }}
-              />
-            
+
+            <TextField
+              label="Min Budget"
+              placeholder="Minimum value"
+              name="min_price"
+              value={formData.min_price}
+              onChange={handleChange}
+              variant="outlined"
+              sx={{ margin: "6px" }}
+            />
+
+            <TextField
+              label="Max Budget"
+              placeholder="Maximum value"
+              name="max_price"
+              value={formData.max_price}
+              onChange={handleChange}
+              variant="outlined"
+              sx={{ margin: "6px" }}
+            />
 
             {/* <FormControl sx={{ mt: 2, minWidth: "180px", margin: "4px 5px" }}>
               <InputLabel id="budget-label">Budget ₹</InputLabel>
@@ -245,7 +256,7 @@ const SearchDialogue = ({FormData},{onSearch}) => {
                 label="Select State"
               >
                 {statesData.states.map((state) => (
-                  <MenuItem key={state.id} value={state.name}>
+                  <MenuItem key={state.id} value={state.name} sx={{textTransform:"capitalize"}}>
                     {state.name}
                   </MenuItem>
                 ))}
@@ -261,26 +272,22 @@ const SearchDialogue = ({FormData},{onSearch}) => {
                 label="Select District"
               >
                 {districtOptions.map((district) => (
-                  <MenuItem key={district} value={district}>
+                  <MenuItem key={district} value={district} sx={{textTransform:"capitalize"}}>
                     {district}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            {/* <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
-              <InputLabel>Landmark</InputLabel>
-              <Select
+            {user.role === "admin" && (<FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+              <TextField
                 name="landmark"
                 value={formData.landmark}
                 onChange={handleChange}
-                label="Select Landmark"
-              >
-                <MenuItem value=" ">Any</MenuItem>
-                <MenuItem value="Panchayat">Palasa</MenuItem>
-                <MenuItem value="Vuda">Beside National Highway</MenuItem>
-                <MenuItem value="Rera">Gajuwaka</MenuItem>
-              </Select>
-            </FormControl> */}
+                label="Landmark"
+                variant="outlined"
+              />
+            </FormControl>)}
+
             <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
               <InputLabel>Approved</InputLabel>
               <Select
@@ -303,7 +310,6 @@ const SearchDialogue = ({FormData},{onSearch}) => {
                 onChange={handleChange}
                 label="Select Loan Eligibility"
               >
-                <MenuItem value=" ">Any</MenuItem>
                 <MenuItem value="true">Yes</MenuItem>
                 <MenuItem value="false">No</MenuItem>
               </Select>

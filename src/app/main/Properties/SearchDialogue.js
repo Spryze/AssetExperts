@@ -22,7 +22,6 @@ import { selectUser } from "app/store/userSlice";
 import { useSelector } from "react-redux";
 
 const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
-  console.log("onSearch",onSearch)
   const [open, setOpen] = useState(false);
   const user = useSelector(selectUser);
   const PropertyState = "NewProperty";
@@ -39,7 +38,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
     loan_eligible: "",
     updated_by: "",
     notified: 0,
-    v_status: false,
+    v_status: true,
     own_name: "",
     med_name: "",
     landmark:"",

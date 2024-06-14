@@ -20,6 +20,7 @@ import { useState } from 'react';
 import  'src/styles/style.css'
 
 
+
 const emotionCacheOptions = {
   
   rtl: {
@@ -39,7 +40,6 @@ const App = () => {
   const user = useSelector(selectUser);
   const langDirection = useSelector(selectCurrentLanguageDirection);
   const mainTheme = useSelector(selectMainTheme);
-
 
 
   return (

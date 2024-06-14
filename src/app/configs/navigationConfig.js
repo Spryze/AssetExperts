@@ -30,7 +30,7 @@ const navigationConfig = [
     title: 'My Properties',
     translate: 'My-Properties',
     type: 'item',
-    icon: 'heroicons-outline:refresh',
+    icon: 'heroicons-outline:template',
     url: 'MyProperties',
   },
   {
@@ -39,7 +39,7 @@ const navigationConfig = [
     translate: 'Manage',
     auth: authRoles.staff,
     type: 'collapse',
-    icon: 'heroicons-outline:user-group',
+    icon: 'heroicons-outline:exclamation',
     children: [
       {
         id: 'manage.users',

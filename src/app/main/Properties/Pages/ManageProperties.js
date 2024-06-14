@@ -1,27 +1,14 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Typography,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  IconButton,
-} from "@mui/material";
+import {Typography,Grid,Table,TableBody,TableCell,TableContainer,TableHead,TableRow,IconButton,} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SearchDialogue from "../SearchDialogue";
 import { Link } from "react-router-dom";
-import {
-  selectAdminSearchResults,
-  selectadmintotalProperties,
-  SearchResults,
-} from "../PropertySlice1";
+import {selectAdminSearchResults,selectadmintotalProperties,SearchResults} from "../PropertySlice1";
 import _ from "lodash";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import { useLocation } from "react-router-dom";
 
 const ManageProperties = () => {
   const dispatch = useDispatch();
@@ -30,6 +17,9 @@ const ManageProperties = () => {
   const totalSearchResults = useSelector(selectadmintotalProperties);
   const isAdminSearch = true;
   const PropertyState = "ExistingProperty";
+
+  const location = useLocation(); 
+console.log("location",location)
 
   const [noDataFound, setNoDataFound] = useState(false);
   const [expandedRows, setExpandedRows] = useState({});
@@ -219,6 +209,7 @@ const ManageProperties = () => {
                           to={`/property/${item.property_id}`}
                           // target="_blank"
                           rel="noopener noreferrer"
+                          myVariable={"yourVariable"}
                         >
                           {item.property_id}
                         </Link>

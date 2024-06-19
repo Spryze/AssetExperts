@@ -4,7 +4,7 @@ import i18n from './i18nSlice';
 import user from './userSlice';
 import properties from '../main/Properties/PropertySlice1';
 import manageSearch from '../main/user/ManageSearchSlice';
-// import manageSearchSlice '../main/'
+
 
 
 
@@ -15,6 +15,8 @@ const createReducer = (asyncReducers) => (state, action) => {
     user,
     properties,
     manageSearch,
+   
+    
     ...asyncReducers,
   });
 

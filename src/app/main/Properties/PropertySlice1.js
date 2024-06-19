@@ -104,6 +104,8 @@ export const addProperty = createAsyncThunk(
     }
   }
 );
+
+
 export const updateProperty = createAsyncThunk(
   'property/updateProperty',
   async ({ formData, p_id }, { rejectWithValue }) => {
@@ -225,5 +227,6 @@ export const selectSearchResults = (state)=>state.properties.searchResults;
 export const totalProperties = (state)=>state.properties.totalProperties;
 export const selectPropertyStatus = (state) => state.property.status;
 export const selectPropertyError = (state) => state.property.error;
+export const selectUserDetails = (state) => state.updatedata.user;
 export default propertySlice.reducer;
 

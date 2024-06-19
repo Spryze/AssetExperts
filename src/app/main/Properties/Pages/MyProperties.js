@@ -9,6 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const MyProperties = () => {
   const userData = useSelector(selectUser);
+  console.log("myproperties")
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -38,7 +39,7 @@ const MyProperties = () => {
       </div>
       {!isEditMode && (
         <Grid container spacing={1}>
-          {userData?.data?.myProperties?.length > 0 && (
+          {userData?.data?.properties?.length > 0 && (
             <div style={{ margin: "30px" }}>
               <Typography variant="h6" sx={{ marginBottom: "10px" }}>
                 My Properties
@@ -51,7 +52,7 @@ const MyProperties = () => {
                   flexWrap: "wrap",
                 }}
               >
-                {userData?.data?.myProperties?.map((item, index) => (
+                {userData?.data?.properties?.map((item, index) => (
                   <Card
                     key={index}
                     sx={{

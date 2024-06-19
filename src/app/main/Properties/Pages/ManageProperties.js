@@ -1,32 +1,25 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Typography,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  IconButton,
-} from "@mui/material";
+import {Typography,Grid,Table,TableBody,TableCell,TableContainer,TableHead,TableRow,IconButton,} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SearchDialogue from "../SearchDialogue";
 import { Link } from "react-router-dom";
-import {
-  selectSearchResults,
-  totalProperties,
-  SearchResults,
-} from "../PropertySlice1";
+import {selectAdminSearchResults,selectadmintotalProperties,SearchResults} from "../PropertySlice1";
 import _ from "lodash";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import { useLocation } from "react-router-dom";
 
 const ManageProperties = () => {
   const dispatch = useDispatch();
-  const searchResults = useSelector(selectSearchResults);
-  const totalSearchResults = useSelector(totalProperties);
+  const searchResults = useSelector(selectAdminSearchResults);
+  console.log("admin searchResults",searchResults);
+  const totalSearchResults = useSelector(selectadmintotalProperties);
+  const isAdminSearch = true;
+  const PropertyState = "ExistingProperty";
+
+  const location = useLocation(); 
+console.log("location",location)
 
   const [noDataFound, setNoDataFound] = useState(false);
   const [expandedRows, setExpandedRows] = useState({});
@@ -49,17 +42,18 @@ const ManageProperties = () => {
     }));
   };
 
-  const handleClick = (propertyId) => {
-    const newWindow = window.open(`/property/${propertyId}`, "_blank");
-    if (newWindow) {
-      newWindow.focus();
-    } else {
-      console.error("Unable to open new window/tab");
-    }
-  };
+  // const handleClick = (propertyId) => {
+  //   const newWindow = window.open(`/property/${propertyId}`, "_blank");
+  //   if (newWindow) {
+  //     newWindow.focus();
+  //   } else {
+  //     console.error("Unable to open new window/tab");
+  //   }
+  // };
 
   const dataNotFound = useCallback((response) => {
-    if (!response || response.length === 0) {
+    console.log("response for nodatafound",response)
+    if (!response || response.properties.length === 0) {
       setNoDataFound(true);
       setTimeout(() => {
         setNoDataFound(false);
@@ -99,7 +93,9 @@ const ManageProperties = () => {
       ) {
         setLoading(true);
         const newOffset = (offset + 40) % totalSearchResults;
-        dispatch(SearchResults({ formData, offset: newOffset })).then(
+        
+        dispatch(SearchResults({ formData, offset: newOffset, isAdminSearch: true,PropertyState:PropertyState }))
+        .then(
           (response) => {
             console.log("response of admin", response);
             setOffset(newOffset);
@@ -121,7 +117,7 @@ const ManageProperties = () => {
   return (
     <div style={{ margin: "20px" }}>
       <div style={{ justifyContent: "center", display: "flex" }}>
-        <SearchDialogue FormData={handleFormData} onSearch={dataNotFound} />
+        <SearchDialogue FormData={handleFormData} onSearch={dataNotFound} isAdminSearch={isAdminSearch} />
       </div>
       {noDataFound && (
         <Typography
@@ -211,8 +207,9 @@ const ManageProperties = () => {
                         <Link
                         style={{color:"blue",textDecoration:"underline",background:"none"}}
                           to={`/property/${item.property_id}`}
-                          target="_blank"
+                          // target="_blank"
                           rel="noopener noreferrer"
+                          myVariable={"yourVariable"}
                         >
                           {item.property_id}
                         </Link>

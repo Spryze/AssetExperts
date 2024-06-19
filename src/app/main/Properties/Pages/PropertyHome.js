@@ -1,12 +1,22 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchRecentTransactions,selectRecentTransactions,selectSearchResults,SearchResults,totalProperties} from "../PropertySlice1";
+import { fetchRecentTransactions,selectRecentTransactions,selectNormalSearchResults,SearchResults,selectnormaltotalResults,LocalResults} from "../PropertySlice1";
 import {Card,CardContent,Typography,Grid,Box,Paper,Button} from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SearchDialogue from "../SearchDialogue";
 import DefaultImg from "src/assets/Default/DegaultImg.gif";
 import CircularProgress from '@mui/material/CircularProgress';
+import { differenceInDays, parseISO } from 'date-fns';
 
+
+const CurrencyFormatter = ({ value, currency }) => {
+  const formattedValue = new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: currency
+  }).format(value);
+
+  return <>{formattedValue}</>;
+};
 
 const debounce = (func, delay) => {
   let timer;
@@ -22,15 +32,18 @@ const PropertyHome = () => {
   const dispatch = useDispatch();
   const recentTransactions = useSelector(selectRecentTransactions);
   console.log("recentTransactions", recentTransactions);
-  const searchResults = useSelector(selectSearchResults);
+  const searchResults = useSelector(selectNormalSearchResults);
   console.log("searchResults", searchResults);
   const [formData, setformData] = useState(null);
   const [noDataFound, setNoDataFound] = useState(false);
   const [offset, setoffset] = useState(0);
   const [page, setPage] = useState(0);
   const [Loading,setLoading] = useState(false);
-
-  const total_properties = useSelector(totalProperties)
+  const isAdminSearch = false;
+  const total_properties = useSelector(selectnormaltotalResults)
+  const PropertyState = "ExistingProperty";
+  const [LocalProperies,setLocalProperties] = useState();
+  console.log("LocalProperies",LocalProperies)
 
   const HandleFormData = (data) => {
     console.log("data", data);
@@ -39,7 +52,7 @@ const PropertyHome = () => {
   const SeeMoreResults = () => {
     console.log("offset, formData", offset, formData);
     setLoading(true);
-    dispatch(SearchResults({ formData: formData, offset: offset }))
+    dispatch(SearchResults({ formData: formData, offset: offset,isAdminSearch:isAdminSearch,PropertyState:PropertyState }))
       .then((response) => {
         console.log("response of admin", response);
         setLoading(false); 
@@ -57,7 +70,7 @@ const PropertyHome = () => {
   );
   console.log("transactions", transactions);
   const DataNotFound = useCallback((response) => {
-    if (!response || Object.keys(response).length === 0) {
+    if (!response || response.properties.length === 0) {
       setNoDataFound(true);
       setTimeout(() => {
         setNoDataFound(false);
@@ -67,6 +80,11 @@ const PropertyHome = () => {
     }
   }, []);
 
+  const calculateDaysAgo = (dateString) => {
+    const parsedDate = parseISO(dateString);
+    const now = new Date();
+    return differenceInDays(now, parsedDate);
+  };
   const handleScroll = useCallback(
     debounce(() => {
       if (
@@ -78,6 +96,35 @@ const PropertyHome = () => {
     }, 200),
     []
   );
+
+  const handleLocalClick = (district) => {
+   
+    dispatch(
+      LocalResults({
+        formData: {
+          p_type: "",
+          listing_type: "",
+          min_price: "",
+          max_price: "",
+          state: "andhra pradesh",
+          district: district,
+          approved_by: "",
+          status: "",
+          loan_eligible: "",
+          updated_by: "",
+          notified: 0,
+          v_status: true,
+          own_name: "",
+          med_name: "",
+          landmark: "",
+          offset: 0,
+        },isAdminSearch:"local"
+      })
+    ).then((response)=>{
+      console.log("Lovcal Response",response)
+      setLocalProperties(response.payload.properties)
+    });
+  };
 
   useEffect(() => {
     dispatch(fetchRecentTransactions(page));
@@ -166,7 +213,7 @@ const PropertyHome = () => {
               }}
             />
           </Grid>
-          <SearchDialogue FormData={HandleFormData} onSearch={DataNotFound} />
+          <SearchDialogue FormData={HandleFormData} onSearch={DataNotFound} isAdminSearch={isAdminSearch} />
         </Grid>
       </Box>
 
@@ -180,7 +227,7 @@ const PropertyHome = () => {
             borderRadius: "5px",
             color: "white",
             position: "fixed",
-            top: "60px",
+            top: "100px",
             left: "50%",
             transform: "translateX(-50%)",
             zIndex: 1000,
@@ -239,29 +286,31 @@ const PropertyHome = () => {
                         position: "absolute",
                         padding: "10px",
                         top: "160px",
-                        left: "0",
+                        right: "0",
                         borderRadius: "0px 5px 5px 0px",
                         boxShadow: "none",
-                        background:
-                          "linear-gradient(90deg, rgba(233,233,233,1) 100%, rgba(255,255,255,1) 100%)",
+                        background: "rgba(0, 0, 0, 0.5)", 
+                        color: "white", 
                       }}
                     >
-                      Added on: {item?.p_created_on?.split(" ")[0]}
+                     <Typography> Listed {item?.p_created_on && `${calculateDaysAgo(item.p_created_on)} days ago`
+                      }</Typography>
                     </Paper>
                     {item?.listing_type !== "buy" && (
                       <Paper
-                        sx={{
-                          fontWeight: "600",
-                          position: "absolute",
-                          padding: "10px",
-                          top: "0",
-                          borderRadius: "0px 0px 5px 0px",
-                          background:
-                            "linear-gradient(90deg, rgba(233,233,233,1) 100%, rgba(255,255,255,1) 100%)",
-                        }}
-                      >
-                        {"₹" + item?.price + " / " + item?.unit}
-                      </Paper>
+                      sx={{
+                        fontWeight: "600",
+                        position: "absolute",
+                        padding: "10px",
+                        top: "0",
+                        borderRadius: "0px 0px 5px 0px",
+                        background: "rgba(0, 0, 0, 0.5)", 
+                        color: "white", 
+                      }}
+                    >
+                      <CurrencyFormatter value={item?.unit_price} currency="INR" /> / {item?.unit}
+                    </Paper>
+                    
                     )}
                     <div>
                       <Typography
@@ -277,7 +326,7 @@ const PropertyHome = () => {
                           item?.listing_type === "buy"
                             ? "Wanted"
                             : `${item?.listing_type}ing`
-                        }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
+                        }, ${item?.area}${item?.unit}s ${item?.p_type}`}
                       </Typography>
                       <Box sx={{ display: "flex" }}>
                         <LocationOnIcon sx={{ color: "orange" }} />
@@ -329,6 +378,7 @@ const PropertyHome = () => {
           }}
         >
           <Card
+          onClick={()=>{handleLocalClick("srikakulam")}}
             sx={{
               flex: "0 0 auto",
               width: "250px",
@@ -338,6 +388,7 @@ const PropertyHome = () => {
               justifyContent: "center",
               overflow: "hidden",
               margin: "20px 0",
+              cursor:"pointer",
             }}
           >
             <CardContent
@@ -373,6 +424,7 @@ const PropertyHome = () => {
             </CardContent>
           </Card>
           <Card
+          onClick={()=>{handleLocalClick("visakhapatnam")}}
             sx={{
               flex: "0 0 auto",
               width: "250px",
@@ -382,6 +434,7 @@ const PropertyHome = () => {
               justifyContent: "center",
               overflow: "hidden",
               margin: "20px 0",
+              cursor:"pointer",
             }}
           >
             <CardContent
@@ -417,6 +470,7 @@ const PropertyHome = () => {
             </CardContent>
           </Card>
           <Card
+           onClick={()=>{handleLocalClick("vizianagaram")}}
             sx={{
               flex: "0 0 auto",
               width: "250px",
@@ -426,6 +480,7 @@ const PropertyHome = () => {
               justifyContent: "center",
               overflow: "hidden",
               margin: "20px 0",
+              cursor:"pointer",
             }}
           >
             <CardContent
@@ -444,6 +499,7 @@ const PropertyHome = () => {
                   zIndex: "10",
                   background: "white",
                   padding: "3px 76px",
+                  cursor:"pointer",
                 }}
               >
                 Vizianagaram
@@ -461,6 +517,7 @@ const PropertyHome = () => {
             </CardContent>
           </Card>
           <Card
+           onClick={()=>{handleLocalClick("east godavari")}}
             sx={{
               flex: "0 0 auto",
               width: "250px",
@@ -470,6 +527,7 @@ const PropertyHome = () => {
               justifyContent: "center",
               overflow: "hidden",
               margin: "20px 0",
+              cursor:"pointer",
             }}
           >
             <CardContent
@@ -489,6 +547,7 @@ const PropertyHome = () => {
                   background: "white",
                   padding: "3px 76px",
                   width: "max-content",
+                  cursor:"pointer",
                 }}
               >
                 East Godavari
@@ -507,12 +566,13 @@ const PropertyHome = () => {
           </Card>
         </div>
       </div>
+      {LocalProperies?.length > 0 && (
       <Grid container spacing={1} sx={{ marginTop: "20px" }}>
-        {recentTransactions.length > 0 && (
+        
           <div>
             <hr style={{ margin: "10px 0px" }} />
             <Typography variant="h6" sx={{ marginBottom: "10px" }}>
-              Recent Properties
+             {LocalProperies[0].district}
             </Typography>
             <div
               style={{
@@ -522,8 +582,9 @@ const PropertyHome = () => {
                 // justifyContent: "center",
               }}
             >
-              {recentTransactions.map((item, index) => (
+              {LocalProperies?.filter((item) => item.price !== 0)?.map((item, index) => (
                 <Card
+                key={index}
                   sx={{
                     flex: "0 0 auto",
                     cursor: "pointer",
@@ -565,11 +626,127 @@ const PropertyHome = () => {
                           padding: "10px",
                           top: "0",
                           borderRadius: "0px 0px 5px 0px",
-                          background:
-                            "linear-gradient(90deg, rgba(233,233,233,1) 100%, rgba(255,255,255,1) 100%)",
+                          background: "rgba(0, 0, 0, 0.5)", 
+                          color: "white", 
                         }}
                       >
-                        {"₹" + item?.unit_price + " / " + item?.unit}
+                       <CurrencyFormatter value={item?.unit_price} currency="INR" /> / {item?.unit}
+                      </Paper>
+                    )}
+                    <div>
+                      <Typography
+                        sx={{
+                          fontSize: "15px",
+                          textTransform: "capitalize",
+                          fontWeight: "500",
+                          margin: "10px 0px 0px 10px",
+                          fontWeight: "700",
+                        }}
+                      >
+                        {`${
+                          item?.listing_type === "buy"
+                            ? "Wanted"
+                            : `${item?.listing_type}ing`
+                        }, ${item?.area}${item?.unit}s ${item?.p_type}`}
+                      </Typography>
+                      <Box sx={{ display: "flex" }}>
+                        <LocationOnIcon sx={{ color: "orange" }} />
+                        <Typography
+                          sx={{
+                            fontSize: "14px",
+                            textTransform: "capitalize",
+                            fontWeight: "600",
+                            color: "#707273",
+                          }}
+                        >
+                          {`${item?.landmark}, ${item?.district}`}
+                        </Typography>
+                        <Typography
+                          className=""
+                          sx={{
+                            width: "-webkit-fill-available",
+                            fontSize: "14px",
+                            textTransform: "capitalize",
+                            fontWeight: "600",
+                            color: "black",
+                          }}
+                        >
+                          Listed {item?.p_created_on && `${calculateDaysAgo(item.p_created_on)} days ago`}
+                        </Typography>
+                      </Box>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        
+      </Grid>
+      )}
+      <Grid container spacing={1} sx={{ marginTop: "20px" }}>
+        {recentTransactions.length > 0 && (
+          <div>
+            <hr style={{ margin: "10px 0px" }} />
+            <Typography variant="h6" sx={{ marginBottom: "10px" }}>
+              Recent Properties
+            </Typography>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                flexWrap: "wrap",
+                // justifyContent: "center",
+              }}
+            >
+              {recentTransactions?.filter((item) => item.price !== 0)?.map((item, index) => (
+                <Card
+                key={index}
+                  sx={{
+                    flex: "0 0 auto",
+                    cursor: "pointer",
+                    height: "auto",
+                    width: "300px",
+                    position: "relative",
+                    padding: "0px",
+                    borderRadius: "5px",
+                    margin: "30px 0px",
+                  }}
+                  onClick={() => handleClick(item.property_id)}
+                >
+                  <CardContent sx={{ padding: "0px" }}>
+                    <Box
+                      component="img"
+                      src={
+                        item?.prop_images && item.prop_images.length > 0
+                          ? item.prop_images[0]
+                          : DefaultImg
+                      }
+                      alt="Property"
+                      sx={{
+                        width: "100%",
+                        position: "relative",
+                        height: "200px",
+                        objectFit: "cover",
+                        borderRadius: "5px",
+                        transition: "transform 0.3s ease-in-out",
+                        "&:hover": {
+                          transform: "scale(1.05)",
+                        },
+                      }}
+                    />
+                    {item?.listing_type !== "buy" && (
+                      <Paper
+                        sx={{
+                          fontWeight: "600",
+                          position: "absolute",
+                          padding: "10px",
+                          top: "0",
+                          borderRadius: "0px 0px 5px 0px",
+                          background: "rgba(0, 0, 0, 0.5)", 
+                          color: "white", 
+                        }}
+                      >
+                        <CurrencyFormatter value={item?.unit_price} currency="INR" /> / {item?.unit}
                       </Paper>
                     )}
                     <div>
@@ -610,7 +787,7 @@ const PropertyHome = () => {
                             color: "black",
                           }}
                         >
-                          Added On :{item?.p_created_on?.split(" ")[0]}
+                          Listed {item?.p_created_on && `${calculateDaysAgo(item.p_created_on)} days ago`}
                         </Typography>
                       </Box>
                     </div>

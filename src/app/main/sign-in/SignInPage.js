@@ -11,7 +11,7 @@ import * as yup from 'yup';
 import _ from '@lodash';
 import RabitSvgIcon from '@rabit/core/RabitSvgIcon';
 import AvatarGroup from '@mui/material/AvatarGroup';
-import Avatar from '@mui/material/Avatar';
+import GoogleIcon from '@mui/icons-material/Google';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useEffect } from 'react';
@@ -23,7 +23,7 @@ import RabitUtils from '@rabit/utils/RabitUtils';
 import Alert from "@mui/material/Alert";
 import { useDispatch } from 'react-redux';
 import { signInWithEmailPassword } from 'app/store/userSlice';
-
+import googleImage from '../../../assets/Default/branding_guide_do_1.png'
 import { useState } from 'react';
 
 
@@ -79,6 +79,8 @@ const navigate = useNavigate();
     // const Navigate = useNavigate();
 
   const [message,setMessage]=useState(null)
+  const [loginError,setloginError]=useState(false)
+
   useEffect(() => {
     // authentication()
     if (message) {
@@ -95,23 +97,26 @@ const navigate = useNavigate();
     try {
       signInWithPopup(auth, provider)
         .then((data) => {
+          console.log("SIGNIN POPUP data",data)
+          if(data._tokenResponse.emailVerified == true){
+            navigate("/")}
              
-          let user = {
-            uid: data.user.uid,
-              role: "admin",
-            data:{
+          // let user = {
+          //   uid: data.user.uid,
+          //     role: "admin",
+          //   data:{
             
-              accessToken: data.user.accessToken,
-              displayName: data.user.displayName,
+          //     accessToken: data.user.accessToken,
+          //     displayName: data.user.displayName,
               
-            }
-          };
-          console.log(user)
-          localStorage.setItem('google_access_token', data._tokenResponse.idToken);
-          localStorage.setItem('user', JSON.stringify(user));
+          //   }
+          // };
+          // console.log(user)
+          // localStorage.setItem('google_access_token', data._tokenResponse.idToken);
+          // localStorage.setItem('user', JSON.stringify(user));
           
          
-          jwtService.emit('onLogin',user);
+          // jwtService.emit('onLogin',user);
           
           
         })
@@ -144,10 +149,10 @@ const navigate = useNavigate();
   async function onSubmit({ email, password }) {
     try {
        dispatch(signInWithEmailPassword({ email, password })).then(response =>{
-        console.log(response)
+        console.log("response of signinin",response)
         if(response.meta.requestStatus === "fulfilled"){
           navigate("/")
-        }
+        }else{setloginError(true)}
        });
  
       
@@ -190,13 +195,14 @@ const navigate = useNavigate();
               Sign up
             </Link>
           </div>
-
+          {loginError && <Typography sx={{color :"red"}}>Invalid Credentials</Typography>}
           <form
             name="loginForm"
             noValidate
             className="flex flex-col justify-center w-full mt-32"
             onSubmit={handleSubmit(onSubmit)}
           >
+            
             <Controller
               name="email"
               control={control}
@@ -274,7 +280,7 @@ const navigate = useNavigate();
             </div>
 
             <div className="flex items-center mt-32 space-x-16">
-              <Button variant="outlined" className="flex-auto">
+              {/* <Button variant="outlined" className="flex-auto">
                 <RabitSvgIcon size={20} color="action">
                   feather:facebook
                 </RabitSvgIcon>
@@ -288,11 +294,12 @@ const navigate = useNavigate();
                 <RabitSvgIcon size={20} color="action">
                   feather:github
                 </RabitSvgIcon>
-              </Button>
-              <Button onClick={handleClick} variant="outlined" className="flex-auto">
-                <RabitSvgIcon size={20} color="action">
-                  feather:google
-                </RabitSvgIcon>
+              </Button> */}
+              <Button onClick={handleClick} sx={{fontWeight:"bold"}} variant="outlined" className="flex-auto">
+                {/* <RabitSvgIcon size={20} color="action"> */}
+                <GoogleIcon sx={{margin:"0px 10px"}}/> SignIn with Google
+               
+                {/* </RabitSvgIcon> */}
               </Button>
             </div>
           </form>

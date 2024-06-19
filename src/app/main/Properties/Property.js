@@ -15,8 +15,8 @@ import Recentlyadded from "./Recentlyadded";
 import AllDetails from "./AllDetails";
 import ContactDetails from "./ContactDetails";
 import { useParams } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import CloseIcon from "@mui/icons-material/Close";
-
 
 function Property() {
   const user = useSelector(selectUser);
@@ -26,6 +26,7 @@ function Property() {
 const propertyData = propertiesData?.data?.property;
   console.log("propertyData",propertyData)
   const { propertyId } = useParams();
+  console.log("propertyId in property",propertyId)
   const PropertyID = propertiesData?.data?.property?.property_id;
 
   const UserPropertyIDs = user?.data?.myProperties?.map(
@@ -75,7 +76,10 @@ const propertyData = propertiesData?.data?.property;
     <Container
       maxWidth="lg"
       sx={{ background: "#F5F5F5", position: "relative" }}
-    ><div style={{display:"flex",justifyContent:"end"}}>
+    >
+       {user.role == "admin" && (<Typography className="TextNone" component={Link} to="/manage/properties" variant="contained" color="primary">
+      <ArrowBackIosIcon/>Back to Search  </Typography>)}
+      <div style={{display:"flex",justifyContent:"end"}}>
       {isEditMode && (
         <CloseIcon
           onClick={() => handleCloseForm()}
@@ -87,6 +91,7 @@ const propertyData = propertiesData?.data?.property;
           sx={{ position: "absolute", zIndex: "1", top: "10%", left: "50%" }}
         />
       )}
+      
       {loading && (
         <div
           style={{
@@ -97,7 +102,7 @@ const propertyData = propertiesData?.data?.property;
           }}
         ></div>
       )}
-      {!isEditMode  && <PropertyCarousel />}
+      {!isEditMode && <PropertyCarousel />}
       <Grid container spacing={5}>
         <Grid item xs={12} md={8}>
           <div>{!isEditMode && <AllDetails />}</div>

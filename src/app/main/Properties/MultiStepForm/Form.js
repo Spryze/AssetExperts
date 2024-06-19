@@ -25,7 +25,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
   console.log("user", user);
 
   const [formData, setFormData] = useState({
-    prop_name: "" || propertyData?.propertyData?.propertyName,
+    prop_name:  propertyData?.propertyData?.property_name || "",
     p_type: propertyData?.propertyData?.p_type || "",
     dimensions: "" || propertyData?.propertyData?.dimensions,
     unit: "" || propertyData?.propertyData?.unit,
@@ -97,7 +97,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
     "agricultural lands",
     "independent house",
   ];
-  const Units = ["sq.ft", "sqyd", "sq.m", "acres"];
+  const Units = ["sqft", "sqyd", "sq.m", "acre","cent"];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -114,7 +114,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
 
   const validateForm = () => {
     const errors = {};
-    if (!formData.propertyName)
+    if (!formData.prop_name)
       errors.propertyName = "Property Name is required";
     if (!formData.p_type) errors.p_type = "Property Type is required";
     if (!formData.price) errors.price = "Price is required";
@@ -133,7 +133,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
       const resultAction = dispatch(action({ formData, p_id })).then(
         (response) => {
           console.log("response", response);
-          if (response.payload.message === "Property updated successfully") {
+          if (response.payload.message === "property added successfully") {
             setResponseData(response.payload);
             setIsFormSubmitted(true);
           } else {
@@ -207,7 +207,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
         <Grid item xs={12} sm={6}>
           <TextField
             label="Property Name"
-            name="propertyName"
+            name="prop_name"
             value={formData.prop_name}
             onChange={handleChange}
             variant="outlined"

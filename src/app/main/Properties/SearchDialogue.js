@@ -21,12 +21,11 @@ import PriceDetails from "./PriceDetails.json";
 import { selectUser } from "app/store/userSlice";
 import { useSelector } from "react-redux";
 
-const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
+const SearchDialogue = ({ onSearch }) => {
   const [open, setOpen] = useState(false);
-  const user = useSelector(selectUser);
-  const PropertyState = "NewProperty";
-
-  const initialFormData = {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [responseData, setResponseData] = useState("");
+  const [formData, setFormData] = useState({
     p_type: "",
     listing_type: "",
     min_price: "",
@@ -35,6 +34,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
     district: "",
     approved_by: "",
     status: "",
+    landmark: "",
     loan_eligible: "",
     updated_by: "",
     notified: 0,
@@ -44,14 +44,16 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
     med_name: "",
     landmark:"",
     offset: 0,
-  };
-
-  const [formData, setFormData] = useState(initialFormData);
+  });
+ 
   const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState(null);
   const [noDataFound, setNoDataFound] = useState(false);
   const [districtOptions, setDistrictOptions] = useState([]);
   const dispatch = useDispatch();
 
+
+ 
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -78,12 +80,6 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
 
   const handleClose = () => {
     setOpen(false);
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setFormData(initialFormData);
-    setDistrictOptions([]);
   };
 
   const handleSubmit = async () => {
@@ -96,7 +92,6 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
           max: parseInt(formData.max_price, 10),
         },
       };
-      FormData(payload);
 
        await dispatch(
         SearchResults({
@@ -135,7 +130,6 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
           alignItems: "end",
           padding: "2px 10px",
           margin: "20px 30px",
-          textTransform: "capitalize",
         }}
       >
         <TextField
@@ -151,7 +145,12 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
         />
       </Box>
 
-      <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose} sx={{textTransform:"capitalize"}}>
+      <Dialog
+        fullWidth={true}
+        maxWidth="md"
+        open={open}
+        onClose={handleClose}
+      >
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <DialogTitle>Choose Your Requirements</DialogTitle>
           <CloseIcon
@@ -283,116 +282,62 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               </Select>
             </FormControl>
 
-            <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
-              <InputLabel>District</InputLabel>
-              <Select
-                name="district"
-                value={formData.district}
-                onChange={handleChange}
-                label="Select District"
-              >
-                {districtOptions.map((district) => (
-                  <MenuItem key={district} value={district} sx={{textTransform:"capitalize"}}>
-                    {district}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            {user.role === "admin" && (<FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
-              <TextField
-                name="landmark"
-                value={formData.landmark}
-                onChange={handleChange}
-                label="Landmark"
-                variant="outlined"
-              />
-            </FormControl>)}
-
-            <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
-              <InputLabel>Approved</InputLabel>
-              <Select
-                name="approved_by"
-                value={formData.approved_by}
-                onChange={handleChange}
-                label="Select Approved"
-              >
-                <MenuItem value=" ">Any</MenuItem>
-                <MenuItem value="Panchayat">Panchayat</MenuItem>
-                <MenuItem value="Vuda">Vuda</MenuItem>
-                <MenuItem value="Rera">Rera</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ mt: 2, minWidth: "140px", margin: "6px 5px" }}>
-              <InputLabel>Loan Eligibility</InputLabel>
-              <Select
-                name="loan_eligible"
-                value={formData.loan_eligible}
-                onChange={handleChange}
-                label="Select Loan Eligibility"
-              >
-                <MenuItem value="true">Yes</MenuItem>
-                <MenuItem value="false">No</MenuItem>
-              </Select>
-            </FormControl>
-            {user.role === "admin" && (
-              <TextField
-                label="Updated By"
-                name="updated_by"
-                value={formData.updated_by}
-                onChange={handleChange}
-                variant="outlined"
-                sx={{ margin: "6px" }}
-              />
-            )}
-            {user.role === "admin" && (
-              <TextField
-                label="Owner Name"
-                name="own_name"
-                value={formData.own_name}
-                onChange={handleChange}
-                variant="outlined"
-                sx={{ margin: "6px" }}
-              />
-            )}
-            {user.role === "admin" && (
-              <TextField
-                label="Mediator Name"
-                name="med_name"
-                value={formData.med_name}
-                onChange={handleChange}
-                variant="outlined"
-                sx={{ margin: "6px" }}
-              />
-            )}
-            {user.role === "admin" && (
-              <FormControl sx={{ mt: 2, minWidth: "140px", margin: "6px 5px" }}>
-                <InputLabel>Notified</InputLabel>
-                <Select
-                  name="notified"
-                  value={formData.notified}
-                  onChange={handleChange}
-                  label="Notified"
-                >
-                  <MenuItem value="1">True</MenuItem>
-                  <MenuItem value="0">False</MenuItem>
-                </Select>
-              </FormControl>
-            )}
-            {user.role === "admin" && (
-              <FormControl sx={{ mt: 2, minWidth: "165px", margin: "6px 5px" }}>
-                <InputLabel>Verification Status</InputLabel>
-                <Select
-                  name="v_status"
-                  value={formData.v_status.toString()}
-                  onChange={handleChange}
-                  label="Verification Status"
-                >
-                  <MenuItem value="true">Verified</MenuItem>
-                  <MenuItem value="false">Not Verified</MenuItem>
-                </Select>
-              </FormControl>
-            )}
-          </Box>
+          <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+            <InputLabel>District</InputLabel>
+            <Select
+              name="district"
+              value={formData.district}
+              onChange={handleChange}
+              label="Select District"
+            >
+              {districtOptions.map((district) => (
+                <MenuItem key={district} value={district}>
+                  {district}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+            <InputLabel>Landmark</InputLabel>
+            <Select
+              name="landmark"
+              value={formData.landmark}
+              onChange={handleChange}
+              label="Select Landmark"
+            >
+              <MenuItem value=" ">Any</MenuItem>
+              <MenuItem value="Panchayat">Palasa</MenuItem>
+              <MenuItem value="Vuda">Beside National Highway</MenuItem>
+              <MenuItem value="Rera">Gajuwaka</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+            <InputLabel>Approved</InputLabel>
+            <Select
+              name="approved_by"
+              value={formData.approved_by}
+              onChange={handleChange}
+              label="Select Approved"
+            >
+              <MenuItem value=" ">Any</MenuItem>
+              <MenuItem value="Panchayat">Panchayat</MenuItem>
+              <MenuItem value="Vuda">Vuda</MenuItem>
+              <MenuItem value="Rera">Rera</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ mt: 2, minWidth: "140px", margin: "6px 5px" }}>
+            <InputLabel>Loan Eligibility</InputLabel>
+            <Select
+              name="loan_eligible"
+              value={formData.loan_eligible}
+              onChange={handleChange}
+              label="Select Loan Eligibility"
+            >
+              <MenuItem value=" ">Any</MenuItem>
+              <MenuItem value="true">Yes</MenuItem>
+              <MenuItem value="false">No</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
 
         <DialogActions>

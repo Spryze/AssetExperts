@@ -5,6 +5,7 @@ import tr from 'src/app/configs/navigation-i18n/tr.js';
 import ar from 'src/app/configs/navigation-i18n/ar.js';
 import Profile from './Profile';
 import Users from './Users';
+import UserProfile from './UserProfileDetails';
 import ManageProperties from '../Properties/Pages/ManageProperties';
 import { authRoles } from 'src/app/auth';
 
@@ -41,6 +42,14 @@ const userConfig = {
       path: '/user/profile',
       element: <Profile />,
     },
+    {
+      path: '/user/:userId',
+      element: <UserProfile />,
+    },
+    // {
+    //   path: '/user/:userId',
+    //   element: <EditUseProfile />,
+    // },
     
   ],
 };

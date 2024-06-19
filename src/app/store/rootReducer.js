@@ -3,6 +3,9 @@ import rabit from './rabit';
 import i18n from './i18nSlice';
 import user from './userSlice';
 import properties from '../main/Properties/PropertySlice1';
+import manageSearch from '../main/user/ManageSearchSlice';
+
+
 
 
 const createReducer = (asyncReducers) => (state, action) => {
@@ -11,6 +14,9 @@ const createReducer = (asyncReducers) => (state, action) => {
     i18n,
     user,
     properties,
+    manageSearch,
+   
+    
     ...asyncReducers,
   });
 

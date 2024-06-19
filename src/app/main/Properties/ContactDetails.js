@@ -4,8 +4,9 @@ import { Button, Card, Typography } from "@mui/material";
 import { selectProperties } from "./PropertySlice1";
 import ContactSeller from "./property-components/ContactSeller";
 import { selectUser } from "app/store/userSlice";
-
-import { useState } from "react";
+import Internal_Comments from "./Internal_Comments";
+import VeerifiedComments from "./VeerifiedComments";
+import Rating from "./property-components/Rating";
 
 const ContactDetails = () => {
   const propertyData = useSelector(selectProperties);
@@ -57,7 +58,9 @@ const ContactDetails = () => {
         </Button>
       </Card>
       <ContactSeller />
-      
+      {(user.role === "admin" || user.role === "staff") &&(<Internal_Comments/>)}
+      {(user.role ==="admin" || user.role ==="staff" || user.role === "verifiedUser")&&(<VeerifiedComments/>)}
+      <Rating/>
     </>
   );
 };

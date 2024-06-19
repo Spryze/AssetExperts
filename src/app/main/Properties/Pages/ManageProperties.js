@@ -1,12 +1,309 @@
-import React from 'react'
-import SearchDialogue from '../SearchDialogue'
+import React, { useState, useCallback, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  Typography,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  IconButton,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import SearchDialogue from "../SearchDialogue";
+import { Link } from "react-router-dom";
+import {
+  selectSearchResults,
+  totalProperties,
+  SearchResults,
+} from "../PropertySlice1";
+import _ from "lodash";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const ManageProperties = () => {
-  return (
-    <>
-    <SearchDialogue/>
-    </>
-  )
-}
+  const dispatch = useDispatch();
+  const searchResults = useSelector(selectSearchResults);
+  const totalSearchResults = useSelector(totalProperties);
 
-export default ManageProperties
+  const [noDataFound, setNoDataFound] = useState(false);
+  const [expandedRows, setExpandedRows] = useState({});
+  const [offset, setOffset] = useState(0);
+  const [formData, setFormData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleFormData = (data) => {
+    console.log("data", data);
+    setFormData(data);
+  };
+
+  const handleExpandClick = (index, field) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [index]: {
+        ...prev[index],
+        [field]: !prev[index]?.[field],
+      },
+    }));
+  };
+
+  const handleClick = (propertyId) => {
+    const newWindow = window.open(`/property/${propertyId}`, "_blank");
+    if (newWindow) {
+      newWindow.focus();
+    } else {
+      console.error("Unable to open new window/tab");
+    }
+  };
+
+  const dataNotFound = useCallback((response) => {
+    if (!response || response.length === 0) {
+      setNoDataFound(true);
+      setTimeout(() => {
+        setNoDataFound(false);
+      }, 3000);
+    } else {
+      setNoDataFound(false);
+    }
+  }, []);
+
+  const trimText = (text, index, field) => {
+    if (text && text.length > 15) {
+      const isExpanded = expandedRows[index]?.[field];
+      return (
+        <>
+          {isExpanded ? text : `${text.substring(0, 15)}... `}
+          <IconButton
+            onClick={(e) => {
+              e.stopPropagation();
+              handleExpandClick(index, field);
+            }}
+            size="small"
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+        </>
+      );
+    }
+    return text;
+  };
+
+  const handleScroll = useCallback(
+    _.throttle(() => {
+      if (
+        !loading &&
+        window.innerHeight + document.documentElement.scrollTop >=
+          document.documentElement.offsetHeight - 40
+      ) {
+        setLoading(true);
+        const newOffset = (offset + 40) % totalSearchResults;
+        dispatch(SearchResults({ formData, offset: newOffset })).then(
+          (response) => {
+            console.log("response of admin", response);
+            setOffset(newOffset);
+            setLoading(false);
+          }
+        );
+      }
+    }, 300),
+    [loading, offset, totalSearchResults, formData, dispatch]
+  );
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
+
+  return (
+    <div style={{ margin: "20px" }}>
+      <div style={{ justifyContent: "center", display: "flex" }}>
+        <SearchDialogue FormData={handleFormData} onSearch={dataNotFound} />
+      </div>
+      {noDataFound && (
+        <Typography
+          variant="h6"
+          sx={{
+            backgroundColor: "orange",
+            padding: "10px 50px",
+            textAlign: "center",
+            borderRadius: "5px",
+            color: "white",
+            position: "fixed",
+            top: "170px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 1000,
+          }}
+        >
+          No Data Found
+        </Typography>
+      )}
+      <Grid container spacing={1}>
+        {console.log("searchResults", searchResults)}
+        {searchResults?.length > 0 && (
+          <div>
+            <Typography variant="h6">
+              Search Results ({totalSearchResults})
+            </Typography>
+            <hr style={{ margin: "10px 0px" }} />
+            <TableContainer>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow sx={{ textTransform: "capitalize" }}>
+                    <TableCell>Property ID</TableCell>
+                    <TableCell align="left">Property Name</TableCell>
+                    <TableCell align="left">Area</TableCell>
+                    <TableCell align="left">Unit</TableCell>
+                    <TableCell align="left">Price Per Unit</TableCell>
+                    <TableCell align="left">District</TableCell>
+                    <TableCell align="left">Landmark</TableCell>
+                    <TableCell align="left">Listing Type</TableCell>
+                    <TableCell align="left">Property Type</TableCell>
+                    <TableCell align="left">Property Info</TableCell>
+                    <TableCell align="left">Approved By</TableCell>
+                    <TableCell align="left">Boundary Wall</TableCell>
+                    <TableCell align="left">Comments</TableCell>
+                    <TableCell align="left">Developments</TableCell>
+                    <TableCell align="left">Dimensions</TableCell>
+                    <TableCell align="left">Directions</TableCell>
+                    <TableCell align="left">Property Disputes</TableCell>
+                    <TableCell align="left">Document Number</TableCell>
+                    <TableCell align="left">Government Price</TableCell>
+                    <TableCell align="left">Established Year</TableCell>
+                    <TableCell align="left">Latitude</TableCell>
+                    <TableCell align="left">Longitude</TableCell>
+                    <TableCell align="left">Lift</TableCell>
+                    <TableCell align="left">Loan Eligibility</TableCell>
+                    <TableCell align="left">Mediator</TableCell>
+                    <TableCell align="left">Mediator Number 1</TableCell>
+                    <TableCell align="left">Mediator Number 2</TableCell>
+                    <TableCell align="left">Owner Name</TableCell>
+                    <TableCell align="left">Owner Number 1</TableCell>
+                    <TableCell align="left">Owner Number 2</TableCell>
+                    <TableCell align="left">Number of Open Sides</TableCell>
+                    <TableCell align="left">Property Created On</TableCell>
+                    <TableCell align="left">Property Updated On</TableCell>
+                    <TableCell align="left">Property Updated By</TableCell>
+                    <TableCell align="left">Parking</TableCell>
+                    <TableCell align="left">Rating</TableCell>
+                    <TableCell align="left">Register Location</TableCell>
+                    <TableCell align="left">RERA Status</TableCell>
+                    <TableCell align="left">State</TableCell>
+                    <TableCell align="left">Village</TableCell>
+                    <TableCell align="left">Survey Number</TableCell>
+                    <TableCell align="left">Verified Comments</TableCell>
+                    <TableCell align="left">Verification Status</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {searchResults?.map((item, index) => (
+                    <TableRow
+                      key={index}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      // onClick={() => handleClick(item.property_id)}
+                      style={{ textTransform: "capitalize" }}
+                    >
+                      <TableCell align="left">
+                        <Link
+                        style={{color:"blue",textDecoration:"underline",background:"none"}}
+                          to={`/property/${item.property_id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {item.property_id}
+                        </Link>
+                      </TableCell>
+                      <TableCell align="left">
+                        {trimText(item.property_name, index, "property_name")}
+                      </TableCell>
+                      <TableCell align="left">{item.area}</TableCell>
+                      <TableCell align="left">{item.unit}</TableCell>
+                      <TableCell align="left">{item.unit_price}</TableCell>
+                      <TableCell align="left">{item.district}</TableCell>
+                      <TableCell align="left">
+                        {trimText(item.landmark, index, "landmark")}
+                      </TableCell>
+                      <TableCell align="left">{item.listing_type}</TableCell>
+                      <TableCell align="left">{item.p_type}</TableCell>
+                      <TableCell align="left">
+                        {trimText(item.ad_info, index, "ad_info")}
+                      </TableCell>
+                      <TableCell align="left">
+                        {trimText(item.approved_by, index, "approved_by")}
+                      </TableCell>
+                      <TableCell align="left">
+                        {trimText(item.bound_wall, index, "bound_wall")}
+                      </TableCell>
+                      <TableCell align="left">
+                        {trimText(item.comments, index, "comments")}
+                      </TableCell>
+                      <TableCell align="left">
+                        {trimText(item.developments, index, "developments")}
+                      </TableCell>
+                      <TableCell align="left">
+                        {trimText(item.dimensions, index, "dimensions")}
+                      </TableCell>
+                      <TableCell align="left">
+                        {trimText(item.directions, index, "directions")}
+                      </TableCell>
+                      <TableCell align="left">
+                        {trimText(item.disputes, index, "disputes")}
+                      </TableCell>
+                      <TableCell align="left">{item.document_number}</TableCell>
+                      <TableCell align="left">{item.gov_price}</TableCell>
+                      <TableCell align="left">{item.est_year}</TableCell>
+                      <TableCell align="left">{item.latitude}</TableCell>
+                      <TableCell align="left">{item.longitude}</TableCell>
+                      <TableCell align="left">{item.lift}</TableCell>
+                      <TableCell align="left">
+                        {item.loan_eligibility}
+                      </TableCell>
+                      <TableCell align="left">{item.mediator}</TableCell>
+                      <TableCell align="left">{item.mediator_no1}</TableCell>
+                      <TableCell align="left">{item.mediator_no2}</TableCell>
+                      <TableCell align="left">{item.owner_name}</TableCell>
+                      <TableCell align="left">{item.owner_no1}</TableCell>
+                      <TableCell align="left">{item.owner_no2}</TableCell>
+                      <TableCell align="left">{item.open_sides}</TableCell>
+                      <TableCell align="left">{item.p_created_on}</TableCell>
+                      <TableCell align="left">{item.p_updated_on}</TableCell>
+                      <TableCell align="left">{item.p_updated_by}</TableCell>
+                      <TableCell align="left">{item.parking}</TableCell>
+                      <TableCell align="left">{item.rating}</TableCell>
+                      <TableCell align="left">{item.reg_location}</TableCell>
+                      <TableCell align="left">{item.rera_status}</TableCell>
+                      <TableCell align="left">{item.state}</TableCell>
+                      <TableCell align="left">{item.village}</TableCell>
+                      <TableCell align="left">{item.survey_no}</TableCell>
+                      <TableCell align="left">
+                        {trimText(
+                          item.verified_comments,
+                          index,
+                          "verified_comments"
+                        )}
+                      </TableCell>
+                      <TableCell align="left">
+                        {item.verification_status}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        )}
+      </Grid>
+      {loading && (
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+          <CircularProgress />
+        </Box>
+      )}
+    </div>
+  );
+};
+
+export default ManageProperties;

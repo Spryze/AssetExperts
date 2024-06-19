@@ -18,57 +18,62 @@ import { selectUser } from "app/store/userSlice";
 import UploadImages from "./Property-Types-Forms/UploadImages";
 
 const Form = ({ isEditMode = false, propertyData = {} }) => {
-  console.log("propertyData",propertyData,"isEditMode",)
+  console.log("isEditMode", isEditMode);
+  console.log("propertyData", propertyData);
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  console.log("user", user);
 
   const [formData, setFormData] = useState({
-    prop_name: "" ||propertyData?.propertyData?.propertyName,
-    p_type: "" ||propertyData?.propertyData?.p_type,
-    dimensions: ""||propertyData?.propertyData?.dimensions,
-    unit: ""||propertyData?.propertyData?.unit,
-    state: ""||propertyData?.propertyData?.state,
-    district: ""||propertyData?.propertyData?.district,
-    village: ""||propertyData?.propertyData?.village,
-    landmark: ""||propertyData?.propertyData?.landmark,
-    price: 0 ||propertyData?.propertyData?.price,
-    survey_number: "" ||propertyData?.propertyData?.survey_number,
-    doc_num: "" ||propertyData?.propertyData?.doc_num,
-    AboutDeveloper: "" ||propertyData?.propertyData?.AboutDeveloper,
-    ad_info: "" ||propertyData?.propertyData?.ad_info,
-    size: 0 ||propertyData?.propertyData?.size,
-    boundry_wall: "" ||propertyData?.propertyData?.boundry_wall,
-    furnshied: "" ||propertyData?.propertyData?.furnshied,
-    approved_by: "" ||propertyData?.propertyData?.approved_by,
-    parking: false ||propertyData?.propertyData?.parking,
-    WaterSource: "" ||propertyData?.propertyData?.WaterSource,
-    Flooring: "" ||propertyData?.propertyData?.Flooring,
-    PowerBackup: "" ||propertyData?.propertyData?.PowerBackup,
-    num_open_sides: "" ||propertyData?.propertyData?.num_open_sides,
-    PropertyStatus: "" ||propertyData?.propertyData?.PropertyStatus,
-    status: "" ||propertyData?.propertyData?.status,
-    rera: "" ||propertyData?.propertyData?.rera,
-    bound_wall: "" ||propertyData?.propertyData?.bound_wall,
-    BHK: "" ||propertyData?.propertyData?.BHK,
-    lift: "" ||propertyData?.propertyData?.lift,
-    PropertyAge: "" ||propertyData?.propertyData?.PropertyAge,
-    comments: "" ||propertyData?.propertyData?.comments,
-    developments: "" ||propertyData?.propertyData?.developments,
-    disputes: "" ||propertyData?.propertyData?.disputes,
-    reg_loc: "" ||propertyData?.propertyData?.reg_loc,
-    med_name: "" ||propertyData?.propertyData?.med_name,
-    med_num1: "" ||propertyData?.propertyData?.med_num1,
-    med_num2: "" ||propertyData?.propertyData?.med_num2,
-    own_name: "" ||propertyData?.propertyData?.own_name,
-    own_num1: "" ||propertyData?.propertyData?.own_num1,
-    own_num2: "" ||propertyData?.propertyData?.own_num2,
-    longitude: 0 ||propertyData?.propertyData?.longitude,
-    latitude: 0 ||propertyData?.propertyData?.latitude,
-    direction: "" ||propertyData?.propertyData?.direction,
-    listing_type: "" ||propertyData?.propertyData?.listing_type,
-    loan_eligibile: false ||propertyData?.propertyData?.loan_eligibile,
-    No_bed_rooms: ""||propertyData?.propertyData?.No_bed_rooms,
-    govt_price:""||propertyData?.propertyData?.No_bed_rooms,
+    prop_name: "" || propertyData?.propertyData?.propertyName,
+    p_type: propertyData?.propertyData?.p_type || "",
+    dimensions: "" || propertyData?.propertyData?.dimensions,
+    unit: "" || propertyData?.propertyData?.unit,
+    state: "" || propertyData?.propertyData?.state,
+    district: "" || propertyData?.propertyData?.district,
+    village: "" || propertyData?.propertyData?.village,
+    landmark: "" || propertyData?.propertyData?.landmark,
+    price: 0 || propertyData?.propertyData?.price,
+    survey_number: "" || propertyData?.propertyData?.survey_number,
+    doc_num: "" || propertyData?.propertyData?.doc_num,
+    AboutDeveloper: "" || propertyData?.propertyData?.AboutDeveloper,
+    ad_info: "" || propertyData?.propertyData?.ad_info,
+    size: 0 || propertyData?.propertyData?.size,
+    boundry_wall: "" || propertyData?.propertyData?.boundry_wall,
+    furnshied: "" || propertyData?.propertyData?.furnshied,
+    approved_by: "" || propertyData?.propertyData?.approved_by,
+    parking: false || propertyData?.propertyData?.parking,
+    WaterSource: "" || propertyData?.propertyData?.WaterSource,
+    Flooring: "" || propertyData?.propertyData?.Flooring,
+    PowerBackup: "" || propertyData?.propertyData?.PowerBackup,
+    num_open_sides: "" || propertyData?.propertyData?.num_open_sides,
+    PropertyStatus: "" || propertyData?.propertyData?.PropertyStatus,
+    status: "" || propertyData?.propertyData?.status,
+    rera: "" || propertyData?.propertyData?.rera,
+    bound_wall: "" || propertyData?.propertyData?.bound_wall,
+    BHK: "" || propertyData?.propertyData?.BHK,
+    lift: "" || propertyData?.propertyData?.lift,
+    PropertyAge: "" || propertyData?.propertyData?.PropertyAge,
+    comments: "" || propertyData?.propertyData?.comments,
+    v_comments: "" || propertyData?.propertyData?.v_comments,
+    developments: "" || propertyData?.propertyData?.developments,
+    disputes: "" || propertyData?.propertyData?.disputes,
+    reg_loc: "" || propertyData?.propertyData?.reg_loc,
+    med_name: "" || propertyData?.propertyData?.med_name,
+    med_num1: "" || propertyData?.propertyData?.med_num1,
+    med_num2: "" || propertyData?.propertyData?.med_num2,
+    own_name: "" || propertyData?.propertyData?.own_name,
+    own_num1: "" || propertyData?.propertyData?.own_num1,
+    own_num2: "" || propertyData?.propertyData?.own_num2,
+    longitude: 0 || propertyData?.propertyData?.longitude,
+    latitude: 0 || propertyData?.propertyData?.latitude,
+    direction: "" || propertyData?.propertyData?.direction,
+    listing_type: "" || propertyData?.propertyData?.listing_type,
+    loan_eligibile: false || propertyData?.propertyData?.loan_eligibile,
+    No_bed_rooms: "" || propertyData?.propertyData?.No_bed_rooms,
+    govt_price: "" || propertyData?.propertyData?.govt_price,
+    user_id: "" || propertyData?.propertyData?.user_id,
+    rating: "" || propertyData?.propertyData?.rating,
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -82,21 +87,24 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
   }, [isEditMode, propertyData]);
 
   const propertyTypes = [
-    "Plot",
-    "Flat",
+    "plot",
+    "flat",
+    "land",
     "PG",
-    "Office Place",
-    "Co Working Place",
-    "Student Hostels",
-    "Agricultural Lands",
-    "Independent House",
+    "office place",
+    "co working place",
+    "student hostels",
+    "agricultural lands",
+    "independent house",
   ];
-  const Units = ["sq.ft", "Sq.yards", "Sq.m", "Acres"];
+  const Units = ["sq.ft", "sqyd", "sq.m", "acres"];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     const parsedValue = ["price", "size", "latitude", "longitude"].includes(name)
       ? parseFloat(value)
+      : name === "loan_eligibile"
+      ? value === "true"
       : value;
     setFormData({
       ...formData,
@@ -110,30 +118,33 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
       errors.propertyName = "Property Name is required";
     if (!formData.p_type) errors.p_type = "Property Type is required";
     if (!formData.price) errors.price = "Price is required";
-    if (!formData.govt_price) errors.govt_price = "Government Price is required";
+    // if (!formData.govt_price) errors.govt_price = "Government Price is required";
     return errors;
   };
 
   const handleSubmit = async (e) => {
+    console.log("hii");
     e.preventDefault();
     const errors = validateForm();
+    console.log("errors", errors);
     if (Object.keys(errors).length === 0) {
       const action = propertyData?.isEditMode ? updateProperty : addProperty;
       const p_id = propertyData?.propertyData?.property_id;
-      console.log("p_id",p_id)
-      const resultAction = dispatch(action({formData,p_id})).then((response) => {
-        if (response.payload.status === "success") {
-          setResponseData(response);
-          setIsFormSubmitted(true);
-        } else {
-          console.error(resultAction.payload);
+      const resultAction = dispatch(action({ formData, p_id })).then(
+        (response) => {
+          console.log("response", response);
+          if (response.payload.message === "Property updated successfully") {
+            setResponseData(response.payload);
+            setIsFormSubmitted(true);
+          } else {
+            console.error(resultAction.payload);
+          }
         }
-      });
+      );
     } else {
       setFormErrors(errors);
     }
   };
-  
 
   if (!user) {
     return (
@@ -162,16 +173,23 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
     return <UploadImages responseData={responseData} />;
   }
 
-
   return (
     <Box
       component="form"
       onSubmit={handleSubmit}
       sx={{ flexGrow: 1, width: "100%", maxWidth: 800, margin: "20px auto" }}
     >
-      {propertyData?.isEditMode === true ?   <Typography variant="h6" sx={{}}>Edit Property</Typography> : <Typography variant="h6" sx={{}}>Add Property</Typography> }
-      <hr/>
-      <Grid container spacing={2} sx={{marginTop:"10px"}}>
+      {propertyData?.isEditMode === true ? (
+        <Typography variant="h6" sx={{}}>
+          Edit Property
+        </Typography>
+      ) : (
+        <Typography variant="h6" sx={{}}>
+          Add Property
+        </Typography>
+      )}
+      <hr />
+      <Grid container spacing={2} sx={{ marginTop: "10px" }}>
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth variant="outlined">
             <InputLabel>Listing Type</InputLabel>
@@ -190,7 +208,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
           <TextField
             label="Property Name"
             name="propertyName"
-            value={formData.propertyName}
+            value={formData.prop_name}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -312,14 +330,13 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
             <FormControl fullWidth variant="outlined">
               <InputLabel>Boundary Wall</InputLabel>
               <Select
-               label="Boundary Wall"
+                label="Boundary Wall"
                 name="bound_wall"
                 value={formData.bound_wall}
                 onChange={handleChange}
               >
                 <MenuItem value="Yes">Yes</MenuItem>
                 <MenuItem value="No">No</MenuItem>
-                
               </Select>
               <FormHelperText>{formErrors.unit}</FormHelperText>
             </FormControl>
@@ -467,7 +484,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
             fullWidth
           />
         </Grid>
-        
+
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth variant="outlined">
             <InputLabel>Direction</InputLabel>
@@ -505,17 +522,53 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Comments"
-            name="comments"
-            type="text"
-            value={formData.comments}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
+        {(user.role == "admin" || user.role === "staff") && (
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Internal Comments"
+              name="comments"
+              type="text"
+              value={formData.comments}
+              onChange={handleChange}
+              variant="outlined"
+              fullWidth
+            />
+          </Grid>
+        )}
+        {(user.role == "admin" || user.role === "staff") && (
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>Property Rating</InputLabel>
+              <Select
+                label="property rating"
+                name="rating"
+                value={formData.rating}
+                onChange={handleChange}
+              >
+                <MenuItem value="1">1</MenuItem>
+                <MenuItem value="2">2</MenuItem>
+                <MenuItem value="3">3</MenuItem>
+                <MenuItem value="4">4</MenuItem>
+                <MenuItem value="5">5</MenuItem>
+              </Select>
+              <FormHelperText>{formErrors.unit}</FormHelperText>
+            </FormControl>
+          </Grid>
+        )}
+        {(user.role === "admin" || user.role === "staff") && (
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Property Comments"
+              name="v_comments"
+              type="text"
+              value={formData.v_comments}
+              onChange={handleChange}
+              variant="outlined"
+              fullWidth
+            />
+          </Grid>
+        )}
+
         <Grid item xs={12} sm={6}>
           <TextField
             label="Developments"
@@ -529,12 +582,13 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth variant="outlined">
-            <InputLabel>Loan Eligibility</InputLabel>
+            <InputLabel>Loan Eligible</InputLabel>
             <Select
-              label="Loan Eligibility"
+              label="Loan Eligible"
               name="loan_eligibile"
               value={formData.loan_eligibile}
               onChange={handleChange}
+              required
             >
               <MenuItem value={true}>Yes</MenuItem>
               <MenuItem value={false}>No</MenuItem>
@@ -661,7 +715,6 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
             onChange={handleChange}
             variant="outlined"
             fullWidth
-
           />
         </Grid>
         <Grid item xs={12}>

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { AddImage } from '../../PropertySlice1';
 
 const UploadImages = ({ responseData }) => {
+  console.log("responseData",responseData)
   const navigate = useNavigate();
   const [imagePreviews, setImagePreviews] = useState([]);
   const [floorPlanPreviews, setFloorPlanPreviews] = useState([]);
@@ -50,9 +51,9 @@ const UploadImages = ({ responseData }) => {
         formData.append('images', floorPlanFiles[i]);
       }
 
-      formData.append('p_id', responseData.payload.details.p_id);
-      formData.append('req_user_id', responseData.payload.details.req_user_id);
-      formData.append('user_id', responseData.payload.details.user_id);
+      formData.append('p_id', responseData.profile.p_id);
+      formData.append('req_user_id', responseData.profile.req_user_id);
+      formData.append('user_id', responseData.profile.user_id);
 
 
       dispatch(AddImage(formData)).then((response)=>{

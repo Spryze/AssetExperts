@@ -268,7 +268,6 @@ const PropertyHome = () => {
           No Data Found
         </Typography>
       )}
-      <SubmitIntrests/>
       <Grid container spacing={1}>
         {Object.keys(searchResults)?.length > 0 && (
           <div style={{ marginTop: "20px" }}>

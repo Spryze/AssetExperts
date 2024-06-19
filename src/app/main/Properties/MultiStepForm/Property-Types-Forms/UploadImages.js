@@ -53,16 +53,16 @@ const UploadImages = ({ responseData }) => {
         formData.append('images', floorPlanFiles[i]);
       }
 
-      formData.append('p_id', responseData.profile.p_id);
-      formData.append('req_user_id', responseData.profile.req_user_id);
-      formData.append('user_id', responseData.profile.user_id);
+      formData.append('p_id', responseData.details.p_id);
+      formData.append('req_user_id', responseData.details.req_user_id);
+      formData.append('user_id', responseData.details.user_id);
 
 
       dispatch(AddImage(formData)).then((response)=>{
         console.log("response",response);
-        console.log("pid",responseData.profile.p_id);
+        // console.log("pid",responseData.profile.p_id);
        if(response.meta.requestStatus === "fulfilled"){
-        navigate(`/property/${responseData.profile.p_id}`);
+        navigate(`/property/${responseData.details.p_id}`);
         window.location.reload();
         
        }

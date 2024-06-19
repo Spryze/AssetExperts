@@ -19,12 +19,10 @@ import { Link } from 'react-router-dom';
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import reducer from './PropertySlice1';
-import withReducer from "app/store/withReducer";
 
 
 
-export function Property() {
+function Property() {
   const user = useSelector(selectUser);
   console.log("user",user)
   const propertiesData = useSelector(selectProperties);
@@ -108,7 +106,8 @@ const propertyData = propertiesData?.data?.property;
           }}
         ></div>
       )}
-      {!isEditMode && <PropertyCarousel />}
+     
+      {!isEditMode  && <PropertyCarousel />}
       <Grid container spacing={5}>
         <Grid item xs={12} md={8}>
           <div>{!isEditMode && <AllDetails />}</div>
@@ -156,5 +155,5 @@ const propertyData = propertiesData?.data?.property;
   );
 }
 
-// export default Property;
-export default withReducer('propertiesEx', reducer)();
+export default Property;
+

@@ -98,13 +98,28 @@ export const fetchRecentTransactions = createAsyncThunk(
 );
 
 export const SearchResults = createAsyncThunk(
-  'property/SearchResults',
-  async (formData, { rejectWithValue }) => {
+  "property/SearchResults",
+  async (
+    { formData, offset, isAdminSearch, PropertyState },
+    { rejectWithValue, fulfillWithValue }
+  ) => {
     try {
-      console.log("FormData Sent to Backend:", JSON.stringify(formData, null, 2));
-      const response = await axios.post("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/search", { body: formData }, {
-        headers: {
-          'Content-Type': 'application/json'
+      const user = JSON.parse(localStorage.getItem("user"));
+      const req_by = user.uid;
+
+      const Data = {
+        req_by: req_by,
+        offset: offset,
+        body: formData,
+      };
+
+      const response = await axios.post(
+        "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/search",
+        Data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -134,7 +149,48 @@ export const SearchResults = createAsyncThunk(
       }
       
     } catch (error) {
-      console.error('Error in SearchResults Thunk:', error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+export const LocalResults = createAsyncThunk(
+  "property/LocalResults",
+  async (
+    { formData, offset, isAdminSearch, PropertyState },
+    { rejectWithValue, fulfillWithValue }
+  ) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const req_by = user.uid;
+
+      const Data = {
+        req_by: req_by,
+        offset: offset,
+        body: formData,
+      };
+
+      const response = await axios.post(
+        "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/search",
+        Data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error("Failed to fetch search results");
+      }
+
+      const payload = {
+        properties: response.data.property,
+        totalProperties: response.data.total_properties,
+        PropertyState: PropertyState,
+      };
+
+      return fulfillWithValue(payload);
+    } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
   }
@@ -160,16 +216,14 @@ export const addProperty = createAsyncThunk(
     }
   }
 );
+
 export const updateProperty = createAsyncThunk(
   "property/updateProperty",
   async ({ formData, p_id }, { rejectWithValue }) => {
-    console.log("p_id", p_id);
     try {
-      console.log("hii")
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) throw new Error("User not found in local storage");
 
-      const user_id = user.uid;
       const req_user_id = user.uid;
       const data = { ...formData, req_user_id, p_id };
       console.log("update data",data);
@@ -188,7 +242,10 @@ export const updateProperty = createAsyncThunk(
 export const AddImage = createAsyncThunk(
   "property/AddImage",
   async (formData) => {
-    const response = await axios.put('https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property', formData, {
+    const response = await axios.post(
+      "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/image",
+      formData,
+      {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -244,9 +301,6 @@ const propertySlice = createSlice({
   extraReducers:   
   (builder) => {
     builder
-      .addCase(SearchResults.pending, (state) => {
-        state.status = 'loading';
-      })
       .addCase(SearchResults.fulfilled, (state, action) => {
         const { properties, totalProperties, PropertyState, isAdminSearch } = action.payload;
         if (action.meta.arg.isAdminSearch) {

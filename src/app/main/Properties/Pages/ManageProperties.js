@@ -4,11 +4,13 @@ import {Typography,Grid,Table,TableBody,TableCell,TableContainer,TableHead,Table
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SearchDialogue from "../SearchDialogue";
 import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
 import {selectAdminSearchResults,selectadmintotalProperties,SearchResults} from "../PropertySlice1";
 import _ from "lodash";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { useLocation } from "react-router-dom";
+import { showMessage } from "app/store/rabit/messageSlice";
 
 const ManageProperties = () => {
   const dispatch = useDispatch();
@@ -19,17 +21,20 @@ const ManageProperties = () => {
   const PropertyState = "ExistingProperty";
 
   const location = useLocation(); 
-console.log("location",location)
+  console.log("location",location);
 
   const [noDataFound, setNoDataFound] = useState(false);
   const [expandedRows, setExpandedRows] = useState({});
   const [offset, setOffset] = useState(0);
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [allDataLoaded, setAllDataLoaded] = useState(false); 
 
   const handleFormData = (data) => {
     console.log("data", data);
     setFormData(data);
+    setOffset(0); 
+    setAllDataLoaded(false); 
   };
 
   const handleExpandClick = (index, field) => {
@@ -42,17 +47,8 @@ console.log("location",location)
     }));
   };
 
-  // const handleClick = (propertyId) => {
-  //   const newWindow = window.open(`/property/${propertyId}`, "_blank");
-  //   if (newWindow) {
-  //     newWindow.focus();
-  //   } else {
-  //     console.error("Unable to open new window/tab");
-  //   }
-  // };
-
   const dataNotFound = useCallback((response) => {
-    console.log("response for nodatafound",response)
+    console.log("response for nodatafound",response);
     if (!response || response.properties.length === 0) {
       setNoDataFound(true);
       setTimeout(() => {
@@ -62,7 +58,9 @@ console.log("location",location)
       setNoDataFound(false);
     }
   }, []);
-
+  
+ showMessage('No results Found');
+ 
   const trimText = (text, index, field) => {
     if (text && text.length > 15) {
       const isExpanded = expandedRows[index]?.[field];
@@ -88,13 +86,20 @@ console.log("location",location)
     _.throttle(() => {
       if (
         !loading &&
+        !allDataLoaded && 
         window.innerHeight + document.documentElement.scrollTop >=
           document.documentElement.offsetHeight - 40
       ) {
         setLoading(true);
-        const newOffset = (offset + 40) % totalSearchResults;
+        const newOffset = offset + 40;
         
-        dispatch(SearchResults({ formData, offset: newOffset, isAdminSearch: true,PropertyState:PropertyState }))
+        if (newOffset >= totalSearchResults) {
+          setAllDataLoaded(true); 
+          setLoading(false);
+          return;
+        }
+
+        dispatch(SearchResults({ formData, offset: newOffset, isAdminSearch: true, PropertyState }))
         .then(
           (response) => {
             console.log("response of admin", response);
@@ -104,7 +109,7 @@ console.log("location",location)
         );
       }
     }, 300),
-    [loading, offset, totalSearchResults, formData, dispatch]
+    [loading, offset, totalSearchResults, formData, dispatch, allDataLoaded]
   );
 
   useEffect(() => {
@@ -200,14 +205,12 @@ console.log("location",location)
                     <TableRow
                       key={index}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                      // onClick={() => handleClick(item.property_id)}
                       style={{ textTransform: "capitalize" }}
                     >
                       <TableCell align="left">
                         <Link
-                        style={{color:"blue",textDecoration:"underline",background:"none"}}
+                          style={{color:"blue",textDecoration:"underline",background:"none"}}
                           to={`/property/${item.property_id}`}
-                          // target="_blank"
                           rel="noopener noreferrer"
                           myVariable={"yourVariable"}
                         >
@@ -219,7 +222,7 @@ console.log("location",location)
                       </TableCell>
                       <TableCell align="left">{item.area}</TableCell>
                       <TableCell align="left">{item.unit}</TableCell>
-                      <TableCell align="left">{item.unit_price}</TableCell>
+                      <TableCell align="left">{item.price}</TableCell>
                       <TableCell align="left">{item.district}</TableCell>
                       <TableCell align="left">
                         {trimText(item.landmark, index, "landmark")}
@@ -256,9 +259,7 @@ console.log("location",location)
                       <TableCell align="left">{item.latitude}</TableCell>
                       <TableCell align="left">{item.longitude}</TableCell>
                       <TableCell align="left">{item.lift}</TableCell>
-                      <TableCell align="left">
-                        {item.loan_eligibility}
-                      </TableCell>
+                      <TableCell align="left">{item.loan_eligibility}</TableCell>
                       <TableCell align="left">{item.mediator}</TableCell>
                       <TableCell align="left">{item.mediator_no1}</TableCell>
                       <TableCell align="left">{item.mediator_no2}</TableCell>
@@ -293,12 +294,14 @@ console.log("location",location)
             </TableContainer>
           </div>
         )}
+        
       </Grid>
       {loading && (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
           <CircularProgress />
         </Box>
       )}
+      
     </div>
   );
 };

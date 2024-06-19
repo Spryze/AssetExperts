@@ -38,6 +38,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
     loan_eligible: "",
     updated_by: "",
     notified: 0,
+    unit:"",
     v_status: true,
     own_name: "",
     med_name: "",
@@ -86,7 +87,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
   };
 
   const handleSubmit = async () => {
-    setIsLoading(true);
+    
     try {
       const payload = {
         ...formData,
@@ -97,15 +98,18 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
       };
       FormData(payload);
 
-      const result = await dispatch(
+       await dispatch(
         SearchResults({
           formData: payload,
           offset: 0,
           isAdminSearch: isAdminSearch,
           PropertyState: PropertyState,
         })
-      ).unwrap();
-      onSearch(result);
+      ).then(()=>{
+        setIsLoading(false);
+      });
+      setIsLoading(true);
+      // onSearch(result);
 // {console.log('result',result)}
 //       if (!result || !result.data || result.properties.length === 0) {
 //         setNoDataFound(true);
@@ -206,6 +210,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               label="Min Budget"
               placeholder="Minimum value"
               name="min_price"
+              type="number"
               value={formData.min_price}
               onChange={handleChange}
               variant="outlined"
@@ -216,12 +221,28 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               label="Max Budget"
               placeholder="Maximum value"
               name="max_price"
+               type="number"
               value={formData.max_price}
               onChange={handleChange}
               variant="outlined"
               sx={{ margin: "6px" }}
             />
-
+            <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+              <InputLabel>Unit</InputLabel>
+              <Select
+                name="unit"
+                value={formData.unit}
+                onChange={handleChange}
+                label="Unit"
+              >
+             
+                <MenuItem value="sqft">sqft</MenuItem>
+                <MenuItem value="sqyd">sqyd</MenuItem>
+                <MenuItem value="sq.m">sq.m</MenuItem>
+                <MenuItem value="acre">acre</MenuItem>
+                <MenuItem value="cent">cent</MenuItem>
+              </Select>
+            </FormControl>
             {/* <FormControl sx={{ mt: 2, minWidth: "180px", margin: "4px 5px" }}>
               <InputLabel id="budget-label">Budget ₹</InputLabel>
               <Select
@@ -381,12 +402,13 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
             {isLoading ? (
               <CircularProgress />
             ) : (
-              <Button
-                onClick={handleSubmit}
-                sx={{ backgroundColor: "#1D2432", color: "white" }}
-              >
-                Submit
-              </Button>
+              // <Button
+              //   onClick={handleSubmit}
+              //   sx={{ backgroundColor: "#1D2432", color: "white" }}
+              // >
+              //   Submit
+              // </Button>
+              <Button onClick={handleSubmit} sx={{background:"orange",padding:"10px 20px",borderRadius:"7px"}}>Submit</Button>
             )}
           </Box>
         </DialogActions>

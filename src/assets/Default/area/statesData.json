@@ -1,0 +1,61 @@
+{
+  "states": [
+    {
+      "id": 1,
+      "name": "Andhra Pradesh",
+      "district": {
+        "Anantapur": ["item1", "item2", "item3"],
+        "Chittoor": ["item1", "item2", "item3"],
+        "East Godavari": ["item1", "item2", "item3"],
+        "Guntur": ["item1", "item2", "item3"],
+        "Krishna": ["item1", "item2", "item3"],
+        "Kurnool": ["item1", "item2", "item3"],
+        "Prakasam": ["item1", "item2", "item3"],
+        "Srikakulam": ["item1", "item2", "item3"],
+        "Sri Potti Sriramulu Nellore": ["item1", "item2", "item3"],
+        "visakhapatnam": ["item1", "item2", "item3"],
+        "vizianagaram": ["item1", "item2", "item3"],
+        "west Godavari": ["item1", "item2", "item3"],
+        "YSR District, Kadapa": ["item1", "item2", "item3"]
+      }
+    },
+    {
+      "id": 25,
+      "name": "Telangana",
+      "district": {
+        "Adilabad": ["item1", "item2", "item3"],
+        "Bhadradri Kothagudem": ["item1", "item2", "item3"],
+        "Hyderabad": ["item1", "item2", "item3"],
+        "Jagtial": ["item1", "item2", "item3"],
+        "Jangaon": ["item1", "item2", "item3"],
+        "Jayashankar Bhupalpally": ["item1", "item2", "item3"],
+        "Jogulamba Gadwal": ["item1", "item2", "item3"],
+        "Kamareddy": ["item1", "item2", "item3"],
+        "Karimnagar": ["item1", "item2", "item3"],
+        "Khammam": ["item1", "item2", "item3"],
+        "Komaram Bheem Asifabad": ["item1", "item2", "item3"],
+        "Mahabubabad": ["item1", "item2", "item3"],
+        "Mahabubnagar": ["item1", "item2", "item3"],
+        "Mancherial": ["item1", "item2", "item3"],
+        "Medak": ["item1", "item2", "item3"],
+        "Medchal-Malkajgiri": ["item1", "item2", "item3"],
+        "Mulugu": ["item1", "item2", "item3"],
+        "Nagarkurnool": ["item1", "item2", "item3"],
+        "Nalgonda": ["item1", "item2", "item3"],
+        "Narayanpet": ["item1", "item2", "item3"],
+        "Nirmal": ["item1", "item2", "item3"],
+        "Nizamabad": ["item1", "item2", "item3"],
+        "Peddapalli": ["item1", "item2", "item3"],
+        "Rajanna Sircilla": ["item1", "item2", "item3"],
+        "Rangareddy": ["item1", "item2", "item3"],
+        "Sangareddy": ["item1", "item2", "item3"],
+        "Siddipet": ["item1", "item2", "item3"],
+        "Suryapet": ["item1", "item2", "item3"],
+        "Vikarabad": ["item1", "item2", "item3"],
+        "Wanaparthy": ["item1", "item2", "item3"],
+        "Warangal Rural": ["item1", "item2", "item3"],
+        "Warangal Urban": ["item1", "item2", "item3"],
+        "Yadadri Bhuvanagiri": ["item1", "item2", "item3"]
+      }
+    }
+  ]}

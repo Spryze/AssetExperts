@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,Link } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  TextField,
-  Button,
-  Box,
+import { TextField, Button,Box,
   Grid,
   Select,
   MenuItem,
@@ -15,6 +12,7 @@ import {
 } from "@mui/material";
 import { addProperty, updateProperty } from "../PropertySlice1";
 import { selectUser } from "app/store/userSlice";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import UploadImages from "./Property-Types-Forms/UploadImages";
 
 const Form = ({ isEditMode = false, propertyData = {} }) => {
@@ -96,6 +94,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
     "student hostels",
     "agricultural lands",
     "independent house",
+    "commercial"
   ];
   const Units = ["sqft", "sqyd", "sq.m", "acre","cent"];
 
@@ -133,7 +132,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
       const resultAction = dispatch(action({ formData, p_id })).then(
         (response) => {
           console.log("response", response);
-          if (response.payload.message === "property added successfully") {
+          if (response.payload.message === "property added successfully" ||"Property updated successfully") {
             setResponseData(response.payload);
             setIsFormSubmitted(true);
           } else {
@@ -179,6 +178,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
       onSubmit={handleSubmit}
       sx={{ flexGrow: 1, width: "100%", maxWidth: 800, margin: "20px auto" }}
     >
+      
       {propertyData?.isEditMode === true ? (
         <Typography variant="h6" sx={{}}>
           Edit Property
@@ -189,6 +189,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
         </Typography>
       )}
       <hr />
+      
       <Grid container spacing={2} sx={{ marginTop: "10px" }}>
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth variant="outlined">
@@ -588,7 +589,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
               name="loan_eligibile"
               value={formData.loan_eligibile}
               onChange={handleChange}
-              required
+          
             >
               <MenuItem value={true}>Yes</MenuItem>
               <MenuItem value={false}>No</MenuItem>

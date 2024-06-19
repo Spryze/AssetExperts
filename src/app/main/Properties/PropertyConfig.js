@@ -8,6 +8,7 @@ import Addproperty from './Addproperty';
 import SearchProperty from './SearchProperty';
 import PropertyHome from './Pages/PropertyHome';
 import MyProperties from './Pages/MyProperties';
+import MySubscriptions from './Pages/MySubscriptions';
 import { auth } from '../sign-in/Config';
 import { authRoles } from 'src/app/auth';
 
@@ -46,6 +47,10 @@ const PropertyConfig = {
     {
       path: 'MyProperties',
       element: <MyProperties />,
+    },
+    {
+      path: 'mySubscriptions',
+      element: <MySubscriptions />,
     },
   ],
 };

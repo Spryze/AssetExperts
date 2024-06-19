@@ -9,12 +9,11 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const MyProperties = () => {
   const userData = useSelector(selectUser);
-  console.log("myproperties")
+  console.log()
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
 
   const handleClick = (property) => {
-    console.log("property", property);
     setSelectedProperty(property);
     setIsEditMode(true);
   };
@@ -23,12 +22,39 @@ const MyProperties = () => {
     setSelectedProperty(null);
     setIsEditMode(false);
   };
+  const handlePropertyClick = (propertyId) => {
+    const newWindow = window.open(`/property/${propertyId}`, "_blank");
+    if (newWindow) {
+      newWindow.focus();
+    } else {
+      console.error("Unable to open new window/tab");
+    }
+  };
 
+  // Conditional rendering based on user's role
+  if (userData.role === "guest") {
+    return (
+      <div className="flex flex-col flex-auto items-center sm:justify-center min-w-0">
+        <Paper className="flex items-center w-full sm:w-auto min-h-full sm:min-h-auto rounded-0 py-32 px-16 sm:p-48 sm:rounded-2xl sm:shadow">
+          <div className="w-full max-w-320 sm:w-320 mx-auto sm:mx-0">
+            <img
+              className="w-48 mx-auto"
+              src="assets/images/logo/logo.svg"
+              alt="logo"
+            />
+            <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight text-center">
+              Please Login!
+            </Typography>
+          </div>
+        </Paper>
+      </div>
+    );
+  }
+
+  
   return (
     <>
-      <div
-        style={{ display: "flex", justifyContent: "right", cursor: "pointer" }}
-      >
+      <div style={{ display: "flex", justifyContent: "right", cursor: "pointer" }}>
         {selectedProperty !== null && (
           <CloseIcon
             onClick={() => {
@@ -65,11 +91,16 @@ const MyProperties = () => {
                       borderRadius: "5px",
                       margin: "20px",
                     }}
+                    onClick={() => handlePropertyClick(item.property_id)}
                   >
                     <CardContent sx={{ padding: "0px" }}>
                       <Box
                         component="img"
-                        src={item?.prop_images?.[0] || DefaultImg}
+                        src={
+                          item.prop_image?.length > 0
+                            ? item.prop_image[0]
+                            : DefaultImg
+                        }
                         alt="Property"
                         sx={{
                           width: "100%",
@@ -95,7 +126,7 @@ const MyProperties = () => {
                               "linear-gradient(90deg, rgba(233,233,233,1) 100%, rgba(255,255,255,1) 100%)",
                           }}
                         >
-                          {"₹" + item?.unit_price}
+                          {"₹" + item?.price + "/" + item?.unit }
                         </Paper>
                       )}
                       <div>
@@ -112,7 +143,7 @@ const MyProperties = () => {
                             item?.listing_type === "buy"
                               ? "Wanted"
                               : `${item?.listing_type}ing`
-                          }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
+                          }, ${item?.area}${item?.unit}s ${item?.p_type}`}
                         </Typography>
                         <Box sx={{ display: "flex" }}>
                           <LocationOnIcon sx={{ color: "orange" }} />
@@ -126,7 +157,7 @@ const MyProperties = () => {
                           >
                             {`${item?.landmark}, ${item?.district}`}
                           </Typography>
-                          <Button
+                          {/* <Button
                             sx={{
                               fontSize: "12px",
                               fontWeight: "bold",
@@ -144,7 +175,7 @@ const MyProperties = () => {
                             }}
                           >
                             Update Property
-                          </Button>
+                          </Button> */}
                         </Box>
                       </div>
                     </CardContent>
@@ -157,7 +188,7 @@ const MyProperties = () => {
       )}
       {isEditMode && (
         <Addproperty
-        isEditMode={isEditMode}
+          isEditMode={isEditMode}
           propertyData={selectedProperty}
           onClose={handleCloseForm}
         />

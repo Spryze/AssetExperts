@@ -19,9 +19,12 @@ import { Link } from 'react-router-dom';
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import reducer from './PropertySlice1';
+import withReducer from "app/store/withReducer";
 
 
-function Property() {
+
+export function Property() {
   const user = useSelector(selectUser);
   console.log("user",user)
   const propertiesData = useSelector(selectProperties);
@@ -82,13 +85,13 @@ const propertyData = propertiesData?.data?.property;
     >
        {user.role == "admin" && (<Typography className="TextNone" component={Link} to="/manage/properties" variant="contained" color="primary">
       <ArrowBackIosIcon/>Back to Search  </Typography>)}
-      <div style={{display:"flex",justifyContent:"end"}}>
+      {/* <div style={{display:"flex",justifyContent:"end"}}>
       {isEditMode && (
         <CloseIcon
           onClick={() => handleCloseForm()}
           sx={{ cursor: "pointer" }}
         />
-      )}</div>
+      )}</div> */}
       {loading && (
         <CircularProgress
           sx={{ position: "absolute", zIndex: "1", top: "10%", left: "50%" }}
@@ -146,12 +149,13 @@ const propertyData = propertiesData?.data?.property;
 
         {!isEditMode && <Map color="red" />}
 
-        <Grid>{!isEditMode && <Recomendedproperties />}</Grid>
+        <Grid>{!isEditMode &&  user.role !== "admin" && (<Recomendedproperties />)}</Grid>
       </Grid>
 
-      {!isEditMode && <Recentlyadded />}
+      {!isEditMode && user.role !== "admin" &&( <Recentlyadded />)}
     </Container>
   );
 }
 
-export default Property;
+// export default Property;
+export default withReducer('propertiesEx', reducer)();

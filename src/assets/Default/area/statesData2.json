@@ -1,0 +1,373 @@
+{
+    "areas": {
+        "Srikakulam": [
+            {
+                "id": 1,
+                "area": "Ichapuram"
+            },
+            {
+                "id": 2,
+                "area": "Palasa"
+            },
+            {
+                "id": 3,
+                "area": "Sompeta"
+            },
+            {
+                "id": 20000000000000,
+                "area": "all Srikakulam areas"
+            }
+        ],
+        "Visakhapatnam": [
+            {
+                "id": 4,
+                "area": "Anandapuram"
+            },
+            {
+                "id": 5,
+                "area": "Anakapalli"
+            },
+            {
+                "id": 6,
+                "area": "Bheemunipatnam"
+            },
+            {
+                "id": 7,
+                "area": "Chintapalle"
+            },
+            {
+                "id": 8,
+                "area": "Devarapalli"
+            },
+            {
+                "id": 9,
+                "area": "Gajuwaka"
+            },
+            {
+                "id": 10,
+                "area": "Kotapadu"
+            },
+            {
+                "id": 11,
+                "area": "Madugula"
+            },
+            {
+                "id": 12,
+                "area": "Paravada"
+            },
+            {
+                "id": 13,
+                "area": "Pendurthi"
+            },
+            {
+                "id": 14,
+                "area": "Nathavaram"
+            },
+            {
+                "id": 15,
+                "area": "Payakaraopeta"
+            },
+            {
+                "id": 20000000000001,
+                "area": "all Visakhapatnam areas"
+            }
+        ],
+        "West Godavari": [
+            {
+                "id": 16,
+                "area": "Bhimavaram"
+            },
+            {
+                "id": 17,
+                "area": "Palakollu"
+            },
+            {
+                "id": 18,
+                "area": "Tadepalligudem"
+            },
+            {
+                "id": 20000000000002,
+                "area": "all West Godavari areas"
+            }
+        ],
+        "Krishna": [
+            {
+                "id": 19,
+                "area": "Vijayawada"
+            },
+            {
+                "id": 20,
+                "area": "Machilipatnam"
+            },
+            {
+                "id": 21,
+                "area": "Gannavaram"
+            },
+            {
+                "id": 20000000000003,
+                "area": "all Krishna areas"
+            }
+        ],
+        "Hyderabad": [
+            {
+                "id": 22,
+                "area": "Amberpet"
+            },
+            {
+                "id": 23,
+                "area": "Begumpet"
+            },
+            {
+                "id": 24,
+                "area": "Charminar"
+            },
+            {
+                "id": 25,
+                "area": "Malkajgiri"
+            },
+            {
+                "id": 26,
+                "area": "Musheerabad"
+            },
+            {
+                "id": 27,
+                "area": "Khairatabad"
+            },
+            {
+                "id": 28,
+                "area": "Jubilee Hills"
+            },
+            {
+                "id": 29,
+                "area": "Seethaphalmandi"
+            },
+            {
+                "id": 20000000000004,
+                "area": "all Hyderabad areas"
+            }
+        ],
+        "Chennai": [
+            {
+                "id": 30,
+                "area": "Adyar"
+            },
+            {
+                "id": 31,
+                "area": "Tambaram"
+            },
+            {
+                "id": 32,
+                "area": "Egmore"
+            },
+            {
+                "id": 33,
+                "area": "Perambur"
+            },
+            {
+                "id": 34,
+                "area": "Royapuram"
+            },
+            {
+                "id": 35,
+                "area": "T. Nagar"
+            },
+            {
+                "id": 20000000000005,
+                "area": "all Chennai areas"
+            }
+        ],
+        "Coimbatore": [
+            {
+                "id": 36,
+                "area": "Pollachi"
+            },
+            {
+                "id": 37,
+                "area": "Madhukarai"
+            },
+            {
+                "id": 38,
+                "area": "Mettupalayam"
+            },
+            {
+                "id": 39,
+                "area": "Sulur"
+            },
+            {
+                "id": 40,
+                "area": "Kinathukadavu"
+            },
+            {
+                "id": 20000000000006,
+                "area": "all Coimbatore areas"
+            }
+        ],
+        "Madurai": [
+            {
+                "id": 41,
+                "area": "Alanganallur"
+            },
+            {
+                "id": 42,
+                "area": "Melur"
+            },
+            {
+                "id": 43,
+                "area": "Vadipatti"
+            },
+            {
+                "id": 44,
+                "area": "Thirumangalam"
+            },
+            {
+                "id": 45,
+                "area": "Usilampatti"
+            },
+            {
+                "id": 20000000000007,
+                "area": "all Madurai areas"
+            }
+        ],
+        "Tiruchirappalli": [
+            {
+                "id": 46,
+                "area": "Manapparai"
+            },
+            {
+                "id": 47,
+                "area": "Srirangam"
+            },
+            {
+                "id": 48,
+                "area": "Thuraiyur"
+            },
+            {
+                "id": 49,
+                "area": "Musiri"
+            },
+            {
+                "id": 50,
+                "area": "Lalgudi"
+            },
+            {
+                "id": 20000000000008,
+                "area": "all Tiruchirappalli areas"
+            }
+        ],
+        "Thanjavur": [
+            {
+                "id": 51,
+                "area": "Kumbakonam"
+            },
+            {
+                "id": 52,
+                "area": "Papanasam"
+            },
+            {
+                "id": 53,
+                "area": "Orathanadu"
+            },
+            {
+                "id": 54,
+                "area": "Thiruvaiyaru"
+            },
+            {
+                "id": 55,
+                "area": "Thiruvidaimarudur"
+            },
+            {
+                "id": 20000000000009,
+                "area": "all Thanjavur areas"
+            }
+        ]
+    },
+    "district_status": {
+        "Andhra Pradesh": {
+            "Srikakulam": true,
+            "Visakhapatnam": true,
+            "West Godavari": true,
+            "Krishna": true,
+            "East Godavari": false,
+            "Guntur": false,
+            "Prakasam": false,
+            "Nellore": false,
+            "Chittoor": false,
+            "Kadapa": false,
+            "Anantapur": false,
+            "Kurnool": false
+        },
+        "Telangana": {
+            "Hyderabad": true,
+            "Warangal": false,
+            "Nalgonda": false,
+            "Karimnagar": false,
+            "Ranga Reddy": false,
+            "Khammam": false,
+            "Mahbubnagar": false,
+            "Medak": false,
+            "Nizamabad": false,
+            "Adilabad": false,
+            "Sangareddy": false,
+            "Jagtial": false
+        },
+        "Tamil Nadu": {
+            "Chennai": true,
+            "Coimbatore": true,
+            "Madurai": true,
+            "Tiruchirappalli": true,
+            "Thanjavur": true,
+            "Salem": false,
+            "Erode": false
+        },
+        "Karnataka": {
+            "Bangalore": false,
+            "Mysore": false,
+            "Mangalore": false,
+            "Hubli": false,
+            "Belgaum": false,
+            "Dharwad": false
+        },
+        "Maharashtra": {
+            "Mumbai": false,
+            "Pune": false,
+            "Nagpur": false,
+            "Nashik": false,
+            "Aurangabad": false,
+            "Solapur": false
+        },
+        "Kerala": {
+            "Thiruvananthapuram": false,
+            "Kochi": false,
+            "Kozhikode": false,
+            "Thrissur": false,
+            "Kannur": false,
+            "Palakkad": false
+        },
+        "Gujarat": {
+            "Ahmedabad": false,
+            "Surat": false,
+            "Vadodara": false,
+            "Rajkot": false,
+            "Bhavnagar": false,
+            "Jamnagar": false
+        },
+        "Rajasthan": {
+            "Jaipur": false,
+            "Udaipur": false,
+            "Jodhpur": false,
+            "Kota": false,
+            "Ajmer": false,
+            "Bikaner": false
+        }
+    },
+    "state_status": {
+        "Andhra Pradesh": "true",
+        "Telangana": "true",
+        "Tamil Nadu":"false",
+        "Karnataka": "false",
+        "Maharashtra": "false",
+        "Kerala": "false",
+        "Gujarat":"false",
+        "Rajasthan":"false"
+    }
+}

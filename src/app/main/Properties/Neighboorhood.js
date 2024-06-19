@@ -20,7 +20,7 @@ const Neighborhood = () => {
           Around The Property
         </Typography>
         <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {propertyData.data.property.developments.map((item, index) => (
+          {propertyData.data.property.developments.filter(item => item).map((item, index) => (
             <Card key={index} sx={{ margin: "10px" }}>
               <p style={{ margin: "25px", textTransform: "capitalize" }}>
                 {item}

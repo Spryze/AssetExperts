@@ -3,8 +3,10 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AddImage } from '../../PropertySlice1';
+import BaseUrl from 'app/configs/BaseUrl';
 
 const UploadImages = ({ responseData }) => {
+
   console.log("responseData",responseData)
   const navigate = useNavigate();
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -51,15 +53,18 @@ const UploadImages = ({ responseData }) => {
         formData.append('images', floorPlanFiles[i]);
       }
 
-      formData.append('p_id', responseData.details.p_id);
-      formData.append('req_user_id', responseData.details.req_user_id);
-      formData.append('user_id', responseData.details.user_id);
+      formData.append('p_id', responseData.profile.p_id);
+      formData.append('req_user_id', responseData.profile.req_user_id);
+      formData.append('user_id', responseData.profile.user_id);
 
 
       dispatch(AddImage(formData)).then((response)=>{
         console.log("response",response);
+        console.log("pid",responseData.profile.p_id);
        if(response.meta.requestStatus === "fulfilled"){
-        navigate("/")
+        navigate(`/property/${responseData.profile.p_id}`);
+        window.location.reload();
+        
        }
       });
       

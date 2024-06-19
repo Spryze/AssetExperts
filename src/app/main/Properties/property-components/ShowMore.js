@@ -3,7 +3,7 @@ import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPropertyDetails, selectProperties } from 'app/store/propertySlice';
-import CloseIcon from '@mui/icons-material/Close';
+// import CloseIcon from '@mui/icons-material/Close';
 import './ShowMore.css'; // Import your CSS file
 
 const ShowMore = (props) => {
@@ -35,7 +35,7 @@ const ShowMore = (props) => {
   return (
     <div className="showmore-container">
       {/* Close button */}
-      <CloseIcon sx={{ float: "right", cursor: "pointer" }} onClick={() => props.setShowMoreVisible(false)} />
+      {/* <CloseIcon sx={{ float: "right", cursor: "pointer" }} onClick={() => props.setShowMoreVisible(false)} /> */}
       
       {/* Slideshow */}
       <Slide autoplay={true} duration={2000}>

@@ -31,49 +31,119 @@ export const fetchDataWithPut = createAsyncThunk('manageSearch/fetchDataWithPut'
 
 export const getUserProfileOnSearch = createAsyncThunk(
   'user/getUserProfile',
-  async ({ user_id, req_user_id }, { fulfillWithValue, rejectWithValue }) => {
+  async ({ user_id, req_user_id, updatedData }, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user",
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          params: { user_id, req_user_id }
-        
-        }
+      let response;
+      if (updatedData) {
+        response = await axios.put(
+          "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user",
+          updatedData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            params: {req_user_id}
+          }
+        );
+      } else {
+        response = await axios.get(
+          "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user",
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            params: { user_id, req_user_id }
+          }
+        );
+      }
 
-      );
+      // const response = await axios.get(
+      //   "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user",
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     params: { user_id, req_user_id }
+        
+      //   }
+
+      // );
       // console.log("Paramas",params)
       console.log("Backend response data:", response.data);
       const returnData = response.data;
       if (returnData.status === "success")
         {
       const userData = response.data.profile;
-      // Transform the response data to match the expected structure
-      const transformedData = {
-        id: userData.id || '',
-        name: userData.name || '',
-        email: userData.email || '',
-        address: userData.address || '',
-        ph_num_1: userData.ph_num_1 || '',
-        ph_num_2: userData.ph_num_2 || '',
-        comments: userData.comments || '',
-        requirements: userData.requirements || '',
-        role: userData.role || '',
-        profession: userData.profession || '',
-        active_notifications: userData.active_notifications !== undefined ? userData.active_notifications.toString() : '',
-        updated_on: userData.updated_on ? new Date(userData.updated_on).toLocaleString() : '',
-        created_on: userData.created_on ? new Date(userData.created_on).toLocaleString() : '',
-      };
+     
+    return fulfillWithValue(response);
+    
+      
+      
 
-      return fulfillWithValue(transformedData);
+
+
     }
+    } catch (error) {
+      return rejectWithValue(error.message);
+      
+    }
+  }
+);
+
+
+
+
+export const updateUserProfile = createAsyncThunk(
+  'user/updateUserProfile',
+  async (updatedData, { fulfillWithValue, rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        "https://your-api-url/user/update",
+        updatedData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+      console.log("Backend response data:", response.data);
+      if (response.data.status === "success") {
+        return fulfillWithValue(response.data);
+      } else {
+        return rejectWithValue(response.data.message);
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 const initialState = {
@@ -95,7 +165,7 @@ const manageSearchSlice = createSlice({
       })
       .addCase(getUserProfileOnSearch.fulfilled, (state, action) => {
         // state.status = 'succeeded';
-        state.user = action.payload;
+        state.user = action.payload.data;
         // state.total_length = action.payload.total_length;
       })
       .addCase(fetchDataWithPut.fulfilled, (state, action) => {

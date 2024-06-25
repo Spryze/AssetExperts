@@ -191,6 +191,25 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
       <hr />
       
       <Grid container spacing={2} sx={{ marginTop: "10px" }}>
+      {(user.role == "admin" || user.role === "staff")&& (
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>Property Status</InputLabel>
+              <Select
+                label="Property Status"
+                name="PropertyStatus"
+                value={formData.PropertyStatus}
+                onChange={handleChange}
+              >
+                <MenuItem value="Verified">Verified</MenuItem>
+                <MenuItem value="Not Verified">
+                  Not Verified
+                </MenuItem>
+                
+              </Select>
+            </FormControl>
+          </Grid>
+        )}
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth variant="outlined">
             <InputLabel>Listing Type</InputLabel>
@@ -379,25 +398,7 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
             </FormControl>
           </Grid>
         )}
-        {formData.p_type === "Flat" && (
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>Property Status</InputLabel>
-              <Select
-                label="Property Status"
-                name="PropertyStatus"
-                value={formData.PropertyStatus}
-                onChange={handleChange}
-              >
-                <MenuItem value="Completed">Completed</MenuItem>
-                <MenuItem value="Under Construction">
-                  Under Construction
-                </MenuItem>
-                <MenuItem value="Ready To Move">Ready To Move</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        )}
+       
 
         {(formData.p_type === "Flat" ||
           formData.p_type === "PG" ||

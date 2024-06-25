@@ -64,6 +64,12 @@ const navigationConfig = [
         title: 'Properties',
         type: 'item',
         url: '/manage/properties',
+      },
+      {
+        id: 'manage.Areas',
+        title: 'Areas',
+        type: 'item',
+        url: '/manage/Areas',
       }
     ],
   },

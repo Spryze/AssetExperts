@@ -1,82 +1,216 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Button, List, ListItem, ListItemText, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Checkbox,
+  IconButton,
+  Divider
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from "@mui/icons-material/Edit";
 import SubmitIntrests from "../property-components/SubmitIntrests";
-import { selectUser } from 'app/store/userSlice';
-import { selectmySubscription } from '../PropertySlice1';
-import { useSelector } from 'react-redux';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import AddAreasDialoge from '../property-components/AddAreasDialoge';
-import GetAppIcon from '@mui/icons-material/GetApp';
+import { useSelector, useDispatch } from "react-redux";
+import { AddIntrests, GetMyIntrests, selectmySubscription } from "../PropertySlice1";
+import AreaJson from "../../../../assets/Default/area/result.json";
 
 const MySubscriptions = () => {
-  const StateandDistrictList = useSelector(selectmySubscription);
-  const user = useSelector(selectUser);
+  const [stateData, setStateData] = useState([]);
+  const Subscription = useSelector(selectmySubscription);
   const [editingStateIndex, setEditingStateIndex] = useState(null);
   const [editingDistrictName, setEditingDistrictName] = useState(null);
-  const [stateData, setStateData] = useState([]);
-  const [editingStateData, setEditingStateData] = useState(null);
+  const [editingDistrictData, setEditingDistrictData] = useState(null);
   const [removedItems, setRemovedItems] = useState([]);
+  const [addedItems, setAddedItems] = useState([]);
+  const [previousAreas, setPreviousAreas] = useState([]);
+  const dispatch = useDispatch();
+
+  const processInterests = (interestedAreas) => {
+    const districtAreasMap = {};
+    interestedAreas?.forEach((item) => {
+      if (!districtAreasMap[item.district]) {
+        districtAreasMap[item.district] = [];
+      }
+      districtAreasMap[item.district].push(item.area);
+    });
+
+    const stateDistrictMap = {};
+    Object.entries(AreaJson.district_status).forEach(([stateName, districts]) => {
+      const stateDistricts = [];
+      Object.keys(districts).forEach((districtName) => {
+        if (districtAreasMap[districtName]) {
+          const areas = districtAreasMap[districtName];
+          if (areas.includes("All Areas")) {
+            const allAreas = AreaJson.areas[districtName].map(area => area.area);
+            stateDistricts.push({
+              name: districtName,
+              areas: allAreas,
+            });
+          } else {
+            stateDistricts.push({
+              name: districtName,
+              areas,
+            });
+          }
+        }
+      });
+      if (stateDistricts.length > 0) {
+        stateDistrictMap[stateName] = stateDistricts;
+      }
+    });
+
+    setStateData(Object.entries(stateDistrictMap).map(([stateName, districts]) => ({
+      stateName,
+      districts,
+    })));
+  };
 
   useEffect(() => {
-   
-    const transformedStateData = Object.entries(StateandDistrictList.district_status).map(([stateName, districts]) => ({
-      name: stateName,
-      districts: Object.entries(districts)
-        .filter(([districtName, isActive]) => isActive && StateandDistrictList.areas[districtName]?.length > 0)
-        .map(([districtName]) => ({
-          name: districtName,
-          areas: StateandDistrictList.areas[districtName].map(area => area.area)
-        }))
-    })).filter(state => state.districts.length > 0); 
-    setStateData(transformedStateData);
-  }, [StateandDistrictList]);
+    dispatch(GetMyIntrests()).then((response) => {
+      if (response.payload) {
+        const interestedAreas = response.payload?.data?.interested_areas;
+        console.log(interestedAreas);
+        processInterests(interestedAreas);
+      }
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (Subscription) {
+      console.log(Subscription)
+      processInterests(Subscription);
+    }
+  }, [Subscription]);
 
   const handleEditClick = (stateIndex, districtName) => {
     setEditingStateIndex(stateIndex);
     setEditingDistrictName(districtName);
-    setEditingStateData({ ...stateData[stateIndex] });
+    const districtData = stateData[stateIndex].districts.find(
+      (district) => district.name === districtName
+    );
+    setEditingDistrictData({ ...districtData });
     setRemovedItems([]);
+    setAddedItems([]);
+    setPreviousAreas([...districtData.areas]); 
   };
 
   const handleAddItem = (item) => {
-    const updatedItems = [...editingStateData.districts.find(d => d.name === editingDistrictName).areas, item];
-    setEditingStateData({
-      ...editingStateData,
-      districts: editingStateData.districts.map(d =>
-        d.name === editingDistrictName ? { ...d, areas: updatedItems } : d
-      )
-    });
-    setRemovedItems(removedItems.filter(i => i !== item));
+    if (item === "All Areas") {
+      setEditingDistrictData({
+        ...editingDistrictData,
+        areas: ["All Areas"],
+      });
+      setRemovedItems(editingDistrictData.areas.filter((i) => i !== "All Areas"));
+      setAddedItems(["All Areas"]);
+    } else {
+      const updatedItems = [...editingDistrictData.areas, item];
+      setEditingDistrictData({
+        ...editingDistrictData,
+        areas: updatedItems,
+      });
+      setRemovedItems(removedItems.filter((i) => i !== item));
+      setAddedItems([...addedItems, item]);
+    }
   };
 
   const handleRemoveItem = (item) => {
-    const updatedItems = editingStateData.districts.find(d => d.name === editingDistrictName).areas.filter(i => i !== item);
-    setEditingStateData({
-      ...editingStateData,
-      districts: editingStateData.districts.map(d =>
-        d.name === editingDistrictName ? { ...d, areas: updatedItems } : d
-      )
-    });
-    setRemovedItems([...removedItems, item]);
+    if (item === "All Areas") {
+      setEditingDistrictData({
+        ...editingDistrictData,
+        areas: [],
+      });
+      setRemovedItems(["All Areas"]);
+      setAddedItems([]);
+    } else {
+      const updatedItems = editingDistrictData.areas.filter((i) => i !== item);
+      setEditingDistrictData({
+        ...editingDistrictData,
+        areas: updatedItems,
+      });
+      setRemovedItems([...removedItems, item]);
+      setAddedItems(addedItems.filter((i) => i !== item));
+    }
+  };
+
+  const handleItemClick = (item) => {
+    if (item === "All Areas") {
+      if (editingDistrictData.areas.includes(item)) {
+        handleRemoveItem(item);
+      } else {
+        handleAddItem(item);
+      }
+    } else {
+      if (editingDistrictData.areas.includes(item)) {
+        handleRemoveItem(item);
+      } else {
+        handleAddItem(item);
+      }
+    }
+  };
+
+  const mapAreasToIds = (areas, districtName) => {
+    const areaMap = AreaJson.areas[districtName];
+    return areas.map(areaName => {
+      const area = areaMap.find(area => area.area === areaName);
+      return area ? area.id : null;
+    }).filter(id => id !== null);
   };
 
   const handleSaveChanges = () => {
     const updatedStateData = [...stateData];
-    updatedStateData[editingStateIndex] = editingStateData;
+    const districtIndex = updatedStateData[editingStateIndex].districts.findIndex(
+      (district) => district.name === editingDistrictName
+    );
+    updatedStateData[editingStateIndex].districts[districtIndex] = editingDistrictData;
     setStateData(updatedStateData);
     setEditingStateIndex(null);
     setEditingDistrictName(null);
-    setEditingStateData(null);
+    setEditingDistrictData(null);
     setRemovedItems([]);
+    setAddedItems([]);
+    setPreviousAreas([]);
+
+    const removedAreaIds = mapAreasToIds(removedItems, editingDistrictName);
+    const addedAreaIds = mapAreasToIds(addedItems, editingDistrictName);
+
+    if (removedAreaIds.length > 0 || addedAreaIds.length > 0) {
+      const body = [
+        {
+          areas: removedAreaIds,
+          status: "delete",
+        },
+        {
+          areas: addedAreaIds,
+          status: "add",
+          district: editingDistrictName,
+        },
+      ];
+
+      dispatch(AddIntrests(body)).then((response) => {
+        console.log(response);
+      });
+    }
   };
 
   const handleCancelEdit = () => {
     setEditingStateIndex(null);
     setEditingDistrictName(null);
-    setEditingStateData(null);
+    setEditingDistrictData(null);
     setRemovedItems([]);
+    setAddedItems([]);
+    setPreviousAreas([]);
+  };
+
+  const getAllAreasForDistrict = (districtName) => {
+    return AreaJson.areas[districtName].map((area) => area.area);
+  };
+
+  const sortItemsAlphabetically = (items) => {
+    return [...items].sort((a, b) => a.localeCompare(b));
   };
 
   return (
@@ -85,82 +219,111 @@ const MySubscriptions = () => {
       <hr />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <SubmitIntrests />
-        {user.role === "admin" && (
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <AddAreasDialoge />
-            <Button variant="outlined" onClick={() => {}} sx={{ width: "200px", borderRadius: "7px", margin: "10px" }}>
-              <GetAppIcon /> Get latest Areas
-            </Button>
-          </div>
-        )}
       </div>
-
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
         {stateData.map((stateObj, stateIndex) => (
-          <div key={stateIndex} style={{ margin: '10px 20px', width: "100%" }}>
-            <Typography variant="h5" component="div">
-              {stateObj.name}
+          <div key={stateIndex} style={{ margin: "20px", width: "100%" }}>
+            <Typography variant="h6" component="div" style={{ marginBottom: "10px" }}>
+              {stateObj.stateName}
             </Typography>
-            <div style={{ display: 'flex', overflowX: 'auto', flexWrap: "wrap" }}>
-              {stateObj.districts.map((district, districtIndex) => (
-                <Card key={districtIndex} style={{ margin: '5px', minWidth: "300px", position: 'relative' }}>
+            <hr />
+            <div style={{ display: "flex" }}>
+              {stateObj.districts.map((districtObj, districtIndex) => (
+                <Card
+                  key={districtIndex}
+                  style={{ margin: "10px", minWidth: "300px", position: "relative" }}
+                >
                   <CardContent>
                     <div style={{ display: "flex" }}>
-                      <Typography variant="h6" component="div" style={{ marginTop: '5px' }}>
-                        {district.name}
+                      <Typography sx={{ fontSize: "20px", fontWeight: "600" }} component="div">
+                        {districtObj.name}
                       </Typography>
-                      {editingStateIndex === stateIndex && editingDistrictName === district.name && (
+                      {editingStateIndex === stateIndex &&
+                        editingDistrictName === districtObj.name && (
+                          <IconButton
+                            sx={{ position: "absolute", top: 0, right: 0 }}
+                            aria-label="cancel"
+                            onClick={handleCancelEdit}
+                          >
+                            <CloseIcon />
+                          </IconButton>
+                        )}
+                      {!(editingStateIndex === stateIndex && editingDistrictName === districtObj.name) && (
                         <IconButton
-                          sx={{ position: 'absolute', top: 0, right: 0 }}
-                          aria-label="cancel"
-                          onClick={handleCancelEdit}
+                          sx={{ position: "absolute", top: 0, right: 0 }}
+                          aria-label="edit"
+                          onClick={() => handleEditClick(stateIndex, districtObj.name)}
                         >
-                          <CloseIcon />
+                          <EditIcon />
                         </IconButton>
                       )}
                     </div>
-
                     <hr />
                     <List>
-                      {(editingStateIndex === stateIndex && editingDistrictName === district.name ? editingStateData.districts.find(d => d.name === district.name).areas : district.areas).map((item, idx) => (
-                        <ListItem key={idx}>
-                          <ListItemText primary={item} />
-                          {editingStateIndex === stateIndex && editingDistrictName === district.name && (
-                            <IconButton edge="end" aria-label="delete" onClick={() => handleRemoveItem(item)}>
-                              <DeleteIcon />
-                            </IconButton>
-                          )}
-                        </ListItem>
-                      ))}
+                      {(() => {
+                        const items = editingStateIndex === stateIndex &&
+                          editingDistrictName === districtObj.name
+                          ? getAllAreasForDistrict(districtObj.name)
+                          : districtObj.areas;
+                        const selectedItems = items.filter(item =>
+                          editingDistrictData?.areas.includes(item)
+                        );
+                        const unselectedItems = items.filter(item =>
+                          !editingDistrictData?.areas.includes(item)
+                        );
+                        const sortedSelectedItems = sortItemsAlphabetically(selectedItems);
+                        const sortedUnselectedItems = sortItemsAlphabetically(unselectedItems);
+                        return (
+                          <>
+                            {sortedSelectedItems.map((item, idx) => (
+                              <ListItem key={idx}>
+                                <ListItemText primary={item} />
+                                {editingStateIndex === stateIndex &&
+                                  editingDistrictName === districtObj.name && (
+                                    <Checkbox
+                                      edge="end"
+                                      checked={editingDistrictData.areas.includes(item)}
+                                      onChange={() => handleItemClick(item)}
+                                      disabled={editingDistrictData.areas.includes("All Areas") && item !== "All Areas"}
+                                    />
+                                  )}
+                              </ListItem>
+                            ))}
+                            {sortedSelectedItems.length > 0 && sortedUnselectedItems.length > 0 && (
+                              <Divider />
+                            )}
+                            {sortedUnselectedItems.map((item, idx) => (
+                              <ListItem key={idx}>
+                                <ListItemText primary={item} />
+                                {editingStateIndex === stateIndex &&
+                                  editingDistrictName === districtObj.name && (
+                                    <Checkbox
+                                      edge="end"
+                                      checked={editingDistrictData.areas.includes(item)}
+                                      onChange={() => handleItemClick(item)}
+                                      disabled={editingDistrictData.areas.includes("All Areas") && item !== "All Areas"}
+                                    />
+                                  )}
+                              </ListItem>
+                            ))}
+                          </>
+                        );
+                      })()}
                     </List>
-                    {editingStateIndex === stateIndex && editingDistrictName === district.name && removedItems.length > 0 && (
-                      <>
-                        <Typography variant="h6">Removed Items</Typography>
-                        <List>
-                          {removedItems.map((item, idx) => (
-                            <ListItem key={idx}>
-                              <ListItemText primary={item} />
-                              <IconButton edge="end" aria-label="add" onClick={() => handleAddItem(item)}>
-                                <AddIcon />
-                              </IconButton>
-                            </ListItem>
-                          ))}
-                        </List>
-                      </>
-                    )}
-                    <div style={{ display: "flex", justifyContent: "end" }}>
-                      {editingStateIndex === stateIndex && editingDistrictName === district.name ? (
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <Button sx={{ borderRadius: "7px", width: "70px", right: "0px" }} variant="contained" color="primary" onClick={handleSaveChanges} fullWidth>
+                    {editingStateIndex === stateIndex &&
+                      editingDistrictName === districtObj.name && (
+                        <div style={{ display: "flex", justifyContent: "end" }}>
+                          <Button
+                            sx={{ borderRadius: "7px", width: "70px", right: "0px" }}
+                            variant="contained"
+                            color="primary"
+                            onClick={handleSaveChanges}
+                            fullWidth
+                          >
                             Save
                           </Button>
                         </div>
-                      ) : (
-                        <Button sx={{ borderRadius: "7px", width: "70px", right: "0px" }} variant="contained" color="primary" onClick={() => handleEditClick(stateIndex, district.name)} fullWidth>
-                          Edit
-                        </Button>
                       )}
-                    </div>
                   </CardContent>
                 </Card>
               ))}

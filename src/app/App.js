@@ -10,7 +10,7 @@ import { CacheProvider } from '@emotion/react';
 import { selectCurrentLanguageDirection } from 'app/store/i18nSlice';
 import { selectUser } from 'app/store/userSlice';
 import themeLayouts from 'app/theme-layouts/themeLayouts';
-import { selectMainTheme } from 'app/store/rabit/settingsSlice';
+import { selectMainTheme,selectMainThemeDark,selectMainThemeGreen,selectMainThemeLight } from 'app/store/rabit/settingsSlice';
 import RabitAuthorization from '@rabit/core/RabitAuthorization';
 import settingsConfig from 'app/configs/settingsConfig';
 import withAppProviders from './withAppProviders';
@@ -39,7 +39,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const user = useSelector(selectUser);
   const langDirection = useSelector(selectCurrentLanguageDirection);
-  const mainTheme = useSelector(selectMainTheme);
+  const mainTheme = useSelector(selectMainThemeGreen);
 
 
   return (

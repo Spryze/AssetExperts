@@ -1,8 +1,9 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import Statesdata from "../../../assets/Default/area/statesData2.json";
+import Statesdata from "../../../assets/Default/area/result.json";
 import { showMessage } from "app/store/rabit/messageSlice";
+import BaseUrl from "app/configs/BaseUrl";
 
 
 export const selectPropertyById = (state, property_id) =>
@@ -11,8 +12,127 @@ export const selectPropertyById = (state, property_id) =>
   );
 
 //  my intrests thunk function 
-  export const MyIntrests = createAsyncThunk(
-    "property/MyIntrests",
+  export const AddIntrests = createAsyncThunk(
+    "property/AddIntrests",
+    async (body, { rejectWithValue }) => {
+      console.log(body)
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const user_id = user.uid;
+  
+        const Data = {
+          user_id :  user_id ,
+          body,
+        };
+        console.log('Data',Data)
+        const response = await axios.put('https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/register', Data);
+        console.log(response)
+        return response;
+        
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+    }
+  
+  );
+ 
+  
+  export const GetUpdatedJson = createAsyncThunk(
+    "property/GetUpdatedJson",
+    async (_, { rejectWithValue }) => {
+      try {
+        const response = await axios.get(
+          'https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/getfile',
+          { responseType: 'blob' } 
+        );
+  
+    
+        const url = URL.createObjectURL(response.data);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "data.json"); 
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+  
+        return response.data; 
+      } catch (error) {
+     
+        const errorMessage = JSON.stringify(error.response?.data || error.message, null, 2);
+        const blob = new Blob([errorMessage], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "error.json");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+  
+        return rejectWithValue(error.response?.data || error.message);
+      }
+    }
+  )
+  export const GetMyIntrests = createAsyncThunk(
+    "property/GetMyIntrests",
+    async()=>{
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+      const user_id = user.uid;
+        const response = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/register?user_id=${user_id}`);
+        return response;
+      } catch (error) {
+        
+      }
+    }
+  )
+  export const DeleteIntrests = createAsyncThunk(
+    "property/DeleteIntrests",
+    async (formData, { rejectWithValue }) => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const user_id = user.uid;
+        console.log(formData);
+        const Data = {
+          user_id :  user_id ,
+          body: formData,
+        };
+        const response = await axios.post('', Data);
+        return response;
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+    }
+  
+  );
+
+  export const PostUserCallRequest = createAsyncThunk(
+    "property/PostUserCallRequest",
+    async (formData, { rejectWithValue }) => {
+     
+      try {
+        // const user = JSON.parse(localStorage.getItem("user"));
+        // const user_id = user.uid;
+  
+        // const Data = {
+          // user_id :  user_id ,
+          // userData,
+        // };
+        console.log('formData',formData)
+        const response = await axios.post('https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/help', formData);
+        console.log(response)
+        return response;
+        
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+    }
+  
+  );
+
+  export const AddAreas = createAsyncThunk(
+    "property/AddAreas",
     async (formData, { rejectWithValue }) => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -22,7 +142,8 @@ export const selectPropertyById = (state, property_id) =>
           user_id :  user_id ,
           body: formData,
         };
-        const response = await axios.post('', Data);
+        console.log(Data)
+        const response = await axios.post(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/register?user_id=${user_id}`, Data);
         return response.data;
       } catch (error) {
         return rejectWithValue(error.response.data);
@@ -267,7 +388,7 @@ const initialState = {
   recentTransactions: [],
   normalSearchResults: [],
   adminSearchResults: [],
-  mySubscription:Statesdata,
+  mySubscription:[],
   admintotalProperties: "0",
   normaltotalResults: "0",
   status: "idle",
@@ -337,6 +458,12 @@ const propertySlice = createSlice({
       // })
       .addCase(fetchProperties.fulfilled, (state, action) => {
         state.properties = action.payload;
+      })
+      .addCase(GetMyIntrests.fulfilled,(state,action)=>{
+        state.mySubscription = action.payload.data.interested_areas;
+      })
+      .addCase(AddIntrests.fulfilled,(state,action)=>{
+        state.mySubscription = action.payload.data.interested_areas;
       })
       .addCase(fetchRecentTransactions.fulfilled, (state, action) => {
         state.recentTransactions = [

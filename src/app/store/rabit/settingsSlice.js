@@ -12,6 +12,7 @@ import settingsConfig from 'app/configs/settingsConfig';
 import themeLayoutConfigs from 'app/theme-layouts/themeLayoutConfigs';
 import { setUser, updateUserSettings } from 'app/store/userSlice';
 import { darkPaletteText, lightPaletteText } from 'app/configs/themesConfig';
+import { Button } from '@mui/material';
 
 export const changeRabitTheme = (theme) => (dispatch, getState) => {
   const { rabit } = getState();
@@ -161,6 +162,18 @@ function changeThemeMode(theme, mode) {
         text: lightPaletteText,
       },
     },
+    green: {
+      palette: {
+        mode: 'light',
+        divider: '#e2e8f0',
+        background: {
+          paper: '#f7fff1',
+          default: '#E1F0DA',
+          Button:'#99BC85'
+        },
+        text: lightPaletteText,
+      },
+    },
   };
 
   return _.merge({}, theme, modes[mode]);
@@ -179,6 +192,10 @@ export const selectMainThemeDark = createSelector(
 export const selectMainThemeLight = createSelector(
   [getMainTheme, getDirection],
   (theme, direction) => generateMuiTheme(changeThemeMode(theme, 'light'), direction)
+);
+export const selectMainThemeGreen = createSelector(
+  [getMainTheme, getDirection],
+  (theme, direction) => generateMuiTheme(changeThemeMode(theme, 'green'), direction)
 );
 
 export const selectNavbarTheme = createSelector(

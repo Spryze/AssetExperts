@@ -1,12 +1,7 @@
 import { useDeepCompareEffect } from '@rabit/hooks';
 import _ from '@lodash';
 import AppContext from 'app/AppContext';
-import {
-  generateSettings,
-  selectRabitCurrentSettings,
-  selectRabitDefaultSettings,
-  setSettings,
-} from 'app/store/rabit/settingsSlice';
+import {generateSettings,selectRabitCurrentSettings,selectRabitDefaultSettings,setSettings} from 'app/store/rabit/settingsSlice';
 import { memo, useCallback, useContext, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { matchRoutes, useLocation } from 'react-router-dom';

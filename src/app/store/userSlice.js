@@ -20,7 +20,7 @@
 //       try {
 //         if (userAuth) {
           
-//           const response = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${userAuth.uid}&req_user_id=${userAuth.uid}`);
+//           const response = await axios.get(https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${userAuth.uid}&req_user_id=${userAuth.uid});
 //           const userData = response.data;
         
           
@@ -126,7 +126,7 @@
 //       const user = JSON.parse(localStorage.getItem("user"));
 //       const cont_user_id = user.uid;
       
-//       const userdata = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${cont_user_id}&req_user_id=${cont_user_id}`)
+//       const userdata = await axios.get(https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${cont_user_id}&req_user_id=${cont_user_id})
 //       console.log("userdata", userdata.data); 
 //       return userdata.data;
 //     } catch (error) {
@@ -148,7 +148,7 @@
 //       const user = userCredential.user;
       
 //       if (user) {
-//         const userdata = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${user.uid}&req_user_id=${user.uid}`)
+//         const userdata = await axios.get(https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${user.uid}&req_user_id=${user.uid})
 //         console.log("userdata",userdata)
 //         let User = {
 //           uid: user.uid,

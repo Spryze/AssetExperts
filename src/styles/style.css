@@ -69,11 +69,17 @@
   transform: scale(1.05);
 }
 
+
 @media only screen and (max-width: 900px) {
   .Plot&LandCards {
     display: flex;
     justify-content: center;
   }
 }
+.recentcards{
+  padding-bottom: 5px !important;
+}
 
-
+.SpanTextColor{
+  color: #4ea944;
+}

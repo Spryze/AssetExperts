@@ -6,6 +6,65 @@ import { showMessage } from "app/store/rabit/messageSlice";
 import BaseUrl from "app/configs/BaseUrl";
 
 
+// plot flat thunk function
+export const CardsClick = createAsyncThunk(
+  "property/CardsClick",
+  async (
+    { formData, offset,  },
+    { rejectWithValue, fulfillWithValue }
+  ) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const req_by = user.uid;
+
+      const Data = {
+        req_by: req_by,
+        offset: offset,
+        body: formData,
+      };
+      console.log("Data",Data)
+      const response = await axios.post(
+        `${BaseUrl}/search`,
+        Data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error("Failed to fetch search results");
+      }
+      if (response?.data.property.length === 0)
+        {
+          showMessage('No Results Found');
+
+        }
+
+      const payload = {
+        properties: response.data.property,
+        // totalProperties: response.data.total_properties,
+        // PropertyState: PropertyState,
+        // isAdminSearch: isAdminSearch
+      };
+
+      // if (isAdminSearch === "local") {
+      //   return payload;
+      // }
+      // if (isAdminSearch) {
+      //   return fulfillWithValue(payload);
+      // } else {
+      //   return fulfillWithValue(payload);
+      // }
+      return(payload)
+      
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 export const selectPropertyById = (state, property_id) =>
   state.properties.properties.find(
     (property) => property.property_id === property_id
@@ -25,7 +84,7 @@ export const selectPropertyById = (state, property_id) =>
           body,
         };
         console.log('Data',Data)
-        const response = await axios.put('https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/register', Data);
+        const response = await axios.put(`${BaseUrl}/register`, Data);
         console.log(response)
         return response;
         
@@ -42,7 +101,7 @@ export const selectPropertyById = (state, property_id) =>
     async (_, { rejectWithValue }) => {
       try {
         const response = await axios.get(
-          'https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/getfile',
+          `${BaseUrl}`,
           { responseType: 'blob' } 
         );
   
@@ -80,7 +139,7 @@ export const selectPropertyById = (state, property_id) =>
       try {
         const user = JSON.parse(localStorage.getItem("user"));
       const user_id = user.uid;
-        const response = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/register?user_id=${user_id}`);
+        const response = await axios.get(`${BaseUrl}/register?user_id=${user_id}`);
         return response;
       } catch (error) {
         
@@ -120,7 +179,7 @@ export const selectPropertyById = (state, property_id) =>
           // userData,
         // };
         console.log('formData',formData)
-        const response = await axios.post('https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/help', formData);
+        const response = await axios.post(`${BaseUrl}/help`, formData);
         console.log(response)
         return response;
         
@@ -143,7 +202,7 @@ export const selectPropertyById = (state, property_id) =>
           body: formData,
         };
         console.log(Data)
-        const response = await axios.post(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/register?user_id=${user_id}`, Data);
+        const response = await axios.post(`${BaseUrl}/register?user_id=${user_id}`, Data);
         return response.data;
       } catch (error) {
         return rejectWithValue(error.response.data);
@@ -182,7 +241,7 @@ export const fetchProperties = createAsyncThunk(
         return Data;
       }
 
-      const url = `https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property_ind?prop_id=${propertyId}`;
+      const url = `${BaseUrl}/property_ind?prop_id=${propertyId}`;
       {
         console.log("server is getting called");
       }
@@ -206,7 +265,7 @@ export const fetchRecentTransactions = createAsyncThunk(
     try {
   
       const response = await axios.get(
-        "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/home"
+        `${BaseUrl}/home`
       );
       const transactions = response.data.property.buy_properties.concat(
         response.data.property.sell_properties
@@ -235,7 +294,7 @@ export const SearchResults = createAsyncThunk(
       };
 
       const response = await axios.post(
-        "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/search",
+        `${BaseUrl}/search`,
         Data,
         {
           headers: {
@@ -291,7 +350,7 @@ export const LocalResults = createAsyncThunk(
       };
 
       const response = await axios.post(
-        "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/search",
+        `${BaseUrl}/search`,
         Data,
         {
           headers: {
@@ -328,7 +387,7 @@ export const addProperty = createAsyncThunk(
       const data = { ...formData, cont_user_id };
 
       const response = await axios.post(
-        "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property",
+        `${BaseUrl}/property`,
         data
       );
       return response.data;
@@ -350,7 +409,7 @@ export const updateProperty = createAsyncThunk(
       console.log("update data",data);
 
       const response = await axios.put(
-        "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/property",
+        `${BaseUrl}/property`,
         data
       );
       return response.data;
@@ -364,7 +423,7 @@ export const AddImage = createAsyncThunk(
   "property/AddImage",
   async (formData) => {
     const response = await axios.post(
-      "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/image",
+      `${BaseUrl}/image`,
       formData,
       {
         headers: {

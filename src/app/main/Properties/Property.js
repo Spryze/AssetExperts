@@ -79,7 +79,7 @@ const propertyData = propertiesData?.data?.property;
   return (
     <Container
       maxWidth="lg"
-      sx={{ background: "#F5F5F5", position: "relative" }}
+      sx={{  position: "relative" }}
     >
        {user.role == "admin" && (<Typography className="TextNone" component={Link} to="/manage/properties" variant="contained" color="primary">
       <ArrowBackIosIcon/>Back to Search  </Typography>)}

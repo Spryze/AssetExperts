@@ -318,7 +318,7 @@ export const setUser = createAsyncThunk('user/setUser', async () => {
               email:userData.profile.email,
               phone_num_1:userData.profile.phone_num_1,
               phone_num_2:userData.profile.phone_num_2,
-              properties:userData.profile.properties,
+              properties:userData.properties,
               profession:userData.profile.profession,
               requirements:userData.profile.requirements,
               

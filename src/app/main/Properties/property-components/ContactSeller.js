@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import { Typography, Button } from "@mui/material";
 import { useSelector } from "react-redux";
@@ -36,7 +37,7 @@ const ContactSeller = () => {
   };
 
   return (
-    <Box sx={{ padding: "30px", boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)", backgroundColor: "white", borderRadius: "5px" }}>
+    <Paper sx={{ padding: "30px", boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",  borderRadius: "5px" }}>
       <Typography className="heading-text">Request a call</Typography>
       <hr />
       <Box sx={{ display: "flex" }}>
@@ -91,7 +92,7 @@ const ContactSeller = () => {
           Submit
         </Button>
       </Box>
-    </Box>
+    </Paper>
   );
 };
 

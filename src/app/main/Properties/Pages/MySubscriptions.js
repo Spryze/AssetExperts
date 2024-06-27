@@ -9,13 +9,17 @@ import {
   ListItemText,
   Checkbox,
   IconButton,
-  Divider
+  Divider,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import SubmitIntrests from "../property-components/SubmitIntrests";
 import { useSelector, useDispatch } from "react-redux";
-import { AddIntrests, GetMyIntrests, selectmySubscription } from "../PropertySlice1";
+import {
+  AddIntrests,
+  GetMyIntrests,
+  selectmySubscription,
+} from "../PropertySlice1";
 import AreaJson from "../../../../assets/Default/area/result.json";
 
 const MySubscriptions = () => {
@@ -39,34 +43,40 @@ const MySubscriptions = () => {
     });
 
     const stateDistrictMap = {};
-    Object.entries(AreaJson.district_status).forEach(([stateName, districts]) => {
-      const stateDistricts = [];
-      Object.keys(districts).forEach((districtName) => {
-        if (districtAreasMap[districtName]) {
-          const areas = districtAreasMap[districtName];
-          if (areas.includes("All Areas")) {
-            const allAreas = AreaJson.areas[districtName].map(area => area.area);
-            stateDistricts.push({
-              name: districtName,
-              areas: allAreas,
-            });
-          } else {
-            stateDistricts.push({
-              name: districtName,
-              areas,
-            });
+    Object.entries(AreaJson.district_status).forEach(
+      ([stateName, districts]) => {
+        const stateDistricts = [];
+        Object.keys(districts).forEach((districtName) => {
+          if (districtAreasMap[districtName]) {
+            const areas = districtAreasMap[districtName];
+            if (areas.includes("All Areas")) {
+              const allAreas = AreaJson.areas[districtName].map(
+                (area) => area.area
+              );
+              stateDistricts.push({
+                name: districtName,
+                areas: allAreas,
+              });
+            } else {
+              stateDistricts.push({
+                name: districtName,
+                areas,
+              });
+            }
           }
+        });
+        if (stateDistricts.length > 0) {
+          stateDistrictMap[stateName] = stateDistricts;
         }
-      });
-      if (stateDistricts.length > 0) {
-        stateDistrictMap[stateName] = stateDistricts;
       }
-    });
+    );
 
-    setStateData(Object.entries(stateDistrictMap).map(([stateName, districts]) => ({
-      stateName,
-      districts,
-    })));
+    setStateData(
+      Object.entries(stateDistrictMap).map(([stateName, districts]) => ({
+        stateName,
+        districts,
+      }))
+    );
   };
 
   useEffect(() => {
@@ -81,7 +91,7 @@ const MySubscriptions = () => {
 
   useEffect(() => {
     if (Subscription) {
-      console.log(Subscription)
+      console.log(Subscription);
       processInterests(Subscription);
     }
   }, [Subscription]);
@@ -95,7 +105,7 @@ const MySubscriptions = () => {
     setEditingDistrictData({ ...districtData });
     setRemovedItems([]);
     setAddedItems([]);
-    setPreviousAreas([...districtData.areas]); 
+    setPreviousAreas([...districtData.areas]);
   };
 
   const handleAddItem = (item) => {
@@ -104,7 +114,9 @@ const MySubscriptions = () => {
         ...editingDistrictData,
         areas: ["All Areas"],
       });
-      setRemovedItems(editingDistrictData.areas.filter((i) => i !== "All Areas"));
+      setRemovedItems(
+        editingDistrictData.areas.filter((i) => i !== "All Areas")
+      );
       setAddedItems(["All Areas"]);
     } else {
       const updatedItems = [...editingDistrictData.areas, item];
@@ -154,18 +166,21 @@ const MySubscriptions = () => {
 
   const mapAreasToIds = (areas, districtName) => {
     const areaMap = AreaJson.areas[districtName];
-    return areas.map(areaName => {
-      const area = areaMap.find(area => area.area === areaName);
-      return area ? area.id : null;
-    }).filter(id => id !== null);
+    return areas
+      .map((areaName) => {
+        const area = areaMap.find((area) => area.area === areaName);
+        return area ? area.id : null;
+      })
+      .filter((id) => id !== null);
   };
 
   const handleSaveChanges = () => {
     const updatedStateData = [...stateData];
-    const districtIndex = updatedStateData[editingStateIndex].districts.findIndex(
-      (district) => district.name === editingDistrictName
-    );
-    updatedStateData[editingStateIndex].districts[districtIndex] = editingDistrictData;
+    const districtIndex = updatedStateData[
+      editingStateIndex
+    ].districts.findIndex((district) => district.name === editingDistrictName);
+    updatedStateData[editingStateIndex].districts[districtIndex] =
+      editingDistrictData;
     setStateData(updatedStateData);
     setEditingStateIndex(null);
     setEditingDistrictName(null);
@@ -218,24 +233,39 @@ const MySubscriptions = () => {
       <h1 style={{ margin: "10px" }}>My Subscriptions</h1>
       <hr />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <SubmitIntrests />
+        
       </div>
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+      <div
+        style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+      >
+        <SubmitIntrests />
         {stateData.map((stateObj, stateIndex) => (
           <div key={stateIndex} style={{ margin: "20px", width: "100%" }}>
-            <Typography variant="h6" component="div" style={{ marginBottom: "10px" }}>
-              {stateObj.stateName}
-            </Typography>
             <hr />
             <div style={{ display: "flex" }}>
               {stateObj.districts.map((districtObj, districtIndex) => (
                 <Card
                   key={districtIndex}
-                  style={{ margin: "10px", minWidth: "300px", position: "relative" }}
+                  style={{
+                    margin: "10px",
+                    minWidth: "300px",
+                    position: "relative",
+                  }}
                 >
                   <CardContent>
+                  <Typography
+                        variant="h6"
+                        component="div"
+                        // style={{ marginBottom: "10px" }}
+                      >
+                        {stateObj.stateName}
+                      </Typography>
                     <div style={{ display: "flex" }}>
-                      <Typography sx={{ fontSize: "20px", fontWeight: "600" }} component="div">
+                      
+                      <Typography
+                        sx={{ fontSize: "20px", fontWeight: "600" }}
+                        component="div"
+                      >
                         {districtObj.name}
                       </Typography>
                       {editingStateIndex === stateIndex &&
@@ -248,11 +278,16 @@ const MySubscriptions = () => {
                             <CloseIcon />
                           </IconButton>
                         )}
-                      {!(editingStateIndex === stateIndex && editingDistrictName === districtObj.name) && (
+                      {!(
+                        editingStateIndex === stateIndex &&
+                        editingDistrictName === districtObj.name
+                      ) && (
                         <IconButton
-                          sx={{ position: "absolute", top: 0, right: 0 }}
+                          sx={{ position: "absolute", top: 40, right: 0 }}
                           aria-label="edit"
-                          onClick={() => handleEditClick(stateIndex, districtObj.name)}
+                          onClick={() =>
+                            handleEditClick(stateIndex, districtObj.name)
+                          }
                         >
                           <EditIcon />
                         </IconButton>
@@ -261,18 +296,21 @@ const MySubscriptions = () => {
                     <hr />
                     <List>
                       {(() => {
-                        const items = editingStateIndex === stateIndex &&
+                        const items =
+                          editingStateIndex === stateIndex &&
                           editingDistrictName === districtObj.name
-                          ? getAllAreasForDistrict(districtObj.name)
-                          : districtObj.areas;
-                        const selectedItems = items.filter(item =>
+                            ? getAllAreasForDistrict(districtObj.name)
+                            : districtObj.areas;
+                        const selectedItems = items.filter((item) =>
                           editingDistrictData?.areas.includes(item)
                         );
-                        const unselectedItems = items.filter(item =>
-                          !editingDistrictData?.areas.includes(item)
+                        const unselectedItems = items.filter(
+                          (item) => !editingDistrictData?.areas.includes(item)
                         );
-                        const sortedSelectedItems = sortItemsAlphabetically(selectedItems);
-                        const sortedUnselectedItems = sortItemsAlphabetically(unselectedItems);
+                        const sortedSelectedItems =
+                          sortItemsAlphabetically(selectedItems);
+                        const sortedUnselectedItems =
+                          sortItemsAlphabetically(unselectedItems);
                         return (
                           <>
                             {sortedSelectedItems.map((item, idx) => (
@@ -282,16 +320,21 @@ const MySubscriptions = () => {
                                   editingDistrictName === districtObj.name && (
                                     <Checkbox
                                       edge="end"
-                                      checked={editingDistrictData.areas.includes(item)}
+                                      checked={editingDistrictData.areas.includes(
+                                        item
+                                      )}
                                       onChange={() => handleItemClick(item)}
-                                      disabled={editingDistrictData.areas.includes("All Areas") && item !== "All Areas"}
+                                      disabled={
+                                        editingDistrictData.areas.includes(
+                                          "All Areas"
+                                        ) && item !== "All Areas"
+                                      }
                                     />
                                   )}
                               </ListItem>
                             ))}
-                            {sortedSelectedItems.length > 0 && sortedUnselectedItems.length > 0 && (
-                              <Divider />
-                            )}
+                            {sortedSelectedItems.length > 0 &&
+                              sortedUnselectedItems.length > 0 && <Divider />}
                             {sortedUnselectedItems.map((item, idx) => (
                               <ListItem key={idx}>
                                 <ListItemText primary={item} />
@@ -299,9 +342,15 @@ const MySubscriptions = () => {
                                   editingDistrictName === districtObj.name && (
                                     <Checkbox
                                       edge="end"
-                                      checked={editingDistrictData.areas.includes(item)}
+                                      checked={editingDistrictData.areas.includes(
+                                        item
+                                      )}
                                       onChange={() => handleItemClick(item)}
-                                      disabled={editingDistrictData.areas.includes("All Areas") && item !== "All Areas"}
+                                      disabled={
+                                        editingDistrictData.areas.includes(
+                                          "All Areas"
+                                        ) && item !== "All Areas"
+                                      }
                                     />
                                   )}
                               </ListItem>
@@ -314,7 +363,11 @@ const MySubscriptions = () => {
                       editingDistrictName === districtObj.name && (
                         <div style={{ display: "flex", justifyContent: "end" }}>
                           <Button
-                            sx={{ borderRadius: "7px", width: "70px", right: "0px" }}
+                            sx={{
+                              borderRadius: "7px",
+                              width: "70px",
+                              right: "0px",
+                            }}
                             variant="contained"
                             color="primary"
                             onClick={handleSaveChanges}

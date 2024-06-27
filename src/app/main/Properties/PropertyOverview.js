@@ -41,7 +41,7 @@ const PropertyOverview = () => {
     className="card"
     id="overview"
     sx={{
-      background: "white",
+      // background: "white",
       borderRadius: "10px",
       // margin: "20px 0px",
       padding: "30px",

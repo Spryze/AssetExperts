@@ -746,7 +746,9 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Button type="submit" variant="contained" color="primary" fullWidth>
+          <Button type="submit" variant="contained" sx={{backgroundColor:"#4ea944",color:'white','&:hover': {
+    backgroundColor: "#0d7e00",
+  }}} fullWidth>
             Submit
           </Button>
         </Grid>

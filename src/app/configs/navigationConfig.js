@@ -32,7 +32,7 @@ const navigationConfig = [
     translate: 'My-Properties',
     auth: authRoles.staff ||authRoles.user ||authRoles.admin,
     type: 'item',
-    icon: 'heroicons-outline:template',
+    icon: 'heroicons-outline:office-building',
     url: 'MyProperties',
   },
   {
@@ -41,7 +41,7 @@ const navigationConfig = [
     translate: 'My-Subscriptions',
     auth: authRoles.staff ||authRoles.user ||authRoles.admin,
     type: 'item',
-    icon: 'heroicons-outline:template',
+    icon: 'heroicons-outline:rss',
     url: 'mySubscriptions',
   },
   {
@@ -50,7 +50,7 @@ const navigationConfig = [
     translate: 'Manage',
     auth: authRoles.staff,
     type: 'collapse',
-    icon: 'heroicons-outline:exclamation',
+    icon: 'heroicons-outline:support',
     children: [
       {
         id: 'manage.users',

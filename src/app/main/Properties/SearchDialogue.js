@@ -408,7 +408,9 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               // >
               //   Submit
               // </Button>
-              <Button onClick={handleSubmit} sx={{background:"orange",padding:"10px 20px",borderRadius:"7px"}}>Submit</Button>
+              <Button onClick={handleSubmit} sx={{borderRadius:"8px",padding:"5px 20px",backgroundColor:"#4ea944",color:'white','&:hover': {
+                backgroundColor: "#0d7e00",
+              }}}>Submit</Button>
             )}
           </Box>
         </DialogActions>

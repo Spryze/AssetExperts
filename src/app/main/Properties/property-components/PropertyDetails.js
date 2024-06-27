@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid";
 import ShowMore from "./ShowMore";
 import PropertyCarousel from "./PropertyCarousel";
 import propertiesdata from 'src/Properties.json'
+import { Paper } from "@mui/material";
 
 
 const PropertyDetails = () => {
@@ -42,7 +43,7 @@ const PropertyDetails = () => {
     <Container>
       <PropertyCarousel/>
       <Grid>
-        <Box sx={{ marginTop: "40px" }}>
+        <Paper sx={{ marginTop: "40px" }}>
           {/* Property details */}
           <Grid container sx={{ margin: "20px" }}>
             <Grid item xs={12} md={6} lg={6} sm={6}>
@@ -138,7 +139,7 @@ const PropertyDetails = () => {
               ))}
             </Grid>
           </Box>
-        </Box>
+        </Paper>
       </Grid>
     </Container>
   );

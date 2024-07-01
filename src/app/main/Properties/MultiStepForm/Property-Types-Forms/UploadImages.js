@@ -105,7 +105,7 @@ const UploadImages = ({ responseData }) => {
       <Button
         sx={{
           padding: '10px 40px',
-          backgroundColor: '#FF6600',
+          // backgroundColor: '#FF6600',
           borderRadius: '2px',
           margin: '20px 10px 0',
         }}

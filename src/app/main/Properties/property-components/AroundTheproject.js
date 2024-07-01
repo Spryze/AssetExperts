@@ -109,7 +109,7 @@
           <Grid item sx={{ backgroundColor: 'white', padding: '25px 0px' }}>
             {!isFirstIndexVisible && (
               <Button
-                color="primary"
+                // color="primary"
                 onClick={handleScrollLeft}
                 style={{ borderRadius: '2px' }}
               >
@@ -120,7 +120,7 @@
           <Grid item sx={{ backgroundColor: 'white', padding: '25px 0px' }}>
             {!isLastIndexVisible && Properties?.AroundProject?.length > 0 && (
               <Button
-                color="primary"
+                // color="primary"
                 onClick={handleScrollRight}
                 style={{ borderRadius: '2px' }}
               >

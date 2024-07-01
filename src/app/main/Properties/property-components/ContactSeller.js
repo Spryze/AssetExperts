@@ -87,7 +87,7 @@ const ContactSeller = () => {
         <Button
           type="submit"
           variant="contained"
-          sx={{ width: "100%", borderRadius: "5px", backgroundColor: "#FF6600", marginTop: "10px", color: "white", fontWeight: "bold", "&:hover": { backgroundColor: "#FF6600", color: "black" } }}
+          // sx={{ width: "100%", borderRadius: "5px", backgroundColor: "#FF6600", marginTop: "10px", color: "white", fontWeight: "bold", "&:hover": { backgroundColor: "#FF6600", color: "black" } }}
         >
           Submit
         </Button>

@@ -9,7 +9,8 @@ import {
   ListItemText,
   Checkbox,
   IconButton,
-  Divider,
+  Container,
+  Grid
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
@@ -31,6 +32,7 @@ const MySubscriptions = () => {
   const [removedItems, setRemovedItems] = useState([]);
   const [addedItems, setAddedItems] = useState([]);
   const [previousAreas, setPreviousAreas] = useState([]);
+  const [seeMore, setSeeMore] = useState({});
   const dispatch = useDispatch();
 
   const processInterests = (interestedAreas) => {
@@ -228,48 +230,79 @@ const MySubscriptions = () => {
     return [...items].sort((a, b) => a.localeCompare(b));
   };
 
+  const handleToggleSeeMore = (districtIndex) => {
+    setSeeMore((prev) => ({
+      ...prev,
+      [districtIndex]: !prev[districtIndex],
+    }));
+  };
+
   return (
-    <>
+    <Container>
       <h1 style={{ margin: "10px" }}>My Subscriptions</h1>
       <hr />
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        
-      </div>
-      <div
-        style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
-      >
-        <SubmitIntrests />
+      {/* <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+      </div> */}
+      <Grid container spacing={1}>
+      <Grid item md={4} sm = {12} sx={{marginTop:"30px"}} >
+        <SubmitIntrests  />
+        </Grid>
+        <Grid item md={8} sm = {12}>
         {stateData.map((stateObj, stateIndex) => (
           <div key={stateIndex} style={{ margin: "20px", width: "100%" }}>
             <hr />
-            <div style={{ display: "flex" }}>
-              {stateObj.districts.map((districtObj, districtIndex) => (
-                <Card
-                  key={districtIndex}
-                  style={{
-                    margin: "10px",
-                    minWidth: "300px",
-                    position: "relative",
-                  }}
-                >
-                  <CardContent>
-                  <Typography
+            <div style={{ display: "flex",flexWrap:"wrap" }}>
+              {stateObj.districts.map((districtObj, districtIndex) => {
+                const isEditing =
+                  editingStateIndex === stateIndex &&
+                  editingDistrictName === districtObj.name;
+                const items = isEditing
+                  ? getAllAreasForDistrict(districtObj.name)
+                  : districtObj.areas;
+                const selectedItems = items.filter((item) =>
+                  editingDistrictData?.areas.includes(item)
+                );
+                const unselectedItems = items.filter(
+                  (item) => !editingDistrictData?.areas.includes(item)
+                );
+                const sortedSelectedItems =
+                  sortItemsAlphabetically(selectedItems);
+                const sortedUnselectedItems =
+                  sortItemsAlphabetically(unselectedItems);
+                const allItems = [
+                  ...sortedSelectedItems,
+                  ...sortedUnselectedItems,
+                ];
+                const itemsToShow = seeMore[districtIndex] || isEditing
+                  ? allItems
+                  : allItems.slice(0, 5);
+
+                return (
+                  <Card
+                    key={districtIndex}
+                    style={{
+                      margin: "10px",
+                      minWidth: "300px",
+                      position: "relative",
+                    }}
+                  >
+                    <CardContent>
+                      <Typography
                         variant="h6"
                         component="div"
                         // style={{ marginBottom: "10px" }}
                       >
                         {stateObj.stateName}
                       </Typography>
-                    <div style={{ display: "flex" }}>
-                      
-                      <Typography
-                        sx={{ fontSize: "20px", fontWeight: "600" }}
-                        component="div"
-                      >
-                        {districtObj.name}
-                      </Typography>
-                      {editingStateIndex === stateIndex &&
-                        editingDistrictName === districtObj.name && (
+                      <div style={{ display: "flex" }}>
+                        <Typography
+                          sx={{ fontSize: "20px", fontWeight: "600" }}
+                          component="div"
+                        >
+                          {districtObj.name}
+                        </Typography>
+                        {isEditing ? (
                           <IconButton
                             sx={{ position: "absolute", top: 0, right: 0 }}
                             aria-label="cancel"
@@ -277,99 +310,57 @@ const MySubscriptions = () => {
                           >
                             <CloseIcon />
                           </IconButton>
+                        ) : (
+                          <IconButton
+                            sx={{ position: "absolute", top: 40, right: 0 }}
+                            aria-label="edit"
+                            onClick={() =>
+                              handleEditClick(stateIndex, districtObj.name)
+                            }
+                          >
+                            <EditIcon />
+                          </IconButton>
                         )}
-                      {!(
-                        editingStateIndex === stateIndex &&
-                        editingDistrictName === districtObj.name
-                      ) && (
-                        <IconButton
-                          sx={{ position: "absolute", top: 40, right: 0 }}
-                          aria-label="edit"
-                          onClick={() =>
-                            handleEditClick(stateIndex, districtObj.name)
-                          }
+                      </div>
+                      <hr />
+                      <List>
+                        {itemsToShow.map((item, idx) => (
+                          <ListItem key={idx} sx={{padding:"0px"}}>
+                            <ListItemText primary={item} />
+                            {isEditing && (
+                              <Checkbox
+                                edge="end"
+                                checked={editingDistrictData.areas.includes(
+                                  item
+                                )}
+                                onChange={() => handleItemClick(item)}
+                                disabled={
+                                  editingDistrictData.areas.includes(
+                                    "All Areas"
+                                  ) && item !== "All Areas"
+                                }
+                              />
+                            )}
+                          </ListItem>
+                        ))}
+                      </List>
+                      {!isEditing && allItems.length > 10 && (
+                        <Button
+                          onClick={() => handleToggleSeeMore(districtIndex)}
                         >
-                          <EditIcon />
-                        </IconButton>
+                          {seeMore[districtIndex] ? "See Less" : "See More"}
+                        </Button>
                       )}
-                    </div>
-                    <hr />
-                    <List>
-                      {(() => {
-                        const items =
-                          editingStateIndex === stateIndex &&
-                          editingDistrictName === districtObj.name
-                            ? getAllAreasForDistrict(districtObj.name)
-                            : districtObj.areas;
-                        const selectedItems = items.filter((item) =>
-                          editingDistrictData?.areas.includes(item)
-                        );
-                        const unselectedItems = items.filter(
-                          (item) => !editingDistrictData?.areas.includes(item)
-                        );
-                        const sortedSelectedItems =
-                          sortItemsAlphabetically(selectedItems);
-                        const sortedUnselectedItems =
-                          sortItemsAlphabetically(unselectedItems);
-                        return (
-                          <>
-                            {sortedSelectedItems.map((item, idx) => (
-                              <ListItem key={idx}>
-                                <ListItemText primary={item} />
-                                {editingStateIndex === stateIndex &&
-                                  editingDistrictName === districtObj.name && (
-                                    <Checkbox
-                                      edge="end"
-                                      checked={editingDistrictData.areas.includes(
-                                        item
-                                      )}
-                                      onChange={() => handleItemClick(item)}
-                                      disabled={
-                                        editingDistrictData.areas.includes(
-                                          "All Areas"
-                                        ) && item !== "All Areas"
-                                      }
-                                    />
-                                  )}
-                              </ListItem>
-                            ))}
-                            {sortedSelectedItems.length > 0 &&
-                              sortedUnselectedItems.length > 0 && <Divider />}
-                            {sortedUnselectedItems.map((item, idx) => (
-                              <ListItem key={idx}>
-                                <ListItemText primary={item} />
-                                {editingStateIndex === stateIndex &&
-                                  editingDistrictName === districtObj.name && (
-                                    <Checkbox
-                                      edge="end"
-                                      checked={editingDistrictData.areas.includes(
-                                        item
-                                      )}
-                                      onChange={() => handleItemClick(item)}
-                                      disabled={
-                                        editingDistrictData.areas.includes(
-                                          "All Areas"
-                                        ) && item !== "All Areas"
-                                      }
-                                    />
-                                  )}
-                              </ListItem>
-                            ))}
-                          </>
-                        );
-                      })()}
-                    </List>
-                    {editingStateIndex === stateIndex &&
-                      editingDistrictName === districtObj.name && (
+                      {isEditing && (
                         <div style={{ display: "flex", justifyContent: "end" }}>
                           <Button
                             sx={{
                               borderRadius: "7px",
                               width: "70px",
-                              right: "0px",
+                              left: "0px",
                             }}
                             variant="contained"
-                            color="primary"
+                            // color="primary"
                             onClick={handleSaveChanges}
                             fullWidth
                           >
@@ -377,14 +368,17 @@ const MySubscriptions = () => {
                           </Button>
                         </div>
                       )}
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         ))}
-      </div>
-    </>
+         </Grid>
+        </Grid>
+      
+    </Container>
   );
 };
 

@@ -81,5 +81,11 @@
 }
 
 .SpanTextColor{
-  color: #4ea944;
+  color: #1f6fe8;
+}
+
+button{
+  background-color: #00204A !important;
+  color: white !important;
+
 }

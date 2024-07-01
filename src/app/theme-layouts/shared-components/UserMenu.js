@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import RabitSvgIcon from '@rabit/core/RabitSvgIcon';
 import { selectUser } from 'app/store/userSlice';
+import { Paper } from '@mui/material';
 
 function UserMenu(props) {
   const user = useSelector(selectUser);
@@ -27,16 +28,23 @@ function UserMenu(props) {
 
   return (
     <>
-      <Button
+      <Paper
         className="min-h-40 min-w-40 px-0 md:px-16 py-0 md:py-6"
         onClick={userMenuClick}
         color="inherit"
+        sx={{display:"flex",
+          boxShadow:"none",
+          cursor:"pointer",
+          color:"white",
+          backgroundColor:"transparent"
+        }}
       >
+      
         <div className="hidden md:flex flex-col mx-4 items-end">
           <Typography component="span" className="font-semibold flex">
             {user?.data?.displayName}
           </Typography>
-          <Typography className="text-11 font-medium capitalize" color="text.secondary">
+          <Typography className="text-11 font-medium capitalize" color="white">
             {user?.role?.toString()}
             {(!user?.role || (Array.isArray(user?.role) && user?.role?.length === 0)) && 'Guest'}
           </Typography>
@@ -47,7 +55,7 @@ function UserMenu(props) {
         ) : (
           <Avatar className="md:mx-4">{user?.data?.displayName}</Avatar>
         )}
-      </Button>
+      </Paper>
 
       <Popover
         open={Boolean(userMenu)}

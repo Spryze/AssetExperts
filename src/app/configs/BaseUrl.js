@@ -1,3 +1,3 @@
-const BaseUrl = "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev";
+const BaseUrl = "https://aa27744c-8ef2-49c6-a5ac-b6385a96c669-00-2x83qwts329l5.pike.replit.dev";
 
 export default BaseUrl;

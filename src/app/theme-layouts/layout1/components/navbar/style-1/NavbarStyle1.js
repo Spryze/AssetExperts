@@ -44,6 +44,7 @@ function NavbarStyle1(props) {
   const dispatch = useDispatch();
   const config = useSelector(selectRabitCurrentLayoutConfig);
   const navbar = useSelector(selectRabitNavbar);
+  console.log("navbar",navbar)
 
   return (
     <>

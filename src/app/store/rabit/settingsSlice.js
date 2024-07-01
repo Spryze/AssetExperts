@@ -167,8 +167,8 @@ function changeThemeMode(theme, mode) {
         mode: 'light',
         divider: '#e2e8f0',
         background: {
-          paper: '#f7fff1',
-          default: '#E1F0DA',
+          paper: '#ffffff',
+          default: '#ffffff',
           Button:'#99BC85'
         },
         text: lightPaletteText,

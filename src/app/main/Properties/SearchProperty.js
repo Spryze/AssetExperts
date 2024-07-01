@@ -177,12 +177,12 @@ const SearchProperty = () => {
         />
         <Button
           type="submit"
-          sx={{
-            padding: "10px 40px",
-            backgroundColor: "#FF6600",
-            borderRadius: "2px",
-            margin: "20px 10px 0",
-          }}
+          // sx={{
+          //   padding: "10px 40px",
+          //   backgroundColor: "#FF6600",
+          //   borderRadius: "2px",
+          //   margin: "20px 10px 0",
+          // }}
         >
           Search Properties
         </Button>
@@ -258,11 +258,11 @@ const SearchProperty = () => {
                       ) && (
                         <Button
                           onClick={(e) => handleShowMore(e)}
-                          sx={{
-                            "&:hover": {
-                              backgroundColor: "transparent",
-                            },
-                          }}
+                          // sx={{
+                          //   "&:hover": {
+                          //     backgroundColor: "transparent",
+                          //   },
+                          // }}
                         >
                           {showFullDetails ? (
                             <KeyboardArrowUpIcon sx={{ padding: "0" }} />

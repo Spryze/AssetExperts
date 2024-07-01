@@ -12,6 +12,7 @@ import {
   Select,
   MenuItem,
   Checkbox,
+  Card,
   ListItemText,
   OutlinedInput,
   Divider,
@@ -178,13 +179,20 @@ export default function FormDialog() {
 
   return (
     <React.Fragment>
-      <Button
+      <Card
         variant="outlined"
         onClick={handleClickOpen}
-        sx={{ width: "200px", borderRadius: "7px", margin: "10px" }}
+        sx={{
+          minWidth: "300px",
+          minHeight:"300px",
+          display:"flex",
+          justifyContent:"center",
+          alignItems:"center",
+          cursor:"pointer"
+          }}
       >
         <AddIcon /> Add Your Interests
-      </Button>
+      </Card>
 
       <Dialog
         open={open}

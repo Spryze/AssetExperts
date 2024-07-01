@@ -72,7 +72,7 @@ const UserProfileData = () => {
     { id: 'property_id', label: 'Property ID', minWidth: 100, align: 'center' , render: (item) => (
       <Button
         component={Link}
-        style={{ color: "blue", textDecoration: "underline", background: "none" }}
+        // style={{ color: "blue", textDecoration: "underline", background: "none" }}
         to={`/property/${item.property_id}`}
         rel="noopener noreferrer"
         onClick={() => handlePropertyClick(item.property_id)}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" viewBox="0 0 1164.771 874.557">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.59" y1="0.437" x2="0.253" y2="0.055" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#47b2b7"/>
+      <stop offset="1" stop-color="#86ccd0"/>
+    </linearGradient>
+  </defs>
+  <path id="Top_Page_Shape" data-name="Top Page Shape" d="M1071.968,593.934,0,874.557V0H1164.771V473.711a124.274,124.274,0,0,1-92.8,120.224Z" fill="url(#linear-gradient)"/>
+</svg>

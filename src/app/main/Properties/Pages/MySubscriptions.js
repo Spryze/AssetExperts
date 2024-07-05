@@ -770,6 +770,7 @@ const MySubscriptions = (params) => {
   const [removedItems, setRemovedItems] = useState([]);
   const [addedItems, setAddedItems] = useState([]);
   const [previousAreas, setPreviousAreas] = useState([]);
+  const [seeMore, setSeeMore] = useState({});
   const dispatch = useDispatch();
   const isadmin = true;
 
@@ -963,6 +964,13 @@ const MySubscriptions = (params) => {
     return [...items].sort((a, b) => a.localeCompare(b));
   };
 
+  const handleToggleSeeMore = (districtIndex) => {
+    setSeeMore((prev) => ({
+      ...prev,
+      [districtIndex]: !prev[districtIndex],
+    }));
+  };
+
   return (
     
     <>
@@ -1071,7 +1079,7 @@ const MySubscriptions = (params) => {
                           <Button
                             sx={{ borderRadius: "7px", width: "70px", right: "0px" }}
                             variant="contained"
-                            color="primary"
+                            // color="primary"
                             onClick={handleSaveChanges}
                             fullWidth
                           >
@@ -1079,14 +1087,17 @@ const MySubscriptions = (params) => {
                           </Button>
                         </div>
                       )}
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         ))}
-      </div>
-    </>
+         </Grid>
+        </Grid>
+      
+    </Container>
   );
 };
 

@@ -26,17 +26,24 @@ function ToolbarLayout1(props) {
         className={clsx('flex relative z-20 shadow-md', props.className)}
         color="default"
         sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'light'
-              ? toolbarTheme.palette.background.paper
-              : toolbarTheme.palette.background.default,
+          backgroundColor: "#00204A",
+          // (theme) =>
+          //   theme.palette.mode === 'light'
+          //     ? toolbarTheme.palette.background.paper
+          //     : toolbarTheme.palette.background.default,
         }}
         position="static"
       >
-        <Toolbar className="p-0 min-h-48 md:min-h-64">
-          <div className="flex flex-1 px-16">
+         
+        <Toolbar className="p-0 min-h-48 md:min-h-64" sx={{display:"flex",justifyContent:"space-between"}}>
+        
+          <div 
+          // className="flex flex-1 px-16"
+          >
+          
             {config.navbar.display && config.navbar.position === 'left' && (
               <>
+             
                 <Hidden lgDown>
                   {(config.navbar.style === 'style-3' ||
                     config.navbar.style === 'style-3-dense') && (
@@ -54,11 +61,13 @@ function ToolbarLayout1(props) {
               </>
             )}
           </div>
-
+          <img src='assets/logos/logo49.PNG' style={{height:"70px"}}/>
+          
           <div className="flex items-center px-8 h-full overflow-x-auto">
             {/* <LanguageSwitcher /> */}
             {/*
             <NotificationPanelToggleButton /> */}
+            
 
             <UserMenu />
           </div>

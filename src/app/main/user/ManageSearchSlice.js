@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
+import BaseUrl from 'app/configs/BaseUrl';
 
 
 
@@ -14,7 +14,7 @@ export const fetchDataWithPut = createAsyncThunk('manageSearch/fetchDataWithPut'
    
     const jsonData = JSON.stringify(formData);
     
-    const response = await axios.put('https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/search', jsonData, {
+    const response = await axios.put(`${BaseUrl}/search`, jsonData, {
       headers: {
         'Content-Type': 'application/json' 
       }
@@ -36,7 +36,7 @@ export const getUserProfileOnSearch = createAsyncThunk(
       let response;
       if (updatedData) {
         response = await axios.put(
-          "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user",
+          `${BaseUrl}/user`,
           updatedData,
           {
             headers: {
@@ -47,7 +47,7 @@ export const getUserProfileOnSearch = createAsyncThunk(
         );
       } else {
         response = await axios.get(
-          "https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user",
+          `${BaseUrl}/user`,
           {
             headers: {
               'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ export const updateUserProfile = createAsyncThunk(
   async (updatedData, { fulfillWithValue, rejectWithValue }) => {
     try {
       const response = await axios.put(
-        "https://your-api-url/user/update",
+        `${BaseUrl}/update`,
         updatedData,
         {
           headers: {
@@ -123,32 +123,10 @@ export const updateUserProfile = createAsyncThunk(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const initialState = {
   users: [],
   user: {},
+  UsersIntrests :[],
   status: 'idle',
   error: null,
 };

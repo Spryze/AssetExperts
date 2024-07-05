@@ -24,6 +24,7 @@ import SearchDialogue from "../SearchDialogue";
 import DefaultImg from "src/assets/Default/DegaultImg.gif";
 import CircularProgress from "@mui/material/CircularProgress";
 import { differenceInDays, parseISO } from "date-fns";
+import CircularRotationCards from "../property-components/CircularRotationCards";
 
 const CurrencyFormatter = ({ value, currency }) => {
   const formattedValue = new Intl.NumberFormat("en-IN", {
@@ -223,7 +224,7 @@ const PropertyHome = () => {
       <Box
         sx={{
           background:
-            "linear-gradient(16deg, rgba(225,240,218,1) 0%, rgba(255,255,255,1) 100%);",
+            "linear-gradient(9deg, rgba(241,247,238,1) 0%, rgba(255,255,255,1) 100%)",
           // height: "60vh",
           width: "100%",
           maxWidth: "100%",
@@ -238,15 +239,17 @@ const PropertyHome = () => {
           <Grid
             item
             xs={12}
-            md={6}
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+            md={7}
+            // sx={{
+            //   display: "flex",
+            //   justifyContent: "center",
+            //   alignItems: "center",
+            // }}
           >
-            <Box sx={{ textAlign: "center" }}>
-              <h1 className="BigText">
+            <Box 
+            // sx={{ textAlign: "center" }}
+            >
+              {/* <h1 className="BigText">
                 Easy Way To Find a<br />
                 <span className="SpanTextColor"> Perfect Property </span>
               </h1>
@@ -259,11 +262,12 @@ const PropertyHome = () => {
               >
                 We provide a complete service for the sale, purchase of real
                 estate..
-              </p>
+              </p> */}
+              <CircularRotationCards/>
             </Box>
           </Grid>
-          <Grid item xs={12} md={6} sx={{ position: "relative" }}>
-            <img
+          <Grid item xs={12} md={5} sx={{ position: "relative" }}>
+            {/* <img
               className="HomeImage"
               src="/assets/images/properties/pexels-binyaminmellish-1396122-removebg-preview copy.png"
               alt="Girl in a jacket"
@@ -273,14 +277,20 @@ const PropertyHome = () => {
                 right: "-33px",
                 maxWidth: "100%",
               }}
-            />
-          </Grid>
-          <SearchDialogue
+            /> */}
+           <img src="/assets/cardimages/watsappmockup.png" height="530px" width="auto" />
+
+
+            <SearchDialogue
             FormData={HandleFormData}
             onSearch={DataNotFound}
             isAdminSearch={isAdminSearch}
           />
+            
+          </Grid>
+          
         </Grid>
+        
       </Box>
 
       {noDataFound && (
@@ -809,7 +819,7 @@ const PropertyHome = () => {
               borderRadius: "5px",
               height: "210px",
               width: "250px",
-              backgroundColor: "#d0f3cc",
+              backgroundColor: "#f8f8f8",
               boxShadow: "none",
               justifyContent: "center",
               alignItems: "center",
@@ -840,10 +850,10 @@ const PropertyHome = () => {
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: "#E1F0DA",
+                  backgroundColor: "white",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#4ea944",
+                    backgroundColor: "#00204A",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },
@@ -909,7 +919,7 @@ const PropertyHome = () => {
               borderRadius: "5px",
               height: "210px",
               width: "250px",
-              backgroundColor: "#d0f3cc",
+              backgroundColor: "#f8f8f8",
               boxShadow: "none",
               justifyContent: "center",
               alignItems: "center",
@@ -936,10 +946,10 @@ const PropertyHome = () => {
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: "#E1F0DA",
+                  backgroundColor: "#ffffff",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#4ea944",
+                    backgroundColor: "#00204A",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },
@@ -992,7 +1002,7 @@ const PropertyHome = () => {
               borderRadius: "5px",
               height: "210px",
               width: "250px",
-              backgroundColor: "#d0f3cc",
+              backgroundColor: "#f8f8f8",
               boxShadow: "none",
               justifyContent: "center",
               alignItems: "center",
@@ -1023,10 +1033,10 @@ const PropertyHome = () => {
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: "#E1F0DA",
+                  backgroundColor: "#ffffff",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#4ea944",
+                    backgroundColor: "#00204A",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },
@@ -1078,7 +1088,7 @@ const PropertyHome = () => {
               borderRadius: "5px",
               height: "210px",
               width: "250px",
-              backgroundColor: "#d0f3cc",
+              backgroundColor: "#f8f8f8",
               boxShadow: "none",
               justifyContent: "center",
               alignItems: "center",
@@ -1108,10 +1118,10 @@ const PropertyHome = () => {
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: "#E1F0DA",
+                  backgroundColor: "#ffffff",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#4ea944",
+                    backgroundColor: "#00204A",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },
@@ -1302,7 +1312,7 @@ const PropertyHome = () => {
                   fontSize: "2.5rem",
                 }}
               >
-                Recent <span style={{ color: "#4ea944",}}> Properties</span>
+                Recent <span className="SpanTextColor"> Properties</span>
               </Typography>
             </div>
             <div
@@ -1322,7 +1332,7 @@ const PropertyHome = () => {
                       flex: "0 0 auto",
                       cursor: "pointer",
                       height: "auto",
-                      width: "300px",
+                      width: "320px",
                       position: "relative",
                       padding: "0px",
                       borderRadius: "5px",
@@ -1381,27 +1391,45 @@ const PropertyHome = () => {
                             justifyContent: "right",
                             position: "absolute",
                             right: "0",
-                            top: "155px",
+                            top: "159px",
                           }}
                         >
-                          <Button
+                          <Paper
+                          sx={{
+                            fontWeight: "600",
+                            position: "absolute",
+                            padding: "10px",
+                 
+                            borderRadius: "5px 0px 0px 0px",
+                            background: "rgba(0, 0, 0, 0.5)",
+                            color: "white",
+                            width:"max-content",
+                          }}
+                        >
+                          {`${
+                            item?.listing_type === "buy"
+                              ? "Wanted"
+                              : `${item?.listing_type}ing`
+                          }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
+                        </Paper>
+                          {/* <Button
                             variant="contained"
                             sx={{
-                              background: "#f1eeee",
+                              // background: "#f1eeee",
                               borderRadius: "5px 0px 0px 0px",
                               margin: "5px 0px",
                             }}
                           >
                             {item?.p_created_on &&
                               `${calculateDaysAgo(item.p_created_on)} days ago`}
-                          </Button>
+                          </Button> */}
                         </div>
                         <Typography
                           sx={{
                             fontSize: "15px",
                             textTransform: "capitalize",
                             fontWeight: "500",
-                            margin: "2px 0px 0px 10px",
+                            margin: "3px 0px 0px 5px",
                             fontWeight: "700",
                             // color:"#0b6c00"
                           }}
@@ -1412,7 +1440,7 @@ const PropertyHome = () => {
                               : `${item?.listing_type}ing`
                           }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
                         </Typography>
-                        <Box sx={{ display: "flex" }}>
+                        <Box sx={{ display: "flex",margin:"5px 0px"}}>
                           <LocationOnIcon sx={{ color: "#0b6c00" }} />
                           <Typography
                             sx={{

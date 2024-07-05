@@ -145,7 +145,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
           onClick={handleClickOpen}
           sx={{
             marginRight: { xs: "0", sm: "120px" },
-            width: { xs: "100%", sm: "600px" },
+            width: { xs: "100%", sm: "350px" },
             fontSize: "45px",
           }}
         />

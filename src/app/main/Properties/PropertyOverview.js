@@ -54,7 +54,9 @@ const PropertyOverview = () => {
         {showMore
           ? propertyOverview
           : `${propertyOverview?.slice(0, 100)}...`}
-        <button onClick={toggleShowMore} style={{ color: "orange" }}>
+        <button onClick={toggleShowMore} 
+        // style={{ color: "orange" }}
+        >
           {showMore ? "See Less" : "See More"}
         </button>
       

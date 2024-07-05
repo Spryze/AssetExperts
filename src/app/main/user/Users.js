@@ -180,7 +180,9 @@ const SearchResult = () => {
     <div style={{ backgroundColor: 'white', minHeight: '100vh', padding: '16px', scrollBehavior: 'smooth' }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" padding={2} style={{ backgroundColor: 'white' }}>
         <h1>Search Results ({resultsCount})</h1>
-        <Button variant="contained" color="primary" onClick={handleSearchSubmit}>
+        <Button variant="contained" 
+        // color="primary"
+        onClick={handleSearchSubmit}>
           Search
         </Button>
       </Box>
@@ -234,7 +236,7 @@ const SearchResult = () => {
                           <TableCell key={column.id} align={column.align}>
                             {column.id === 'id' ? (
                               <Button
-                              style={{color:"blue",textDecoration:"underline",background:"none"}}
+                              // style={{color:"blue",textDecoration:"underline",background:"none"}}
                               onClick={()=>{
                                 navigate(`/user/${value}`)
                               }}

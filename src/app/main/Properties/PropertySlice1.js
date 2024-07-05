@@ -13,6 +13,7 @@ const getUserIdFromLocalStorage = () => {
 export const CardsClick = createAsyncThunk(
   "property/CardsClick",
   async ({ formData, offset }, { rejectWithValue, fulfillWithValue }) => {
+  async ({ formData, offset }, { rejectWithValue, fulfillWithValue }) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const req_by = user.uid;
@@ -28,9 +29,18 @@ export const CardsClick = createAsyncThunk(
           "Content-Type": "application/json",
         },
       });
+      console.log("Data", Data);
+      const response = await axios.post(`${BaseUrl}/search`, Data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch search results");
+      }
+      if (response?.data.property.length === 0) {
+        showMessage("No Results Found");
       }
       if (response?.data.property.length === 0) {
         showMessage("No Results Found");
@@ -51,6 +61,7 @@ export const CardsClick = createAsyncThunk(
       // } else {
       //   return fulfillWithValue(payload);
       // }
+      return payload;
       return payload;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -263,6 +274,26 @@ export const PostUserCallRequest = createAsyncThunk(
     }
   }
 );
+export const PostUserCallRequest = createAsyncThunk(
+  "property/PostUserCallRequest",
+  async (formData, { rejectWithValue }) => {
+    try {
+      // const user = JSON.parse(localStorage.getItem("user"));
+      // const user_id = user.uid;
+
+      // const Data = {
+      // user_id :  user_id ,
+      // userData,
+      // };
+      console.log("formData", formData);
+      const response = await axios.post(`${BaseUrl}/help`, formData);
+      console.log(response);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const AddAreas = createAsyncThunk(
   "property/AddAreas",
@@ -340,6 +371,7 @@ export const fetchRecentTransactions = createAsyncThunk(
   async (arg, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BaseUrl}/home`);
+      const response = await axios.get(`${BaseUrl}/home`);
       const transactions = response.data.property.buy_properties.concat(
         response.data.property.sell_properties
       );
@@ -371,9 +403,17 @@ export const SearchResults = createAsyncThunk(
           "Content-Type": "application/json",
         },
       });
+      const response = await axios.post(`${BaseUrl}/search`, Data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch search results");
+      }
+      if (response?.data.property.length === 0) {
+        showMessage("No Results Found");
       }
       if (response?.data.property.length === 0) {
         showMessage("No Results Found");
@@ -383,6 +423,7 @@ export const SearchResults = createAsyncThunk(
         properties: response.data.property,
         totalProperties: response.data.total_properties,
         PropertyState: PropertyState,
+        isAdminSearch: isAdminSearch,
         isAdminSearch: isAdminSearch,
       };
 
@@ -420,6 +461,11 @@ export const LocalResults = createAsyncThunk(
           "Content-Type": "application/json",
         },
       });
+      const response = await axios.post(`${BaseUrl}/search`, Data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch search results");
@@ -449,6 +495,7 @@ export const addProperty = createAsyncThunk(
       const data = { ...formData, cont_user_id };
 
       const response = await axios.post(`${BaseUrl}/property`, data);
+      const response = await axios.post(`${BaseUrl}/property`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -466,7 +513,9 @@ export const updateProperty = createAsyncThunk(
       const req_user_id = user.uid;
       const data = { ...formData, req_user_id, p_id };
       console.log("update data", data);
+      console.log("update data", data);
 
+      const response = await axios.put(`${BaseUrl}/property`, data);
       const response = await axios.put(`${BaseUrl}/property`, data);
       return response.data;
     } catch (error) {
@@ -478,6 +527,11 @@ export const updateProperty = createAsyncThunk(
 export const AddImage = createAsyncThunk(
   "property/AddImage",
   async (formData) => {
+    const response = await axios.post(`${BaseUrl}/image`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     const response = await axios.post(`${BaseUrl}/image`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -499,6 +553,7 @@ const initialState = {
   recentTransactions: [],
   normalSearchResults: [],
   adminSearchResults: [],
+  mySubscription: [],
   mySubscription: [],
   admintotalProperties: "0",
   normaltotalResults: "0",
@@ -531,8 +586,11 @@ const propertySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+  extraReducers: (builder) => {
     builder
       .addCase(SearchResults.fulfilled, (state, action) => {
+        const { properties, totalProperties, PropertyState, isAdminSearch } =
+          action.payload;
         const { properties, totalProperties, PropertyState, isAdminSearch } =
           action.payload;
         if (action.meta.arg.isAdminSearch) {
@@ -571,6 +629,7 @@ const propertySlice = createSlice({
         state.properties = action.payload;
       })
       .addCase(GetMyIntrests.fulfilled, (state, action) => {
+      .addCase(GetMyIntrests.fulfilled, (state, action) => {
         state.mySubscription = action.payload.data.interested_areas;
       })
       .addCase(AddIntrests.fulfilled, (state, action) => {
@@ -598,7 +657,18 @@ export const selectadmintotalProperties = (state) =>
   state.properties.admintotalProperties;
 export const selectnormaltotalResults = (state) =>
   state.properties.normaltotalResults;
+export const selectRecentTransactions = (state) =>
+  state.properties.recentTransactions;
+export const selectNormalSearchResults = (state) =>
+  state.properties.normalSearchResults;
+export const selectAdminSearchResults = (state) =>
+  state.properties.adminSearchResults;
+export const selectadmintotalProperties = (state) =>
+  state.properties.admintotalProperties;
+export const selectnormaltotalResults = (state) =>
+  state.properties.normaltotalResults;
 export const selectPropertyStatus = (state) => state.properties.status;
 export const selectPropertyError = (state) => state.properties.error;
+export const selectmySubscription = (state) => state.properties.mySubscription;
 export const selectmySubscription = (state) => state.properties.mySubscription;
 export default propertySlice.reducer;

@@ -120,18 +120,18 @@ const propertyData = propertiesData?.data?.property;
               onClick={() => {
                 handleClick();
               }}
-              sx={{
-                width: "100%",
-                borderRadius: "5px",
-                backgroundColor: "#FF6600",
-                marginTop: "20px",
-                color: "black",
-                fontWeight: "500",
-                "&:hover": {
-                  backgroundColor: "#FF6600",
-                  color: "white",
-                },
-              }}
+              // sx={{
+              //   width: "100%",
+              //   borderRadius: "5px",
+              //   backgroundColor: "#FF6600",
+              //   marginTop: "20px",
+              //   color: "black",
+              //   fontWeight: "500",
+              //   "&:hover": {
+              //     backgroundColor: "#FF6600",
+              //     color: "white",
+              //   },
+              // }}
             >
               Edit Property
             </Button>

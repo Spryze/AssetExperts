@@ -226,17 +226,17 @@ const ScrollableTabs = () => {
               </Button>
               <Button
                 variant="contained"
-                sx={{
-                  borderRadius: "5px",
-                  padding: "10px 40px",
-                  backgroundColor: "#FF6600",
-                  color: "white",
-                  fontWeight: "bold",
-                  "&:hover": {
-                    backgroundColor: "#FF6600",
-                    color: "black",
-                  },
-                }}
+                // sx={{
+                //   borderRadius: "5px",
+                //   padding: "10px 40px",
+                //   backgroundColor: "#FF6600",
+                //   color: "white",
+                //   fontWeight: "bold",
+                //   "&:hover": {
+                //     backgroundColor: "#FF6600",
+                //     color: "black",
+                //   },
+                // }}
               >
                 Ask for Details
               </Button>
@@ -263,12 +263,12 @@ const ScrollableTabs = () => {
               </Typography>
               <Button
                 onClick={() => toggleContent()}
-                sx={{
-                  margin: "auto",
-                  display: "block",
-                  color: "#FF6600",
-                  fontWeight: "bold",
-                }}
+                // sx={{
+                //   margin: "auto",
+                //   display: "block",
+                //   color: "#FF6600",
+                //   fontWeight: "bold",
+                // }}
               >
                 Show Less
               </Button>
@@ -284,12 +284,12 @@ const ScrollableTabs = () => {
               {Properties.AboutProject.length > 100 && (
                 <Button
                   onClick={() => toggleContent()}
-                  sx={{
-                    margin: "auto",
-                    display: "block",
-                    color: "#FF6600",
-                    fontWeight: "bold",
-                  }}
+                  // sx={{
+                  //   margin: "auto",
+                  //   display: "block",
+                  //   color: "#FF6600",
+                  //   fontWeight: "bold",
+                  // }}
                 >
                   See More About Project
                 </Button>
@@ -708,20 +708,20 @@ const ScrollableTabs = () => {
             <div sx={{}}>
               <div>
                 <Button
-                  sx={{
-                    border: "1px solid grey",
-                    margin: "5px 5px",
-                    fontSize: "12px",
-                    padding: "10px 10px",
-                    minHeight: "0",
-                    height: "30px",
-                    backgroundColor:
-                      activeColor === "ReadyToMove" ? "#FF6600" : "#F6F6F7",
-                    "&:hover": {
-                      backgroundColor: "#FF6600",
-                      color: "black",
-                    },
-                  }}
+                  // sx={{
+                  //   border: "1px solid grey",
+                  //   margin: "5px 5px",
+                  //   fontSize: "12px",
+                  //   padding: "10px 10px",
+                  //   minHeight: "0",
+                  //   height: "30px",
+                  //   backgroundColor:
+                  //     activeColor === "ReadyToMove" ? "#FF6600" : "#F6F6F7",
+                  //   "&:hover": {
+                  //     backgroundColor: "#FF6600",
+                  //     color: "black",
+                  //   },
+                  // }}
                   onClick={Readytomove}
                 >
                   Ready To Move
@@ -748,20 +748,20 @@ const ScrollableTabs = () => {
                 </Button>
 
                 <Button
-                  sx={{
-                    border: "1px solid grey",
-                    margin: "5px 5px",
-                    fontSize: "12px",
-                    padding: "10px 10px",
-                    minHeight: "0",
-                    height: "30px",
-                    backgroundColor:
-                      activeColor === "Beyond3Years" ? "#FF6600" : "#F6F6F7",
-                    "&:hover": {
-                      backgroundColor: "#FF6600",
-                      color: "black",
-                    },
-                  }}
+                  // sx={{
+                  //   border: "1px solid grey",
+                  //   margin: "5px 5px",
+                  //   fontSize: "12px",
+                  //   padding: "10px 10px",
+                  //   minHeight: "0",
+                  //   height: "30px",
+                  //   backgroundColor:
+                  //     activeColor === "Beyond3Years" ? "#FF6600" : "#F6F6F7",
+                  //   "&:hover": {
+                  //     backgroundColor: "#FF6600",
+                  //     color: "black",
+                  //   },
+                  // }}
                   onClick={Beyond3Years}
                 >
                   Beyond 3 Years
@@ -795,7 +795,7 @@ const ScrollableTabs = () => {
                   variant="contained"
                   sx={{
                     borderRadius: "2px",
-                    backgroundColor: "#FF6600",
+                    // backgroundColor: "#FF6600",
                     marginTop: "10px",
                   }}
                 >

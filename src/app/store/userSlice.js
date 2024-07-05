@@ -293,6 +293,7 @@ import { setInitialSettings } from 'app/store/rabit/settingsSlice';
 import { showMessage } from 'app/store/rabit/messageSlice';
 import settingsConfig from 'app/configs/settingsConfig';
 import jwtService from '../auth/services/jwtService';
+import BaseUrl from 'app/configs/BaseUrl';
 import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword } from 'firebase/auth';
 import axios from 'axios';
 
@@ -303,7 +304,7 @@ export const setUser = createAsyncThunk('user/setUser', async () => {
     onAuthStateChanged(auth, async (userAuth) => {
       try {
         if (userAuth) {
-          const response = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${userAuth.uid}&req_user_id=${userAuth.uid}`);
+          const response = await axios.get(`${BaseUrl}/user?user_id=${userAuth.uid}&req_user_id=${userAuth.uid}`);
           const userData = response.data;
           console.log("userdata", userData);
           
@@ -321,6 +322,8 @@ export const setUser = createAsyncThunk('user/setUser', async () => {
               properties:userData.properties,
               profession:userData.profile.profession,
               requirements:userData.profile.requirements,
+              photoURL: 'assets/images/avatars/profile.webp',
+
               
             }
           };
@@ -348,7 +351,7 @@ export const UpdateUser = createAsyncThunk(
       formData.user_id = cont_user_id;
       formData.req_user_id = cont_user_id;
 
-      const response = await axios.put('https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user', formData);
+      const response = await axios.put(`${BaseUrl}/user`, formData);
 
       return response.data;
     } catch (error) {
@@ -377,7 +380,7 @@ export const signUpWithEmailAndPassword = createAsyncThunk(
         };
         console.log("userdata", userData);
         
-        const response = await axios.post("https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user", userData);
+        const response = await axios.post(`${BaseUrl}/user`, userData);
         console.log('response ', response);
         
         if (!response.ok) {
@@ -405,7 +408,7 @@ export const UserProfile = createAsyncThunk(
       const user = JSON.parse(localStorage.getItem("user"));
       const cont_user_id = user.uid;
       
-      const userdata = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${cont_user_id}&req_user_id=${cont_user_id}`)
+      const userdata = await axios.get(`${BaseUrl}/user?user_id=${cont_user_id}&req_user_id=${cont_user_id}`)
       console.log("userdata", userdata.data); 
       return userdata.data; 
 
@@ -427,7 +430,7 @@ export const signInWithEmailPassword = createAsyncThunk(
       const user = userCredential.user;
       
       if (user) {
-        const userData = await axios.get(`https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/user?user_id=${user.uid}&req_user_id=${user.uid}`)
+        const userData = await axios.get(`${BaseUrl}/user?user_id=${user.uid}&req_user_id=${user.uid}`)
         // console.log("userdata",userdata)
         let User = {
           uid: user.uid,

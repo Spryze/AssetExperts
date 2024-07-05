@@ -5,6 +5,7 @@ import _ from '@lodash';
 import useThemeMediaQuery from '@rabit/hooks/useThemeMediaQuery';
 import { navbarToggle, navbarToggleMobile } from 'app/store/rabit/navbarSlice';
 import RabitSvgIcon from '@rabit/core/RabitSvgIcon';
+import { Paper } from '@mui/material';
 
 function NavbarToggleButton(props) {
   const dispatch = useDispatch();
@@ -13,7 +14,8 @@ function NavbarToggleButton(props) {
   const { config } = settings.layout;
 
   return (
-    <IconButton
+    <Paper
+    sx={{backgroundColor:"transparent",boxShadow:"none",cursor:"pointer",}}
       className={props.className}
       color="inherit"
       size="small"
@@ -31,14 +33,15 @@ function NavbarToggleButton(props) {
         }
       }}
     >
-      {props.children}
-    </IconButton>
+     {props.children}
+      
+    </Paper>
   );
 }
 
 NavbarToggleButton.defaultProps = {
   children: (
-    <RabitSvgIcon size={20} color="action">
+    <RabitSvgIcon size={20} color="white">
       heroicons-outline:view-list
     </RabitSvgIcon>
   ),

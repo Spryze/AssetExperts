@@ -18,6 +18,7 @@ import {
   Paper,
   Button,
 } from "@mui/material";
+import WipeImage from "../property-components/WipeImage";
 import { selectUser } from "app/store/userSlice";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SearchDialogue from "../SearchDialogue";
@@ -53,7 +54,6 @@ const PropertyHome = () => {
   const recentTransactions = useSelector(selectRecentTransactions);
   console.log("recentTransactions", recentTransactions);
   const searchResults = useSelector(selectNormalSearchResults);
-  console.log("searchResults", searchResults);
   const [formData, setformData] = useState(null);
   const [noDataFound, setNoDataFound] = useState(false);
   const [offset, setoffset] = useState(0);
@@ -66,7 +66,7 @@ const PropertyHome = () => {
   const [HomeProperties, SetHomeProperties] = useState();
   const [localLoading, setLocalLoading] = useState(false);
   const [HomePropertiesLoader, SetHomePropertiesLoader] = useState(false);
-  console.log("LocalProperies", LocalProperies);
+
 
   const HandleFormData = (data) => {
     console.log("data", data);
@@ -257,8 +257,9 @@ const PropertyHome = () => {
                 </video>
                
               </div>
-              {/* <img src="/assets/cardimages/arrow.png" width={"120px"} height={"auto"} style={{position:"relative", top:"-311px",left:"408px",transform: "rotate(-51deg)",}}/> */}
-              <h3 style={{position:"relative", top:"-452px",left:"439px",fontWeight:"bold",background:"white",padding:"10px",color:"#FC5B47"}}>Experience Seamless <br/> Property Alerts</h3>
+              <WipeImage/>
+              {/* <img src="/assets/cardimages/alerts.png" style={{position:"absolute",right:"445px", top:"0px", height:"auto", width:"270px"}} /> */}
+              {/* <h3 style={{position:"relative", top:"-452px",left:"439px",fontWeight:"bold",background:"white",padding:"10px",color:"#FC5B47"}}>Experience Seamless <br/> Property Alerts</h3> */}
             </Grid>
           </Grid>
         </Box>
@@ -836,7 +837,7 @@ const PropertyHome = () => {
                   backgroundColor: "white",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#00204A",
+                    backgroundColor: "#FACF39",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },
@@ -933,7 +934,7 @@ const PropertyHome = () => {
                   backgroundColor: "#ffffff",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#00204A",
+                    backgroundColor: "#FACF39",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },
@@ -1018,7 +1019,7 @@ const PropertyHome = () => {
                   backgroundColor: "#ffffff",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#00204A",
+                    backgroundColor: "#FACF39",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },
@@ -1103,7 +1104,7 @@ const PropertyHome = () => {
                   backgroundColor: "#ffffff",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#00204A",
+                    backgroundColor: "#FACF39",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },

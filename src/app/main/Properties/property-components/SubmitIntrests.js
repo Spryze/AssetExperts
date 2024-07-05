@@ -21,7 +21,8 @@ import { AddIntrests, GetMyIntrests } from "../PropertySlice1";
 import { useDispatch } from "react-redux";
 import StateandDistrictList from "../../../../assets/Default/area/result.json";
 
-export default function FormDialog() {
+export default function FormDialog(userId) {
+  console.log("this was the Submit formDialog",userId)
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -31,7 +32,7 @@ export default function FormDialog() {
     // district: "",
     // areas: [],
   });
-  console.log('formData',formData )
+
 
   const [districtAreasMap, setDistrictAreasMap] = useState({});
   const [previouslySelectedAreas, setPreviouslySelectedAreas] = useState([]);
@@ -52,7 +53,7 @@ export default function FormDialog() {
   };
 
   const allAreasId = getAllAreasIds(StateandDistrictList);
-  console.log("allAreasId",allAreasId);
+  console.log("allAreasId", allAreasId);
 
   useEffect(() => {
     dispatch(GetMyIntrests()).then((response) => {
@@ -103,14 +104,13 @@ export default function FormDialog() {
     console.log("value", value);
     let selectedAreas = [];
 
-    if (value.some(id => allAreasId.includes(id))) {
+    if (value.some((id) => allAreasId.includes(id))) {
       console.log("hii");
       const lastSelectedId = value[value.length - 1];
       selectedAreas = [lastSelectedId];
       console.log("latest selectedAreas", selectedAreas);
-    }
-     else {
-      console.log("hii2")
+    } else {
+      console.log("hii2");
       selectedAreas = typeof value === "string" ? value.split(",") : value;
       selectedAreas = selectedAreas.filter((id) => id !== "All Areas");
     }
@@ -121,7 +121,9 @@ export default function FormDialog() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    console.log("hii")
+    console.log("submit interest", userId);
     event.preventDefault();
 
     const newAreas = formData.areas.filter(
@@ -131,20 +133,37 @@ export default function FormDialog() {
       (area) => !formData.areas.includes(area)
     );
 
-    const dataToSend = [
-      {
-        district: formData.district,
-        status: "add",
-        areas: newAreas,
-      },
-      {
-        district: formData.district,
-        status: "delete",
-        areas: deletedAreas,
-      },
-    ];
+    // const uid = userId.user_id;
+    const user_id = userId.user_id;
+    // console.log("uid was the submit file",uid);
+    // console.log("userId was the submit file",userId);
+    // console.log("user_id was the submit file",user_id);
+    console.log(userId)
+    const dataToSend = {
+      user_id,
+      isadmin: true,
+      body: [
+        {
+          district: formData.district,
+          status: "add",
+          areas: newAreas,
+        },
+        {
+          district: formData.district,
+          status: "delete",
+          areas: deletedAreas,
+        },
+      ],
+    };
+    console.log("dataToSend", dataToSend);
+    console.log("User ID being passed:", userId);
+
+    // await dispatch(AddIntrests({body:dataToSend} ));
+    // dispatch(AddIntrests({ userId, isadmin: true, body: dataToSend }));
     dispatch(AddIntrests(dataToSend));
-    console.log("dataToSend",dataToSend);
+    console.log("dataToSend", dataToSend);
+    console.log("user is was pass or not will be :", userId);
+
     handleClose();
   };
 

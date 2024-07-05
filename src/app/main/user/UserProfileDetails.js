@@ -12,9 +12,12 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import MySubscriptions from '../Properties/Pages/MySubscriptions';
+import { AddIntrests } from '../Properties/PropertySlice1';
+
 // import { useNavigate } from 'react-router-dom';
 
-const UserProfileData = () => {
+const UserProfileData = ({isAdmin}) => {
   const { userId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -265,6 +268,7 @@ console.log('userDataTemp ', userDataTemp);
 
     try {
         await dispatch(getUserProfileOnSearch({ user_id: userId, req_user_id, updatedData }));
+        await dispatch(AddIntrests({ body: updatedData, user_id: userId, isadmin: isAdmin }));
         console.log(updatedData);
     } catch (error) {
         console.error("Failed to save changes:", error);
@@ -486,58 +490,9 @@ console.log('userDataTemp ', userDataTemp);
           <Typography variant="h6" component="h3" gutterBottom align="left" sx={{minWidth: 0,margin:'25px 0.1px'}}>
           Intersted Areas
           </Typography>
-          {properties && properties.length > 0  && properties.map((item, index) => (
-        <Card
-          key={index}
-          sx={{
-            flex: "0 0 auto",
-            cursor: "pointer",
-            height: "auto",
-            width: "300px",
-            position: "relative",
-            padding: "0px",
-            borderRadius: "5px",
-            margin: "20px",
-          }}
-          onClick={() => handlePropertyClick(item.property_id)}
-        >
-          <CardContent sx={{ padding: "0px" }}>
-            <Box
-              component="img"
-              src={item.prop_image?.length > 0 ? item.prop_image[0] : DefaultImg}
-              alt="Property"
-              sx={{
-                width: "100%",
-                position: "relative",
-                height: "200px",
-                objectFit: "cover",
-                borderRadius: "5px",
-                transition: "transform 0.3s ease-in-out",
-                "&:hover": {
-                  transform: "scale(1.05)",
-                },
-              }}
-            />
-            <Box sx={{ padding: "10px" }}>
-              <Typography variant="body2" color="textSecondary" component="p">
-                <strong>State:</strong> {item.state}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                <strong>Landmark:</strong> {item.landmark}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                <strong>Unit:</strong> {item.unit}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                <strong>Type:</strong> {item.p_type}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                <strong>Area:</strong> {item.area} sq ft
-              </Typography>
-            </Box>
-          </CardContent>
-        </Card>
-      ))}
+          <MySubscriptions userid={userId}  isAdmin={isAdmin}/>
+          
+          
         </Paper>
         </div>
          )}

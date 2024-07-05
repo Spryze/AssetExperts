@@ -4,9 +4,15 @@ import Statesdata from "../../../assets/Default/area/result.json";
 import { showMessage } from "app/store/rabit/messageSlice";
 import BaseUrl from "app/configs/BaseUrl";
 
+
+const getUserIdFromLocalStorage = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  return user
+};
 // plot flat thunk function
 export const CardsClick = createAsyncThunk(
   "property/CardsClick",
+  async ({ formData, offset }, { rejectWithValue, fulfillWithValue }) => {
   async ({ formData, offset }, { rejectWithValue, fulfillWithValue }) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -23,9 +29,18 @@ export const CardsClick = createAsyncThunk(
           "Content-Type": "application/json",
         },
       });
+      console.log("Data", Data);
+      const response = await axios.post(`${BaseUrl}/search`, Data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch search results");
+      }
+      if (response?.data.property.length === 0) {
+        showMessage("No Results Found");
       }
       if (response?.data.property.length === 0) {
         showMessage("No Results Found");
@@ -47,6 +62,7 @@ export const CardsClick = createAsyncThunk(
       //   return fulfillWithValue(payload);
       // }
       return payload;
+      return payload;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -58,28 +74,100 @@ export const selectPropertyById = (state, property_id) =>
     (property) => property.property_id === property_id
   );
 
+
+
+
+  
+
 //  my intrests thunk function
+// export const AddIntrests = createAsyncThunk(
+//   "property/AddIntrests",
+//   async (params, { rejectWithValue }) => {
+//     console.log("Body:", body);
+//     console.log("userIds in the Add intrests:", userId);
+//     const {  userId, isadmin, body } = params;
+    
+//     try {
+//       let user_id;
+
+//       // Prioritize userId if provided and isadmin is true
+//       if (isadmin) {
+//         user_id = userId;
+//         console.log("what is the user Ids :",userId)
+//         console.log("what is the user data :",user_id)
+
+//       } else {
+//         // Fall back to user_id from local storage
+//         const user = JSON.parse(localStorage.getItem("user"));
+//         if (!user || !user.uid) throw new Error("User ID not found in local storage");
+//         user_id = user.uid;
+//       }
+
+//       // Construct the Data object
+//       // const Data = { user_id, ...body };
+//       const Data = {
+//         user_id :user_id ,
+        
+//         body,
+//       };
+
+//       console.log("Data:", Data);
+//       console.log("Data to be sent:", JSON.stringify(Data));
+//       const response = await axios.put(`${BaseUrl}/register`, Data);
+//       console.log("Response:", response);
+//       return response;
+//     } catch (error) {
+//       console.error("Error in AddIntrests:", error);
+//       return rejectWithValue(error.response?.data || error.message);
+//     }
+//   }
+// );
 export const AddIntrests = createAsyncThunk(
   "property/AddIntrests",
-  async (body, { rejectWithValue }) => {
-    console.log(body);
+  async (params, { rejectWithValue }) => {
+    console.log('params ', params);
+    const { body, isadmin, user_id } = params;
+console.log("body, isadmin, user_id",body, isadmin)
+console.log("this is the uid log so keep:",user_id);
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const user_id = user.uid;
+      let user_ids;
 
+      console.log("this was the user_id log :",user_id)
+    
+      if (user_id) {
+        console.log("this was the  Uid in the condiction so check this:",user_id);
+         user_id = user_id;
+     
+      } else {
+        // Fall back to user_id from local storage
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user || !user.uid) throw new Error("User ID not found in local storage");
+        user_id = user.uid;
+      }
+      console.log('type of user id ', typeof(user_id));
+      // Construct the Data object
       const Data = {
-        user_id: user_id,
-        body,
+        user_id,
+         body,
       };
-      console.log("Data", Data);
-      const response = await axios.put(`${BaseUrl}/register`, Data);
-      console.log("responseo of add intresrs", response);
-      return response;
+
+      console.log("Data",Data)
+
+      const response = await axios.put(`${BaseUrl}/register`, Data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log("Response:", response);
+      return response.data;  // Return the actual data from the response
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      console.error("Error in AddIntrests:", error);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
+
+
 
 export const GetUpdatedJson = createAsyncThunk(
   "property/GetUpdatedJson",
@@ -118,18 +206,33 @@ export const GetUpdatedJson = createAsyncThunk(
     }
   }
 );
+// export const GetUpdatedJson = createAsyncThunk(
 export const GetMyIntrests = createAsyncThunk(
   "property/GetMyIntrests",
-  async () => {
+  async ({ userId, isadmin }, { rejectWithValue }) => {
+    console.log("{userId, isadmin}", userId, isadmin);
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const user_id = user.uid;
+      let user_id;
+      if (userId) {
+        console.log(isadmin)
+        user_id = userId;
+      } else {
+        console.log("hii")
+        const user = JSON.parse(localStorage.getItem("user"));
+        console.log("is the data:",user)
+        user_id = user.uid;
+        if (!user_id) throw new Error("User ID not found in local storage");
+      }
+
       const response = await axios.get(
-        `${BaseUrl}/register?user_id=${user_id}`
+        `https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/register?user_id=${user_id}`
       );
-      console.log("response from getmyIntrest", response);
+      console.log("response of get my interest", response);
       return response;
-    } catch (error) {}
+    } catch (error) {
+      console.error('Error in GetMyIntrests:', error);
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
 );
 export const DeleteIntrests = createAsyncThunk(
@@ -171,6 +274,26 @@ export const PostUserCallRequest = createAsyncThunk(
     }
   }
 );
+export const PostUserCallRequest = createAsyncThunk(
+  "property/PostUserCallRequest",
+  async (formData, { rejectWithValue }) => {
+    try {
+      // const user = JSON.parse(localStorage.getItem("user"));
+      // const user_id = user.uid;
+
+      // const Data = {
+      // user_id :  user_id ,
+      // userData,
+      // };
+      console.log("formData", formData);
+      const response = await axios.post(`${BaseUrl}/help`, formData);
+      console.log(response);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const AddAreas = createAsyncThunk(
   "property/AddAreas",
@@ -183,7 +306,7 @@ export const AddAreas = createAsyncThunk(
         user_id: user_id,
         body: formData,
       };
-      console.log("AddAreasData", Data);
+      console.log(Data);
       const response = await axios.post(
         `${BaseUrl}/register?user_id=${user_id}`,
         Data
@@ -248,6 +371,7 @@ export const fetchRecentTransactions = createAsyncThunk(
   async (arg, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BaseUrl}/home`);
+      const response = await axios.get(`${BaseUrl}/home`);
       const transactions = response.data.property.buy_properties.concat(
         response.data.property.sell_properties
       );
@@ -279,9 +403,17 @@ export const SearchResults = createAsyncThunk(
           "Content-Type": "application/json",
         },
       });
+      const response = await axios.post(`${BaseUrl}/search`, Data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch search results");
+      }
+      if (response?.data.property.length === 0) {
+        showMessage("No Results Found");
       }
       if (response?.data.property.length === 0) {
         showMessage("No Results Found");
@@ -291,6 +423,7 @@ export const SearchResults = createAsyncThunk(
         properties: response.data.property,
         totalProperties: response.data.total_properties,
         PropertyState: PropertyState,
+        isAdminSearch: isAdminSearch,
         isAdminSearch: isAdminSearch,
       };
 
@@ -328,6 +461,11 @@ export const LocalResults = createAsyncThunk(
           "Content-Type": "application/json",
         },
       });
+      const response = await axios.post(`${BaseUrl}/search`, Data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch search results");
@@ -357,6 +495,7 @@ export const addProperty = createAsyncThunk(
       const data = { ...formData, cont_user_id };
 
       const response = await axios.post(`${BaseUrl}/property`, data);
+      const response = await axios.post(`${BaseUrl}/property`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -374,7 +513,9 @@ export const updateProperty = createAsyncThunk(
       const req_user_id = user.uid;
       const data = { ...formData, req_user_id, p_id };
       console.log("update data", data);
+      console.log("update data", data);
 
+      const response = await axios.put(`${BaseUrl}/property`, data);
       const response = await axios.put(`${BaseUrl}/property`, data);
       return response.data;
     } catch (error) {
@@ -386,6 +527,11 @@ export const updateProperty = createAsyncThunk(
 export const AddImage = createAsyncThunk(
   "property/AddImage",
   async (formData) => {
+    const response = await axios.post(`${BaseUrl}/image`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     const response = await axios.post(`${BaseUrl}/image`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -407,6 +553,7 @@ const initialState = {
   recentTransactions: [],
   normalSearchResults: [],
   adminSearchResults: [],
+  mySubscription: [],
   mySubscription: [],
   admintotalProperties: "0",
   normaltotalResults: "0",
@@ -439,8 +586,11 @@ const propertySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+  extraReducers: (builder) => {
     builder
       .addCase(SearchResults.fulfilled, (state, action) => {
+        const { properties, totalProperties, PropertyState, isAdminSearch } =
+          action.payload;
         const { properties, totalProperties, PropertyState, isAdminSearch } =
           action.payload;
         if (action.meta.arg.isAdminSearch) {
@@ -479,10 +629,11 @@ const propertySlice = createSlice({
         state.properties = action.payload;
       })
       .addCase(GetMyIntrests.fulfilled, (state, action) => {
+      .addCase(GetMyIntrests.fulfilled, (state, action) => {
         state.mySubscription = action.payload.data.interested_areas;
       })
       .addCase(AddIntrests.fulfilled, (state, action) => {
-        state.mySubscription = action.payload.data.interested_areas;
+        state.mySubscription = action.payload.interested_areas;
       })
       .addCase(fetchRecentTransactions.fulfilled, (state, action) => {
         state.recentTransactions = [
@@ -506,7 +657,18 @@ export const selectadmintotalProperties = (state) =>
   state.properties.admintotalProperties;
 export const selectnormaltotalResults = (state) =>
   state.properties.normaltotalResults;
+export const selectRecentTransactions = (state) =>
+  state.properties.recentTransactions;
+export const selectNormalSearchResults = (state) =>
+  state.properties.normalSearchResults;
+export const selectAdminSearchResults = (state) =>
+  state.properties.adminSearchResults;
+export const selectadmintotalProperties = (state) =>
+  state.properties.admintotalProperties;
+export const selectnormaltotalResults = (state) =>
+  state.properties.normaltotalResults;
 export const selectPropertyStatus = (state) => state.properties.status;
 export const selectPropertyError = (state) => state.properties.error;
+export const selectmySubscription = (state) => state.properties.mySubscription;
 export const selectmySubscription = (state) => state.properties.mySubscription;
 export default propertySlice.reducer;

@@ -327,7 +327,9 @@ export const setUser = createAsyncThunk('user/setUser', async () => {
               
             }
           };
+          
           resolve(user);
+          localStorage.setItem('user', JSON.stringify(user));
         } else {
           reject(new Error('User not authenticated')); 
         }

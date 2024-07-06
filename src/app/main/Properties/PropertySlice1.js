@@ -389,9 +389,10 @@ export const SearchResults = createAsyncThunk(
     { rejectWithValue, fulfillWithValue }
   ) => {
     try {
+      console.log("hii")
       const user = JSON.parse(localStorage.getItem("user"));
       const req_by = user.uid;
-
+console.log("hii")
       const Data = {
         req_by: req_by,
         offset: offset,
@@ -408,6 +409,7 @@ export const SearchResults = createAsyncThunk(
           "Content-Type": "application/json",
         },
       });
+      console.log("search response",response)
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch search results");

@@ -184,8 +184,9 @@ export default function FormDialog(userId) {
     const { areas } = StateandDistrictList;
     return areas[selectedDistrict] || [];
   };
-
+ 
   const separateSelectedAndUnselected = (areas, selectedIds) => {
+
     const selected = areas.filter((area) => selectedIds.includes(area.id));
     const unselected = areas.filter((area) => !selectedIds.includes(area.id));
     return { selected, unselected };
@@ -195,6 +196,7 @@ export default function FormDialog(userId) {
     getAreas(formData.district),
     formData.areas
   );
+  console.log(" selected, unselected", selected, unselected)
 
   return (
     <React.Fragment>

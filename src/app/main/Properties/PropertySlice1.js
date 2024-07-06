@@ -80,6 +80,101 @@ export const selectPropertyById = (state, property_id) =>
   
 
 //  my intrests thunk function
+export const AddIntrests = createAsyncThunk(
+  "property/AddIntrests",
+  async (body, { rejectWithValue }) => {
+    console.log(body);
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const user_id = user.uid;
+
+      const Data = {
+        user_id: user_id,
+        body,
+      };
+      console.log("Data", Data);
+      const response = await axios.put(`${BaseUrl}/register`, Data);
+      console.log("responseo of add intresrs", response);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const GetUpdatedJson = createAsyncThunk(
+  "property/GetUpdatedJson",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BaseUrl}/getfile`, { responseType: "blob" });
+
+      const url = URL.createObjectURL(response.data);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "data.json");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      console.log("response of download json",response)
+      return response.data;
+      
+    } catch (error) {
+      const errorMessage = JSON.stringify(
+        error.response?.data || error.message,
+        null,
+        2
+      );
+      const blob = new Blob([errorMessage], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "error.json");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+export const GetMyIntrests = createAsyncThunk(
+  "property/GetMyIntrests",
+  async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const user_id = user.uid;
+      const response = await axios.get(
+        `${BaseUrl}/register?user_id=${user_id}`
+      );
+      console.log("response from getmyIntrest", response);
+      return response;
+    } catch (error) {}
+  }
+);
+export const DeleteIntrests = createAsyncThunk(
+  "property/DeleteIntrests",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const user_id = user.uid;
+      console.log(formData);
+      const Data = {
+        user_id: user_id,
+        body: formData,
+      };
+      const response = await axios.post("", Data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
+//jagadeesh code
+
 // export const AddIntrests = createAsyncThunk(
 //   "property/AddIntrests",
 //   async (params, { rejectWithValue }) => {
@@ -121,159 +216,140 @@ export const selectPropertyById = (state, property_id) =>
 //       return rejectWithValue(error.response?.data || error.message);
 //     }
 //   }
-// );
-export const AddIntrests = createAsyncThunk(
-  "property/AddIntrests",
-  async (params, { rejectWithValue }) => {
-    console.log('params ', params);
-    const { body, isadmin, user_id } = params;
-console.log("body, isadmin, user_id",body, isadmin)
-console.log("this is the uid log so keep:",user_id);
-    try {
-      let user_ids;
+// // );
+// export const AddIntrests = createAsyncThunk(
+//   "property/AddIntrests",
+//   async (params, { rejectWithValue }) => {
+//     console.log('params ', params);
+//     const { body, isadmin, user_id } = params;
+// console.log("body, isadmin, user_id",body, isadmin)
+// console.log("this is the uid log so keep:",user_id);
+//     try {
+//       let user_ids;
 
-      console.log("this was the user_id log :",user_id)
+//       console.log("this was the user_id log :",user_id)
     
-      if (user_id) {
-        console.log("this was the  Uid in the condiction so check this:",user_id);
-         user_id = user_id;
+//       if (user_id) {
+//         console.log("this was the  Uid in the condiction so check this:",user_id);
+//          user_id = user_id;
      
-      } else {
-        // Fall back to user_id from local storage
-        const user = JSON.parse(localStorage.getItem("user"));
-        if (!user || !user.uid) throw new Error("User ID not found in local storage");
-        user_id = user.uid;
-      }
-      console.log('type of user id ', typeof(user_id));
-      // Construct the Data object
-      const Data = {
-        user_id,
-         body,
-      };
+//       } else {
+//         // Fall back to user_id from local storage
+//         const user = JSON.parse(localStorage.getItem("user"));
+//         if (!user || !user.uid) throw new Error("User ID not found in local storage");
+//         user_id = user.uid;
+//       }
+//       console.log('type of user id ', typeof(user_id));
+//       // Construct the Data object
+//       const Data = {
+//         user_id,
+//          body,
+//       };
 
-      console.log("Data",Data)
+//       console.log("Data",Data)
 
-      const response = await axios.put(`${BaseUrl}/register`, Data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      console.log("Response:", response);
-      return response.data;  // Return the actual data from the response
-    } catch (error) {
-      console.error("Error in AddIntrests:", error);
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
+//       const response = await axios.put(`${BaseUrl}/register`, Data, {
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//       });
+//       console.log("Response:", response);
+//       return response.data;  // Return the actual data from the response
+//     } catch (error) {
+//       console.error("Error in AddIntrests:", error);
+//       return rejectWithValue(error.response?.data || error.message);
+//     }
+//   }
+// );
 
 
 
-export const GetUpdatedJson = createAsyncThunk(
-  "property/GetUpdatedJson",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`${BaseUrl}/getfile`, { responseType: "blob" });
-
-      const url = URL.createObjectURL(response.data);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "data.json");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-      console.log("response of download json",response)
-      return response.data;
-      
-    } catch (error) {
-      const errorMessage = JSON.stringify(
-        error.response?.data || error.message,
-        null,
-        2
-      );
-      const blob = new Blob([errorMessage], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "error.json");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
 // export const GetUpdatedJson = createAsyncThunk(
-export const GetMyIntrests = createAsyncThunk(
-  "property/GetMyIntrests",
-  async ({ userId, isadmin }, { rejectWithValue }) => {
-    console.log("{userId, isadmin}", userId, isadmin);
-    try {
-      let user_id;
-      if (userId) {
-        console.log(isadmin)
-        user_id = userId;
-      } else {
-        console.log("hii")
-        const user = JSON.parse(localStorage.getItem("user"));
-        console.log("is the data:",user)
-        user_id = user.uid;
-        if (!user_id) throw new Error("User ID not found in local storage");
-      }
+//   "property/GetUpdatedJson",
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get(`${BaseUrl}/getfile`, { responseType: "blob" });
 
-      const response = await axios.get(
-        `https://bac7a5b1-026f-4c31-bb25-b6456ef4b56d-00-1doj8z5pfhdie.sisko.replit.dev/register?user_id=${user_id}`
-      );
-      console.log("response of get my interest", response);
-      return response;
-    } catch (error) {
-      console.error('Error in GetMyIntrests:', error);
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
-export const DeleteIntrests = createAsyncThunk(
-  "property/DeleteIntrests",
-  async (formData, { rejectWithValue }) => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const user_id = user.uid;
-      console.log(formData);
-      const Data = {
-        user_id: user_id,
-        body: formData,
-      };
-      const response = await axios.post("", Data);
-      return response;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
+//       const url = URL.createObjectURL(response.data);
+//       const link = document.createElement("a");
+//       link.href = url;
+//       link.setAttribute("download", "data.json");
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//       URL.revokeObjectURL(url);
+//       console.log("response of download json",response)
+//       return response.data;
+      
+//     } catch (error) {
+//       const errorMessage = JSON.stringify(
+//         error.response?.data || error.message,
+//         null,
+//         2
+//       );
+//       const blob = new Blob([errorMessage], { type: "application/json" });
+//       const url = URL.createObjectURL(blob);
+//       const link = document.createElement("a");
+//       link.href = url;
+//       link.setAttribute("download", "error.json");
+//       document.body.appendChild(link);
+//       link.click();
+//       document.body.removeChild(link);
+//       URL.revokeObjectURL(url);
 
-// export const PostUserCallRequest = createAsyncThunk(
-//   "property/PostUserCallRequest",
+//       return rejectWithValue(error.response?.data || error.message);
+//     }
+//   }
+// );
+// // export const GetUpdatedJson = createAsyncThunk(
+// export const GetMyIntrests = createAsyncThunk(
+//   "property/GetMyIntrests",
+//   async ({ userId, isadmin }, { rejectWithValue }) => {
+//     console.log("{userId, isadmin}", userId, isadmin);
+//     try {
+//       let user_id;
+//       if (userId) {
+//         console.log(isadmin)
+//         user_id = userId;
+//       } else {
+//         console.log("hii")
+//         const user = JSON.parse(localStorage.getItem("user"));
+//         console.log("is the data:",user)
+//         user_id = user.uid;
+//         if (!user_id) throw new Error("User ID not found in local storage");
+//       }
+
+//       const response = await axios.get(
+//         `${BaseUrl}/register?user_id=${user_id}`
+//       );
+//       console.log("response of get my interest", response);
+//       return response;
+//     } catch (error) {
+//       console.error('Error in GetMyIntrests:', error);
+//       return rejectWithValue(error.response?.data || error.message);
+//     }
+//   }
+// );
+// export const DeleteIntrests = createAsyncThunk(
+//   "property/DeleteIntrests",
 //   async (formData, { rejectWithValue }) => {
 //     try {
-//       // const user = JSON.parse(localStorage.getItem("user"));
-//       // const user_id = user.uid;
-
-//       // const Data = {
-//       // user_id :  user_id ,
-//       // userData,
-//       // };
-//       console.log("formData", formData);
-//       const response = await axios.post(`${BaseUrl}/help`, formData);
-//       console.log(response);
+//       const user = JSON.parse(localStorage.getItem("user"));
+//       const user_id = user.uid;
+//       console.log(formData);
+//       const Data = {
+//         user_id: user_id,
+//         body: formData,
+//       };
+//       const response = await axios.post("", Data);
 //       return response;
 //     } catch (error) {
 //       return rejectWithValue(error.response.data);
 //     }
 //   }
 // );
+
+
 export const PostUserCallRequest = createAsyncThunk(
   "property/PostUserCallRequest",
   async (formData, { rejectWithValue }) => {

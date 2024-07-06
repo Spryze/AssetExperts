@@ -24,7 +24,7 @@ import SearchDialogue from "../SearchDialogue";
 import DefaultImg from "src/assets/Default/DegaultImg.gif";
 import CircularProgress from "@mui/material/CircularProgress";
 import { differenceInDays, parseISO } from "date-fns";
-import CircularRotationCards from "../property-components/CircularRotationCards";
+import CircularRotationCards from "../property-components/CircularRotationCards"
 
 const CurrencyFormatter = ({ value, currency }) => {
   const formattedValue = new Intl.NumberFormat("en-IN", {

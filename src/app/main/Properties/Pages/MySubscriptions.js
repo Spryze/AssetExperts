@@ -1084,6 +1084,20 @@ const MySubscriptions = (params) => {
                             fullWidth
                           >
                             Save
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
+                            {/* Save
                           </Button>
                         </div>
                       )}
@@ -1099,6 +1113,6 @@ const MySubscriptions = (params) => {
       
     </Container>
   );
-};
+}; */}
 
 export default MySubscriptions;

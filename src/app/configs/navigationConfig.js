@@ -72,6 +72,23 @@ const navigationConfig = [
         url: '/manage/Areas',
       }
     ],
+    
+  },
+  {
+    id: 'Faq',
+    title: 'FAQs',
+    translate: 'FAQs',
+    type: 'item',
+    icon: 'heroicons-outline:plus',
+    url: 'Faq',
+  },
+  {
+    id: 'AboutUs',
+    title: 'AboutUs',
+    translate: 'AboutUs',
+    type: 'item',
+    icon: 'heroicons-outline:plus',
+    url: 'AboutUs',
   },
   
 ];

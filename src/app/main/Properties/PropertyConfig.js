@@ -9,9 +9,11 @@ import SearchProperty from './SearchProperty';
 import PropertyHome from './Pages/PropertyHome';
 import MyProperties from './Pages/MyProperties';
 import MySubscriptions from './Pages/MySubscriptions';
+import AboutUs from './AboutUs';
 import ManageAreas from './Pages/ManageAreas';
 import { auth } from '../sign-in/Config';
 import { authRoles } from 'src/app/auth';
+import Faq from './Faq';
 i18next.addResourceBundle('en', 'propertyPage', en);
 i18next.addResourceBundle('tr', 'propertyPage', tr);
 i18next.addResourceBundle('ar', 'propertyPage', ar);
@@ -55,6 +57,14 @@ const PropertyConfig = {
     {
       path: 'manage/Areas',
       element: <ManageAreas />,
+    },
+    {
+      path: 'Faq',
+      element: <Faq />,
+    },
+    {
+      path: 'AboutUs',
+      element: <AboutUs />,
     },
   ],
 };

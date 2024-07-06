@@ -38,11 +38,11 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
     loan_eligible: "",
     updated_by: "",
     notified: 0,
-    unit:"",
+    unit: "",
     v_status: true,
     own_name: "",
     med_name: "",
-    landmark:"",
+    landmark: "",
     offset: 0,
   };
 
@@ -87,7 +87,6 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
   };
 
   const handleSubmit = async () => {
-    
     try {
       const payload = {
         ...formData,
@@ -97,26 +96,26 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
         },
       };
       FormData(payload);
-
-       await dispatch(
+      setIsLoading(true);
+      await dispatch(
         SearchResults({
           formData: payload,
           offset: 0,
           isAdminSearch: isAdminSearch,
           PropertyState: PropertyState,
         })
-      ).then(()=>{
+      ).then(() => {
         setIsLoading(false);
       });
-      setIsLoading(true);
+      
       // onSearch(result);
-// {console.log('result',result)}
-//       if (!result || !result.data || result.properties.length === 0) {
-//         setNoDataFound(true);
-//         onSearch(result);
-//       } else {
-//         setNoDataFound(false);
-//       }
+      // {console.log('result',result)}
+      //       if (!result || !result.data || result.properties.length === 0) {
+      //         setNoDataFound(true);
+      //         onSearch(result);
+      //       } else {
+      //         setNoDataFound(false);
+      //       }
     } catch (error) {
       console.error("Failed to fetch data:", error);
       setNoDataFound(true);
@@ -129,29 +128,58 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
   return (
     <React.Fragment>
       <Box
-        className="SearchBox"
+        // className="SearchBox"
         sx={{
           display: "flex",
           alignItems: "end",
           padding: "2px 10px",
-          margin: "20px 30px",
+          // margin: "20px 30px",
           textTransform: "capitalize",
+          // justifyContent: "center",
+          width: "100%",
         }}
       >
         <TextField
           variant="outlined"
           size="medium"
-          placeholder="Search ..."
+          placeholder="search ..."
           onClick={handleClickOpen}
           sx={{
-            marginRight: { xs: "0", sm: "120px" },
-            width: { xs: "100%", sm: "350px" },
+            // marginRight: { xs: "0", sm: "120px" },
+            width: "400px",
             fontSize: "45px",
+            background: "white",
+            borderRadius: "20px",
+            boxShadow: "-3px 9px 38px #444444",
+            // top:"-78px",
+            // left: "60px",
+            "& .MuiInputBase-root": {
+              borderRadius: "20px",
+            },
+            "& .MuiFilledInput-root": {
+              borderRadius: "20px",
+              padding: "0 15px",
+            },
+            input: {
+              height: "60px",
+              boxSizing: "border-box",
+              padding: 0,
+              fontSize: "20px",
+              lineHeight: "100px",
+              textAlign: "center",
+              borderRadius: "20px",
+            },
           }}
         />
       </Box>
 
-      <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose} sx={{textTransform:"capitalize"}}>
+      <Dialog
+        fullWidth={true}
+        maxWidth="md"
+        open={open}
+        onClose={handleClose}
+        sx={{ textTransform: "capitalize" }}
+      >
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <DialogTitle>Choose Your Requirements</DialogTitle>
           <CloseIcon
@@ -196,7 +224,6 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 onChange={handleChange}
                 label="Listing Type"
               >
-              
                 <MenuItem value="sell">Sell</MenuItem>
                 <MenuItem value="buy">Buy</MenuItem>
                 <MenuItem value="rent">Rent</MenuItem>
@@ -221,7 +248,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               label="Max Budget"
               placeholder="Maximum value"
               name="max_price"
-               type="number"
+              type="number"
               value={formData.max_price}
               onChange={handleChange}
               variant="outlined"
@@ -235,7 +262,6 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 onChange={handleChange}
                 label="Unit"
               >
-             
                 <MenuItem value="sqft">sqft</MenuItem>
                 <MenuItem value="sqyd">sqyd</MenuItem>
                 <MenuItem value="sq.m">sq.m</MenuItem>
@@ -276,7 +302,11 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 label="Select State"
               >
                 {statesData.states.map((state) => (
-                  <MenuItem key={state.id} value={state.name} sx={{textTransform:"capitalize"}}>
+                  <MenuItem
+                    key={state.id}
+                    value={state.name}
+                    sx={{ textTransform: "capitalize" }}
+                  >
                     {state.name}
                   </MenuItem>
                 ))}
@@ -292,21 +322,27 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 label="Select District"
               >
                 {districtOptions.map((district) => (
-                  <MenuItem key={district} value={district} sx={{textTransform:"capitalize"}}>
+                  <MenuItem
+                    key={district}
+                    value={district}
+                    sx={{ textTransform: "capitalize" }}
+                  >
                     {district}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            {user.role === "admin" && (<FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
-              <TextField
-                name="landmark"
-                value={formData.landmark}
-                onChange={handleChange}
-                label="Landmark"
-                variant="outlined"
-              />
-            </FormControl>)}
+            {user.role === "admin" && (
+              <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+                <TextField
+                  name="landmark"
+                  value={formData.landmark}
+                  onChange={handleChange}
+                  label="Landmark"
+                  variant="outlined"
+                />
+              </FormControl>
+            )}
 
             <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
               <InputLabel>Approved</InputLabel>
@@ -408,9 +444,20 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               // >
               //   Submit
               // </Button>
-              <Button onClick={handleSubmit} sx={{borderRadius:"8px",padding:"5px 20px",backgroundColor:"#4ea944",color:'white','&:hover': {
-                backgroundColor: "#0d7e00",
-              }}}>Submit</Button>
+              <Button
+                onClick={handleSubmit}
+                sx={{
+                  borderRadius: "8px",
+                  padding: "5px 20px",
+                  backgroundColor: "#4ea944",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "#0d7e00",
+                  },
+                }}
+              >
+                Submit
+              </Button>
             )}
           </Box>
         </DialogActions>

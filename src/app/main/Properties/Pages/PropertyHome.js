@@ -18,13 +18,16 @@ import {
   Paper,
   Button,
 } from "@mui/material";
+import WipeImage from "../property-components/WipeImage";
 import { selectUser } from "app/store/userSlice";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SearchDialogue from "../SearchDialogue";
 import DefaultImg from "src/assets/Default/DegaultImg.gif";
 import CircularProgress from "@mui/material/CircularProgress";
 import { differenceInDays, parseISO } from "date-fns";
-import CircularRotationCards from "../property-components/CircularRotationCards"
+import CircularRotationCards from "../property-components/CircularRotationCards";
+import AnimatedText from "../property-components/AnimatedText";
+import { Rotate90DegreesCcw } from "@mui/icons-material";
 
 const CurrencyFormatter = ({ value, currency }) => {
   const formattedValue = new Intl.NumberFormat("en-IN", {
@@ -51,7 +54,6 @@ const PropertyHome = () => {
   const recentTransactions = useSelector(selectRecentTransactions);
   console.log("recentTransactions", recentTransactions);
   const searchResults = useSelector(selectNormalSearchResults);
-  console.log("searchResults", searchResults);
   const [formData, setformData] = useState(null);
   const [noDataFound, setNoDataFound] = useState(false);
   const [offset, setoffset] = useState(0);
@@ -64,7 +66,7 @@ const PropertyHome = () => {
   const [HomeProperties, SetHomeProperties] = useState();
   const [localLoading, setLocalLoading] = useState(false);
   const [HomePropertiesLoader, SetHomePropertiesLoader] = useState(false);
-  console.log("LocalProperies", LocalProperies);
+
 
   const HandleFormData = (data) => {
     console.log("data", data);
@@ -195,21 +197,6 @@ const PropertyHome = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // const handleSearch = (criteria) => {
-  //   setSearchCriteria(criteria);
-  //   dispatch(SearchResults(criteria))
-  //     .then((response) => {
-  //       if (response.payload.data.property.length === 0) {
-  //         setNoDataFound(true);
-  //       } else {
-  //         setNoDataFound(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching search results:", error);
-  //     });
-  // };
-
   const handleClick = (propertyId) => {
     const newWindow = window.open(`/property/${propertyId}`, "_blank");
     if (newWindow) {
@@ -220,77 +207,62 @@ const PropertyHome = () => {
   };
 
   return (
-    <Box sx={{ margin: "20px", position: "relative" }}>
-      <Box
-        sx={{
-          background:
-            "linear-gradient(9deg, rgba(241,247,238,1) 0%, rgba(255,255,255,1) 100%)",
-          // height: "60vh",
-          width: "100%",
-          maxWidth: "100%",
-          borderRadius: "30px",
-          position: "relative",
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Grid container spacing={2} sx={{ width: "100%" }}>
-          <Grid
-            item
-            xs={12}
-            md={7}
-            // sx={{
-            //   display: "flex",
-            //   justifyContent: "center",
-            //   alignItems: "center",
-            // }}
-          >
-            <Box 
-            // sx={{ textAlign: "center" }}
-            >
-              {/* <h1 className="BigText">
-                Easy Way To Find a<br />
-                <span className="SpanTextColor"> Perfect Property </span>
-              </h1>
-              <p
-                style={{
-                  fontSize: "20px",
-                  textAlign: "left",
-                  margin: "20px 0 0 30px",
+    <Box>
+      <Box className="home-blue-background">
+        <Box
+          sx={{
+            // width: "97%",
+            maxWidth: "100%",
+            position: "relative",
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            
+          }}
+        >
+          <Grid container spacing={2} sx={{ width: "100%" }}>
+            <Grid item xs={12} md={7}>
+              <Box
+              className="AnimatedBox"
+                sx={{
+                  margin: "80px",
                 }}
               >
-                We provide a complete service for the sale, purchase of real
-                estate..
-              </p> */}
-              <CircularRotationCards/>
-            </Box>
+                <AnimatedText />
+                <SearchDialogue
+                  FormData={HandleFormData}
+                  onSearch={DataNotFound}
+                  isAdminSearch={isAdminSearch}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={5}>
+              <div
+                style={{
+                  width: "100%",
+                  height: "500px",
+                  margin: "50px 0px",
+                  display:"flex",
+                  justifyContent:"center",
+                  background:"transparent",
+                 
+                }}
+              >
+               
+                <video width="250" height="200" style={{borderRadius:"35px",position:"absolute"}} autoPlay loop>
+                  <source
+                    src="/assets/cardimages/phone (2).mp4"
+                    type="video/mp4"
+                  />
+                </video>
+               
+              </div>
+              <WipeImage/>
+              {/* <img src="/assets/cardimages/alerts.png" style={{position:"absolute",right:"445px", top:"0px", height:"auto", width:"270px"}} /> */}
+              {/* <h3 style={{position:"relative", top:"-452px",left:"439px",fontWeight:"bold",background:"white",padding:"10px",color:"#FC5B47"}}>Experience Seamless <br/> Property Alerts</h3> */}
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={5} sx={{ position: "relative" }}>
-            {/* <img
-              className="HomeImage"
-              src="/assets/images/properties/pexels-binyaminmellish-1396122-removebg-preview copy.png"
-              alt="Girl in a jacket"
-              style={{
-                position: "absolute",
-                bottom: "-191px",
-                right: "-33px",
-                maxWidth: "100%",
-              }}
-            /> */}
-           <img src="/assets/cardimages/watsappmockup.png" height="530px" width="auto" />
-
-
-            <SearchDialogue
-            FormData={HandleFormData}
-            onSearch={DataNotFound}
-            isAdminSearch={isAdminSearch}
-          />
-            
-          </Grid>
-          
-        </Grid>
-        
+        </Box>
       </Box>
 
       {noDataFound && (
@@ -316,7 +288,7 @@ const PropertyHome = () => {
       <Grid container spacing={1}>
         {Object.keys(searchResults)?.length > 0 && (
           <div style={{ marginTop: "20px" }}>
-            <Typography variant="h6">
+            <Typography variant="h6" sx={{marginLeft:"30px"}}>
               Search Results({total_properties})
             </Typography>
             <hr style={{ margin: "10px 0px" }} />
@@ -325,7 +297,7 @@ const PropertyHome = () => {
                 display: "flex",
                 gap: "10px",
                 flexWrap: "wrap",
-                justifyContent: "center",
+                justifyContent: "space-around",
               }}
             >
               {searchResults
@@ -337,11 +309,11 @@ const PropertyHome = () => {
                       flex: "0 0 auto",
                       cursor: "pointer",
                       height: "auto",
-                      width: "300px",
+                      width: "320px",
                       position: "relative",
                       padding: "0px",
                       borderRadius: "5px",
-                      margin: "3px 0px",
+                      margin: "30px 0px",
                     }}
                     onClick={() => handleClick(item.property_id)}
                   >
@@ -380,7 +352,6 @@ const PropertyHome = () => {
                         }}
                       >
                         <Typography>
-                          {" "}
                           {item?.p_created_on &&
                             `${calculateDaysAgo(item.p_created_on)} days ago`}
                         </Typography>
@@ -458,12 +429,17 @@ const PropertyHome = () => {
         )}
       </Grid>
       <div>
+        <CircularRotationCards />
+      </div>
+
+      <div>
         <Typography
           className="heading-text Text-Center"
           sx={{ margin: "40px 0px" }}
         >
           We Are Available In Your Local cities..
         </Typography>
+        <hr/>
         <div
           className="Local-cities"
           style={{
@@ -479,7 +455,7 @@ const PropertyHome = () => {
             sx={{
               flex: "0 0 auto",
               width: "250px",
-              height: "400px",
+              height: "300px",
               position: "relative",
               borderRadius: "5px",
               justifyContent: "center",
@@ -515,7 +491,7 @@ const PropertyHome = () => {
                 alt="Property"
                 style={{
                   width: "100%",
-                  height: "400px",
+                  height: "300px",
                   objectFit: "cover",
                   borderRadius: "5px",
                 }}
@@ -529,7 +505,7 @@ const PropertyHome = () => {
             sx={{
               flex: "0 0 auto",
               width: "250px",
-              height: "400px",
+              height: "300px",
               position: "relative",
               borderRadius: "5px",
               justifyContent: "center",
@@ -564,7 +540,7 @@ const PropertyHome = () => {
                 alt="Property"
                 style={{
                   width: "100%",
-                  height: "400px",
+                  height: "300px",
                   objectFit: "cover",
                   borderRadius: "5px",
                 }}
@@ -578,7 +554,7 @@ const PropertyHome = () => {
             sx={{
               flex: "0 0 auto",
               width: "250px",
-              height: "400px",
+              height: "300px",
               position: "relative",
               borderRadius: "5px",
               justifyContent: "center",
@@ -614,7 +590,7 @@ const PropertyHome = () => {
                 alt="Property"
                 style={{
                   width: "100%",
-                  height: "400px",
+                  height: "300px",
                   objectFit: "cover",
                   borderRadius: "5px",
                 }}
@@ -628,7 +604,7 @@ const PropertyHome = () => {
             sx={{
               flex: "0 0 auto",
               width: "250px",
-              height: "400px",
+              height: "300px",
               position: "relative",
               borderRadius: "5px",
               justifyContent: "center",
@@ -665,7 +641,7 @@ const PropertyHome = () => {
                 alt="Property"
                 style={{
                   width: "100%",
-                  height: "400px",
+                  height: "300px",
                   objectFit: "cover",
                   borderRadius: "5px",
                 }}
@@ -684,7 +660,7 @@ const PropertyHome = () => {
             <hr style={{ margin: "10px 0px" }} />
             <Typography
               variant="h6"
-              sx={{ marginBottom: "10px", textTransform: "capitalize" }}
+              sx={{ marginLeft: "30px", textTransform: "capitalize" }}
             >
               {LocalProperies[0].district}
             </Typography>
@@ -704,11 +680,11 @@ const PropertyHome = () => {
                       flex: "0 0 auto",
                       cursor: "pointer",
                       height: "auto",
-                      width: "300px",
+                      width: "320px",
                       position: "relative",
                       padding: "0px",
                       borderRadius: "5px",
-                      margin: "3px 0px",
+                      margin: "30px 0px",
                     }}
                     onClick={() => handleClick(item.property_id)}
                   >
@@ -790,12 +766,25 @@ const PropertyHome = () => {
                               color: "black",
                             }}
                           >
-                            <Button>
-                              {item?.p_created_on &&
-                                `${calculateDaysAgo(
-                                  item.p_created_on
-                                )} days ago`}
-                            </Button>
+                            <Paper
+                        sx={{
+                          fontWeight: "600",
+                          position: "absolute",
+                          padding: "10px",
+                          top: "160px",
+                          right: "0",
+                          borderRadius: "0px 5px 5px 0px",
+                          boxShadow: "none",
+                          background: "rgba(0, 0, 0, 0.5)",
+                          color: "white",
+                        }}
+                      >
+                        <Typography>
+                          {item?.p_created_on &&
+                            `${calculateDaysAgo(item.p_created_on)} days ago`}
+                        </Typography>
+                      </Paper>
+                            
                           </Typography>
                         </Box>
                       </div>
@@ -807,13 +796,8 @@ const PropertyHome = () => {
           </div>
         </Grid>
       )}
-      <Grid
-        container
-        spacing={2}
-        className="Plot&LandCards"
-        sx={{ marginTop: "30px" }}
-      >
-        <Grid item xs={12} md={3} sm={6}>
+     <div style={{display:"flex",justifyContent:"space-evenly", flexWrap:"wrap"}}>
+        
           <Card
             sx={{
               borderRadius: "5px",
@@ -824,7 +808,7 @@ const PropertyHome = () => {
               justifyContent: "center",
               alignItems: "center",
               display: "flex",
-              alignItems: "center",
+              margin:"10px",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -843,7 +827,7 @@ const PropertyHome = () => {
               <Box
                 sx={{
                   padding: "20px",
-                  border: "2px dotted #91f387",
+                  border: "2px dotted #FACF39",
                   height: "180px",
                   width: "230px",
                   display: "flex",
@@ -853,7 +837,7 @@ const PropertyHome = () => {
                   backgroundColor: "white",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#00204A",
+                    backgroundColor: "#FACF39",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },
@@ -869,7 +853,7 @@ const PropertyHome = () => {
                     height: "100px",
                     width: "100px",
                     borderRadius: "50%",
-                    border: "2px dotted #91f387",
+                    border: "2px dotted #FACF39",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -908,8 +892,8 @@ const PropertyHome = () => {
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} md={3} sm={6}>
+      
+        
           <Card
             onClick={() => {
               CardClick("land");
@@ -924,6 +908,7 @@ const PropertyHome = () => {
               justifyContent: "center",
               alignItems: "center",
               display: "flex",
+              margin:"10px",
               alignItems: "center",
             }}
           >
@@ -939,7 +924,7 @@ const PropertyHome = () => {
               <Box
                 sx={{
                   padding: "20px",
-                  border: "2px dotted #91f387",
+                  border: "2px dotted #FACF39",
                   height: "180px",
                   width: "230px",
                   display: "flex",
@@ -949,7 +934,7 @@ const PropertyHome = () => {
                   backgroundColor: "#ffffff",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#00204A",
+                    backgroundColor: "#FACF39",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },
@@ -965,7 +950,7 @@ const PropertyHome = () => {
                     height: "100px",
                     width: "100px",
                     borderRadius: "50%",
-                    border: "2px dotted #91f387",
+                    border: "2px dotted #FACF39",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -993,10 +978,8 @@ const PropertyHome = () => {
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} md={3} sm={6}>
+        
           <Card
-          
             sx={{
               cursor: "pointer",
               borderRadius: "5px",
@@ -1007,9 +990,9 @@ const PropertyHome = () => {
               justifyContent: "center",
               alignItems: "center",
               display: "flex",
+              margin:"10px",
               alignItems: "center",
             }}
-             
             onClick={() => {
               CardClick("commercial");
             }}
@@ -1026,7 +1009,7 @@ const PropertyHome = () => {
               <Box
                 sx={{
                   padding: "20px",
-                  border: "2px dotted #91f387",
+                  border: "2px dotted #FACF39",
                   height: "180px",
                   width: "230px",
                   display: "flex",
@@ -1036,7 +1019,7 @@ const PropertyHome = () => {
                   backgroundColor: "#ffffff",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#00204A",
+                    backgroundColor: "#FACF39",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },
@@ -1052,7 +1035,7 @@ const PropertyHome = () => {
                     height: "100px",
                     width: "100px",
                     borderRadius: "50%",
-                    border: "2px dotted #91f387",
+                    border: "2px dotted #FACF39",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -1080,8 +1063,7 @@ const PropertyHome = () => {
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} md={3} sm={6}>
+       
           <Card
             sx={{
               cursor: "pointer",
@@ -1092,6 +1074,7 @@ const PropertyHome = () => {
               boxShadow: "none",
               justifyContent: "center",
               alignItems: "center",
+              margin:"10px",
               display: "flex",
               alignItems: "center",
             }}
@@ -1111,7 +1094,7 @@ const PropertyHome = () => {
               <Box
                 sx={{
                   padding: "20px",
-                  border: "2px dotted #91f387",
+                  border: "2px dotted #FACF39",
                   height: "180px",
                   width: "230px",
                   display: "flex",
@@ -1121,7 +1104,7 @@ const PropertyHome = () => {
                   backgroundColor: "#ffffff",
                   transition: "background-color 0.3s ease",
                   "&:hover": {
-                    backgroundColor: "#00204A",
+                    backgroundColor: "#FACF39",
                     "& .circular-box": {
                       backgroundColor: "#FFFFFF",
                     },
@@ -1137,7 +1120,7 @@ const PropertyHome = () => {
                     height: "100px",
                     width: "100px",
                     borderRadius: "50%",
-                    border: "2px dotted #91f387",
+                    border: "2px dotted #FACF39",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -1165,8 +1148,7 @@ const PropertyHome = () => {
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+  </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         {HomePropertiesLoader && <CircularProgress />}
       </div>
@@ -1336,7 +1318,7 @@ const PropertyHome = () => {
                       position: "relative",
                       padding: "0px",
                       borderRadius: "5px",
-                      margin: "30px",
+                      margin: "30px 0px",
                     }}
                     onClick={() => handleClick(item.property_id)}
                   >
@@ -1395,23 +1377,23 @@ const PropertyHome = () => {
                           }}
                         >
                           <Paper
-                          sx={{
-                            fontWeight: "600",
-                            position: "absolute",
-                            padding: "10px",
-                 
-                            borderRadius: "5px 0px 0px 0px",
-                            background: "rgba(0, 0, 0, 0.5)",
-                            color: "white",
-                            width:"max-content",
-                          }}
-                        >
-                          {`${
-                            item?.listing_type === "buy"
-                              ? "Wanted"
-                              : `${item?.listing_type}ing`
-                          }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
-                        </Paper>
+                            sx={{
+                              fontWeight: "600",
+                              position: "absolute",
+                              padding: "10px",
+
+                              borderRadius: "5px 0px 0px 0px",
+                              background: "rgba(0, 0, 0, 0.5)",
+                              color: "white",
+                              width: "max-content",
+                            }}
+                          >
+                            {`${
+                              item?.listing_type === "buy"
+                                ? "Wanted"
+                                : `${item?.listing_type}ing`
+                            }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
+                          </Paper>
                           {/* <Button
                             variant="contained"
                             sx={{
@@ -1440,7 +1422,7 @@ const PropertyHome = () => {
                               : `${item?.listing_type}ing`
                           }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
                         </Typography>
-                        <Box sx={{ display: "flex",margin:"5px 0px"}}>
+                        <Box sx={{ display: "flex", margin: "5px 0px" }}>
                           <LocationOnIcon sx={{ color: "#0b6c00" }} />
                           <Typography
                             sx={{

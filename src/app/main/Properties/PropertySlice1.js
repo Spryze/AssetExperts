@@ -602,9 +602,32 @@ export const updateProperty = createAsyncThunk(
   }
 );
 
+export const DeleteImage = createAsyncThunk(
+  "property/DeleteImage",
+  async (formData) => {
+    try {
+      const response = await axios.delete(`${BaseUrl}/image`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: formData,  // Directly pass formData here
+      });
+
+      console.log(response.data);
+
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting image:', error);
+      throw error;
+    }
+  }
+);
+
+
 export const AddImage = createAsyncThunk(
   "property/AddImage",
   async (formData) => {
+    console.log(formData)
     const response = await axios.post(`${BaseUrl}/image`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

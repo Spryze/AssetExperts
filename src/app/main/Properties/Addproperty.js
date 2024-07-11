@@ -57,9 +57,10 @@ const AddProperty = (propertyData) => {
   return (
     <Container
       sx={{
-        position: "absolute",
+        // position: "absolute",
         left: "20px",
         top: "20px",
+        
         // background: "white",
       }}
     >
@@ -78,9 +79,10 @@ const AddProperty = (propertyData) => {
             </div>
           </Paper>
         </div>
-      ) : (
-        <Form propertyData={propertyData} />
-      )}
+      ) : 
+        <Form  />
+      }
+      {/* <Form propertyData={propertyData} /> */}
     </Container>
   );
 };

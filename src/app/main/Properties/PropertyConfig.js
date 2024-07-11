@@ -4,6 +4,7 @@ import en from 'src/app/configs/navigation-i18n/en.js';
 import tr from 'src/app/configs/navigation-i18n/tr.js';
 import ar from 'src/app/configs/navigation-i18n/ar.js';
 import Property from './Property';
+import Form from './MultiStepForm/Form';
 import Addproperty from './Addproperty';
 import SearchProperty from './SearchProperty';
 import PropertyHome from './Pages/PropertyHome';
@@ -65,6 +66,10 @@ const PropertyConfig = {
     {
       path: 'AboutUs',
       element: <AboutUs />,
+    },
+    {
+      path: 'UpdateProperty',
+      element: <Form />,
     },
   ],
 };

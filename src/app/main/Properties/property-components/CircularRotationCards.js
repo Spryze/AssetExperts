@@ -658,7 +658,7 @@ export default CardList;
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   gap: 20px;
   width: 100%;
@@ -674,7 +674,8 @@ const Card = styled.div`
   border-radius: 12px;
   // padding: 20px;
   // box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  width: 250px;
+  width: 200px;
+  margin: 0px 10px;
   text-align: center;
   transition: transform 0.3s, box-shadow 0.3s;
 

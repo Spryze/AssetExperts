@@ -18,11 +18,13 @@ import { useParams } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import { useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 
 
 function Property() {
+  const Navigate = useNavigate();
   const user = useSelector(selectUser);
   console.log("user",user)
   const propertiesData = useSelector(selectProperties);
@@ -65,7 +67,7 @@ const propertyData = propertiesData?.data?.property;
   }, []);
 
   const handleClick = () => {
-    
+    Navigate('/UpdateProperty');
         setSelectedProperty(propertiesData);
 
     setIsEditMode(true);
@@ -136,13 +138,13 @@ const propertyData = propertiesData?.data?.property;
               Edit Property
             </Button>
           )}
-          {isEditMode  && (
+          {/* {isEditMode  && (
             <Addproperty
               isEditMode={isEditMode}
               propertyData={propertyData}
               onClose={handleCloseForm}
             />
-          )}
+          )} */}
         </Grid>
 
         {!isEditMode && <Map color="red" />}

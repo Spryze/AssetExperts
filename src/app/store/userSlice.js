@@ -322,6 +322,7 @@ export const setUser = createAsyncThunk('user/setUser', async () => {
               properties:userData.properties,
               profession:userData.profile.profession,
               requirements:userData.profile.requirements,
+              active_notifications:userData.profile.active_notifications,
               photoURL: 'assets/images/avatars/profile.webp',
 
               

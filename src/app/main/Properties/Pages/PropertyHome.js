@@ -411,12 +411,12 @@ const PropertyHome = () => {
             </div>
             {Loading && (
               <Box sx={{ display: "flex", justifyContent: "center" }}>
-                {" "}
-                <CircularProgress />{" "}
+   
+                <CircularProgress />
               </Box>
             )}
             <Box sx={{ display: "flex", justifyContent: "end" }}>
-              {" "}
+
               <Button
                 onClick={() => {
                   SeeMoreResults();

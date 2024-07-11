@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectProperties } from "../PropertySlice1";
 import { Card, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { selectUser } from "app/store/userSlice";
 import SellIcon from "@mui/icons-material/Sell";
 import AccountBalanceSharpIcon from "@mui/icons-material/AccountBalanceSharp";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
@@ -11,11 +11,16 @@ import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import NorthWestIcon from "@mui/icons-material/NorthWest";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import DescriptionIcon from '@mui/icons-material/Description';
 
 const MorePropertyDetails = () => {
   const propertyData = useSelector(selectProperties);
-  const propertyType = propertyData?.data?.property?.p_type
+  const propertyType = propertyData?.data?.property?.p_type;
+  const user = useSelector(selectUser);
 
+  const openPdfInNewTab = (url) => {
+    window.open(url, '_blank');
+  };
   const toggleShowMore = () => {
     setShowMore(!showMore);
   };
@@ -46,12 +51,9 @@ const MorePropertyDetails = () => {
           <div className="detailsFlex">
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
               <SellIcon />
-              <span style={{ fontWeight: "600" }}>
-      
-                Property Name :
-              </span>
-              <span style={{ marginLeft: "20px",textTransform:"capitalize" }}>
-              {propertyData?.data?.property?.property_name}
+              <span style={{ fontWeight: "600" }}>Property Name :</span>
+              <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
+                {propertyData?.data?.property?.property_name}
               </span>
             </Typography>
 
@@ -67,7 +69,6 @@ const MorePropertyDetails = () => {
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
               <SellIcon />
               <span style={{ fontWeight: "600" }}>
-      
                 Price per {propertyData?.data?.property?.unit}:
               </span>
               <span style={{ marginLeft: "20px" }}>
@@ -89,7 +90,8 @@ const MorePropertyDetails = () => {
               <AccountTreeIcon />{" "}
               <span style={{ fontWeight: "600" }}> Area :</span>
               <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
-                {propertyData?.data?.property?.area} {propertyData?.data?.property?.unit}
+                {propertyData?.data?.property?.area}{" "}
+                {propertyData?.data?.property?.unit}
               </span>
             </Typography>
 
@@ -158,68 +160,99 @@ const MorePropertyDetails = () => {
             </Typography>
           </div>
 
-          {propertyType === "Flat" && (<div className="detailsFlex">
-            {propertyType === "Flat" && (
-              <Typography
-                variant="p"
-                sx={{ margin: "10px 0", fontSize: "15px" }}
-              >
-                <span style={{ fontWeight: "600" }}> Furnished :</span>
-                <span
-                  style={{ textTransform: "capitalize", marginLeft: "20px" }}
+          {propertyType === "Flat" && (
+            <div className="detailsFlex">
+              {propertyType === "Flat" && (
+                <Typography
+                  variant="p"
+                  sx={{ margin: "10px 0", fontSize: "15px" }}
                 >
-                  {propertyData?.data?.property?.est_year}
-                </span>
-              </Typography>
-            )}
-            {propertyType === "Flat" && (
-              <Typography
-                variant="p"
-                sx={{ margin: "10px 0", fontSize: "15px" }}
-              >
-                RERA Status :
-                <span
-                  style={{ textTransform: "capitalize", marginLeft: "20px" }}
+                  <span style={{ fontWeight: "600" }}> Furnished :</span>
+                  <span
+                    style={{ textTransform: "capitalize", marginLeft: "20px" }}
+                  >
+                    {propertyData?.data?.property?.est_year}
+                  </span>
+                </Typography>
+              )}
+              {propertyType === "Flat" && (
+                <Typography
+                  variant="p"
+                  sx={{ margin: "10px 0", fontSize: "15px" }}
                 >
-                  {propertyData?.data?.property?.est_year}
-                </span>
-              </Typography>
-            )}
-          </div>)}
-          {propertyType === "Flat" && (<div className="detailsFlex">
-            {propertyType === "Flat" && (
-              <Typography
-                variant="p"
-                sx={{ margin: "10px 0", fontSize: "15px" }}
-              >
-                Lift :
-                <span
-                  style={{ textTransform: "capitalize", marginLeft: "20px" }}
+                  RERA Status :
+                  <span
+                    style={{ textTransform: "capitalize", marginLeft: "20px" }}
+                  >
+                    {propertyData?.data?.property?.est_year}
+                  </span>
+                </Typography>
+              )}
+            </div>
+          )}
+          {propertyType === "Flat" && (
+            <div className="detailsFlex">
+              {propertyType === "Flat" && (
+                <Typography
+                  variant="p"
+                  sx={{ margin: "10px 0", fontSize: "15px" }}
                 >
-                  {propertyData?.data?.property?.est_year}
-                </span>
-              </Typography>
-            )}
-            {propertyType === "Plot" && (
-              <Typography
-                variant="p"
-                sx={{ margin: "10px 0", fontSize: "15px" }}
-              >
-                <span style={{ fontWeight: "600" }}>Boundry Wall :</span>
+                  Lift :
+                  <span
+                    style={{ textTransform: "capitalize", marginLeft: "20px" }}
+                  >
+                    {propertyData?.data?.property?.est_year}
+                  </span>
+                </Typography>
+              )}
+              {propertyType === "Plot" && (
+                <Typography
+                  variant="p"
+                  sx={{ margin: "10px 0", fontSize: "15px" }}
+                >
+                  <span style={{ fontWeight: "600" }}>Boundry Wall :</span>
 
-                <span
-                  style={{ textTransform: "capitalize", marginLeft: "20px" }}
-                >
-                  {propertyData?.data?.property?.est_year}
-                </span>
-              </Typography>
-            )}
-          </div>)}
-          
+                  <span
+                    style={{ textTransform: "capitalize", marginLeft: "20px" }}
+                  >
+                    {propertyData?.data?.property?.est_year}
+                  </span>
+                </Typography>
+              )}
+            </div>
+          )}
+          {user?.role === "admin" && (
+            <div className="detailsFlex">
+              
+              <div style={{display:"flex"}}>
+              <Typography
+                  variant="p"
+                  sx={{ margin: "10px 0", fontSize: "15px" }}>
+                    <DescriptionIcon/>
+                    <span style={{ fontWeight: "600" }}>Documents : </span></Typography>
+                <ul>
+                  {propertyData?.data?.property?.docfile?.map((url, index) => (
+                    <li key={index}>
+                      <a
+                      style={{display:"flex"}}
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          openPdfInNewTab(url);
+                        }}
+                      >
+                        Document {index + 1}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       </Card>
     </>
   );
 };
 
-export default MorePropertyDetails
+export default MorePropertyDetails;

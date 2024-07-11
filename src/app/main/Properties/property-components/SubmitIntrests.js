@@ -20,11 +20,16 @@ import {
 import { AddIntrests, GetMyIntrests } from "../PropertySlice1";
 import { useDispatch } from "react-redux";
 import StateandDistrictList from "../../../../assets/Default/area/result.json";
+import { useSelector } from "react-redux";
+import { selectUser } from "app/store/userSlice";
 
 export default function FormDialog(userId) {
   console.log("this was the Submit formDialog",userId)
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const user = useSelector(selectUser);
+  const [errorMessage, setErrorMessage] = useState('');
+  console.log('user in submit inyrest',user)
 
   const [formData, setFormData] = useState({
     // status: "add",
@@ -103,6 +108,24 @@ export default function FormDialog(userId) {
     const { value } = event.target;
     console.log("value", value);
     let selectedAreas = [];
+
+    if (value.includes(allAreasId) && user.data.active_notifications === 0) {
+      setErrorMessage('Please subscribe to select this option.');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+      return;
+    };
+
+    if (user.data.active_notifications === 0 && value.length > 10) {
+      setErrorMessage('Please subscribe to select more options.');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+      return;
+    }
+
+    setErrorMessage('');
 
     if (value.some((id) => allAreasId.includes(id))) {
       console.log("hii");
@@ -229,6 +252,7 @@ export default function FormDialog(userId) {
             Please select your State, District, and Areas (multiple selection
             allowed):
           </DialogContentText>
+          {errorMessage && (<p style={{ color: 'red' }}>{errorMessage}</p>)}
           <FormControl fullWidth sx={{ margin: "5px 10px" }}>
             <InputLabel>State</InputLabel>
             <Select
@@ -319,6 +343,7 @@ export default function FormDialog(userId) {
               </Select>
             </FormControl>
           )}
+        
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

@@ -285,6 +285,7 @@
 
 
 /* eslint import/no-extraneous-dependencies: off */
+
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import history from '@history';
 import _ from '@lodash';
@@ -368,8 +369,10 @@ export const UpdateUser = createAsyncThunk(
 
 export const signUpWithEmailAndPassword = createAsyncThunk(
   'user/SignupWithEmailPassword',
-  async ({ email, password, displayName }, { rejectWithValue }) => {
-    console.log("userSlice", email, password, displayName);
+  async (formattedData, { rejectWithValue }) => {
+    console.log('formattedData in userSlice',formattedData);
+    const { displayName, email, password, passwordConfirm, ph_num_1, ph_num_2 } = formattedData;
+
     try {
       const auth = getAuth();
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -379,7 +382,11 @@ export const signUpWithEmailAndPassword = createAsyncThunk(
         const userData = {
           name: displayName,
           email: email,
-          id: user.uid
+          id: user.uid,
+          ph_num_1:ph_num_1,
+          ph_num_2:ph_num_2,
+
+
         };
         console.log("userdata", userData);
         

@@ -842,6 +842,7 @@ import { selectUser } from "app/store/userSlice";
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import UploadImages from "./Property-Types-Forms/UploadImages";
+import { fontSize } from "@mui/system";
 
 const Form = () => {
   const propertiesData = useSelector(selectProperties);
@@ -1052,9 +1053,9 @@ const Form = () => {
       onSubmit={handleSubmit}
       sx={{ flexGrow: 1, width: "100%", maxWidth: 800, margin: "20px auto" }}
     >
-      <Typography>{heading}</Typography>
+      <Typography sx={{fontSize:"20px",fontWeight:"600"}}>{heading}</Typography>
       <hr />
-      {currentPath === "/UpdateProperty" && <Button onClick={UpdatImageFile}>Update Image/Documents</Button>}
+      {currentPath === "/UpdateProperty" && <Button sx={{marginTop:"20px"}} onClick={UpdatImageFile}>Update Image/Documents</Button>}
       <Grid container spacing={2} sx={{ marginTop: "10px" }}>
         {(user.role === "admin" || user.role === "staff") && (
           <Grid item xs={12} sm={6}>
@@ -1374,7 +1375,7 @@ const Form = () => {
             fullWidth
           />
         </Grid>
-        {(user.role === "admin" || user.role === "staff") && (
+        {/* {(user.role === "admin" || user.role === "staff") && (
           <Grid item xs={12} sm={6}>
             <Button
               component="label"
@@ -1391,7 +1392,7 @@ const Form = () => {
               />
             </Button>
           </Grid>
-        )}
+        )} */}
         <Grid item xs={12} sm={6}>
           <TextField
             label="Approved By"

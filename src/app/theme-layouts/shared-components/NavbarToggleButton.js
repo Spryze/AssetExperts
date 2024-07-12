@@ -41,7 +41,7 @@ function NavbarToggleButton(props) {
 
 NavbarToggleButton.defaultProps = {
   children: (
-    <RabitSvgIcon size={20} color="white" marginLeft="20px">
+    <RabitSvgIcon size={20} color="primary" marginLeft="20px">
       heroicons-outline:view-list
     </RabitSvgIcon>
   ),

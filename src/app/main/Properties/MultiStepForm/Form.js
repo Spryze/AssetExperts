@@ -987,13 +987,14 @@ const Form = () => {
     const errors = {};
     if (!formData.prop_name) errors.propertyName = "Property Name is required";
     if (!formData.p_type) errors.p_type = "Property Type is required";
-    if (!formData.price) errors.price = "Price is required";
+    // if (!formData.price) errors.price = "Price is required";
     return errors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validateForm();
+    console.log(errors);
     if (Object.keys(errors).length === 0) {
       const action = isEditMode ? updateProperty : addProperty;
       const p_id = propertyData?.propertyData?.property_id;
@@ -1180,18 +1181,22 @@ const Form = () => {
               >
                 <MenuItem value="1">1 BHK</MenuItem>
                 <MenuItem value="2">2 BHK</MenuItem>
+                <MenuItem value="1">3 BHK</MenuItem>
+                <MenuItem value="2">4 BHK</MenuItem>
+                <MenuItem value="1">5 BHK</MenuItem>
+                <MenuItem value="2">6 BHK</MenuItem>
               </Select>
               <FormHelperText>{formErrors.unit}</FormHelperText>
             </FormControl>
           </Grid>
         )}
 
-        {(formData.p_type === "Flat" ||
+        {(formData.p_type === "flat" ||
           formData.p_type === "PG" ||
-          formData.p_type === "Office Place" ||
-          formData.p_type === "Co Working Place" ||
-          formData.p_type === "Student Hostels" ||
-          formData.p_type === "Independent House") && (
+          formData.p_type === "office place" ||
+          formData.p_type === "co working place" ||
+          formData.p_type === "student hostels" ||
+          formData.p_type === "independent house") && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>Furnished</InputLabel>
@@ -1208,7 +1213,7 @@ const Form = () => {
           </Grid>
         )}
 
-        {formData.p_type === "Plot" && (
+        {formData.p_type === "plot" && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>Boundary Wall</InputLabel>
@@ -1225,7 +1230,7 @@ const Form = () => {
             </FormControl>
           </Grid>
         )}
-        {formData.p_type === "Plot" && (
+        {formData.p_type === "plot" && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>No. of Open Road Sides</InputLabel>
@@ -1245,7 +1250,7 @@ const Form = () => {
           </Grid>
         )}
 
-        {formData.p_type === "Flat" && (
+        {formData.p_type === "flat" && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>RERA Status</InputLabel>
@@ -1262,12 +1267,12 @@ const Form = () => {
           </Grid>
         )}
 
-        {(formData.p_type === "Flat" ||
+        {(formData.p_type === "flat" ||
           formData.p_type === "PG" ||
-          formData.p_type === "Office Place" ||
-          formData.p_type === "Co Working Place" ||
-          formData.p_type === "Student Hostels" ||
-          formData.p_type === "Independent House") && (
+          formData.p_type === "office place" ||
+          formData.p_type === "co working place" ||
+          formData.p_type === "student hostels" ||
+          formData.p_type === "independent house") && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>Lift</InputLabel>
@@ -1323,7 +1328,21 @@ const Form = () => {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        {formData.listing_type == "buy" &&<Grid item xs={12} sm={6}>
+          <TextField
+            label="price"
+            placeholder="Enter your price range eg: 1000000-2000000"
+            name="doc_num"
+            type="number"
+            value={formData.doc_num}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+            required
+   
+          />
+        </Grid>}
+        {formData.listing_type == "sell" && <Grid item xs={12} sm={6}>
           <TextField
             label="Price (₹)"
             name="price"
@@ -1336,7 +1355,7 @@ const Form = () => {
             error={!!formErrors.price}
             helperText={formErrors.price}
           />
-        </Grid>
+        </Grid>}
 
         <Grid item xs={12} sm={6}>
           <TextField
@@ -1365,7 +1384,7 @@ const Form = () => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        {formData.listing_type !=="buy" && <Grid item xs={12} sm={6}>
           <TextField
             label="Document Number"
             name="doc_num"
@@ -1374,7 +1393,7 @@ const Form = () => {
             variant="outlined"
             fullWidth
           />
-        </Grid>
+        </Grid>}
         {/* {(user.role === "admin" || user.role === "staff") && (
           <Grid item xs={12} sm={6}>
             <Button

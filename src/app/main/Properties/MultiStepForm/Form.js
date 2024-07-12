@@ -999,7 +999,7 @@ const Form = () => {
       const action = isEditMode ? updateProperty : addProperty;
       const p_id = propertyData?.propertyData?.property_id;
 
-      const resultAction = dispatch(action({ formData: formData, p_id })).then(
+      const resultAction = dispatch(action({formData, p_id })).then(
         (response) => {
           if (
             response.payload.message === "property added successfully" ||
@@ -1333,7 +1333,7 @@ const Form = () => {
             label="price"
             placeholder="Enter your price range eg: 1000000-2000000"
             name="doc_num"
-            type="number"
+            type="text"
             value={formData.doc_num}
             onChange={handleChange}
             variant="outlined"

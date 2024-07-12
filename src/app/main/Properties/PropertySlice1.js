@@ -570,16 +570,71 @@ export const addProperty = createAsyncThunk(
       if (!user) throw new Error("User not found in local storage");
 
       const cont_user_id = user.uid;
-      const data = { ...formData, cont_user_id };
 
+      // Construct data object without formData key
+      const data = {
+        cont_user_id,
+        AboutDeveloper: formData.AboutDeveloper || '',
+        BHK: formData.BHK || '',
+        Flooring: formData.Flooring || '',
+        No_bed_rooms: formData.No_bed_rooms || '',
+        PowerBackup: formData.PowerBackup || '',
+        PropertyAge: formData.PropertyAge || '',
+        PropertyStatus: formData.PropertyStatus || '',
+        WaterSource: formData.WaterSource || '',
+        ad_info: formData.ad_info || '',
+        approved_by: formData.approved_by || '',
+        bound_wall: formData.bound_wall || '',
+        boundry_wall: formData.boundry_wall || '',
+        comments: formData.comments || '',
+        developments: formData.developments || "",
+        dimensions: formData.dimensions || '',
+        direction: formData.direction || '',
+        disputes: formData.disputes || '',
+        district: formData.district || '',
+        doc_num: formData.doc_num || '',
+        // docfile: formData.docfile || [],
+        furnshied: formData.furnshied || '',
+        govt_price: formData.govt_price || null,
+        landmark: formData.landmark || '',
+        latitude: formData.latitude || 0,
+        lift: formData.lift || '',
+        listing_type: formData.listing_type || '',
+        loan_eligibile: formData.loan_eligibile || false,
+        longitude: formData.longitude || 0,
+        med_name: formData.med_name || '',
+        med_num1: formData.med_num1 || '',
+        med_num2: formData.med_num2 || '',
+        num_open_sides: formData.num_open_sides || '',
+        own_name: formData.own_name || '',
+        own_num1: formData.own_num1 || '',
+        own_num2: formData.own_num2 || '',
+        p_type: formData.p_type || '',
+        parking: formData.parking || false,
+        price: formData.price || 0,
+        prop_name: formData.prop_name || '',
+        rating: formData.rating || '',
+        reg_loc: formData.reg_loc || '',
+        rera: formData.rera || '',
+        size: formData.size || 0,
+        state: formData.state || '',
+        status: formData.status || '',
+        survey_number: formData.survey_number || '',
+        unit: formData.unit || '',
+        user_id: formData.user_id || '',
+        v_comments: formData.v_comments || '',
+        village: formData.village || ''
+      };
+console.log(data)
       const response = await axios.post(`${BaseUrl}/property`, data);
-      // const response = await axios.post(`${BaseUrl}/property`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
+
+
 
 export const updateProperty = createAsyncThunk(
   "property/updateProperty",

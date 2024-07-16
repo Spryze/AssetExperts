@@ -51,6 +51,23 @@ const MorePropertyDetails = () => {
           <div className="detailsFlex">
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
               <SellIcon />
+              <span style={{ fontWeight: "600" }}>Property ID :</span>
+              <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
+                {propertyData?.data?.property?.property_id}
+              </span>
+            </Typography>
+
+            {/* <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+              <AccountBalanceSharpIcon />
+              <span style={{ fontWeight: "600" }}> Approoved by :</span>
+              <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
+                {propertyData?.data?.property?.approved_by}
+              </span>
+            </Typography> */}
+          </div>
+          <div className="detailsFlex">
+            <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+              <SellIcon />
               <span style={{ fontWeight: "600" }}>Property Name :</span>
               <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
                 {propertyData?.data?.property?.property_name}

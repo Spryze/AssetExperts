@@ -176,101 +176,71 @@ const Form = () => {
     return errors;
   };
 
-  const deepObjectDifference = (obj1, obj2) => {
-    const diff = {};
-    
-    // Check all keys in obj1
-    Object.keys(obj1).forEach(key => {
-      // If obj2 does not have the key or values differ
-      if (!obj2.hasOwnProperty(key) || obj1[key] !== obj2[key]) {
-        // If both values are objects, recursively check for differences
-        if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
-          const nestedDiff = deepObjectDifference(obj1[key], obj2[key]);
-          if (Object.keys(nestedDiff).length > 0) {
-            diff[key] = nestedDiff;
-          }
-        } else {
-          // Otherwise, add to differences
-          diff[key] = obj1[key];
-        }
-      }
-    });
-  
-    // Check keys in obj2 that are not in obj1
-    Object.keys(obj2).forEach(key => {
-      if (!obj1.hasOwnProperty(key)) {
-        diff[key] = obj2[key];
-      }
-    });
-  
-    return diff;
-  };
-  
-  const getChangedFields = (formData, propertyData) => {
-    return deepObjectDifference(formData, propertyData);
-  };
-  
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const errors = validateForm();
-    console.log(errors);
-    
-    if (Object.keys(errors).length === 0) {
-      const action = isEditMode ? updateProperty : addProperty;
-      const p_id = propertyData?.property_id;
-      console.log(p_id);
-  
-      let payload;
-  
-      if (currentPath === "/UpdateProperty") {
-      console.log("formData, propertyData going for update check",formData, propertyData);
-        payload = getChangedFields(formData, propertyData);
-        console.log("payload result aftr update check",payload)
-  
-        if (isEditMode) {
-          // Include property_id if editing
-          payload.property_id = p_id;
-        }
-      } else {
-        // Send all data if currentPath is not "/UpdateProperty"
-        payload = formData;
-        
-        if (isEditMode) {
-          payload.property_id = p_id;
-        }
-      }
-  
-      const resultAction = dispatch(action({ formData: payload })).then(
-        (response) => {
-          if (
-            response.payload.message === "property added successfully" ||
-            response.payload.message === "Property updated successfully"
-          ) {
-            setResponseData(response.payload);
-            setIsFormSubmitted(true);
-          } else {
-            console.error(response.payload);
-          }
-        }
-      );
-    } else {
-      setFormErrors(errors);
-    }
-  };
-  
-  
+  // const deepObjectDifference = (obj1, obj2) => {
+  //   const diff = {};
+
+  //   // Check all keys in obj1
+  //   Object.keys(obj1).forEach(key => {
+  //     // If obj2 does not have the key or values differ
+  //     if (!obj2.hasOwnProperty(key) || obj1[key] !== obj2[key]) {
+  //       // If both values are objects, recursively check for differences
+  //       if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
+  //         const nestedDiff = deepObjectDifference(obj1[key], obj2[key]);
+  //         if (Object.keys(nestedDiff).length > 0) {
+  //           diff[key] = nestedDiff;
+  //         }
+  //       } else {
+  //         // Otherwise, add to differences
+  //         diff[key] = obj1[key];
+  //       }
+  //     }
+  //   });
+
+  //   // Check keys in obj2 that are not in obj1
+  //   Object.keys(obj2).forEach(key => {
+  //     if (!obj1.hasOwnProperty(key)) {
+  //       diff[key] = obj2[key];
+  //     }
+  //   });
+
+  //   return diff;
+  // };
+
+  // const getChangedFields = (formData, propertyData) => {
+  //   return deepObjectDifference(formData, propertyData);
+  // };
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   const errors = validateForm();
   //   console.log(errors);
+
   //   if (Object.keys(errors).length === 0) {
   //     const action = isEditMode ? updateProperty : addProperty;
   //     const p_id = propertyData?.property_id;
-  //     console.log(p_id)
+  //     console.log(p_id);
 
-  //     const resultAction = dispatch(action({ formData, p_id })).then(
+  //     let payload;
+
+  //     if (currentPath === "/UpdateProperty") {
+  //     console.log("formData, propertyData going for update check",formData, propertyData);
+  //       payload = getChangedFields(formData, propertyData);
+  //       console.log("payload result aftr update check",payload)
+
+  //       if (isEditMode) {
+  //         // Include property_id if editing
+  //         payload.property_id = p_id;
+  //       }
+  //     } else {
+  //       // Send all data if currentPath is not "/UpdateProperty"
+  //       payload = formData;
+
+  //       if (isEditMode) {
+  //         payload.property_id = p_id;
+  //       }
+  //     }
+
+  //     const resultAction = dispatch(action({ formData: payload })).then(
   //       (response) => {
   //         if (
   //           response.payload.message === "property added successfully" ||
@@ -287,6 +257,33 @@ const Form = () => {
   //     setFormErrors(errors);
   //   }
   // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const errors = validateForm();
+    console.log(errors);
+    if (Object.keys(errors).length === 0) {
+      const action = isEditMode ? updateProperty : addProperty;
+      const p_id = propertyData?.property_id;
+      console.log(p_id);
+
+      const resultAction = dispatch(action({ formData, p_id })).then(
+        (response) => {
+          if (
+            response.payload.message === "property added successfully" ||
+            response.payload.message === "Property updated successfully"
+          ) {
+            setResponseData(response.payload);
+            setIsFormSubmitted(true);
+          } else {
+            console.error(response.payload);
+          }
+        }
+      );
+    } else {
+      setFormErrors(errors);
+    }
+  };
   const filteredStates = AreaJson.state_status
     .filter((stateObj) => stateObj.status === true)
     .map((stateObj) => stateObj.state);
@@ -595,13 +592,13 @@ const Form = () => {
                 ))}
               </Select> */}
             <Select
-             label="State"
-             name="state"
-             value={formData.state}
-             onChange={(e) => {
-               setSelectedState(e.target.value);
-               handleChange(e);
-             }}
+              label="State"
+              name="state"
+              value={formData.state}
+              onChange={(e) => {
+                setSelectedState(e.target.value);
+                handleChange(e);
+              }}
               // name="state"
               // value={selectedState}
               // onChange={(e) => {

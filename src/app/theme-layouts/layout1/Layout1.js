@@ -12,6 +12,7 @@ import RabitDialog from "@rabit/core/RabitDialog";
 import RabitMessage from "@rabit/core/RabitMessage";
 import RabitSuspense from "@rabit/core/RabitSuspense";
 import ToolbarLayout1 from "./components/ToolbarLayout1";
+import ScrollToTopButton from "src/app/main/Properties/property-components/ScrollToButton";
 import { debounce } from "lodash";
 const Root = styled("div")(({ theme, config }) => ({
   ...(config.mode === "boxed" && {
@@ -45,7 +46,7 @@ function Layout1(props) {
     } else {
       setShowFooter(false);
     }
-  }, 1000);
+  }, 5000);
 
   useEffect(() => {
     window.addEventListener("scroll", debouncedHandleScroll);
@@ -74,6 +75,7 @@ function Layout1(props) {
             />
           )}
           <StickyButtons />
+          <ScrollToTopButton/>
           <div className="flex flex-col flex-auto min-h-0 relative z-10">
             <RabitDialog />
             <RabitSuspense>{useRoutes(routes)}</RabitSuspense>

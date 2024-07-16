@@ -354,9 +354,14 @@ function SignUpPage() {
       };
       const response = await dispatch(signUpWithEmailAndPassword(formattedData));
       console.log("API Response:", response);
-      if (response.meta.requestStatus == "fulfilled") {
-        navigate("/").window.reload();
-      } else {
+      if (response.meta.requestStatus === "fulfilled") {
+        navigate("/");
+        window.location.reload();
+        
+        
+      }
+      
+       else {
         setMessage("Sign up failed. Please try again.");
       }
     } catch (error) {

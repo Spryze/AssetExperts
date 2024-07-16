@@ -55,7 +55,7 @@ const Typography = styled.div`
   position: relative;
   text-shadow: -18px 9px 30px #000000;
   top: 50%;
-  margin:50px 0;
+  margin:50px 0 20px 0px;
   text-transform:uppercase;
   @media only screen and (max-width: 768px) {
 

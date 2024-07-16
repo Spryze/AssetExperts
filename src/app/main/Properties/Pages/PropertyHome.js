@@ -8,6 +8,7 @@ import {
   selectnormaltotalResults,
   LocalResults,
   CardsClick,
+  selectStats
 } from "../PropertySlice1";
 import {
   Card,
@@ -27,7 +28,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { differenceInDays, parseISO } from "date-fns";
 import CircularRotationCards from "../property-components/CircularRotationCards";
 import AnimatedText from "../property-components/AnimatedText";
-import { Rotate90DegreesCcw } from "@mui/icons-material";
+import ScrollToTopButton from "../property-components/ScrollToButton";
 
 const CurrencyFormatter = ({ value, currency }) => {
   const formattedValue = new Intl.NumberFormat("en-IN", {
@@ -51,6 +52,8 @@ const debounce = (func, delay) => {
 const PropertyHome = () => {
   const dispatch = useDispatch();
   const user = selectUser(selectUser);
+  const Stats = useSelector(selectStats);
+  console.log("Stats",Stats);
   const recentTransactions = useSelector(selectRecentTransactions);
   console.log("recentTransactions", recentTransactions);
   const searchResults = useSelector(selectNormalSearchResults);
@@ -99,7 +102,8 @@ const PropertyHome = () => {
   );
   console.log("transactions", transactions);
   const DataNotFound = useCallback((response) => {
-    if (!response || response.properties.length === 0) {
+    console.log("response in no data founf",response)
+    if (!response || response.payload.properties.length == 0) {
       setNoDataFound(true);
       setTimeout(() => {
         setNoDataFound(false);
@@ -208,6 +212,7 @@ const PropertyHome = () => {
 
   return (
     <Box>
+     
       <Box className="home-blue-background">
         <Box
           sx={{
@@ -258,8 +263,7 @@ const PropertyHome = () => {
                
               </div>
               <WipeImage/>
-              {/* <img src="/assets/cardimages/alerts.png" style={{position:"absolute",right:"445px", top:"0px", height:"auto", width:"270px"}} /> */}
-              {/* <h3 style={{position:"relative", top:"-452px",left:"439px",fontWeight:"bold",background:"white",padding:"10px",color:"#FC5B47"}}>Experience Seamless <br/> Property Alerts</h3> */}
+              
             </Grid>
           </Grid>
         </Box>
@@ -270,13 +274,14 @@ const PropertyHome = () => {
           variant="h6"
           sx={{
             backgroundColor: "orange",
-            padding: "10px 50px",
+            padding: "5px 40px",
             textAlign: "center",
             borderRadius: "5px",
             color: "white",
             position: "fixed",
             top: "100px",
             left: "50%",
+            width:"250px",
             transform: "translateX(-50%)",
             zIndex: 1000,
           }}
@@ -369,7 +374,7 @@ const PropertyHome = () => {
                           }}
                         >
                           <CurrencyFormatter
-                            value={item?.unit_price}
+                            value={item?.price}
                             currency="INR"
                           />{" "}
                           / {item?.unit}
@@ -431,6 +436,7 @@ const PropertyHome = () => {
       <div>
         <CircularRotationCards />
       </div>
+      <hr/>
 
       <div>
         <Typography
@@ -439,7 +445,6 @@ const PropertyHome = () => {
         >
           We Are Available In Your Local cities..
         </Typography>
-        <hr/>
         <div
           className="Local-cities"
           style={{
@@ -878,17 +883,17 @@ const PropertyHome = () => {
                 >
                   Plots
                 </Typography>
-                {/* <Typography
+                <Typography
                   className="text"
                   sx={{
-                   
+                    fontWeight:"600",
                     fontSize: "14px",
                     textAlign: "center",
                     transition: "color 0.3s ease",
                   }}
                 >
-                 121
-                </Typography> */}
+                 {Stats.plots_count}
+                </Typography>
               </Box>
             </CardContent>
           </Card>
@@ -975,6 +980,17 @@ const PropertyHome = () => {
                 >
                   Agricultural Land
                 </Typography>
+                <Typography
+                  className="text"
+                  sx={{
+                    fontWeight:"600",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    transition: "color 0.3s ease",
+                  }}
+                >
+                 {Stats.agricultural_count}
+                </Typography>
               </Box>
             </CardContent>
           </Card>
@@ -1060,6 +1076,17 @@ const PropertyHome = () => {
                 >
                   Commercial
                 </Typography>
+                <Typography
+                  className="text"
+                  sx={{
+                    fontWeight:"600",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    transition: "color 0.3s ease",
+                  }}
+                >
+                 {Stats.commercial_count}
+                </Typography>
               </Box>
             </CardContent>
           </Card>
@@ -1144,6 +1171,17 @@ const PropertyHome = () => {
                   }}
                 >
                   Flats
+                </Typography>
+                <Typography
+                  className="text"
+                  sx={{
+                   fontWeight:"600",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    transition: "color 0.3s ease",
+                  }}
+                >
+                 {Stats.flats_count}
                 </Typography>
               </Box>
             </CardContent>
@@ -1294,7 +1332,7 @@ const PropertyHome = () => {
                   fontSize: "2.5rem",
                 }}
               >
-                Recent <span className="SpanTextColor"> Properties</span>
+                Recent  Properties
               </Typography>
             </div>
             <div

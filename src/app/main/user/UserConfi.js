@@ -6,6 +6,7 @@ import ar from 'src/app/configs/navigation-i18n/ar.js';
 import Profile from './Profile';
 import Users from './Users';
 import UserProfile from './UserProfileDetails';
+import ForgetPassword from '../Properties/Pages/ForgetPassword';
 import ManageProperties from '../Properties/Pages/ManageProperties';
 import { authRoles } from 'src/app/auth';
 
@@ -45,6 +46,10 @@ const userConfig = {
     {
       path: '/user/:userId',
       element: <UserProfile />,
+    },
+    {
+      path: '/forgetPassword',
+      element: <ForgetPassword />,
     },
     // {
     //   path: '/user/:userId',

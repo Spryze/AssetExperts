@@ -625,7 +625,7 @@ const CardData = [
   {
     title: "Property Surveillance",
     description: "Monitor properties with our surveillance services.",
-    image: "assets/icon images/property survelliance.jfif"
+    image: "assets/icon images/EEF7FE.jpg"
   },
   {
     title: "Verified Listing",
@@ -685,9 +685,13 @@ const Card = styled.div`
 const Image = styled.img`
   max-width: 100%;
   border-radius: 12px 12px 0 0;
+  
   // margin-bottom: 20px;
    &:hover {
     transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+    @media (max-width: 768px) {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
   }
 `;

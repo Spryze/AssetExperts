@@ -7,7 +7,7 @@ const StickyButtons = () => {
     <div style={{
       position: 'fixed',
       top: '50%',
-      right: '20px', 
+      right: '2px', 
       transform: 'translateY(-50%)',
       display: 'flex',
       flexDirection: 'column',

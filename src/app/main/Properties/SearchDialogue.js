@@ -96,6 +96,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
         },
       };
       FormData(payload);
+      console.log("payload going to backend",payload)
       setIsLoading(true);
       await dispatch(
         SearchResults({
@@ -104,11 +105,13 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
           isAdminSearch: isAdminSearch,
           PropertyState: PropertyState,
         })
-      ).then(() => {
+      ).then((result) => {
+        console.log(result)
+        onSearch(result);
         setIsLoading(false);
       });
       
-      // onSearch(result);
+       
       // {console.log('result',result)}
       //       if (!result || !result.data || result.properties.length === 0) {
       //         setNoDataFound(true);
@@ -149,25 +152,25 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
             width: "400px",
             fontSize: "45px",
             background: "white",
-            borderRadius: "20px",
+            borderRadius: "10px",
             boxShadow: "-3px 9px 38px #444444",
             // top:"-78px",
             // left: "60px",
             "& .MuiInputBase-root": {
-              borderRadius: "20px",
+              borderRadius: "10px",
             },
             "& .MuiFilledInput-root": {
-              borderRadius: "20px",
+              borderRadius: "10px",
               padding: "0 15px",
             },
             input: {
-              height: "60px",
+              height: "40px",
               boxSizing: "border-box",
               padding: 0,
-              fontSize: "20px",
+              fontSize: "15px",
               lineHeight: "100px",
               textAlign: "center",
-              borderRadius: "20px",
+              borderRadius: "5px",
             },
           }}
         />
@@ -199,24 +202,24 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 label="Property select"
                 onChange={handleChange}
               >
-                <MenuItem value=" ">Any</MenuItem>
+           
                 <MenuItem value="plot">Plots</MenuItem>
                 <MenuItem value="flat">Flats</MenuItem>
                 <MenuItem value="land">Lands</MenuItem>
-                <MenuItem value="WareHouses">WareHouses</MenuItem>
-                <MenuItem value="PG">PG</MenuItem>
-                <MenuItem value="OfficePlace">OfficePlace</MenuItem>
-                <MenuItem value="CoWorkingPlace">CoWorkingPlace</MenuItem>
-                <MenuItem value="StudentHostels">StudentHostels</MenuItem>
-                <MenuItem value="AgriculturalLands">AgriculturalLands</MenuItem>
-                <MenuItem value="Apartment">Apartment</MenuItem>
-                <MenuItem value="IndependentHouse">IndependentHouse</MenuItem>
+                <MenuItem value="warehouse">Ware House</MenuItem>
+                <MenuItem value="pg">PG</MenuItem>
+                <MenuItem value="officeplace">Office Place</MenuItem>
+                <MenuItem value="coworkingplace">Co-Working Place</MenuItem>
+                <MenuItem value="student hostel">Student Hostel</MenuItem>
+                <MenuItem value="agricultural lands">AgriculturalLands</MenuItem>
+                <MenuItem value="apartment">Apartment</MenuItem>
+                <MenuItem value="independenthouse">Independent House</MenuItem>
               </Select>
             </FormControl>
           </Box>
 
           <Box sx={{ marginTop: "10px" }}>
-            <FormControl sx={{ mt: 2, minWidth: "200px", margin: "4px 5px" }}>
+            <FormControl fullWidth sx={{ mt: 2,  margin: "4px 5px" }}>
               <InputLabel>Listing Type</InputLabel>
               <Select
                 name="listing_type"
@@ -234,6 +237,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
             </FormControl>
 
             <TextField
+            fullWidth
               label="Min Budget"
               placeholder="Minimum value"
               name="min_price"
@@ -246,6 +250,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
 
             <TextField
               label="Max Budget"
+              fullWidth
               placeholder="Maximum value"
               name="max_price"
               type="number"
@@ -254,7 +259,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               variant="outlined"
               sx={{ margin: "6px" }}
             />
-            <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+            <FormControl fullWidth sx={{ mt: 2,  margin: "6px 5px" }}>
               <InputLabel>Unit</InputLabel>
               <Select
                 name="unit"
@@ -293,7 +298,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               </Select>
             </FormControl> */}
 
-            <FormControl sx={{ minWidth: "140px", mt: 2, margin: "4px 5px" }}>
+            <FormControl fullWidth sx={{ mt: 2, margin: "4px 5px" }}>
               <InputLabel>Select State</InputLabel>
               <Select
                 name="state"
@@ -313,7 +318,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               </Select>
             </FormControl>
 
-            <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+            <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
               <InputLabel>District</InputLabel>
               <Select
                 name="district"
@@ -333,7 +338,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               </Select>
             </FormControl>
             {user.role === "admin" && (
-              <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+              <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
                 <TextField
                   name="landmark"
                   value={formData.landmark}
@@ -344,7 +349,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               </FormControl>
             )}
 
-            <FormControl sx={{ mt: 2, minWidth: "130px", margin: "6px 5px" }}>
+            <FormControl fullWidth sx={{ mt: 2,  margin: "6px 5px" }}>
               <InputLabel>Approved</InputLabel>
               <Select
                 name="approved_by"
@@ -352,13 +357,13 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 onChange={handleChange}
                 label="Select Approved"
               >
-                <MenuItem value=" ">Any</MenuItem>
+         
                 <MenuItem value="Panchayat">Panchayat</MenuItem>
                 <MenuItem value="Vuda">Vuda</MenuItem>
                 <MenuItem value="Rera">Rera</MenuItem>
               </Select>
             </FormControl>
-            <FormControl sx={{ mt: 2, minWidth: "140px", margin: "6px 5px" }}>
+            <FormControl fullWidth sx={{ mt: 2,  margin: "6px 5px" }}>
               <InputLabel>Loan Eligibility</InputLabel>
               <Select
                 name="loan_eligible"
@@ -372,6 +377,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
             </FormControl>
             {user.role === "admin" && (
               <TextField
+              
                 label="Updated By"
                 name="updated_by"
                 value={formData.updated_by}
@@ -401,7 +407,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               />
             )}
             {user.role === "admin" && (
-              <FormControl sx={{ mt: 2, minWidth: "140px", margin: "6px 5px" }}>
+              <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
                 <InputLabel>Notified</InputLabel>
                 <Select
                   name="notified"
@@ -415,7 +421,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               </FormControl>
             )}
             {user.role === "admin" && (
-              <FormControl sx={{ mt: 2, minWidth: "165px", margin: "6px 5px" }}>
+              <FormControl  fullWidth sx={{ mt: 2,  margin: "6px 5px" }}>
                 <InputLabel>Verification Status</InputLabel>
                 <Select
                   name="v_status"

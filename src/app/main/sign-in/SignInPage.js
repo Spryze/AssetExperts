@@ -9,13 +9,12 @@ import Typography from '@mui/material/Typography';
 import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import _ from '@lodash';
-import RabitSvgIcon from '@rabit/core/RabitSvgIcon';
-import AvatarGroup from '@mui/material/AvatarGroup';
+import CircularProgress from '@mui/material/CircularProgress';
 import GoogleIcon from '@mui/icons-material/Google';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useEffect } from 'react';
-import jwtService from '../../auth/services/jwtService';
+import { signinwithpopup } from 'app/store/userSlice';
 import { auth,provider} from './Config'; 
 import { signInWithPopup } from 'firebase/auth';
 import { getAuth,signInWithEmailAndPassword } from 'firebase/auth';
@@ -51,35 +50,9 @@ function SignInPage() {
   
 const navigate = useNavigate();
  const dispatch = useDispatch();
-    // const authentication = auth.onAuthStateChanged((userAuth) => {
-    //   if (userAuth) {
-        
-    //     // console.log('User authenticated:', userAuth);
-    //     let user = {
-    //       uid: userAuth.uid,
-    //         role: "admin",
-    //       data:{
-          
-    //         accessToken: userAuth.accessToken,
-    //         displayName: "Ramu",
-            
-    //       }
-    //     };
-    //     // console.log(user)
-          
-    //       localStorage.setItem('user', JSON.stringify(user));
-          
-         
-    //       jwtService.emit('onLogin',user);
-    //   } else {
-    //     // User is not authenticated
-    //     console.log('User not authenticated');
-    //   }
-    // })
-    // const Navigate = useNavigate();
-
-  const [message,setMessage]=useState(null)
-  const [loginError,setloginError]=useState(false)
+ const [loading,SetLoading] = useState(false);
+  const [message,setMessage]=useState(null);
+  const [loginError,setloginError]=useState(false);
 
   useEffect(() => {
     // authentication()
@@ -94,42 +67,13 @@ const navigate = useNavigate();
   
   //google signin
   const handleClick = () => {
-    try {
-      signInWithPopup(auth, provider)
-        .then((data) => {
-          console.log("SIGNIN POPUP data",data)
-          if(data._tokenResponse.emailVerified == true){
-            navigate("/")}
-             
-          // let user = {
-          //   uid: data.user.uid,
-          //     role: "admin",
-          //   data:{
-            
-          //     accessToken: data.user.accessToken,
-          //     displayName: data.user.displayName,
-              
-          //   }
-          // };
-          // console.log(user)
-          // localStorage.setItem('google_access_token', data._tokenResponse.idToken);
-          // localStorage.setItem('user', JSON.stringify(user));
-          
-         
-          // jwtService.emit('onLogin',user);
-          
-          
-        })
-        .catch((error) => {
-          
-          console.error("Firebase authentication error:", error);
-          
-        });
-    } catch (error) {
-      
-      console.error("An error occurred:", error);
-      
+    console.log("hii")
+   dispatch(signinwithpopup({ auth, provider })).then((response)=>{
+    console.log(response);
+    if(response.status == 201 || response.payload.response.data.message == "user alredy exists"){
+      navigate("/");
     }
+   });
   };
   
   const { control, formState, handleSubmit, setError, setValue } = useForm({
@@ -148,8 +92,10 @@ const navigate = useNavigate();
   
   async function onSubmit({ email, password }) {
     try {
+      SetLoading(true);
        dispatch(signInWithEmailPassword({ email, password })).then(response =>{
         console.log("response of signinin",response)
+        SetLoading(false);
         if(response.meta.requestStatus === "fulfilled"){
           navigate("/")
         }else{setloginError(true)}
@@ -163,28 +109,13 @@ const navigate = useNavigate();
       // Handle error
     }
   }
-  
-    // jwtService
-    //   .signInWithEmailAndPassword(email, password)
-    //   .then((user) => {
-       
-    //   })
-    //   .catch((_errors) => {
-    //     _errors.forEach((error) => {
-    //       setError(error.type, {
-    //         type: 'manual',
-    //         message: error.message,
-    //       });
-    //     });
-    //   });
-  
-  
+
 
   return (
     <div className="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-1 min-w-0">
       <Paper className="h-full sm:h-auto md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-16 sm:p-48 md:p-64 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none ltr:border-r-1 rtl:border-l-1">
         <div className="w-full max-w-320 sm:w-320 mx-auto sm:mx-0">
-          <img className="w-48" src="assets/images/logo/logo.svg" alt="logo" />
+          {/* <img className="w-48" src="assets/images/logo/logo.svg" alt="logo" /> */}
 
           <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight">
             Sign in
@@ -254,7 +185,7 @@ const navigate = useNavigate();
                 )}
               />
 
-              <Link className="text-md font-medium" to="/pages/auth/forgot-password">
+              <Link className="text-md font-medium" to="/forgetPassword">
                 Forgot password?
               </Link>
             </div>
@@ -270,6 +201,7 @@ const navigate = useNavigate();
             >
               Sign in
             </Button>
+           { loading && <div style={{display:"flex",justifyContent:"center", marginTop:"10px"}}><CircularProgress /></div>}
 
             <div className="flex items-center mt-32">
               <div className="flex-auto mt-px border-t" />

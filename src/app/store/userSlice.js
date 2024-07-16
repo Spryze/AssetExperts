@@ -295,7 +295,7 @@ import { showMessage } from 'app/store/rabit/messageSlice';
 import settingsConfig from 'app/configs/settingsConfig';
 import jwtService from '../auth/services/jwtService';
 import BaseUrl from 'app/configs/BaseUrl';
-import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,signInWithPopup } from 'firebase/auth';
 import axios from 'axios';
 
 
@@ -361,6 +361,33 @@ export const UpdateUser = createAsyncThunk(
     } catch (error) {
       console.error("Error in updating user", error);
       return rejectWithValue(error.response ? error.response.data : error.message);
+    }
+  }
+);
+export const signinwithpopup = createAsyncThunk(
+  'user/SignInWithPopup',
+  async ({ auth, provider }, { rejectWithValue }) => {
+    console.log(auth, provider)
+    try {
+      const data = await signInWithPopup(auth, provider);
+      console.log("SIGNIN POPUP data", data);
+      
+      if (data._tokenResponse.emailVerified) {
+        const userData = {
+          name: data.user.displayName,
+          email: data.user.email,
+          id: data.user.uid,
+        };
+
+        const response = await axios.post(`${BaseUrl}/user`, userData);
+        console.log("response of user posting", response);
+        return response
+      } else {
+        return rejectWithValue('Email not verified');
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      return rejectWithValue(error);
     }
   }
 );

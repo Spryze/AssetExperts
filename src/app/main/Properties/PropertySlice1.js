@@ -1,13 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import Statesdata from "../../../assets/Default/area/result.json";
+import qs from 'qs';
 import { showMessage } from "app/store/rabit/messageSlice";
 import BaseUrl from "app/configs/BaseUrl";
 
-
 const getUserIdFromLocalStorage = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  return user
+  return user;
 };
 // plot flat thunk function
 export const CardsClick = createAsyncThunk(
@@ -74,11 +73,6 @@ export const selectPropertyById = (state, property_id) =>
     (property) => property.property_id === property_id
   );
 
-
-
-
-  
-
 //  my intrests thunk function
 export const AddIntrests = createAsyncThunk(
   "property/AddIntrests",
@@ -90,13 +84,14 @@ export const AddIntrests = createAsyncThunk(
 
       const Data = {
         user_id: user_id,
-        body,
+        body: body.body
       };
       console.log("Data", Data);
       const response = await axios.put(`${BaseUrl}/register`, Data);
       console.log("responseo of add intresrs", response);
       return response;
     } catch (error) {
+      console.log("error in Adding Intrests",error)
       return rejectWithValue(error.response.data);
     }
   }
@@ -106,7 +101,9 @@ export const GetUpdatedJson = createAsyncThunk(
   "property/GetUpdatedJson",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${BaseUrl}/getfile`, { responseType: "blob" });
+      const response = await axios.get(`${BaseUrl}/getfile`, {
+        responseType: "blob",
+      });
 
       const url = URL.createObjectURL(response.data);
       const link = document.createElement("a");
@@ -116,9 +113,8 @@ export const GetUpdatedJson = createAsyncThunk(
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      console.log("response of download json",response)
+      console.log("response of download json", response);
       return response.data;
-      
     } catch (error) {
       const errorMessage = JSON.stringify(
         error.response?.data || error.message,
@@ -172,7 +168,6 @@ export const DeleteIntrests = createAsyncThunk(
   }
 );
 
-
 //jagadeesh code
 
 // export const AddIntrests = createAsyncThunk(
@@ -181,7 +176,7 @@ export const DeleteIntrests = createAsyncThunk(
 //     console.log("Body:", body);
 //     console.log("userIds in the Add intrests:", userId);
 //     const {  userId, isadmin, body } = params;
-    
+
 //     try {
 //       let user_id;
 
@@ -202,7 +197,7 @@ export const DeleteIntrests = createAsyncThunk(
 //       // const Data = { user_id, ...body };
 //       const Data = {
 //         user_id :user_id ,
-        
+
 //         body,
 //       };
 
@@ -228,11 +223,11 @@ export const DeleteIntrests = createAsyncThunk(
 //       let user_ids;
 
 //       console.log("this was the user_id log :",user_id)
-    
+
 //       if (user_id) {
 //         console.log("this was the  Uid in the condiction so check this:",user_id);
 //          user_id = user_id;
-     
+
 //       } else {
 //         // Fall back to user_id from local storage
 //         const user = JSON.parse(localStorage.getItem("user"));
@@ -262,8 +257,6 @@ export const DeleteIntrests = createAsyncThunk(
 //   }
 // );
 
-
-
 // export const GetUpdatedJson = createAsyncThunk(
 //   "property/GetUpdatedJson",
 //   async (_, { rejectWithValue }) => {
@@ -280,7 +273,7 @@ export const DeleteIntrests = createAsyncThunk(
 //       URL.revokeObjectURL(url);
 //       console.log("response of download json",response)
 //       return response.data;
-      
+
 //     } catch (error) {
 //       const errorMessage = JSON.stringify(
 //         error.response?.data || error.message,
@@ -348,7 +341,6 @@ export const DeleteIntrests = createAsyncThunk(
 //     }
 //   }
 // );
-
 
 export const PostUserCallRequest = createAsyncThunk(
   "property/PostUserCallRequest",
@@ -442,22 +434,60 @@ export const fetchProperties = createAsyncThunk(
   }
 );
 
+// export const fetchRecentTransactions = createAsyncThunk(
+//   "property/fetchRecentTransactions",
+//   async (arg, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get(`${BaseUrl}/home`);
+//       console.log("response of recent transaction",response);
+//       // const response = await axios.get(`${BaseUrl}/home`);
+//       const stats = response.data.property_type_count;
+//       const transactions = response.data.property.buy_properties.concat(
+//         response.data.property.sell_properties
+//       );
+//       return {transactions, stats};
+//     } catch (error) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+
 export const fetchRecentTransactions = createAsyncThunk(
   "property/fetchRecentTransactions",
-  async (arg, { rejectWithValue }) => {
+  async (arg, { getState, rejectWithValue }) => {
     try {
-      const response = await axios.get(`${BaseUrl}/home`);
-      // const response = await axios.get(`${BaseUrl}/home`);
+      const state = getState();
+      console.log(state)
+      const params = {};
+
+      if (state.properties.Stats.length === 0) {
+        params.status = 'True'; 
+      }
+
+
+      const queryString = qs.stringify(params, { encode: true });
+
+
+      console.log(`${BaseUrl}/home?${queryString}`)
+      const response = await axios.get(`${BaseUrl}/home?${queryString}`);
+      console.log("response of recent transaction", response);
+
+      // Extract transactions and stats from response data
+      const stats = response.data.property_type_count;
       const transactions = response.data.property.buy_properties.concat(
         response.data.property.sell_properties
       );
-      return transactions;
+
+      // Return the transactions and stats as the payload
+      return { transactions, stats };
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.log(error)
+      // Handle errors and return the error message as rejected value
+      return rejectWithValue(error);
+      
     }
   }
 );
-
 export const SearchResults = createAsyncThunk(
   "property/SearchResults",
   async (
@@ -465,10 +495,11 @@ export const SearchResults = createAsyncThunk(
     { rejectWithValue, fulfillWithValue }
   ) => {
     try {
-      console.log("hii")
-      const user = JSON.parse(localStorage.getItem("user"));
-      const req_by = user.uid;
-console.log("hii")
+      console.log("hii");
+      const userString = localStorage.getItem("user");
+      const user = userString ? JSON.parse(userString) : {};
+      const req_by = user.uid || '';
+      console.log("hii");
       const Data = {
         req_by: req_by,
         offset: offset,
@@ -485,7 +516,7 @@ console.log("hii")
           "Content-Type": "application/json",
         },
       });
-      console.log("search response",response)
+      console.log("search response", response);
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch search results");
@@ -574,58 +605,58 @@ export const addProperty = createAsyncThunk(
       // Construct data object without formData key
       const data = {
         cont_user_id,
-        AboutDeveloper: formData.AboutDeveloper || '',
-        BHK: formData.BHK || '',
-        Flooring: formData.Flooring || '',
-        No_bed_rooms: formData.No_bed_rooms || '',
-        PowerBackup: formData.PowerBackup || '',
-        PropertyAge: formData.PropertyAge || '',
-        PropertyStatus: formData.PropertyStatus || '',
-        WaterSource: formData.WaterSource || '',
-        ad_info: formData.ad_info || '',
-        approved_by: formData.approved_by || '',
-        bound_wall: formData.bound_wall || '',
-        boundry_wall: formData.boundry_wall || '',
-        comments: formData.comments || '',
+        AboutDeveloper: formData.AboutDeveloper || "",
+        BHK: formData.BHK || "",
+        Flooring: formData.Flooring || "",
+        No_bed_rooms: formData.No_bed_rooms || "",
+        PowerBackup: formData.PowerBackup || "",
+        PropertyAge: formData.PropertyAge || "",
+        PropertyStatus: formData.PropertyStatus || "",
+        WaterSource: formData.WaterSource || "",
+        ad_info: formData.ad_info || "",
+        approved_by: formData.approved_by || "",
+        bound_wall: formData.bound_wall || "",
+        boundry_wall: formData.boundry_wall || "",
+        comments: formData.comments || "",
         developments: formData.developments || "",
-        dimensions: formData.dimensions || '',
-        direction: formData.direction || '',
-        disputes: formData.disputes || '',
-        district: formData.district || '',
-        doc_num: formData.doc_num || '',
+        dimensions: formData.dimensions || "",
+        direction: formData.direction || "",
+        disputes: formData.disputes || "",
+        district: formData.district || "",
+        doc_num: formData.doc_num || "",
         // docfile: formData.docfile || [],
-        furnshied: formData.furnshied || '',
+        furnshied: formData.furnshied || "",
         govt_price: formData.govt_price || null,
-        landmark: formData.landmark || '',
+        landmark: formData.landmark || "",
         latitude: formData.latitude || 0,
-        lift: formData.lift || '',
-        listing_type: formData.listing_type || '',
+        lift: formData.lift || "",
+        listing_type: formData.listing_type || "",
         loan_eligibile: formData.loan_eligibile || false,
         longitude: formData.longitude || 0,
-        med_name: formData.med_name || '',
-        med_num1: formData.med_num1 || '',
-        med_num2: formData.med_num2 || '',
-        num_open_sides: formData.num_open_sides || '',
-        own_name: formData.own_name || '',
-        own_num1: formData.own_num1 || '',
-        own_num2: formData.own_num2 || '',
-        p_type: formData.p_type || '',
+        med_name: formData.med_name || "",
+        med_num1: formData.med_num1 || "",
+        med_num2: formData.med_num2 || "",
+        num_open_sides: formData.num_open_sides || "",
+        own_name: formData.own_name || "",
+        own_num1: formData.own_num1 || "",
+        own_num2: formData.own_num2 || "",
+        p_type: formData.p_type || "",
         parking: formData.parking || false,
         price: formData.price || 0,
-        prop_name: formData.prop_name || '',
-        rating: formData.rating || '',
-        reg_loc: formData.reg_loc || '',
-        rera: formData.rera || '',
+        prop_name: formData.prop_name || "",
+        rating: formData.rating || "",
+        reg_loc: formData.reg_loc || "",
+        rera: formData.rera || "",
         size: formData.size || 0,
-        state: formData.state || '',
-        status: formData.status || '',
-        survey_number: formData.survey_number || '',
-        unit: formData.unit || '',
-        user_id: formData.user_id || '',
-        v_comments: formData.v_comments || '',
-        village: formData.village || ''
+        state: formData.state || "",
+        status: formData.status || "",
+        survey_number: formData.survey_number || "",
+        unit: formData.unit || "",
+        user_id: formData.user_id || "",
+        v_comments: formData.v_comments || "",
+        village: formData.village || "",
       };
-console.log(data)
+      console.log(data);
       const response = await axios.post(`${BaseUrl}/property`, data);
       return response.data;
     } catch (error) {
@@ -634,11 +665,10 @@ console.log(data)
   }
 );
 
-
-
 export const updateProperty = createAsyncThunk(
   "property/updateProperty",
   async ({ formData, p_id }, { rejectWithValue }) => {
+    console.log("formData going during updateProperty",formData,p_id)
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) throw new Error("User not found in local storage");
@@ -665,24 +695,23 @@ export const DeleteImage = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        data: formData,  // Directly pass formData here
+        data: formData, // Directly pass formData here
       });
 
       console.log(response.data);
 
       return response.data;
     } catch (error) {
-      console.error('Error deleting image:', error);
+      console.error("Error deleting image:", error);
       throw error;
     }
   }
 );
 
-
 export const AddImage = createAsyncThunk(
   "property/AddImage",
   async (formData) => {
-    console.log(formData)
+    console.log(formData);
     const response = await axios.post(`${BaseUrl}/image`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -710,7 +739,7 @@ const initialState = {
   normalSearchResults: [],
   adminSearchResults: [],
   mySubscription: [],
-  // mySubscription: [],
+  Stats: [],
   admintotalProperties: "0",
   normaltotalResults: "0",
   status: "idle",
@@ -787,21 +816,26 @@ const propertySlice = createSlice({
       .addCase(GetMyIntrests.fulfilled, (state, action) => {
         state.mySubscription = action.payload.data.interested_areas;
       })
-      .addCase(AddIntrests.fulfilled,(state,action)=>{
+      .addCase(AddIntrests.fulfilled, (state, action) => {
         state.mySubscription = action.payload.data.interested_areas;
       })
       .addCase(fetchRecentTransactions.fulfilled, (state, action) => {
         state.recentTransactions = [
           ...state.recentTransactions,
-          ...action.payload,
+          ...action.payload.transactions,
         ];
+        if (action.payload.stats) {
+          state.Stats = action.payload.stats; 
+        }
       });
+     
   },
 });
 
 // Actions and Selectors
 export const { setProperties, setError, resetStatus } = propertySlice.actions;
 export const selectProperties = (state) => state.properties.properties;
+export const selectStats = (state)=> state.properties.Stats;
 export const selectRecentTransactions = (state) =>
   state.properties.recentTransactions;
 export const selectNormalSearchResults = (state) =>

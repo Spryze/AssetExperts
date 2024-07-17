@@ -234,11 +234,15 @@ const ProfilePage = () => {
   useEffect(() => {}, [profileData]);
 
   const renderProfileDetail = (label, value) => {
+    if (value === null || value === undefined) {
+      return null;
+    }
+  
     if (typeof value === "object") {
       value = JSON.stringify(value, null, 2); 
     }
     return (
-      <Paper elevation={1} sx={{ padding: "10px", margin: "10px 0", borderRadius: "10px" }}>
+      <Paper  sx={{ padding: "10px", margin: "10px 0", borderRadius: "10px",boxShadow:"none" }}>
         <Typography variant="body1" sx={{ display: "flex", justifyContent: "space-between" }}>
           <span>
             <strong>{label}:</strong>

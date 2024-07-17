@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AddImage,DeleteImage } from '../../PropertySlice1';
 import { useLocation } from 'react-router-dom';
+import { selectProperties } from '../../PropertySlice1';
+import { useSelector } from 'react-redux';
 
 
-const UploadImages = ({ responseData, propertyData }) => {
+
+const UploadImages = ({ responseData }) => {
   console.log("responseData", responseData);
-  console.log("propertyData",propertyData);
+
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
@@ -19,7 +22,9 @@ const UploadImages = ({ responseData, propertyData }) => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user"));
   const req_by = user.uid;
-  console.log("req_by",req_by)
+const propertiesData = useSelector(selectProperties);
+  const propertyData = propertiesData?.data;
+  console.log(propertyData)
 
   useEffect(() => {
     // if (propertyData?.data?.images) {
@@ -73,10 +78,10 @@ const UploadImages = ({ responseData, propertyData }) => {
   const handleDelete = async () => {
     try {
       const data = {
-        p_id: propertyData.data?.property?.property_id,
+        p_id: propertyData?.property?.property_id,
         req_user_id: req_by,
-        user_id: propertyData.data?.property?.user_id,
-        delete_image_ids: selectedImageIds,
+        user_id: propertyData.property?.user_id,
+        img_ids: selectedImageIds,
         delete_document_names: selectedDocumentNames
       };
       console.log(data)
@@ -106,9 +111,9 @@ const UploadImages = ({ responseData, propertyData }) => {
         formData.append('documents', documentFiles[i]);
       }
 
-      formData.append('p_id', responseData?.details?.p_id || propertyData?.data?.property?.property_id);
+      formData.append('p_id', responseData?.details?.p_id || propertyData?.property?.property_id);
       formData.append('req_user_id', responseData?.details?.req_user_id ||req_by);
-      formData.append('user_id', responseData?.details?.user_id || propertyData?.data?.property?.user_id);
+      formData.append('user_id', responseData?.details?.user_id || propertyData?.property?.user_id);
 
       console.log(formData);
       dispatch(AddImage(formData)).then((response) => {
@@ -129,7 +134,7 @@ const UploadImages = ({ responseData, propertyData }) => {
         <div style={{ backgroundColor: "white" }}>
           <h3 style={{ margin: '20px 0' }}>Delete Existing Property Images and Documents</h3>
           <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap' }}>
-            {propertyData?.data?.images?.map((image, index) => (
+            {propertyData?.images?.map((image, index) => (
               <div key={index} style={{ margin: '5px' }}>
                 <input
                   type="checkbox"
@@ -208,3 +213,5 @@ const UploadImages = ({ responseData, propertyData }) => {
 };
 
 export default UploadImages;
+
+

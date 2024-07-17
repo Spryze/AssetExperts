@@ -595,7 +595,8 @@ export const LocalResults = createAsyncThunk(
 
 export const addProperty = createAsyncThunk(
   "property/addProperty",
-  async (formData, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
+    console.log(payload)
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) throw new Error("User not found in local storage");
@@ -605,56 +606,56 @@ export const addProperty = createAsyncThunk(
       // Construct data object without formData key
       const data = {
         cont_user_id,
-        AboutDeveloper: formData.AboutDeveloper || "",
-        BHK: formData.BHK || "",
-        Flooring: formData.Flooring || "",
-        No_bed_rooms: formData.No_bed_rooms || "",
-        PowerBackup: formData.PowerBackup || "",
-        PropertyAge: formData.PropertyAge || "",
-        PropertyStatus: formData.PropertyStatus || "",
-        WaterSource: formData.WaterSource || "",
-        ad_info: formData.ad_info || "",
-        approved_by: formData.approved_by || "",
-        bound_wall: formData.bound_wall || "",
-        boundry_wall: formData.boundry_wall || "",
-        comments: formData.comments || "",
-        developments: formData.developments || "",
-        dimensions: formData.dimensions || "",
-        direction: formData.direction || "",
-        disputes: formData.disputes || "",
-        district: formData.district || "",
-        doc_num: formData.doc_num || "",
+        AboutDeveloper: payload.payload.AboutDeveloper || "",
+        bhk: payload.payload.bhk || "",
+        Flooring: payload.payload.Flooring || "",
+        No_bed_rooms: payload.payload.No_bed_rooms || "",
+        PowerBackup: payload.payload.PowerBackup || "",
+        PropertyAge: payload.payload.PropertyAge || "",
+        PropertyStatus: payload.payloadPropertyStatus || "",
+        WaterSource: payload.payload.WaterSource || "",
+        ad_info: payload.payload.ad_info || "",
+        approved_by: payload.payload.approved_by || "",
+        bound_wall: payload.payload.bound_wall || "",
+        boundry_wall: payload.payload.boundry_wall || "",
+        comments: payload.payload.comments || "",
+        developments: payload.payload.developments || "",
+        dimensions: payload.payload.dimensions || "",
+        direction: payload.payload.direction || "",
+        disputes: payload.payload.disputes || "",
+        district: payload.payload.district || "",
+        doc_num: payload.payload.doc_num || "",
         // docfile: formData.docfile || [],
-        furnshied: formData.furnshied || "",
-        govt_price: formData.govt_price || null,
-        landmark: formData.landmark || "",
-        latitude: formData.latitude || 0,
-        lift: formData.lift || "",
-        listing_type: formData.listing_type || "",
-        loan_eligibile: formData.loan_eligibile || false,
-        longitude: formData.longitude || 0,
-        med_name: formData.med_name || "",
-        med_num1: formData.med_num1 || "",
-        med_num2: formData.med_num2 || "",
-        num_open_sides: formData.num_open_sides || "",
-        own_name: formData.own_name || "",
-        own_num1: formData.own_num1 || "",
-        own_num2: formData.own_num2 || "",
-        p_type: formData.p_type || "",
-        parking: formData.parking || false,
-        price: formData.price || 0,
-        prop_name: formData.prop_name || "",
-        rating: formData.rating || "",
-        reg_loc: formData.reg_loc || "",
-        rera: formData.rera || "",
-        size: formData.size || 0,
-        state: formData.state || "",
-        status: formData.status || "",
-        survey_number: formData.survey_number || "",
-        unit: formData.unit || "",
-        user_id: formData.user_id || "",
-        v_comments: formData.v_comments || "",
-        village: formData.village || "",
+        furnshied: payload.payload.furnshied || "",
+        govt_price: payload.payload.govt_price || null,
+        landmark: payload.payload.landmark || "",
+        latitude: payload.payload.latitude || 0,
+        lift: payload.payload.lift || "",
+        listing_type: payload.payload.listing_type || "",
+        loan_eligibile: payload.payload.loan_eligibile || false,
+        longitude: payload.payload.longitude || 0,
+        med_name: payload.payload.med_name || "",
+        med_num1: payload.payload.med_num1 || "",
+        med_num2: payload.payload.med_num2 || "",
+        num_open_sides: payload.payload.num_open_sides || "",
+        own_name: payload.payload.own_name || "",
+        own_num1: payload.payload.own_num1 || "",
+        own_num2: payload.payload.own_num2 || "",
+        p_type: payload.payload.p_type || "",
+        parking: payload.payload.parking || false,
+        price: payload.payload.price || 0,
+        prop_name: payload.payload.prop_name || "",
+        rating: payload.payload.rating || "",
+        reg_loc: payload.payload.reg_loc || "",
+        rera: payload.payload.rera || "",
+        size: payload.payload.size || 0,
+        state: payload.payload.state || "",
+        status: payload.payload.status || "",
+        survey_number: payload.payload.survey_number || "",
+        unit: payload.payload.unit || "",
+        user_id: payload.payload.user_id || "",
+        v_comments: payload.payload.v_comments || "",
+        village: payload.payload.village || "",
       };
       console.log(data);
       const response = await axios.post(`${BaseUrl}/property`, data);
@@ -667,14 +668,15 @@ export const addProperty = createAsyncThunk(
 
 export const updateProperty = createAsyncThunk(
   "property/updateProperty",
-  async ({ formData, p_id }, { rejectWithValue }) => {
-    console.log("formData going during updateProperty",formData,p_id)
+  async ({ payload }, { rejectWithValue }) => {
+    console.log("formData going during updateProperty",payload)
     try {
+   
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) throw new Error("User not found in local storage");
-
+   
       const req_user_id = user.uid;
-      const data = { ...formData, req_user_id, p_id };
+      const data = { ...payload, req_user_id,  };
       console.log("update data", data);
       console.log("update data", data);
 

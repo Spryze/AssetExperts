@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -16,8 +16,8 @@ import { useDispatch } from "react-redux";
 import { SearchResults } from "./PropertySlice1";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
-import statesData from "./statesData.json";
-import PriceDetails from "./PriceDetails.json";
+
+import AreaJson from "../../../assets/Default/area/result.json";
 import { selectUser } from "app/store/userSlice";
 import { useSelector } from "react-redux";
 
@@ -25,6 +25,10 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
   const [open, setOpen] = useState(false);
   const user = useSelector(selectUser);
   const PropertyState = "NewProperty";
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [districts, setDistricts] = useState([]);
+  const [areas, setAreas] = useState([]);
 
   const initialFormData = {
     p_type: "",
@@ -33,6 +37,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
     max_price: "",
     state: "",
     district: "",
+    area:"",
     approved_by: "",
     status: "",
     loan_eligible: "",
@@ -60,16 +65,16 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
       [name]: name === "v_status" ? value === "true" : value,
     }));
 
-    if (name === "state") {
-      const selectedState = statesData.states.find(
-        (state) => state.name === value
-      );
-      setDistrictOptions(selectedState ? selectedState.district : []);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        district: "",
-      }));
-    }
+    // if (name === "state") {
+    //   const selectedState = statesData.states.find(
+    //     (state) => state.name === value
+    //   );
+    //   setDistrictOptions(selectedState ? selectedState.district : []);
+    //   setFormData((prevFormData) => ({
+    //     ...prevFormData,
+    //     district: "",
+    //   }));
+    // }
   };
 
   const handleClickOpen = () => {
@@ -96,7 +101,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
         },
       };
       FormData(payload);
-      console.log("payload going to backend",payload)
+      console.log("payload going to backend", payload);
       setIsLoading(true);
       await dispatch(
         SearchResults({
@@ -106,12 +111,11 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
           PropertyState: PropertyState,
         })
       ).then((result) => {
-        console.log(result)
+        console.log(result);
         onSearch(result);
         setIsLoading(false);
       });
-      
-       
+
       // {console.log('result',result)}
       //       if (!result || !result.data || result.properties.length === 0) {
       //         setNoDataFound(true);
@@ -127,6 +131,30 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
       handleClose();
     }
   };
+
+  useEffect(() => {
+    if (selectedState) {
+      console.log(selectedState);
+      const districtsInState = Object.keys(
+        AreaJson.district_status[selectedState]
+      ).filter((district) => AreaJson.district_status[selectedState][district]);
+      setDistricts(districtsInState);
+      setSelectedDistrict("");
+      setAreas([]);
+    }
+  }, [selectedState]);
+
+  useEffect(() => {
+    if (selectedDistrict) {
+      setAreas(AreaJson.areas[selectedDistrict] || []);
+    }
+  }, [selectedDistrict]);
+
+  const filteredStates = AreaJson.state_status
+    .filter((stateObj) => stateObj.status === true)
+    .map((stateObj) => stateObj.state);
+  console.log(filteredStates);
+  console.log(filteredStates);
 
   return (
     <React.Fragment>
@@ -202,7 +230,6 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 label="Property select"
                 onChange={handleChange}
               >
-           
                 <MenuItem value="plot">Plots</MenuItem>
                 <MenuItem value="flat">Flats</MenuItem>
                 <MenuItem value="land">Lands</MenuItem>
@@ -211,7 +238,9 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 <MenuItem value="officeplace">Office Place</MenuItem>
                 <MenuItem value="coworkingplace">Co-Working Place</MenuItem>
                 <MenuItem value="student hostel">Student Hostel</MenuItem>
-                <MenuItem value="agricultural lands">AgriculturalLands</MenuItem>
+                <MenuItem value="agricultural lands">
+                  AgriculturalLands
+                </MenuItem>
                 <MenuItem value="apartment">Apartment</MenuItem>
                 <MenuItem value="independenthouse">Independent House</MenuItem>
               </Select>
@@ -219,7 +248,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
           </Box>
 
           <Box sx={{ marginTop: "10px" }}>
-            <FormControl fullWidth sx={{ mt: 2,  margin: "4px 5px" }}>
+            <FormControl fullWidth sx={{ mt: 2, margin: "4px 5px" }}>
               <InputLabel>Listing Type</InputLabel>
               <Select
                 name="listing_type"
@@ -237,7 +266,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
             </FormControl>
 
             <TextField
-            fullWidth
+              fullWidth
               label="Min Budget"
               placeholder="Minimum value"
               name="min_price"
@@ -259,7 +288,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               variant="outlined"
               sx={{ margin: "6px" }}
             />
-            <FormControl fullWidth sx={{ mt: 2,  margin: "6px 5px" }}>
+            <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
               <InputLabel>Unit</InputLabel>
               <Select
                 name="unit"
@@ -300,39 +329,93 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
 
             <FormControl fullWidth sx={{ mt: 2, margin: "4px 5px" }}>
               <InputLabel>Select State</InputLabel>
-              <Select
+              {/* <InputLabel>State</InputLabel> */}
+              {/* <Select
+                label="State"
                 name="state"
                 value={formData.state}
-                onChange={handleChange}
-                label="Select State"
+                onChange={(e) => {
+                  setSelectedState(e.target.value);
+                  handleChange(e);
+                }}
               >
-                {statesData.states.map((state) => (
-                  <MenuItem
-                    key={state.id}
-                    value={state.name}
-                    sx={{ textTransform: "capitalize" }}
-                  >
-                    {state.name}
+                {Object.keys(AreaJson.district_status).map((state) => (
+                  <MenuItem key={state} value={state}>
+                    {state}
+                  </MenuItem>
+                ))}
+              </Select> */}
+              <Select
+                label="State"
+                name="state"
+                value={formData.state}
+                onChange={(e) => {
+                  setSelectedState(e.target.value);
+                  handleChange(e);
+                }}
+                // name="state"
+                // value={selectedState}
+                // onChange={(e) => {
+                //   setSelectedState(e.target.value);
+                //   setFormData({
+                //     ...formData,
+                //     state: e.target.value,
+                //     district: "",
+                //     village: "",
+                //   });
+                // }}
+                // fullWidth
+              >
+                {filteredStates.map((state) => (
+                  <MenuItem key={state} value={state}>
+                    {state}
+                  </MenuItem>
+                ))}
+              </Select>
+              {/* </FormControl> */}
+            </FormControl>
+
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>District</InputLabel>
+              <Select
+                label="District"
+                name="district"
+                value={formData.district}
+                onChange={(e) => {
+                  setSelectedDistrict(e.target.value);
+                  handleChange(e);
+                }}
+              >
+                {districts.map((district) => (
+                  <MenuItem key={district} value={district}>
+                    {district}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-
-            <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
-              <InputLabel>District</InputLabel>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>Area</InputLabel>
               <Select
-                name="district"
-                value={formData.district}
+                label="Area"
+                name="area"
+                value={formData.area}
                 onChange={handleChange}
-                label="Select District"
               >
-                {districtOptions.map((district) => (
-                  <MenuItem
-                    key={district}
-                    value={district}
-                    sx={{ textTransform: "capitalize" }}
-                  >
-                    {district}
+                {console.log(areas)}
+                {/* {Object.keys(areas).map((district) => (
+      <optgroup key={district} label={district}>
+        {areas.map((item) => (
+        
+          <MenuItem key={item.id} value={item.area}>
+            {item.area}
+          </MenuItem>
+        ))}
+         
+      </optgroup>
+    ))} */}
+                {areas.map((area) => (
+                  <MenuItem key={area.id} value={area.area}>
+                    {area.area}
                   </MenuItem>
                 ))}
               </Select>
@@ -349,7 +432,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               </FormControl>
             )}
 
-            <FormControl fullWidth sx={{ mt: 2,  margin: "6px 5px" }}>
+            <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
               <InputLabel>Approved</InputLabel>
               <Select
                 name="approved_by"
@@ -357,13 +440,12 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 onChange={handleChange}
                 label="Select Approved"
               >
-         
                 <MenuItem value="Panchayat">Panchayat</MenuItem>
                 <MenuItem value="Vuda">Vuda</MenuItem>
                 <MenuItem value="Rera">Rera</MenuItem>
               </Select>
             </FormControl>
-            <FormControl fullWidth sx={{ mt: 2,  margin: "6px 5px" }}>
+            <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
               <InputLabel>Loan Eligibility</InputLabel>
               <Select
                 name="loan_eligible"
@@ -377,7 +459,6 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
             </FormControl>
             {user.role === "admin" && (
               <TextField
-              
                 label="Updated By"
                 name="updated_by"
                 value={formData.updated_by}
@@ -421,7 +502,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               </FormControl>
             )}
             {user.role === "admin" && (
-              <FormControl  fullWidth sx={{ mt: 2,  margin: "6px 5px" }}>
+              <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
                 <InputLabel>Verification Status</InputLabel>
                 <Select
                   name="v_status"

@@ -21,258 +21,11 @@ import UploadImages from "./Property-Types-Forms/UploadImages";
 import AreaJson from "../../../../assets/Default/area/result.json";
 
 const Form = () => {
-  // const propertiesData = useSelector(selectProperties);
-  // const propertiesdata = useSelector(selectProperties);
-  // console.log("propertiesData in form", propertiesData);
-  // const location = useLocation();
-  // const currentPath = location.pathname;
-  // const propertyData = propertiesData?.data?.property;
-  // const dispatch = useDispatch();
-  // const user = useSelector(selectUser);
-  // const [heading, setHeading] = useState();
-  // const [showComponent, setShowComponent] = useState(true);
-  // const [selectedState, setSelectedState] = useState("");
-  // const [selectedDistrict, setSelectedDistrict] = useState("");
-  // const [districts, setDistricts] = useState([]);
-  // const [areas, setAreas] = useState([]);
-  // console.log("areas", areas);
-
-  // const [formData, setFormData] = useState({
-  //   AboutDeveloper: propertyData?.AboutDeveloper || "",
-  //   bhk: propertyData?.BHK || "",
-  //   Flooring: propertyData?.Flooring || "",
-  //   bhk: propertyData?.bhk || "",
-  //   PowerBackup: propertyData?.PowerBackup || "",
-  //   PropertyAge: propertyData?.PropertyAge || "",
-  //   WaterSource: propertyData?.WaterSource || "",
-  //   ad_info: propertyData?.ad_info || "",
-  //   approved_by: propertyData?.approved_by || "",
-  //   bound_wall: propertyData?.bound_wall || "",
-  //   comments: propertyData?.comments || "",
-  //   developments: propertyData?.developments || "",
-  //   dimensions: propertyData?.dimensions || "",
-  //   direction: propertyData?.direction || "",
-  //   district: propertyData?.district || "",
-  //   document_number: propertyData?.document_number || "",
-  //   docfile: [],
-  //   disputes: propertyData?.disputes || "",
-  //   furnshied: propertyData?.furnshied || "",
-  //   govt_price: propertyData?.govt_price || null,
-  //   landmark: propertyData?.landmark || "",
-  //   lift: propertyData?.lift || "",
-  //   listing_type: propertyData?.listing_type || "",
-  //   latitude: propertyData?.latitude || 0,
-  //   longitude: propertyData?.longitude || 0,
-  //   med_name: propertyData?.med_name || "",
-  //   med_num1: propertyData?.med_num1 || "",
-  //   med_num2: propertyData?.med_num2 || "",
-  //   num_open_sides: propertyData?.num_open_sides || "",
-  //   own_name: propertyData?.own_name || "",
-  //   own_num1: propertyData?.own_num1 || "",
-  //   own_num2: propertyData?.own_num2 || "",
-  //   parking: propertyData?.parking || false,
-  //   price: propertyData?.price || 0,
-  //   prop_name: propertyData?.property_name || "",
-  //   rating: propertyData?.rating || "",
-  //   reg_loc: propertyData?.reg_loc || "",
-  //   rera: propertyData?.rera || "",
-  //   state: propertyData?.state || "",
-  //   status: propertyData?.status || "",
-  //   survey_number: propertyData?.survey_number || "",
-  //   unit: propertyData?.unit || "",
-  //   user_id: propertyData?.user_id || "",
-  //   v_comments: propertyData?.v_comments || "",
-  //   v_status: propertyData?.PropertyStatus || false,
-  //   village: propertyData?.village || "",
-  //   loan_eligibile: propertyData?.loan_eligibile || false,
-  // });
-
-  // const [formErrors, setFormErrors] = useState({});
-  // const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  // const [responseData, setResponseData] = useState(null);
-  // const [isEditMode, SetisEditMode] = useState();
-
-  // useEffect(() => {
-  //   if (selectedState) {
-  //     console.log(selectedState);
-  //     const districtsInState = Object.keys(
-  //       AreaJson.district_status[selectedState]
-  //     ).filter((district) => AreaJson.district_status[selectedState][district]);
-  //     setDistricts(districtsInState);
-  //     setSelectedDistrict("");
-  //     setAreas([]);
-  //   }
-  // }, [selectedState]);
-
-  // useEffect(() => {
-  //   if (selectedDistrict) {
-  //     setAreas(AreaJson.areas[selectedDistrict] || []);
-  //   }
-  // }, [selectedDistrict]);
-  // useEffect(() => {
-  //   if (currentPath === "/Addproperty") {
-  //     setHeading("Add Property");
-  //     SetisEditMode(false);
-  //   } else if (currentPath === "/UpdateProperty") {
-  //     setHeading("Update Property");
-  //     SetisEditMode(true);
-  //   }
-  // }, [currentPath]);
-
-  // const propertyTypes = [
-  //   "plot",
-  //   "flat",
-  //   "land",
-  //   "PG",
-  //   "office place",
-  //   "co working place",
-  //   "student hostels",
-  //   "agricultural lands",
-  //   "independent house",
-  //   "commercial",
-  // ];
-  // const Units = ["sqft", "sqyd", "sq.m", "acre", "cent"];
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   const parsedValue = [
-  //     "price",
-  //     "size",
-  //     "latitude",
-  //     "longitude",
-  //     "govt_price",
-  //   ].includes(name)
-  //     ? parseFloat(value)
-  //     : name === "loan_eligibile"
-  //     ? value === "true"
-  //     : value;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: parsedValue,
-  //   });
-  // };
-
-  // const handleFileChange = (e) => {
-  //   const docFiles = document.getElementById("fileUpload").files;
-  //   const filesArray = Array.from(docFiles).map((file) => ({
-  //     name: file.name,
-  //     lastModified: file.lastModified,
-  //     lastModifiedDate: file.lastModifiedDate,
-  //     size: file.size,
-  //     type: file.type,
-  //   }));
-
-  //   setFormData({
-  //     ...formData,
-  //     docfile: filesArray,
-  //   });
-  // };
-
-  // const validateForm = () => {
-  //   const errors = {};
-  //   if (!formData.prop_name) errors.propertyName = "Property Name is required";
-  //   if (!formData.p_type) errors.p_type = "Property Type is required";
-  //   if (formData.med_num1 && formData.med_num1.replace(/\D/g, '').length > 10) {
-  //     errors.med_num1 = "Phone Number should not contain more than 10 numbers";
-  //   }
-  //   if (formData.med_num2 && formData.med_num2.replace(/\D/g, '').length > 10) {
-  //     errors.med_num2 = "Phone Number should not contain more than 10 numbers";
-  //   }
-  //   if (formData.own_num1 && formData.med_num2.replace(/\D/g, '').length > 10) {
-  //     errors.own_num1 = "Phone Number should not contain more than 10 numbers";
-  //   }
-  //   if (formData.own_num2 && formData.med_num2.replace(/\D/g, '').length > 10) {
-  //     errors.own_num2 = "Phone Number should not contain more than 10 numbers";
-  //   }
-  //   return errors;
-  // };
-
-  // const deepObjectDifference = (obj1, obj2) => {
-  //   const diff = {};
-
-  //   // Check all keys in obj1
-  //   Object.keys(obj1).forEach(key => {
-  //     // If obj2 does not have the key or values differ
-  //     if (!obj2.hasOwnProperty(key) || obj1[key] !== obj2[key]) {
-  //       // If both values are objects, recursively check for differences
-  //       if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
-  //         const nestedDiff = deepObjectDifference(obj1[key], obj2[key]);
-  //         if (Object.keys(nestedDiff).length > 0) {
-  //           diff[key] = nestedDiff;
-  //         }
-  //       } else {
-  //         // Otherwise, add to differences
-  //         diff[key] = obj1[key];
-  //       }
-  //     }
-  //   });
-
-  //   // Check keys in obj2 that are not in obj1
-  //   Object.keys(obj2).forEach(key => {
-  //     if (!obj1.hasOwnProperty(key)) {
-  //       diff[key] = obj2[key];
-  //     }
-  //   });
-
-  //   return diff;
-  // };
-
-  // const getChangedFields = (formData, propertyData) => {
-  //   return deepObjectDifference(formData, propertyData);
-  // };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const errors = validateForm();
-  //   console.log(errors);
-
-  //   if (Object.keys(errors).length === 0) {
-  //     const action = isEditMode ? updateProperty : addProperty;
-  //     const p_id = propertyData?.property_id;
-  //     console.log(p_id);
-
-  //     let payload;
-
-  //     if (currentPath === "/UpdateProperty") {
-  //     console.log("formData, propertyData going for update check",formData, propertyData);
-  //       payload = getChangedFields(formData, propertyData);
-  //       console.log("payload result aftr update check",payload)
-
-  //       if (isEditMode) {
-  //         // Include property_id if editing
-  //         payload.property_id = p_id;
-  //       }
-  //     } else {
-  //       // Send all data if currentPath is not "/UpdateProperty"
-        
-  //       payload = formData;
-  //       console.log(formData);
-  //       if (isEditMode) {
-  //         payload.property_id = p_id;
-  //       }
-  //     }
-
-  //     const resultAction = dispatch(action({ formData: payload })).then(
-  //       (response) => {
-  //         if (
-  //           response.payload.message === "property added successfully" ||
-  //           response.payload.message === "Property updated successfully"
-  //         ) {
-  //           setResponseData(response.payload);
-  //           setIsFormSubmitted(true);
-  //         } else {
-  //           console.error(response.payload);
-  //         }
-  //       }
-  //     );
-  //   } else {
-  //     setFormErrors(errors);
-  //   }
-  // };
   const propertiesData = useSelector(selectProperties);
   const location = useLocation();
   const currentPath = location.pathname;
   const propertyData = propertiesData?.data?.property;
+  console.log(propertyData)
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const [heading, setHeading] = useState('');
@@ -282,7 +35,7 @@ const Form = () => {
   const [districts, setDistricts] = useState([]);
   const [areas, setAreas] = useState([]);
   const [formData, setFormData] = useState({
-    AboutDeveloper: propertyData?.AboutDeveloper || "",
+    // AboutDeveloper: propertyData?.AboutDeveloper || "",
     bhk: propertyData?.bhk || "",
     Flooring: propertyData?.Flooring || "",
     bhk: propertyData?.bhk || "",
@@ -296,6 +49,7 @@ const Form = () => {
     developments: propertyData?.developments || "",
     dimensions: propertyData?.dimensions || "",
     direction: propertyData?.direction || "",
+    state: propertyData?.stte || "",
     district: propertyData?.district || "",
     document_number: propertyData?.document_number || "",
     docfile: [],
@@ -321,13 +75,13 @@ const Form = () => {
     rating: propertyData?.rating || "",
     reg_loc: propertyData?.reg_loc || "",
     rera: propertyData?.rera || "",
-    state: propertyData?.state || "",
+    
     status: propertyData?.status || "",
     survey_number: propertyData?.survey_number || "",
     unit: propertyData?.unit || "",
     user_id: propertyData?.user_id || "",
     v_comments: propertyData?.v_comments || "",
-    v_status: propertyData?.PropertyStatus || false,
+    v_status: propertyData?.v_status || false,
     village: propertyData?.village || "",
     loan_eligibile: propertyData?.loan_eligibile || false,
   });
@@ -346,6 +100,7 @@ const Form = () => {
       setAreas([]);
     }
   }, [selectedState]);
+  console.log(districts)
 
   useEffect(() => {
     if (selectedDistrict) {
@@ -377,19 +132,39 @@ const Form = () => {
   ];
 
   const Units = ["sqft", "sqyd", "sq.m", "acre", "cent"];
-
+  console.log(formData)
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const parsedValue = ["price", "size", "latitude", "longitude", "govt_price"].includes(name)
-      ? parseFloat(value)
-      : name === "loan_eligibile"
-      ? value === "true"
-      : value;
-    setFormData({
-      ...formData,
-      [name]: parsedValue,
-    });
+    console.log(`Field Name: ${name}, Field Value: ${value}`);
+  
+    let parsedValue = value;
+  
+    if (["price", "size", "latitude", "longitude", "govt_price"].includes(name)) {
+      parsedValue = parseFloat(value);
+    }
+  
+    if (name === "PropertyStatus") {
+      parsedValue = value === "true";
+  
+      setFormData({
+        ...formData,
+        v_status: parsedValue,
+      });
+    } else {
+      console.log(`Parsed Value for ${name}:`, parsedValue);
+  
+      setFormData({
+        ...formData,
+        [name]: parsedValue,
+      });
+  
+      console.log("Updated formData:", formData);
+    }
   };
+  
+  
+  
 
   const handleFileChange = (e) => {
     const docFiles = document.getElementById("fileUpload").files;
@@ -409,17 +184,21 @@ const Form = () => {
   const validateForm = () => {
     const errors = {};
     if (!formData.prop_name) errors.propertyName = "Property Name is required";
+    if (!formData.listing_type) errors.listing_type = "Listing Type is required";
+    if (!formData.state) errors.state = "State Name is Required";
+    if (!formData.district) errors.district = "District Name is Required";
+    if (!formData.village) errors.village = "Village Name is Required";
     if (!formData.p_type) errors.p_type = "Property Type is required";
-    if (formData.med_num1 && formData.med_num1.replace(/\D/g, '').length > 10) {
+    if (formData.med_num1 && formData?.med_num1?.length > 10) {
       errors.med_num1 = "Phone Number should not contain more than 10 numbers";
     }
-    if (formData.med_num2 && formData.med_num2.replace(/\D/g, '').length > 10) {
+    if (formData.med_num2 && formData.med_num2?.length > 10) {
       errors.med_num2 = "Phone Number should not contain more than 10 numbers";
     }
-    if (formData.own_num1 && formData.med_num2.replace(/\D/g, '').length > 10) {
+    if (formData.own_num1 && formData?.med_num2?.length > 10) {
       errors.own_num1 = "Phone Number should not contain more than 10 numbers";
     }
-    if (formData.own_num2 && formData.med_num2.replace(/\D/g, '').length > 10) {
+    if (formData.own_num2 && formData?.med_num2?.length > 10) {
       errors.own_num2 = "Phone Number should not contain more than 10 numbers";
     }
     return errors;
@@ -522,7 +301,7 @@ const Form = () => {
     .filter((stateObj) => stateObj.status === true)
     .map((stateObj) => stateObj.state);
   console.log(filteredStates);
-  console.log(filteredStates);
+
 
   if (!user) {
     return (
@@ -575,7 +354,7 @@ const Form = () => {
               <Select
                 label="Property Status"
                 name="PropertyStatus"
-                value={formData.PropertyStatus}
+                value={formData.v_status}
                 onChange={handleChange}
               >
                 <MenuItem value="true">Verified</MenuItem>
@@ -585,8 +364,8 @@ const Form = () => {
           </Grid>
         )}
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>Listing Type</InputLabel>
+          <FormControl fullWidth variant="outlined" error={!!formErrors.listing_type}>
+            <InputLabel>Listing Type*</InputLabel>
             <Select
               label="Listing Type"
               name="listing_type"
@@ -596,6 +375,7 @@ const Form = () => {
               <MenuItem value="buy">Buy</MenuItem>
               <MenuItem value="sell">Sell</MenuItem>
             </Select>
+            <FormHelperText>{formErrors.listing_type}</FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -808,8 +588,9 @@ const Form = () => {
             variant="outlined"
             fullWidth
           /> */}
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>State</InputLabel>
+          <FormControl fullWidth variant="outlined" error={!!formErrors.state}>
+            <InputLabel>State*</InputLabel>
+            
             {/* <Select
                 label="State"
                 name="state"
@@ -832,6 +613,7 @@ const Form = () => {
               onChange={(e) => {
                 setSelectedState(e.target.value);
                 handleChange(e);
+                
               }}
               // name="state"
               // value={selectedState}
@@ -852,6 +634,7 @@ const Form = () => {
                 </MenuItem>
               ))}
             </Select>
+            <FormHelperText>{formErrors.state}</FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -863,8 +646,8 @@ const Form = () => {
             variant="outlined"
             fullWidth
           /> */}
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>District</InputLabel>
+          <FormControl fullWidth variant="outlined" error={!!formErrors.district}>
+            <InputLabel>District*</InputLabel>
             <Select
               label="District"
               name="district"
@@ -880,6 +663,7 @@ const Form = () => {
                 </MenuItem>
               ))}
             </Select>
+            <FormHelperText>{formErrors.district}</FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -891,8 +675,8 @@ const Form = () => {
             variant="outlined"
             fullWidth
           /> */}
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>Area</InputLabel>
+          <FormControl fullWidth variant="outlined" error={!!formErrors.village}>
+            <InputLabel>Area*</InputLabel>
             <Select
               label="Area"
               name="village"
@@ -917,6 +701,7 @@ const Form = () => {
                 </MenuItem>
               ))}
             </Select>
+            <FormHelperText>{formErrors.village}</FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -1019,7 +804,22 @@ const Form = () => {
           </Grid>
         )} */}
         <Grid item xs={12} sm={6}>
-          <TextField
+        <FormControl fullWidth variant="outlined">
+              <InputLabel>Approoved By</InputLabel>
+              <Select
+                label="property rating"
+                name="rating"
+                value={formData.approved_by}
+                onChange={handleChange}
+              >
+                <MenuItem value="VUDA">VUDA</MenuItem>
+                <MenuItem value="Panchayat">Panchayat</MenuItem>
+                <MenuItem value="Rera">RERA</MenuItem>
+
+              </Select>
+
+            </FormControl>
+          {/* <TextField
             label="Approved By"
             name="approved_by"
             value={formData.approved_by}
@@ -1027,7 +827,7 @@ const Form = () => {
             variant="outlined"
             multiline
             fullWidth
-          />
+          /> */}
         </Grid>
         {(user.role === "admin" || user.role === "staff") && (
           <Grid item xs={12} sm={6}>
@@ -1088,19 +888,20 @@ const Form = () => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>Loan Eligible</InputLabel>
-            <Select
-              label="Loan Eligible"
-              name="loan_eligibile"
-              value={formData.loan_eligibile}
-              onChange={handleChange}
-            >
-              <MenuItem value={true}>Yes</MenuItem>
-              <MenuItem value={false}>No</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
+  <FormControl fullWidth variant="outlined">
+    <InputLabel>Loan Eligible</InputLabel>
+    <Select
+      label="Loan Eligible"
+      name="loan_eligibile"
+      value={formData.loan_eligibile}
+      onChange={handleChange}
+    >
+      <MenuItem value={true}>Yes</MenuItem>
+      <MenuItem value={false}>No</MenuItem>
+    </Select>
+  </FormControl>
+</Grid>
+
 
         <Grid item xs={12} sm={6}>
           <TextField
@@ -1231,7 +1032,7 @@ const Form = () => {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <TextField
             label="About Developer"
             name="AboutDeveloper"
@@ -1242,7 +1043,7 @@ const Form = () => {
             rows={4}
             fullWidth
           />
-        </Grid>
+        </Grid> */}
 
         <Grid item xs={12}>
           <TextField

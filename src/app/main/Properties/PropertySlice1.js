@@ -81,10 +81,12 @@ export const AddIntrests = createAsyncThunk(
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const user_id = user.uid;
+      const req_user_id = user.uid
 
       const Data = {
         user_id: user_id,
-        body: body.body
+        body: body.body,
+        req_user_id : req_user_id,
       };
       console.log("Data", Data);
       const response = await axios.put(`${BaseUrl}/register`, Data);

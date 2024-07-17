@@ -291,7 +291,7 @@ const ProfilePage = () => {
                 {renderProfileDetail("Email", profileData.data.email)}
                 {renderProfileDetail("Whatsapp Number", profileData.data.phone_num_1)}
                 {renderProfileDetail("Contact Number", profileData.data.phone_num_2)}
-                {renderProfileDetail("Role", profileData.role)}
+                {/* {renderProfileDetail("Role", profileData.role)} */}
                 {renderProfileDetail("Profession", profileData.data.profession)}
                 {renderProfileDetail("Address", profileData.data.address)}
                 {renderProfileDetail("Requirements", profileData.data.requirements)}

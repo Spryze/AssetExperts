@@ -65,7 +65,7 @@ const MyProperties = () => {
       </div>
       {!isEditMode && (
         <Grid container spacing={1}>
-          {userData?.data?.properties?.length > 0 && (
+          {userData?.data?.properties?.length > 0 ? (
             <div style={{ margin: "30px" }}>
               <Typography variant="h6" sx={{ marginBottom: "10px" }}>
                 My Properties
@@ -183,7 +183,13 @@ const MyProperties = () => {
                 ))}
               </div>
             </div>
-          )}
+          ):(<Typography sx={{display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginLeft:"50%",
+            fontWeight:"600",
+            fontSize:"20px",
+            minHeight: '100vh', }}>No Properties</Typography>)}
         </Grid>
       )}
       {isEditMode && (

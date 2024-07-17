@@ -122,16 +122,15 @@ function Property() {
           {!isEditMode && <ContactDetails />}
           {console.log(isPropertyInUserProperties)}
           {isPropertyInUserProperties || user.role === "admin" ? (
-  <Button
-    variant="contained"
-    onClick={() => {
-      handleClick();
-    }}
-  >
-    Edit Property
-  </Button>
-) : null}
-
+            <Button
+              variant="contained"
+              onClick={() => {
+                handleClick();
+              }}
+            >
+              Edit Property
+            </Button>
+          ) : null}
 
           {/* {isEditMode  && (
             <Addproperty

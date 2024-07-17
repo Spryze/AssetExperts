@@ -145,7 +145,7 @@ const MorePropertyDetails = () => {
                 {propertyData?.data?.property?.landmark}
               </span>
             </Typography>
-            {propertyType === "Flat" && (
+            {propertyType === "flat" && (
               <Typography
                 variant="p"
                 sx={{ margin: "10px 0", fontSize: "15px" }}
@@ -155,7 +155,7 @@ const MorePropertyDetails = () => {
             )}
           </div>
           <div className="detailsFlex">
-            {propertyType === "Plot" && (
+            {propertyType === "plot" && (
               <Typography
                 variant="p"
                 sx={{ margin: "10px 0", fontSize: "15px" }}
@@ -177,9 +177,9 @@ const MorePropertyDetails = () => {
             </Typography>
           </div>
 
-          {propertyType === "Flat" && (
+          {propertyType === "flat" && (
             <div className="detailsFlex">
-              {propertyType === "Flat" && (
+              {propertyType === "flat" && (
                 <Typography
                   variant="p"
                   sx={{ margin: "10px 0", fontSize: "15px" }}
@@ -192,7 +192,7 @@ const MorePropertyDetails = () => {
                   </span>
                 </Typography>
               )}
-              {propertyType === "Flat" && (
+              {propertyType === "flat" && (
                 <Typography
                   variant="p"
                   sx={{ margin: "10px 0", fontSize: "15px" }}
@@ -207,9 +207,9 @@ const MorePropertyDetails = () => {
               )}
             </div>
           )}
-          {propertyType === "Flat" && (
+          {propertyType === "flat" && (
             <div className="detailsFlex">
-              {propertyType === "Flat" && (
+              {propertyType === "flat" && (
                 <Typography
                   variant="p"
                   sx={{ margin: "10px 0", fontSize: "15px" }}
@@ -222,7 +222,7 @@ const MorePropertyDetails = () => {
                   </span>
                 </Typography>
               )}
-              {propertyType === "Plot" && (
+              {propertyType === "plot" && (
                 <Typography
                   variant="p"
                   sx={{ margin: "10px 0", fontSize: "15px" }}

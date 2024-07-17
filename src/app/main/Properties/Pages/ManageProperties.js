@@ -11,7 +11,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { useLocation } from "react-router-dom";
 import { showMessage } from "app/store/rabit/messageSlice";
-
+import Card from "@mui/material/Card";
 const ManageProperties = () => {
   const dispatch = useDispatch();
   const searchResults = useSelector(selectAdminSearchResults);
@@ -49,7 +49,7 @@ const ManageProperties = () => {
 
   const dataNotFound = useCallback((response) => {
     console.log("response for nodatafound",response);
-    if (!response || response.properties.length === 0) {
+    if (!response || response?.properties?.length === 0) {
       setNoDataFound(true);
       setTimeout(() => {
         setNoDataFound(false);
@@ -118,6 +118,27 @@ const ManageProperties = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [handleScroll]);
+  const convertUtcToLocal = (utcTimeString) => {
+        // Create a Date object with the UTC time string
+        const utcDate = new Date(utcTimeString);
+
+        // Get the offset of the local timezone from UTC in minutes
+        const offsetMinutes = utcDate.getTimezoneOffset();
+
+        // Adjust the UTC date by the offset to get local time
+        const localDate = new Date(utcDate.getTime() - (offsetMinutes * 60 * 1000));
+
+        // Format options for displaying in 12-hour format with hours and minutes
+        const options = {
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: 'numeric', minute: '2-digit',
+            hour12: true,
+            timeZoneName: 'short'
+        };
+
+        // Format the local date time using Intl.DateTimeFormat
+        return new Intl.DateTimeFormat('en-US', options).format(localDate);
+    };
 
   return (
     <div style={{ margin: "20px" }}>
@@ -143,6 +164,7 @@ const ManageProperties = () => {
           No Data Found
         </Typography>
       )}
+      <Card sx={{overflow:"auto",borderRadius:"2px",padding:"10px"}}>
       <Grid container spacing={1}>
         {console.log("searchResults", searchResults)}
         {searchResults?.length > 0 && (
@@ -267,9 +289,9 @@ const ManageProperties = () => {
                       <TableCell align="left">{item.owner_no1}</TableCell>
                       <TableCell align="left">{item.owner_no2}</TableCell>
                       <TableCell align="left">{item.open_sides}</TableCell>
-                      <TableCell align="left">{item.p_created_on}</TableCell>
-                      <TableCell align="left">{item.p_updated_on}</TableCell>
-                      <TableCell align="left">{item.p_updated_by}</TableCell>
+                      <TableCell align="left">{convertUtcToLocal(item.p_created_on)}</TableCell>
+                      <TableCell align="left">{convertUtcToLocal(item.property_updated_on)}</TableCell>
+                      <TableCell align="left">{item.updated_by}</TableCell>
                       <TableCell align="left">{item.parking}</TableCell>
                       <TableCell align="left">{item.rating}</TableCell>
                       <TableCell align="left">{item.reg_location}</TableCell>
@@ -296,6 +318,7 @@ const ManageProperties = () => {
         )}
         
       </Grid>
+      </Card>
       {loading && (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
           <CircularProgress />

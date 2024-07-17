@@ -37,9 +37,9 @@ const WipeImage = () => {
 
   const styles = {
     position: 'absolute',
-    // right: '400px',
-    top: '0px',
-    height: '600px',
+    right: '500px',
+    top: '20%',
+    height: '400px',
     width: 'auto',
     animation: isVisible ? 'wipeIn 1s forwards' : 'wipeOut 1s forwards',
   };

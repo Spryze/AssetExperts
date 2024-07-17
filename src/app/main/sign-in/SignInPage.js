@@ -70,7 +70,7 @@ const navigate = useNavigate();
     console.log("hii")
    dispatch(signinwithpopup({ auth, provider })).then((response)=>{
     console.log(response);
-    if(response.status == 201 || response.payload.response.data.message == "user alredy exists"){
+    if(response?.payload.status == 201 || response?.payload.data.message == "user alredy exists"){
       navigate("/");
     }
    });

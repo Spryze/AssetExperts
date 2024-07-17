@@ -49,6 +49,7 @@ import Form from "./MultiStepForm/Form";
 import { useSelector } from "react-redux";
 import { selectUser } from "app/store/userSlice";
 import { Paper } from "@mui/material";
+import { Link } from 'react-router-dom';
 
 const AddProperty = (propertyData) => {
   const user = useSelector(selectUser);
@@ -73,9 +74,9 @@ const AddProperty = (propertyData) => {
                 src="assets/images/logo/logo.svg"
                 alt="logo"
               />
-              <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight text-center">
-                Please Login!
-              </Typography>
+             <Link to="/sign-in" className="block mt-32 text-4xl font-extrabold tracking-tight leading-tight text-center">
+  Please Login!
+</Link>
             </div>
           </Paper>
         </div>

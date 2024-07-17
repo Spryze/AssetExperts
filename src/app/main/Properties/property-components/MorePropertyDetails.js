@@ -70,7 +70,7 @@ const MorePropertyDetails = () => {
               <SellIcon />
               <span style={{ fontWeight: "600" }}>Property Name :</span>
               <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
-                {propertyData?.data?.property?.property_name}
+                {propertyData?.data?.property?.prop_name}
               </span>
             </Typography>
 
@@ -93,13 +93,13 @@ const MorePropertyDetails = () => {
               </span>
             </Typography>
 
-            <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+            {/* <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
               <AccountBalanceSharpIcon />
               <span style={{ fontWeight: "600" }}> Approoved by :</span>
               <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
                 {propertyData?.data?.property?.approved_by}
               </span>
-            </Typography>
+            </Typography> */}
           </div>
 
           <div className="detailsFlex">
@@ -151,6 +151,11 @@ const MorePropertyDetails = () => {
                 sx={{ margin: "10px 0", fontSize: "15px" }}
               >
                 <span style={{ fontWeight: "600" }}> Established Year :</span>
+                <span
+                  style={{ textTransform: "capitalize", marginLeft: "20px" }}
+                >
+                  {propertyData?.data?.property?.est_year}
+                </span>
               </Typography>
             )}
           </div>
@@ -164,7 +169,7 @@ const MorePropertyDetails = () => {
                 <span
                   style={{ textTransform: "capitalize", marginLeft: "20px" }}
                 >
-                  {propertyData?.data?.property?.est_year}
+                  {propertyData?.data?.property?.num_open_sides}
                 </span>
               </Typography>
             )}
@@ -188,7 +193,7 @@ const MorePropertyDetails = () => {
                   <span
                     style={{ textTransform: "capitalize", marginLeft: "20px" }}
                   >
-                    {propertyData?.data?.property?.est_year}
+                    {propertyData?.data?.property?.furnshied}
                   </span>
                 </Typography>
               )}
@@ -201,7 +206,7 @@ const MorePropertyDetails = () => {
                   <span
                     style={{ textTransform: "capitalize", marginLeft: "20px" }}
                   >
-                    {propertyData?.data?.property?.est_year}
+                    {propertyData?.data?.property?.rera_status}
                   </span>
                 </Typography>
               )}
@@ -218,7 +223,7 @@ const MorePropertyDetails = () => {
                   <span
                     style={{ textTransform: "capitalize", marginLeft: "20px" }}
                   >
-                    {propertyData?.data?.property?.est_year}
+                    {propertyData?.data?.property?.lift}
                   </span>
                 </Typography>
               )}
@@ -232,7 +237,7 @@ const MorePropertyDetails = () => {
                   <span
                     style={{ textTransform: "capitalize", marginLeft: "20px" }}
                   >
-                    {propertyData?.data?.property?.est_year}
+                    {propertyData?.data?.property?.bound_wall}
                   </span>
                 </Typography>
               )}

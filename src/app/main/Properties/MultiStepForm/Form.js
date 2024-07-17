@@ -71,7 +71,7 @@ const Form = () => {
     parking: propertyData?.parking || false,
     p_type:propertyData?.p_type ||"",
     price: propertyData?.price || 0,
-    prop_name: propertyData?.property_name || "",
+    prop_name: propertyData?.prop_name || "",
     rating: propertyData?.rating || "",
     reg_loc: propertyData?.reg_loc || "",
     rera: propertyData?.rera || "",
@@ -471,10 +471,10 @@ const Form = () => {
               >
                 <MenuItem value="1">1 BHK</MenuItem>
                 <MenuItem value="2">2 BHK</MenuItem>
-                <MenuItem value="1">3 BHK</MenuItem>
-                <MenuItem value="2">4 BHK</MenuItem>
-                <MenuItem value="1">5 BHK</MenuItem>
-                <MenuItem value="2">6 BHK</MenuItem>
+                <MenuItem value="3">3 BHK</MenuItem>
+                <MenuItem value="4">4 BHK</MenuItem>
+                <MenuItem value="5">5 BHK</MenuItem>
+                <MenuItem value="6">6 BHK</MenuItem>
               </Select>
               <FormHelperText>{formErrors.unit}</FormHelperText>
             </FormControl>

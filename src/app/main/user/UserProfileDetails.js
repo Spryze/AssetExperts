@@ -117,7 +117,7 @@ const UserProfileData = ({isAdmin}) => {
     { id: 'survey_number', label: 'Survey Number', minWidth: 100, align: 'center' },
     { id: 'document_number', label: 'Document Number', minWidth: 100, align: 'center' },
     { id: 'disputes', label: 'Disputes', minWidth: 100, align: 'center' },
-    { id: 'property_name', label: 'Property Name', minWidth: 100, align: 'center' },
+    { id: 'prop_name', label: 'Property Name', minWidth: 100, align: 'center' },
     { id: 'government_price', label: 'Government Price', minWidth: 100, align: 'center' },
     { id: 'register_location', label: 'Register Location', minWidth: 100, align: 'center' },
     { id: 'parking', label: 'Parking', minWidth: 100, align: 'center' },

@@ -240,7 +240,7 @@ const ManageProperties = () => {
                         </Link>
                       </TableCell>
                       <TableCell align="left">
-                        {trimText(item.property_name, index, "property_name")}
+                        {trimText(item.prop_name, index, "property_name")}
                       </TableCell>
                       <TableCell align="left">{item.area}</TableCell>
                       <TableCell align="left">{item.unit}</TableCell>

@@ -34,6 +34,9 @@ const Form = () => {
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [districts, setDistricts] = useState([]);
   const [areas, setAreas] = useState([]);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+
   const [formData, setFormData] = useState({
     // AboutDeveloper: propertyData?.AboutDeveloper || "",
     bhk: propertyData?.bhk || "",
@@ -50,6 +53,7 @@ const Form = () => {
     dimensions: propertyData?.dimensions || "",
     direction: propertyData?.direction || "",
     state: propertyData?.stte || "",
+    size:propertyData?.size || "",
     district: propertyData?.district || "",
     document_number: propertyData?.document_number || "",
     docfile: [],
@@ -74,8 +78,7 @@ const Form = () => {
     prop_name: propertyData?.prop_name || "",
     rating: propertyData?.rating || "",
     reg_loc: propertyData?.reg_loc || "",
-    rera: propertyData?.rera || "",
-    
+    rera: propertyData?.rera || "", 
     status: propertyData?.status || "",
     survey_number: propertyData?.survey_number || "",
     unit: propertyData?.unit || "",
@@ -117,6 +120,16 @@ const Form = () => {
       SetisEditMode(true);
     }
   }, [currentPath]);
+
+  useEffect(() => {
+    if (minPrice && maxPrice) {
+        const formattedPriceRange = `${minPrice}-${maxPrice}`;
+        setFormData((prev) => ({
+            ...prev,
+            document_number: formattedPriceRange,
+        }));
+    }
+}, [minPrice, maxPrice]);
 
   const propertyTypes = [
     "plot",
@@ -163,27 +176,36 @@ const Form = () => {
     }
   };
   
-  
+  const handlePriceSubmit = () => {
+    if (minPrice && maxPrice) {
+        const formattedPriceRange = `${minPrice}-${maxPrice}`;
+        setFormData((prev) => ({
+            ...prev,
+            document_number: formattedPriceRange, 
+        }));
+    }
+};
   
 
-  const handleFileChange = (e) => {
-    const docFiles = document.getElementById("fileUpload").files;
-    const filesArray = Array.from(docFiles).map(file => ({
-      name: file.name,
-      lastModified: file.lastModified,
-      lastModifiedDate: file.lastModifiedDate,
-      size: file.size,
-      type: file.type,
-    }));
-    setFormData({
-      ...formData,
-      docfile: filesArray,
-    });
-  };
+  // const handleFileChange = (e) => {
+  //   const docFiles = document.getElementById("fileUpload").files;
+  //   const filesArray = Array.from(docFiles).map(file => ({
+  //     name: file.name,
+  //     lastModified: file.lastModified,
+  //     lastModifiedDate: file.lastModifiedDate,
+  //     size: file.size,
+  //     type: file.type,
+  //   }));
+  //   setFormData({
+  //     ...formData,
+  //     docfile: filesArray,
+  //   });
+  // };
 
   const validateForm = () => {
     const errors = {};
     if (!formData.prop_name) errors.propertyName = "Property Name is required";
+    if (!formData.size) errors.size = "Size is required";
     if (!formData.listing_type) errors.listing_type = "Listing Type is required";
     if (!formData.state) errors.state = "State Name is Required";
     if (!formData.district) errors.district = "District Name is Required";
@@ -446,6 +468,9 @@ const Form = () => {
             onChange={handleChange}
             variant="outlined"
             fullWidth
+            required
+            error={!!formErrors.size}
+            helperText={formErrors.size}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -714,22 +739,31 @@ const Form = () => {
             fullWidth
           />
         </Grid>
-        {formData.listing_type == "buy" && (
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="price"
-              placeholder="Enter your price range eg: 1000000-2000000"
-              name="document_number"
-              type="text"
-              value={formData.document_number}
-              onChange={handleChange}
-              variant="outlined"
-              fullWidth
-              required
-            />
-          </Grid>
-        )}
-        {formData.listing_type == "sell" && (
+        {(formData.listing_type === 'buy' && !isEditMode) || user.role === 'admin' || user.role === 'staff' && (
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        label="Minimum Price"
+                        placeholder="Enter minimum price"
+                        type="number"
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(e.target.value)}
+                        variant="outlined"
+                        fullWidth
+                        required
+                    />
+                    <TextField
+                        label="Maximum Price"
+                        placeholder="Enter maximum price"
+                        type="number"
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(e.target.value)}
+                        variant="outlined"
+                        fullWidth
+                        required
+                    />
+                </Grid>
+            )}
+        {(formData.listing_type === 'sell' && !isEditMode) || user.role === 'admin' || user.role ==='staff' && (
           <Grid item xs={12} sm={6}>
             <TextField
               label="Price (₹)"
@@ -807,8 +841,8 @@ const Form = () => {
         <FormControl fullWidth variant="outlined">
               <InputLabel>Approoved By</InputLabel>
               <Select
-                label="property rating"
-                name="rating"
+                label="Approoved By"
+                name="approved_by"
                 value={formData.approved_by}
                 onChange={handleChange}
               >
@@ -1021,17 +1055,17 @@ const Form = () => {
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+       {!isEditMode || user.role === 'admin' && <Grid item xs={12} sm={6}>
           <TextField
             label="Government Price (₹)"
             name="govt_price"
-            type="float"
+            type="number"
             value={formData.govt_price}
             onChange={handleChange}
             variant="outlined"
             fullWidth
           />
-        </Grid>
+        </Grid>}
         {/* <Grid item xs={12}>
           <TextField
             label="About Developer"

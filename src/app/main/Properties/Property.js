@@ -121,7 +121,7 @@ function Property() {
         <Grid item xs={12} md={4}>
           {!isEditMode && <ContactDetails />}
           {console.log(isPropertyInUserProperties)}
-          {isPropertyInUserProperties || user.role === "admin" ? (
+          {isPropertyInUserProperties || user.role === "admin" || user.role ==="user" ? (
             <Button
               variant="contained"
               onClick={() => {

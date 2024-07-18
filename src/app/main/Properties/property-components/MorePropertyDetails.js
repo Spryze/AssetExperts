@@ -57,13 +57,13 @@ const MorePropertyDetails = () => {
               </span>
             </Typography>
 
-            {/* <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+            <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
               <AccountBalanceSharpIcon />
-              <span style={{ fontWeight: "600" }}> Approoved by :</span>
+              <span style={{ fontWeight: "600" }}> Property Size :</span>
               <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
-                {propertyData?.data?.property?.approved_by}
+                {propertyData?.data?.property?.size}
               </span>
-            </Typography> */}
+            </Typography>
           </div>
           <div className="detailsFlex">
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
@@ -93,13 +93,13 @@ const MorePropertyDetails = () => {
               </span>
             </Typography>
 
-            {/* <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+            <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
               <AccountBalanceSharpIcon />
-              <span style={{ fontWeight: "600" }}> Approoved by :</span>
+              <span style={{ fontWeight: "600" }}> Survey Number :</span>
               <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
-                {propertyData?.data?.property?.approved_by}
+                {propertyData?.data?.property?.survey_number}
               </span>
-            </Typography> */}
+            </Typography>
           </div>
 
           <div className="detailsFlex">
@@ -134,6 +134,38 @@ const MorePropertyDetails = () => {
               <span style={{ fontWeight: "600" }}>Facing :</span>
               <span style={{ textTransform: "capitalize", marginLeft: "20px" }}>
                 {propertyData?.data?.property?.direction}
+              </span>
+            </Typography>
+          </div>
+          <div className="detailsFlex">
+            <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+              <CloseFullscreenIcon />
+              <span style={{ fontWeight: "600" }}> Loan Eligible :</span>
+              <span style={{ marginLeft: "20px" }}>
+                {propertyData?.data?.property?.loan_eligibile}
+              </span>
+            </Typography>
+            <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+              <NorthWestIcon />
+              <span style={{ fontWeight: "600" }}>Disputes :</span>
+              <span style={{ textTransform: "capitalize", marginLeft: "20px" }}>
+                {propertyData?.data?.property?.disputes}
+              </span>
+            </Typography>
+          </div>
+          <div className="detailsFlex">
+            <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+              <CloseFullscreenIcon />
+              <span style={{ fontWeight: "600" }}> Registrar Location :</span>
+              <span style={{ marginLeft: "20px" }}>
+                {propertyData?.data?.property?.reg_loc}
+              </span>
+            </Typography>
+            <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+              <NorthWestIcon />
+              <span style={{ fontWeight: "600" }}>Government Price (₹) :</span>
+              <span style={{ textTransform: "capitalize", marginLeft: "20px" }}>
+                {propertyData?.data?.property?.govt_price}
               </span>
             </Typography>
           </div>
@@ -269,6 +301,13 @@ const MorePropertyDetails = () => {
                   ))}
                 </ul>
               </div>
+              <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+              <NearMeIcon />
+              <span style={{ fontWeight: "600" }}>Document No. :</span>
+              <span style={{ textTransform: "capitalize", marginLeft: "20px" }}>
+                {propertyData?.data?.property?.document_number}
+              </span>
+            </Typography>
             </div>
           )}
         </div>

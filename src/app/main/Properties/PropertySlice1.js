@@ -626,7 +626,7 @@ export const addProperty = createAsyncThunk(
         direction: payload.payload.direction || "",
         disputes: payload.payload.disputes || "",
         district: payload.payload.district || "",
-        doc_num: payload.payload.doc_num || "",
+        doc_num: payload.payload.doc_num || payload.payload.document_number || "",
         // docfile: formData.docfile || [],
         furnshied: payload.payload.furnshied || "",
         govt_price: payload.payload.govt_price || null,

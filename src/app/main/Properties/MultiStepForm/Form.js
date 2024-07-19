@@ -77,7 +77,7 @@ const Form = () => {
     price: propertyData?.price || 0,
     prop_name: propertyData?.prop_name || "",
     rating: propertyData?.rating || "",
-    reg_loc: propertyData?.reg_loc || "",
+    reg_loc: propertyData?.register_location || "",
     rera: propertyData?.rera || "", 
     status: propertyData?.status || "",
     survey_number: propertyData?.survey_number || "",

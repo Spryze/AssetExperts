@@ -142,7 +142,7 @@ const MorePropertyDetails = () => {
               <CloseFullscreenIcon />
               <span style={{ fontWeight: "600" }}> Loan Eligible :</span>
               <span style={{ marginLeft: "20px" }}>
-                {propertyData?.data?.property?.loan_eligibile}
+                {propertyData?.data?.property?.loan_eligible}
               </span>
             </Typography>
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
@@ -158,14 +158,14 @@ const MorePropertyDetails = () => {
               <CloseFullscreenIcon />
               <span style={{ fontWeight: "600" }}> Registrar Location :</span>
               <span style={{ marginLeft: "20px" }}>
-                {propertyData?.data?.property?.reg_loc}
+                {propertyData?.data?.property?.register_location}
               </span>
             </Typography>
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
               <NorthWestIcon />
               <span style={{ fontWeight: "600" }}>Government Price (₹) :</span>
               <span style={{ textTransform: "capitalize", marginLeft: "20px" }}>
-                {propertyData?.data?.property?.govt_price}
+                {propertyData?.data?.property?.government_price}
               </span>
             </Typography>
           </div>

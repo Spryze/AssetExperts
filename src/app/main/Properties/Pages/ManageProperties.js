@@ -298,10 +298,10 @@ const ManageProperties = () => {
                       <TableCell align="left">{item.rera_status}</TableCell>
                       <TableCell align="left">{item.state}</TableCell>
                       <TableCell align="left">{item.village}</TableCell>
-                      <TableCell align="left">{item.survey_no}</TableCell>
+                      <TableCell align="left">{item.survey_number}</TableCell>
                       <TableCell align="left">
                         {trimText(
-                          item.verified_comments,
+                          item.verifier_comments,
                           index,
                           "verified_comments"
                         )}

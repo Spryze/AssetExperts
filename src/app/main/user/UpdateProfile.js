@@ -237,16 +237,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UpdateUser, selectUser } from 'app/store/userSlice';
 
 export default function UpdateProfile() {
-  const UserData = useSelector(selectUser);
+  const Userdata = useSelector(selectUser);
+  const UserData = Userdata.data;
   const [open, setOpen] = useState(false);
   const [emptySubmission, setEmptySubmission] = useState(false);
   const [formData, setFormData] = useState({
-    name: UserData?.data?.displayName || '',
-    ph_num_1: UserData?.data?.phone_num_1 || '',
-    ph_num_2: UserData?.data?.phone_num_2 || '',
-    profession: UserData?.data?.profession || '',
-    address: UserData?.data?.address || '',
-    requirements: UserData?.data?.requirements || '',
+    name: UserData?.displayName || '',
+    ph_num_1: UserData?.phone_num_1 || '',
+    ph_num_2: UserData?.phone_num_2 || '',
+    profession: UserData?.profession || '',
+    address: UserData?.address || '',
+    requirements: UserData?.requirements || '',
   });
   const dispatch = useDispatch();
 
@@ -264,7 +265,7 @@ export default function UpdateProfile() {
 
     // Restrict phone number length to 10
     if ((name === 'ph_num_1' || name === 'ph_num_2') && value.length > 10) {
-      return; 
+      return;
     }
 
     setFormData((prevData) => ({
@@ -276,7 +277,7 @@ export default function UpdateProfile() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const updatedFields = findDifferences(formData, UserData.data);
+    const updatedFields = findDifferences(formData, UserData);
 
     if (Object.keys(updatedFields).length > 0) {
       console.log("Sending updated fields:", updatedFields);
@@ -295,10 +296,8 @@ export default function UpdateProfile() {
     const differences = {};
 
     for (const key in formData) {
-      if (formData.hasOwnProperty(key) && userData.hasOwnProperty(key)) {
-        if (formData[key] !== userData[key]) {
-          differences[key] = formData[key];
-        }
+      if (formData.hasOwnProperty(key) && formData[key] !== userData[key]) {
+        differences[key] = formData[key];
       }
     }
 
@@ -397,3 +396,4 @@ export default function UpdateProfile() {
     </React.Fragment>
   );
 }
+

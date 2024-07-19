@@ -351,10 +351,10 @@ export const UpdateUser = createAsyncThunk(
       const user = JSON.parse(localStorage.getItem("user"));
       const cont_user_id = user.uid;
       console.log("cont_user_id",cont_user_id)
-      console.log("formData",formData)
+      
       formData.user_id = cont_user_id;
       formData.req_user_id = cont_user_id;
-
+      console.log("formData",formData)
       const response = await axios.put(`${BaseUrl}/user`, formData);
 
       return response.data;

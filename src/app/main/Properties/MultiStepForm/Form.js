@@ -53,7 +53,7 @@ const Form = () => {
     dimensions: propertyData?.dimensions || "",
     direction: propertyData?.direction || "",
     state: propertyData?.stte || "",
-    size:propertyData?.size || "",
+    size:propertyData?.area || "",
     district: propertyData?.district || "",
     document_number: propertyData?.document_number || "",
     docfile: [],
@@ -138,8 +138,8 @@ const Form = () => {
     "PG",
     "office place",
     "co working place",
-    "student hostels",
-    "agricultural lands",
+    "student hostel",
+    "agricultural land",
     "independent house",
     "commercial",
   ];
@@ -204,7 +204,7 @@ const Form = () => {
 
   const validateForm = () => {
     const errors = {};
-    if (!formData.prop_name) errors.propertyName = "Property Name is required";
+    // if (!formData.prop_name) errors.propertyName = "Property Name is required";
     if (!formData.size) errors.size = "Size is required";
     if (!formData.listing_type) errors.listing_type = "Listing Type is required";
     if (!formData.state) errors.state = "State Name is Required";
@@ -243,7 +243,7 @@ const Form = () => {
             }
         }
     }
-
+    console.log("    return updatedFields" ,updatedFields  )
     return updatedFields;
 }
 
@@ -259,7 +259,7 @@ const Form = () => {
     const errors = validateForm();
     if (Object.keys(errors).length === 0) {
       const action = isEditMode ? updateProperty : addProperty;
-      const p_id = propertyData?.property_id;
+      const p_id = propertyData?.p_id;
       let payload;
 
       if (currentPath === "/UpdateProperty") {
@@ -409,8 +409,8 @@ const Form = () => {
             variant="outlined"
             fullWidth
             required
-            error={!!formErrors.propertyName}
-            helperText={formErrors.propertyName}
+            // error={!!formErrors.propertyName}
+            // helperText={formErrors.propertyName}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -1055,7 +1055,7 @@ const Form = () => {
             fullWidth
           />
         </Grid>
-       {!isEditMode || user.role === 'admin' && <Grid item xs={12} sm={6}>
+       { <Grid item xs={12} sm={6}>
           <TextField
             label="Government Price (₹)"
             name="govt_price"

@@ -57,13 +57,13 @@ const MorePropertyDetails = () => {
               </span>
             </Typography>
 
-            <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+            {/* <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
               <AccountBalanceSharpIcon />
               <span style={{ fontWeight: "600" }}> Property Size :</span>
               <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
                 {propertyData?.data?.property?.size}
               </span>
-            </Typography>
+            </Typography> */}
           </div>
           <div className="detailsFlex">
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
@@ -142,7 +142,7 @@ const MorePropertyDetails = () => {
               <CloseFullscreenIcon />
               <span style={{ fontWeight: "600" }}> Loan Eligible :</span>
               <span style={{ marginLeft: "20px" }}>
-                {propertyData?.data?.property?.loan_eligible}
+              {propertyData?.data?.property?.loan_eligible ? "Yes" : "No"}
               </span>
             </Typography>
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
@@ -165,7 +165,7 @@ const MorePropertyDetails = () => {
               <NorthWestIcon />
               <span style={{ fontWeight: "600" }}>Government Price (₹) :</span>
               <span style={{ textTransform: "capitalize", marginLeft: "20px" }}>
-                {propertyData?.data?.property?.government_price}
+                {propertyData?.data?.property?.govt_price}
               </span>
             </Typography>
           </div>

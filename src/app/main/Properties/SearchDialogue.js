@@ -49,6 +49,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
     med_name: "",
     landmark: "",
     offset: 0,
+    status:"",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -512,6 +513,20 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 >
                   <MenuItem value="true">Verified</MenuItem>
                   <MenuItem value="false">Not Verified</MenuItem>
+                </Select>
+              </FormControl>
+            )}
+            {user.role === "admin" && (
+              <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
+                <InputLabel>Property Status</InputLabel>
+                <Select
+                  name="status"
+                  value={formData.status.toString()}
+                  onChange={handleChange}
+                  label="Verification Status"
+                >
+                  <MenuItem value="active">Active</MenuItem>
+                  <MenuItem value="inactive">In Active</MenuItem>
                 </Select>
               </FormControl>
             )}

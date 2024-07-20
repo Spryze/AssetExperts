@@ -62,7 +62,7 @@ const ManageProperties = () => {
  showMessage('No results Found');
  
   const trimText = (text, index, field) => {
-    if (text && text.length > 15) {
+    if (typeof text === 'string' && text.length > 15) {
       const isExpanded = expandedRows[index]?.[field];
       return (
         <>
@@ -139,6 +139,7 @@ const ManageProperties = () => {
         // Format the local date time using Intl.DateTimeFormat
         return new Intl.DateTimeFormat('en-US', options).format(localDate);
     };
+    
 
   return (
     <div style={{ margin: "20px" }}>
@@ -220,6 +221,7 @@ const ManageProperties = () => {
                     <TableCell align="left">Survey Number</TableCell>
                     <TableCell align="left">Verified Comments</TableCell>
                     <TableCell align="left">Verification Status</TableCell>
+                    <TableCell align="left">Property Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -232,7 +234,7 @@ const ManageProperties = () => {
                       <TableCell align="left">
                         <Link
                           style={{color:"blue",textDecoration:"underline",background:"none"}}
-                          to={`/property/${item.property_id}`}
+                          to={`/property/${item.p_id}`}
                           rel="noopener noreferrer"
                           myVariable={"yourVariable"}
                         >
@@ -270,18 +272,18 @@ const ManageProperties = () => {
                         {trimText(item.dimensions, index, "dimensions")}
                       </TableCell>
                       <TableCell align="left">
-                        {trimText(item.directions, index, "directions")}
+                        {trimText(item.direction, index, "directions")}
                       </TableCell>
                       <TableCell align="left">
                         {trimText(item.disputes, index, "disputes")}
                       </TableCell>
-                      <TableCell align="left">{item.document_number}</TableCell>
-                      <TableCell align="left">{item.gov_price}</TableCell>
+                      <TableCell align="left">{item.doc_num}</TableCell>
+                      <TableCell align="left">{item.govt_price}</TableCell>
                       <TableCell align="left">{item.est_year}</TableCell>
                       <TableCell align="left">{item.latitude}</TableCell>
                       <TableCell align="left">{item.longitude}</TableCell>
                       <TableCell align="left">{item.lift}</TableCell>
-                      <TableCell align="left">{item.loan_eligibility}</TableCell>
+                      <TableCell align="left">{item.loan_eligible ? "Yes" : "No"}</TableCell>
                       <TableCell align="left">{item.mediator}</TableCell>
                       <TableCell align="left">{item.mediator_no1}</TableCell>
                       <TableCell align="left">{item.mediator_no2}</TableCell>
@@ -307,7 +309,10 @@ const ManageProperties = () => {
                         )}
                       </TableCell>
                       <TableCell align="left">
-                        {item.verification_status}
+                        {item.v_status ? "verified" : "Not Verified"}
+                      </TableCell>
+                      <TableCell align="left">
+                        {item.status}
                       </TableCell>
                     </TableRow>
                   ))}

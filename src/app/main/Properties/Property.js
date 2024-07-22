@@ -31,7 +31,7 @@ function Property() {
   console.log("propertyData", propertyData);
   const { propertyId } = useParams();
   console.log("propertyId in property", propertyId);
-  const PropertyID = propertiesData?.data?.property?.property_id;
+  const PropertyID = propertiesData?.data?.property?.p_id;
   console.log("UserPropertyID", PropertyID);
 
   const UserPropertyIDs = user?.data?.properties?.map(
@@ -120,8 +120,8 @@ function Property() {
         </Grid>
         <Grid item xs={12} md={4}>
           {!isEditMode && <ContactDetails />}
-          {console.log(isPropertyInUserProperties)}
-          {isPropertyInUserProperties || user.role === "admin" || user.role ==="user" ? (
+          {console.log("isPropertyInUserProperties",isPropertyInUserProperties)}
+          {isPropertyInUserProperties || user.role === "admin" || user.role ==="staff" ? (
             <Button
               variant="contained"
               onClick={() => {

@@ -74,10 +74,11 @@ export const selectPropertyById = (state, property_id) =>
   );
 
 //  my intrests thunk function
+
 export const AddIntrests = createAsyncThunk(
   "property/AddIntrests",
-  async (body, { rejectWithValue }) => {
-    console.log(body);
+  async (dataToSend, { rejectWithValue }) => {
+    console.log(dataToSend);
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       const user_id = user.uid;
@@ -85,7 +86,7 @@ export const AddIntrests = createAsyncThunk(
 
       const Data = {
         user_id: user_id,
-        body: body.body,
+        body: dataToSend,
         req_user_id : req_user_id,
       };
       console.log("Data", Data);
@@ -98,7 +99,30 @@ export const AddIntrests = createAsyncThunk(
     }
   }
 );
+export const AddAreaIntrests = createAsyncThunk(
+  "property/AddIntrests",
+  async (dataToSend, { rejectWithValue }) => {
+    console.log(dataToSend);
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const user_id = user.uid;
+      const req_user_id = user.uid
 
+      const Data = {
+        user_id: user_id,
+        body: dataToSend.body,
+        req_user_id : req_user_id,
+      };
+      console.log("Data", Data);
+      const response = await axios.put(`${BaseUrl}/register`, Data);
+      console.log("responseo of add intresrs", response);
+      return response;
+    } catch (error) {
+      console.log("error in Adding Intrests",error)
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 export const GetUpdatedJson = createAsyncThunk(
   "property/GetUpdatedJson",
   async (_, { rejectWithValue }) => {

@@ -156,6 +156,9 @@ const Form = () => {
     if (["price", "size", "latitude", "longitude", "govt_price"].includes(name)) {
       parsedValue = parseFloat(value);
     }
+    if ((name === 'med_num1' || name === 'med_num2' ||name === 'own_num1' ||name === 'own_num2') && value.length > 10) {
+      return;
+    }
   
     if (name === "PropertyStatus") {
       parsedValue = value === "true";
@@ -217,12 +220,18 @@ const Form = () => {
     if (formData.med_num2 && formData.med_num2?.length > 10) {
       errors.med_num2 = "Phone Number should not contain more than 10 numbers";
     }
-    if (formData.own_num1 && formData?.med_num2?.length > 10) {
+    if (formData.own_num1 && formData?.own_num1?.length > 10) {
       errors.own_num1 = "Phone Number should not contain more than 10 numbers";
     }
-    if (formData.own_num2 && formData?.med_num2?.length > 10) {
+    if (formData.own_num2 && formData?.own_num2?.length > 10) {
       errors.own_num2 = "Phone Number should not contain more than 10 numbers";
     }
+    if (formData.p_type === 'flat' && formData.bhk === '') {
+      errors.bhk = "Enter N0. Of BHK";
+    }
+      
+     
+
     return errors;
   };
 
@@ -408,7 +417,7 @@ const Form = () => {
             onChange={handleChange}
             variant="outlined"
             fullWidth
-            required
+            // required
             // error={!!formErrors.propertyName}
             // helperText={formErrors.propertyName}
           />
@@ -484,15 +493,16 @@ const Form = () => {
             fullWidth
           />
         </Grid>
-        {formData.p_type === "flat" && (
+        {formData.p_type === "flat" &&  (
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth variant="outlined">
+            <FormControl fullWidth variant="outlined" error={!!formErrors.bhk}>
               <InputLabel>No. of Bed Rooms</InputLabel>
               <Select
                 label="No. of Bed Room"
                 name="bhk"
                 value={formData.bhk}
                 onChange={handleChange}
+                required
               >
                 <MenuItem value="1">1 BHK</MenuItem>
                 <MenuItem value="2">2 BHK</MenuItem>
@@ -501,7 +511,7 @@ const Form = () => {
                 <MenuItem value="5">5 BHK</MenuItem>
                 <MenuItem value="6">6 BHK</MenuItem>
               </Select>
-              <FormHelperText>{formErrors.unit}</FormHelperText>
+              <FormHelperText>{formErrors.bhk}</FormHelperText>
             </FormControl>
           </Grid>
         )}
@@ -739,7 +749,8 @@ const Form = () => {
             fullWidth
           />
         </Grid>
-        {(formData.listing_type === 'buy' && !isEditMode) || user.role === 'admin' || user.role === 'staff' && (
+        {console.log("isEditMode",isEditMode)}
+        {/* {(formData.listing_type === 'buy' && !isEditMode) || user.role === 'admin' || user.role === 'staff'|| user.role ==='user'  && (
                 <Grid item xs={12} sm={6}>
                     <TextField
                         label="Minimum Price"
@@ -762,8 +773,44 @@ const Form = () => {
                         required
                     />
                 </Grid>
-            )}
-        {(formData.listing_type === 'sell' && !isEditMode) || user.role === 'admin' || user.role ==='staff' && (
+            )}*/}
+            {
+    (formData.listing_type === 'sell' && !isEditMode && (
+        <Grid item xs={12} sm={6}>
+            <TextField
+              label="Price (₹)"
+              name="price"
+              type="number"
+              value={formData.price}
+              onChange={handleChange}
+              variant="outlined"
+              fullWidth
+              required
+              error={!!formErrors.price}
+              helperText={formErrors.price}
+            />
+        </Grid>
+    ))
+    ||
+    (formData.listing_type === 'sell' && isEditMode && (user.role === 'admin' || user.role === 'staff') && (
+        <Grid item xs={12} sm={6}>
+            <TextField
+              label="Price (₹)"
+              name="price"
+              type="number"
+              value={formData.price}
+              onChange={handleChange}
+              variant="outlined"
+              fullWidth
+              required
+              error={!!formErrors.price}
+              helperText={formErrors.price}
+            />
+        </Grid>
+    ))
+}
+            
+        {/* {(formData.listing_type === 'sell' && !isEditMode) || user.role === 'admin' || user.role ==='staff' || user.role ==='user' && (
           <Grid item xs={12} sm={6}>
             <TextField
               label="Price (₹)"
@@ -778,7 +825,59 @@ const Form = () => {
               helperText={formErrors.price}
             />
           </Grid>
-        )}
+        )}  */}
+        {
+    (formData.listing_type === 'buy' && !isEditMode && (
+        <Grid item xs={12} sm={6}>
+            <TextField
+                label="Minimum Price"
+                placeholder="Enter minimum price"
+                type="number"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+                variant="outlined"
+                fullWidth
+                required
+            />
+            <TextField
+                label="Maximum Price"
+                placeholder="Enter maximum price"
+                type="number"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                variant="outlined"
+                fullWidth
+                required
+            />
+        </Grid>
+    ))
+    ||
+    (formData.listing_type === 'buy' && isEditMode && (user.role === 'admin' || user.role === 'staff') && (
+        <Grid item xs={12} sm={6}>
+            <TextField
+                label="Minimum Price"
+                placeholder="Enter minimum price"
+                type="number"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+                variant="outlined"
+                fullWidth
+                required
+            />
+            <TextField
+                label="Maximum Price"
+                placeholder="Enter maximum price"
+                type="number"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                variant="outlined"
+                fullWidth
+                required
+            />
+        </Grid>
+    ))
+}
+
 
         <Grid item xs={12} sm={6}>
           <TextField

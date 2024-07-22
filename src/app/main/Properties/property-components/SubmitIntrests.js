@@ -17,7 +17,7 @@ import {
   OutlinedInput,
   Divider,
 } from "@mui/material";
-import { AddIntrests, GetMyIntrests } from "../PropertySlice1";
+import { AddAreaIntrests, GetMyIntrests } from "../PropertySlice1";
 import { useDispatch } from "react-redux";
 import StateandDistrictList from "../../../../assets/Default/area/result.json";
 import { useSelector } from "react-redux";
@@ -163,8 +163,8 @@ export default function FormDialog(userId) {
     // console.log("user_id was the submit file",user_id);
     console.log(userId)
     const dataToSend = {
-      user_id,
-      isadmin: true,
+      // user_id,
+      // isadmin: true,
       body: [
         {
           district: formData.district,
@@ -183,7 +183,7 @@ export default function FormDialog(userId) {
 
     // await dispatch(AddIntrests({body:dataToSend} ));
     // dispatch(AddIntrests({ userId, isadmin: true, body: dataToSend }));
-    dispatch(AddIntrests(dataToSend));
+    dispatch(AddAreaIntrests(dataToSend));
     console.log("dataToSend", dataToSend);
     console.log("user is was pass or not will be :", userId);
 

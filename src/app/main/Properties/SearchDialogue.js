@@ -546,9 +546,11 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               // >
               //   Submit
               // </Button>
+              <>
               <Button
                 onClick={handleSubmit}
                 sx={{
+                  margin:"0px 10px",
                   borderRadius: "8px",
                   padding: "5px 20px",
                   backgroundColor: "#4ea944",
@@ -560,6 +562,22 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
               >
                 Submit
               </Button>
+              <Button
+                onClick={resetForm}
+                sx={{
+                  margin:"0px 10px",
+                  borderRadius: "8px",
+                  padding: "5px 20px",
+                  backgroundColor: "#4ea944",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "#0d7e00",
+                  },
+                }}
+              >
+                Reset
+              </Button>
+              </>
             )}
           </Box>
         </DialogActions>

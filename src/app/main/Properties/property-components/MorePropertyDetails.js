@@ -53,7 +53,7 @@ const MorePropertyDetails = () => {
               <SellIcon />
               <span style={{ fontWeight: "600" }}>Property ID :</span>
               <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
-                {propertyData?.data?.property?.property_id}
+                {propertyData?.data?.property?.p_id}
               </span>
             </Typography>
 

@@ -139,7 +139,7 @@ const PropertyHome = () => {
             listing_type: "",
             min_price: "",
             max_price: "",
-            state: "andhra pradesh",
+            state: "Andhra Pradesh",
             district: district,
             approved_by: "",
             status: "",
@@ -455,7 +455,7 @@ const PropertyHome = () => {
         >
           <Card
             onClick={() => {
-              handleLocalClick("srikakulam");
+              handleLocalClick("Srikakulam");
             }}
             sx={{
               flex: "0 0 auto",
@@ -505,7 +505,7 @@ const PropertyHome = () => {
           </Card>
           <Card
             onClick={() => {
-              handleLocalClick("visakhapatnam");
+              handleLocalClick("Visakhapatnam");
             }}
             sx={{
               flex: "0 0 auto",
@@ -554,7 +554,7 @@ const PropertyHome = () => {
           </Card>
           <Card
             onClick={() => {
-              handleLocalClick("vizianagaram");
+              handleLocalClick("Vizianagaram");
             }}
             sx={{
               flex: "0 0 auto",
@@ -604,7 +604,7 @@ const PropertyHome = () => {
           </Card>
           <Card
             onClick={() => {
-              handleLocalClick("east godavari");
+              handleLocalClick("East Godavari");
             }}
             sx={{
               flex: "0 0 auto",

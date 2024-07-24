@@ -10,8 +10,10 @@ import {
   Checkbox,
   IconButton,
   Container,
-  Grid
+  Grid,
 } from "@mui/material";
+import { selectUser } from "app/store/userSlice";
+
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import SubmitIntrests from "../property-components/SubmitIntrests";
@@ -22,7 +24,6 @@ import {
   selectmySubscription,
 } from "../PropertySlice1";
 import AreaJson from "../../../../assets/Default/area/result.json";
-import { Code } from "@mui/icons-material";
 
 const MySubscriptions = () => {
   const [stateData, setStateData] = useState([]);
@@ -35,7 +36,9 @@ const MySubscriptions = () => {
   const [previousAreas, setPreviousAreas] = useState([]);
   const [seeMore, setSeeMore] = useState({});
   const dispatch = useDispatch();
-
+  const [message, setMessage] = useState("");
+  const user = useSelector(selectUser);
+  console.log("user", user);
   const processInterests = (interestedAreas) => {
     const districtAreasMap = {};
     interestedAreas?.forEach((item) => {
@@ -112,6 +115,25 @@ const MySubscriptions = () => {
   };
 
   const handleAddItem = (item) => {
+    const currentAreasCount = editingDistrictData.areas.length;
+    if (user.data.active_notifications <= 0 && currentAreasCount >= 10) {
+      setMessage("You are restricted from adding more than 10 areas.");
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+
+      console.log("You are restricted from adding more than 10 areas.");
+      return;
+    }
+    if (user.data.active_notifications <= 0 && item === "All Areas") {
+      setMessage("You are restricted from adding more than 10 areas.");
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+
+      console.log("You are restricted from adding more than 10 areas.");
+      return;
+    }
     if (item === "All Areas") {
       setEditingDistrictData({
         ...editingDistrictData,
@@ -246,146 +268,163 @@ const MySubscriptions = () => {
 
       </div> */}
       <Grid container spacing={1}>
-      <Grid item md={4} sm = {12} sx={{marginTop:"30px"}} >
-        <SubmitIntrests  />
+        <Grid item md={4} sm={12} sx={{ marginTop: "30px" }}>
+          <SubmitIntrests />
         </Grid>
-        <Grid item md={8} sm = {12}>
-        {stateData.map((stateObj, stateIndex) => (
-          <div key={stateIndex} style={{ margin: "20px", width: "100%" }}>
-            <hr />
-            <div style={{ display: "flex",flexWrap:"wrap" }}>
-              {stateObj.districts.map((districtObj, districtIndex) => {
-                const isEditing =
-                  editingStateIndex === stateIndex &&
-                  editingDistrictName === districtObj.name;
-                const items = isEditing
-                  ? getAllAreasForDistrict(districtObj.name)
-                  : districtObj.areas;
-                const selectedItems = items.filter((item) =>
-                  editingDistrictData?.areas.includes(item)
-                );
-                const unselectedItems = items.filter(
-                  (item) => !editingDistrictData?.areas.includes(item)
-                );
-                const sortedSelectedItems =
-                  sortItemsAlphabetically(selectedItems);
-                const sortedUnselectedItems =
-                  sortItemsAlphabetically(unselectedItems);
-                const allItems = [
-                  ...sortedSelectedItems,
-                  ...sortedUnselectedItems,
-                ];
-                const itemsToShow = seeMore[districtIndex] || isEditing
-                  ? allItems
-                  : allItems.slice(0, 5);
+        <Grid item md={8} sm={12}>
+          {stateData.map((stateObj, stateIndex) => (
+            <div key={stateIndex} style={{ margin: "20px", width: "100%" }}>
+              <hr />
+              {message && (
+                <div
+                  className="message"
+                  style={{
+                    backgroundColor: "#f8d7da",
+                    color: "#721c24",
+                    border: "1px solid #f5c6cb",
+                    padding: "10px",
+                    marginTop: "10px",
+                    borderRadius: "5px",
+                    textAlign: "center",
+                  }}
+                >
+                  {message}
+                </div>
+              )}
 
-                return (
-                  <Card
-                    key={districtIndex}
-                    style={{
-                      margin: "10px",
-                      minWidth: "300px",
-                      position: "relative",
-                    }}
-                  >
-                    <CardContent>
-                      <Typography
-                        variant="h6"
-                        component="div"
-                        // style={{ marginBottom: "10px" }}
-                      >
-                        {stateObj.stateName}
-                      </Typography>
-                      <div style={{ display: "flex" }}>
+              <div style={{ display: "flex", flexWrap: "wrap" }}>
+                {stateObj.districts.map((districtObj, districtIndex) => {
+                  const isEditing =
+                    editingStateIndex === stateIndex &&
+                    editingDistrictName === districtObj.name;
+                  const items = isEditing
+                    ? getAllAreasForDistrict(districtObj.name)
+                    : districtObj.areas;
+                  const selectedItems = items.filter((item) =>
+                    editingDistrictData?.areas.includes(item)
+                  );
+                  const unselectedItems = items.filter(
+                    (item) => !editingDistrictData?.areas.includes(item)
+                  );
+                  const sortedSelectedItems =
+                    sortItemsAlphabetically(selectedItems);
+                  const sortedUnselectedItems =
+                    sortItemsAlphabetically(unselectedItems);
+                  const allItems = [
+                    ...sortedSelectedItems,
+                    ...sortedUnselectedItems,
+                  ];
+                  const itemsToShow =
+                    seeMore[districtIndex] || isEditing
+                      ? allItems
+                      : allItems.slice(0, 5);
+
+                  return (
+                    <Card
+                      key={districtIndex}
+                      style={{
+                        margin: "10px",
+                        minWidth: "300px",
+                        position: "relative",
+                      }}
+                    >
+                      <CardContent>
                         <Typography
-                          sx={{ fontSize: "20px", fontWeight: "600" }}
+                          variant="h6"
                           component="div"
+                          // style={{ marginBottom: "10px" }}
                         >
-                          {districtObj.name}
+                          {stateObj.stateName}
                         </Typography>
-                        {isEditing ? (
-                          <IconButton
-                            sx={{ position: "absolute", top: 0, right: 0 }}
-                            aria-label="cancel"
-                            onClick={handleCancelEdit}
+                        <div style={{ display: "flex" }}>
+                          <Typography
+                            sx={{ fontSize: "20px", fontWeight: "600" }}
+                            component="div"
                           >
-                            <CloseIcon />
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            sx={{ position: "absolute", top: 40, right: 0 }}
-                            aria-label="edit"
-                            onClick={() =>
-                              handleEditClick(stateIndex, districtObj.name)
-                            }
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        )}
-                      </div>
-                      <hr />
-                      <List>
-                        {itemsToShow.map((item, idx) => (
-                          <ListItem key={idx} sx={{padding:"0px"}}>
-                            <ListItemText primary={item} />
-                            {isEditing && (
-                              <Checkbox
-                                edge="end"
-                                checked={editingDistrictData.areas.includes(
-                                  item
-                                )}
-                                onChange={() => handleItemClick(item)}
-                                disabled={
-                                  editingDistrictData.areas.includes(
-                                    "All Areas"
-                                  ) && item !== "All Areas"
-                                }
-                              />
-                            )}
-                          </ListItem>
-                        ))}
-                      </List>
-                      {!isEditing && allItems.length > 10 && (
-                        <Button
-                          onClick={() => handleToggleSeeMore(districtIndex)}
-                        >
-                          {seeMore[districtIndex] ? "See Less" : "See More"}
-                        </Button>
-                      )}
-                      {isEditing && (
-                        <div style={{ display: "flex", justifyContent: "end" }}>
-                          <Button
-                            sx={{
-                              borderRadius: "7px",
-                              width: "70px",
-                              left: "0px",
-                            }}
-                            variant="contained"
-                            // color="primary"
-                            onClick={handleSaveChanges}
-                            fullWidth
-                          >
-                            Save
-                          </Button>
+                            {districtObj.name}
+                          </Typography>
+                          {isEditing ? (
+                            <IconButton
+                              sx={{ position: "absolute", top: 0, right: 0 }}
+                              aria-label="cancel"
+                              onClick={handleCancelEdit}
+                            >
+                              <CloseIcon />
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              sx={{ position: "absolute", top: 40, right: 0 }}
+                              aria-label="edit"
+                              onClick={() =>
+                                handleEditClick(stateIndex, districtObj.name)
+                              }
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          )}
                         </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                );
-              })}
+                        <hr />
+                        <List>
+                          {itemsToShow.map((item, idx) => (
+                            <ListItem key={idx} sx={{ padding: "0px" }}>
+                              <ListItemText primary={item} />
+                              {isEditing && (
+                                <Checkbox
+                                  edge="end"
+                                  checked={editingDistrictData.areas.includes(
+                                    item
+                                  )}
+                                  onChange={() => handleItemClick(item)}
+                                  disabled={
+                                    editingDistrictData.areas.includes(
+                                      "All Areas"
+                                    ) && item !== "All Areas"
+                                  }
+                                />
+                              )}
+                            </ListItem>
+                          ))}
+                        </List>
+                        {!isEditing && allItems.length > 10 && (
+                          <Button
+                            onClick={() => handleToggleSeeMore(districtIndex)}
+                          >
+                            {seeMore[districtIndex] ? "See Less" : "See More"}
+                          </Button>
+                        )}
+                        {isEditing && (
+                          <div
+                            style={{ display: "flex", justifyContent: "end" }}
+                          >
+                            <Button
+                              sx={{
+                                borderRadius: "7px",
+                                width: "70px",
+                                left: "0px",
+                              }}
+                              variant="contained"
+                              // color="primary"
+                              onClick={handleSaveChanges}
+                              fullWidth
+                            >
+                              Save
+                            </Button>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ))}
-         </Grid>
+          ))}
         </Grid>
-      
+      </Grid>
     </Container>
   );
 };
 
 export default MySubscriptions;
-
-
 
 //Jagadeesh Code
 
@@ -412,7 +451,7 @@ export default MySubscriptions;
 // const MySubscriptions = (params) => {
 //   const {userid,showContent } = params;
 //   console.log("user id",userid)
-  
+
 //   const [stateData, setStateData] = useState([]);
 //   const Subscription = useSelector(selectmySubscription);
 //   const [editingStateIndex, setEditingStateIndex] = useState(null);
@@ -467,7 +506,7 @@ export default MySubscriptions;
 
 //   useEffect(() => {
 //     console.log("userid")
-    
+
 //     dispatch(GetMyIntrests({userid,isadmin})).then((response) => {
 //       if (response.payload) {
 //         const interestedAreas = response.payload?.data?.interested_areas;
@@ -475,7 +514,7 @@ export default MySubscriptions;
 //         processInterests(interestedAreas);
 //       }
 //     });
-  
+
 //   }, [dispatch, userid]);
 
 //   useEffect(() => {
@@ -494,7 +533,7 @@ export default MySubscriptions;
 //     setEditingDistrictData({ ...districtData });
 //     setRemovedItems([]);
 //     setAddedItems([]);
-//     setPreviousAreas([...districtData.areas]); 
+//     setPreviousAreas([...districtData.areas]);
 //   };
 
 //   const handleAddItem = (item) => {
@@ -592,7 +631,7 @@ export default MySubscriptions;
 //       const uid = userId;
 //       dispatch(AddIntrests({ uid, isadmin, body })).then((response) => {
 //         console.log(response);
-        
+
 //         console.log(isadmin);
 //       });
 //     }
@@ -623,7 +662,7 @@ export default MySubscriptions;
 //   };
 
 //   return (
-    
+
 //     <>
 //     {showContent && (
 //       <>
@@ -748,6 +787,5 @@ export default MySubscriptions;
 //     </>
 //   );
 // };
-                            
 
 // export default MySubscriptions;

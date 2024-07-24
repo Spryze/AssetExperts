@@ -6,6 +6,7 @@ import { selectProperties } from "../PropertySlice1";
 
 const PropertyCarousel = () => {
   const propertydata = useSelector(selectProperties);
+  console.log("propertydata in carousel",propertydata)
   const images = propertydata?.data?.images || [];
   
   const [currentSlide, setCurrentSlide] = useState(0);

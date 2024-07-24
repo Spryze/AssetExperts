@@ -238,13 +238,13 @@ const ManageProperties = () => {
                           rel="noopener noreferrer"
                           myVariable={"yourVariable"}
                         >
-                          {item.property_id}
+                          {item.p_id}
                         </Link>
                       </TableCell>
                       <TableCell align="left">
                         {trimText(item.prop_name, index, "property_name")}
                       </TableCell>
-                      <TableCell align="left">{item.area}</TableCell>
+                      <TableCell align="left">{item.size}</TableCell>
                       <TableCell align="left">{item.unit}</TableCell>
                       <TableCell align="left">{item.price}</TableCell>
                       <TableCell align="left">{item.district}</TableCell>
@@ -284,26 +284,26 @@ const ManageProperties = () => {
                       <TableCell align="left">{item.longitude}</TableCell>
                       <TableCell align="left">{item.lift}</TableCell>
                       <TableCell align="left">{item.loan_eligible ? "Yes" : "No"}</TableCell>
-                      <TableCell align="left">{item.mediator}</TableCell>
-                      <TableCell align="left">{item.mediator_no1}</TableCell>
-                      <TableCell align="left">{item.mediator_no2}</TableCell>
-                      <TableCell align="left">{item.owner_name}</TableCell>
-                      <TableCell align="left">{item.owner_no1}</TableCell>
-                      <TableCell align="left">{item.owner_no2}</TableCell>
-                      <TableCell align="left">{item.open_sides}</TableCell>
+                      <TableCell align="left">{item.med_name}</TableCell>
+                      <TableCell align="left">{item.med_num1}</TableCell>
+                      <TableCell align="left">{item.med_num2}</TableCell>
+                      <TableCell align="left">{item.own_name}</TableCell>
+                      <TableCell align="left">{item.own_num1}</TableCell>
+                      <TableCell align="left">{item.own_num2}</TableCell>
+                      <TableCell align="left">{item.num_open_sides}</TableCell>
                       <TableCell align="left">{convertUtcToLocal(item.p_created_on)}</TableCell>
                       <TableCell align="left">{convertUtcToLocal(item.property_updated_on)}</TableCell>
                       <TableCell align="left">{item.updated_by}</TableCell>
                       <TableCell align="left">{item.parking}</TableCell>
                       <TableCell align="left">{item.rating}</TableCell>
-                      <TableCell align="left">{item.reg_location}</TableCell>
-                      <TableCell align="left">{item.rera_status}</TableCell>
+                      <TableCell align="left">{item.reg_loc}</TableCell>
+                      <TableCell align="left">{item.rera}</TableCell>
                       <TableCell align="left">{item.state}</TableCell>
                       <TableCell align="left">{item.village}</TableCell>
                       <TableCell align="left">{item.survey_number}</TableCell>
                       <TableCell align="left">
                         {trimText(
-                          item.verifier_comments,
+                          item.v_comments,
                           index,
                           "verified_comments"
                         )}

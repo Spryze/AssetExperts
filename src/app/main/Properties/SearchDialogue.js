@@ -421,7 +421,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 ))}
               </Select>
             </FormControl>
-            {user.role === "admin" && (
+            {user.role === "admin" ||user.role === "staff"&& (
               <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
                 <TextField
                   name="landmark"
@@ -458,7 +458,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 <MenuItem value="false">No</MenuItem>
               </Select>
             </FormControl>
-            {user.role === "admin" && (
+            {user.role === "admin" || user.role === "staff" && (
               <TextField
                 label="Updated By"
                 name="updated_by"
@@ -468,7 +468,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 sx={{ margin: "6px" }}
               />
             )}
-            {user.role === "admin" && (
+            {user.role === "admin" ||user.role === "staff"&& (
               <TextField
                 label="Owner Name"
                 name="own_name"
@@ -478,7 +478,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 sx={{ margin: "6px" }}
               />
             )}
-            {user.role === "admin" && (
+            {user.role === "admin" ||user.role === "staff"&& (
               <TextField
                 label="Mediator Name"
                 name="med_name"
@@ -488,7 +488,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 sx={{ margin: "6px" }}
               />
             )}
-            {user.role === "admin" && (
+            {user.role === "admin" || user.role === "staff" && (
               <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
                 <InputLabel>Notified</InputLabel>
                 <Select
@@ -502,7 +502,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 </Select>
               </FormControl>
             )}
-            {user.role === "admin" && (
+            {user.role === "admin" || user.role === "staff" && (
               <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
                 <InputLabel>Verification Status</InputLabel>
                 <Select
@@ -516,7 +516,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 </Select>
               </FormControl>
             )}
-            {user.role === "admin" && (
+            {user.role === "admin" || user.role === "staff"&& (
               <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
                 <InputLabel>Property Status</InputLabel>
                 <Select

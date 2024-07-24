@@ -11,15 +11,16 @@ import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 import NorthWestIcon from "@mui/icons-material/NorthWest";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import DescriptionIcon from '@mui/icons-material/Description';
+import DescriptionIcon from "@mui/icons-material/Description";
 
 const MorePropertyDetails = () => {
   const propertyData = useSelector(selectProperties);
+  console.log(propertyData)
   const propertyType = propertyData?.data?.property?.p_type;
   const user = useSelector(selectUser);
 
   const openPdfInNewTab = (url) => {
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   };
   const toggleShowMore = () => {
     setShowMore(!showMore);
@@ -84,13 +85,25 @@ const MorePropertyDetails = () => {
           </div>
           <div className="detailsFlex">
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
-              <SellIcon />
-              <span style={{ fontWeight: "600" }}>
-                Price per {propertyData?.data?.property?.unit}:
-              </span>
-              <span style={{ marginLeft: "20px" }}>
-                ₹ {propertyData?.data?.property?.price}
-              </span>
+              {propertyData?.data?.property?.listing_type == "buy" ? (
+                <>
+                  <SellIcon />
+                  <span style={{ fontWeight: "600" }}>Budget range:</span>
+                  <span style={{ marginLeft: "20px" }}>
+                    ₹ {propertyData?.data?.property?.doc_num}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <SellIcon />
+                  <span style={{ fontWeight: "600" }}>
+                    Price per {propertyData?.data?.property?.unit}:
+                  </span>
+                  <span style={{ marginLeft: "20px" }}>
+                    ₹ {propertyData?.data?.property?.price}
+                  </span>
+                </>
+              )}
             </Typography>
 
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
@@ -107,7 +120,7 @@ const MorePropertyDetails = () => {
               <AccountTreeIcon />{" "}
               <span style={{ fontWeight: "600" }}> Area :</span>
               <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
-                {propertyData?.data?.property?.area}{" "}
+                {propertyData?.data?.property?.size}{" "}
                 {propertyData?.data?.property?.unit}
               </span>
             </Typography>
@@ -142,7 +155,7 @@ const MorePropertyDetails = () => {
               <CloseFullscreenIcon />
               <span style={{ fontWeight: "600" }}> Loan Eligible :</span>
               <span style={{ marginLeft: "20px" }}>
-              {propertyData?.data?.property?.loan_eligible ? "Yes" : "No"}
+                {propertyData?.data?.property?.loan_eligible ? "Yes" : "No"}
               </span>
             </Typography>
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
@@ -158,7 +171,7 @@ const MorePropertyDetails = () => {
               <CloseFullscreenIcon />
               <span style={{ fontWeight: "600" }}> Registrar Location :</span>
               <span style={{ marginLeft: "20px" }}>
-                {propertyData?.data?.property?.register_location}
+                {propertyData?.data?.property?.reg_loc}
               </span>
             </Typography>
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
@@ -238,7 +251,7 @@ const MorePropertyDetails = () => {
                   <span
                     style={{ textTransform: "capitalize", marginLeft: "20px" }}
                   >
-                    {propertyData?.data?.property?.rera_status}
+                    {propertyData?.data?.property?.rera}
                   </span>
                 </Typography>
               )}
@@ -277,18 +290,19 @@ const MorePropertyDetails = () => {
           )}
           {user?.role === "admin" && (
             <div className="detailsFlex">
-              
-              <div style={{display:"flex"}}>
-              <Typography
+              <div style={{ display: "flex" }}>
+                <Typography
                   variant="p"
-                  sx={{ margin: "10px 0", fontSize: "15px" }}>
-                    <DescriptionIcon/>
-                    <span style={{ fontWeight: "600" }}>Documents : </span></Typography>
+                  sx={{ margin: "10px 0", fontSize: "15px" }}
+                >
+                  <DescriptionIcon />
+                  <span style={{ fontWeight: "600" }}>Documents : </span>
+                </Typography>
                 <ul>
                   {propertyData?.data?.property?.docfile?.map((url, index) => (
                     <li key={index}>
                       <a
-                      style={{display:"flex"}}
+                        style={{ display: "flex" }}
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
@@ -301,13 +315,18 @@ const MorePropertyDetails = () => {
                   ))}
                 </ul>
               </div>
-              <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
-              <NearMeIcon />
-              <span style={{ fontWeight: "600" }}>Document No. :</span>
-              <span style={{ textTransform: "capitalize", marginLeft: "20px" }}>
-                {propertyData?.data?.property?.document_number}
-              </span>
-            </Typography>
+              <Typography
+                variant="p"
+                sx={{ margin: "10px 0", fontSize: "15px" }}
+              >
+                <NearMeIcon />
+                <span style={{ fontWeight: "600" }}>Document No. :</span>
+                <span
+                  style={{ textTransform: "capitalize", marginLeft: "20px" }}
+                >
+                  {propertyData?.data?.property?.doc_num}
+                </span>
+              </Typography>
             </div>
           )}
         </div>

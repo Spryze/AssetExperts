@@ -50,10 +50,18 @@ import { useSelector } from "react-redux";
 import { selectUser } from "app/store/userSlice";
 import { Paper } from "@mui/material";
 import { Link } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { ResetIndividualPropertState, resetProperty } from "./PropertySlice1";
 
 const AddProperty = (propertyData) => {
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   console.log("user", user);
+  useEffect(() => {
+    // Dispatch the action when the component mounts
+    dispatch(resetProperty());
+  }, [dispatch]);
 
   return (
     <Container

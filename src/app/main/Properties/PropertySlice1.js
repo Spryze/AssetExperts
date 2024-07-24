@@ -412,6 +412,38 @@ export const AddAreas = createAsyncThunk(
   }
 );
 
+export const ResetIndividualPropertState = createAsyncThunk(
+  'property/ResetIndividualPropertState',
+  async (_, { getState, dispatch }) => {
+    try {
+      // Access current state to reset properties.properties.data
+      const currentState = getState();
+      const { properties } = currentState;
+      console.log(properties)
+
+      // Logic to reset properties.properties.data
+      // Replace properties.properties.data with your desired reset value
+      const updatedProperties = {
+        ...properties,
+        properties: {
+          ...properties.properties,
+          data: {} // Replace with your reset value or initial state
+        }
+      };
+
+      // Dispatch an action to update the state
+      // Replace 'UPDATE_PROPERTIES' with your actual action type
+      dispatch({ type: 'UPDATE_PROPERTIES', payload: updatedProperties });
+
+      // Return any relevant data if needed
+      return { success: true, message: 'Reset successful' };
+    } catch (error) {
+      // Handle errors if necessary
+      console.error('Error resetting property state:', error);
+      throw error; // Propagate the error to be handled elsewhere
+    }
+  }
+);
 export const fetchProperties = createAsyncThunk(
   "property/fetchProperty",
   async (propertyId, { rejectWithValue, getState }) => {
@@ -776,7 +808,7 @@ const initialState = {
 
 // Slice
 const propertySlice = createSlice({
-  name: "property",
+  name: "properties",
   initialState,
   reducers: {
     setProperties(state, action) {
@@ -796,6 +828,9 @@ const propertySlice = createSlice({
     resetStatus(state) {
       state.status = "idle";
       state.error = null;
+    },
+    resetProperty(state){
+      state.properties = [];
     },
   },
   // extraReducers: (builder) => {
@@ -841,6 +876,9 @@ const propertySlice = createSlice({
       .addCase(fetchProperties.fulfilled, (state, action) => {
         state.properties = action.payload;
       })
+      .addCase(ResetIndividualPropertState.fulfilled, (state, action) => {
+        state.properties = action.payload;
+      })
       .addCase(GetMyIntrests.fulfilled, (state, action) => {
         state.mySubscription = action.payload.data.interested_areas;
       })
@@ -861,7 +899,7 @@ const propertySlice = createSlice({
 });
 
 // Actions and Selectors
-export const { setProperties, setError, resetStatus } = propertySlice.actions;
+export const { setProperties, setError, resetStatus, resetProperty } = propertySlice.actions;
 export const selectProperties = (state) => state.properties.properties;
 export const selectStats = (state)=> state.properties.Stats;
 export const selectRecentTransactions = (state) =>

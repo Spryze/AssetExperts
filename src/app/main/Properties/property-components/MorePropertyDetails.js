@@ -17,7 +17,16 @@ const MorePropertyDetails = () => {
   const propertyData = useSelector(selectProperties);
   console.log(propertyData)
   const propertyType = propertyData?.data?.property?.p_type;
+  const p_id = propertyData?.data?.property?.p_id;
+  console.log(p_id)
   const user = useSelector(selectUser);
+  console.log("User",user)
+  const UserPropertyIDs = user?.data?.properties?.map(
+    (property) => property.property_id
+  );
+  console.log(UserPropertyIDs)
+  const isPropertyInUserProperties = UserPropertyIDs?.includes(p_id);
+  console.log(isPropertyInUserProperties)
 
   const openPdfInNewTab = (url) => {
     window.open(url, "_blank");
@@ -58,13 +67,13 @@ const MorePropertyDetails = () => {
               </span>
             </Typography>
 
-            {/* <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
+            {isPropertyInUserProperties && <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>
               <AccountBalanceSharpIcon />
-              <span style={{ fontWeight: "600" }}> Property Size :</span>
+              <span style={{ fontWeight: "600" }}> Property comments :</span>
               <span style={{ marginLeft: "20px", textTransform: "capitalize" }}>
-                {propertyData?.data?.property?.size}
+                {propertyData?.data?.property?.comments}
               </span>
-            </Typography> */}
+            </Typography>}
           </div>
           <div className="detailsFlex">
             <Typography variant="p" sx={{ margin: "10px 0", fontSize: "15px" }}>

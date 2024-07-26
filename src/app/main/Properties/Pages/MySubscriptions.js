@@ -84,6 +84,7 @@ const MySubscriptions = () => {
       }))
     );
   };
+  
 
   useEffect(() => {
     dispatch(GetMyIntrests()).then((response) => {
@@ -385,7 +386,7 @@ const MySubscriptions = () => {
                             </ListItem>
                           ))}
                         </List>
-                        {!isEditing && allItems.length > 10 && (
+                        {!isEditing && allItems.length > 5 && (
                           <Button
                             onClick={() => handleToggleSeeMore(districtIndex)}
                           >

@@ -216,7 +216,7 @@
 
 
 import React, { useState, useEffect } from 'react';
-import { Button, IconButton } from '@mui/material';
+import { Alert, Button, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddImage, DeleteImage, selectProperties } from '../../PropertySlice1';
@@ -318,13 +318,25 @@ const UploadImages = ({ responseData }) => {
         delete_document_names: selectedDocumentNames
       };
       console.log(data);
-      const response = dispatch(DeleteImage(data));
-      console.log("response", response);
-      // if (response.meta.requestStatus === "fulfilled") {
-      //   navigate(`/property/${responseData.details.p_id}`);
-      //   window.location.reload();
-      // }
+      const response = dispatch(DeleteImage(data))
+      .then((response) => {
+        console.log("response", response);
+        if (response.payload.status === "success") {
+          window.alert("Property Deleted Successfully"); 
+          navigate(`/property/${propertyData?.property?.p_id}`); 
+          window.location.reload();
+        } else {
+          window.alert("Error Occurred while Deleting Image");
+        }
+      })
+      .catch((error) => {
+        console.error("Error occurred during delete:", error);
+        
+      });
+    
+      
     } catch (error) {
+      
       console.error('Error:', error);
     }
   };
@@ -343,7 +355,7 @@ const UploadImages = ({ responseData }) => {
         formData.append('documents', documentFiles[i]);
       }
 
-      formData.append('p_id', responseData?.details?.p_id || propertyData?.property?.property_id);
+      formData.append('p_id', responseData?.details?.p_id || propertyData?.property?.p_id);
       formData.append('req_user_id', responseData?.details?.req_user_id || req_by);
       formData.append('user_id', responseData?.details?.user_id || propertyData?.property?.user_id);
 
@@ -351,7 +363,7 @@ const UploadImages = ({ responseData }) => {
       dispatch(AddImage(formData)).then((response) => {
         console.log("response", response);
         if (response.meta.requestStatus === "fulfilled") {
-          navigate(`/property/${responseData.details.p_id}`);
+          navigate(`/property/${propertyData?.property?.p_id}`);
           window.location.reload();
         }
       });

@@ -38,8 +38,8 @@ const Form = () => {
   const [districts, setDistricts] = useState([]);
   const [areas, setAreas] = useState([]);
   const [responseData, setResponseData] = useState(null);
-  console.log("isEditMode",isEditMode)
-  console.log("propertyData",propertyData)
+  console.log("isEditMode", isEditMode);
+  console.log("propertyData", propertyData);
   const defaultValues = {
     AboutDeveloper: propertyData?.AboutDeveloper || "",
     bhk: propertyData?.bhk || "",
@@ -57,7 +57,7 @@ const Form = () => {
     state: propertyData?.state || "",
     size: propertyData?.size || "",
     district: propertyData?.district || "",
-    document_number: propertyData?.document_number || "",
+    document_number: propertyData?.doc_num || "",
     docfile: [],
     disputes: propertyData?.disputes || "",
     furnished: propertyData?.furnished || "",
@@ -90,7 +90,7 @@ const Form = () => {
     village: propertyData?.village || "",
     loan_eligibile: propertyData?.loan_eligibile || false,
   };
-  console.log('set form default Values 1', defaultValues);
+  console.log("set form default Values 1", defaultValues);
   const {
     control,
     watch,
@@ -103,20 +103,20 @@ const Form = () => {
     defaultValues,
   });
   useEffect(() => {
-    console.log('resetting default values ', defaultValues);
+    console.log("resetting default values ", defaultValues);
     reset(defaultValues);
-  },[propertiesData])
-  
-  console.log('form default values 2', getValues());
+  }, [propertiesData]);
+
+  console.log("form default values 2", getValues());
   const selectedPropertyType = watch("p_type");
   const selectedState = watch("state");
   const selectedDistrict = watch("district");
   const handleKeyDown = (event) => {
- 
-    if ( event.key === '-' ||event.key === '.') {
+    if (event.key === "-" || event.key === ".") {
       event.preventDefault();
     }
   };
+
 
   useEffect(() => {
     console.log("state change ", selectedState);
@@ -178,15 +178,17 @@ const Form = () => {
     return updatedFields;
   }
 
-  const getChangedFields = (propertyData, formData) => {
-    return findUpdatedFields(propertyData, formData);
-  };
+  // const getChangedFields = (propertyData, formData) => {
+  //   return findUpdatedFields(propertyData, formData);
+  // };
 
   const onSubmit = async (data) => {
+    if (Array.isArray(data.developments)) {
+      data.developments = data.developments.join(", ");
+    }
     if (data.minPrice !== undefined && data.maxPrice !== undefined) {
- 
       const doc_num = `${data.minPrice} - ${data.maxPrice}`;
-     
+
       data.doc_num = doc_num;
     }
 
@@ -196,7 +198,8 @@ const Form = () => {
     const p_id = propertyData?.p_id;
     let payload;
     if (currentPath === "/UpdateProperty") {
-      payload = getChangedFields(propertyData, data);
+      payload = data
+      //  getChangedFields(propertyData, data);
       if (isEditMode) {
         payload.p_id = p_id;
       }
@@ -207,14 +210,18 @@ const Form = () => {
       }
     }
     dispatch(action({ payload })).then((response) => {
+      console.log(response)
+      // alert(response.payload.message);
       if (
         response.payload.message === "property added successfully" ||
         response.payload.message === "Property updated successfully"
       ) {
+        alert(response.payload.message);
         setResponseData(response.payload);
         setShowComponent(false);
       } else {
         console.error(response.payload);
+        alert("Some Error Occurred, Action couldn't be performed");
       }
     });
   };
@@ -245,11 +252,13 @@ const Form = () => {
   if (responseData) {
     return <UploadImages responseData={responseData} />;
   }
+  // {showComponent && <UploadImages/>}
+
 
   console.log("form data ", getValues());
 
   return (
-    <Box
+    <>    {showComponent ? (<Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       sx={{ flexGrow: 1, width: "100%", maxWidth: 800, margin: "20px auto" }}
@@ -261,13 +270,15 @@ const Form = () => {
       {currentPath === "/UpdateProperty" && (
         <Button
           sx={{ marginTop: "20px" }}
-          onClick={() => setShowComponent(false)}
+          onClick={() => setShowComponent(!showComponent)}
+        
         >
           Update Image/Documents
         </Button>
-      )}
-      <Grid container spacing={2} sx={{ marginTop: "10px" }}>
         
+      )}
+        {isEditMode && <Typography sx={{fontWeight:"600",fontSize:"16px",margin:"10px 0px"}}><span style={{color:"red",margin:"0px 10px"}}>*Note</span>Please Add Price in Property Comments To Change the price </Typography>}
+      <Grid container spacing={2} sx={{ marginTop: "10px" }}>
         {(user.role === "admin" || user.role === "staff") && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
@@ -276,7 +287,8 @@ const Form = () => {
                 name="v_status"
                 control={control}
                 render={({ field }) => (
-                  <Select {...field} label="Property Status">
+                  <Select {...field} label="Property Status"  onChange={(e) => field.onChange(e.target.value === 'true')}
+                  value={field.value ? 'true' : 'false'}>
                     <MenuItem value="true">Verified</MenuItem>
                     <MenuItem value="false">Not Verified</MenuItem>
                   </Select>
@@ -285,23 +297,26 @@ const Form = () => {
             </FormControl>
           </Grid>
         )}
-        {isEditMode && (user.role === "admin" || user.role === "staff" || user.role === "user")  && (
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel> Status</InputLabel>
-              <Controller
-                name="status"
-                control={control}
-                render={({ field }) => (
-                  <Select {...field} label="Property Status">
-                    <MenuItem value="active">Active</MenuItem>
-                    <MenuItem value="inactive">In Active</MenuItem>
-                  </Select>
-                )}
-              />
-            </FormControl>
-          </Grid>
-        )}
+        {isEditMode &&
+          (user.role === "admin" ||
+            user.role === "staff" ||
+            user.role === "user") && (
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel> Status</InputLabel>
+                <Controller
+                  name="status"
+                  control={control}
+                  render={({ field }) => (
+                    <Select {...field} label="Property Status">
+                      <MenuItem value="active">Active</MenuItem>
+                      <MenuItem value="inactive">In Active</MenuItem>
+                    </Select>
+                  )}
+                />
+              </FormControl>
+            </Grid>
+          )}
         <Grid item xs={12} sm={6}>
           <FormControl
             fullWidth
@@ -415,8 +430,6 @@ const Form = () => {
             )}
           />
         </Grid>
-
-        
 
         {selectedPropertyType === "flat" && (
           <Grid item xs={12} sm={6}>
@@ -547,7 +560,7 @@ const Form = () => {
         )}
         {selectedPropertyType === "plot" && (
           <Grid item xs={12} sm={6}>
-            <Grid item xs={12} sm={6}>
+         
               <FormControl fullWidth variant="outlined">
                 <InputLabel>No. of Open Road Sides</InputLabel>
                 <Controller
@@ -569,7 +582,7 @@ const Form = () => {
                   )}
                 />
               </FormControl>
-            </Grid>
+       
           </Grid>
         )}
 
@@ -607,6 +620,22 @@ const Form = () => {
             <FormHelperText>{errors.state?.message}</FormHelperText>
           </FormControl>
         </Grid>
+        {isEditMode && <Grid item xs={12} sm={6}>
+              <Controller
+                name="comments"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Property Comments"
+                    type="text"
+                    variant="outlined"
+                    fullWidth
+ 
+                  />
+                )}
+              />
+            </Grid>}
         <Grid item xs={12} sm={6}>
           <FormControl fullWidth variant="outlined" error={!!errors.district}>
             <InputLabel>District*</InputLabel>
@@ -646,11 +675,13 @@ const Form = () => {
               rules={{ required: "Area is required" }}
               render={({ field }) => (
                 <Select {...field} label="Area">
-                  {areas.filter((area) => area.area !== "All Areas").map((area) => (
-                    <MenuItem key={area.id} value={area.area}>
-                      {area.area}
-                    </MenuItem>
-                  ))}
+                  {areas
+                    .filter((area) => area.area !== "All Areas")
+                    .map((area) => (
+                      <MenuItem key={area.id} value={area.area}>
+                        {area.area}
+                      </MenuItem>
+                    ))}
                 </Select>
               )}
             />
@@ -710,7 +741,9 @@ const Form = () => {
                       fullWidth
                       error={!!errors.price}
                       helperText={errors.price?.message}
-                      onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                      onChange={(e) =>
+                        field.onChange(parseFloat(e.target.value))
+                      }
                     />
                   )}
                 />
@@ -824,22 +857,25 @@ const Form = () => {
             <FormHelperText>{errors.direction?.message}</FormHelperText>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="document_number"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="Document Number"
-                variant="outlined"
-                fullWidth
-                error={!!errors.document_number}
-                helperText={errors.document_number?.message}
-              />
-            )}
-          />
-        </Grid>
+        {watch("listing_type") === "sell" && (
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="document_number"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Document Number"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.document_number}
+                  helperText={errors.document_number?.message}
+                />
+              )}
+            />
+          </Grid>
+        )}
+
         <Grid item xs={12} sm={6}>
           <FormControl
             fullWidth
@@ -865,7 +901,7 @@ const Form = () => {
           <>
             <Grid item xs={12} sm={6}>
               <Controller
-                name="comments"
+                name="v_comments"
                 control={control}
                 render={({ field }) => (
                   <TextField
@@ -899,23 +935,7 @@ const Form = () => {
                 <FormHelperText>{errors.rating?.message}</FormHelperText>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Controller
-                name="v_comments"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Property Comments"
-                    type="text"
-                    variant="outlined"
-                    fullWidth
-                    error={!!errors.v_comments}
-                    helperText={errors.v_comments?.message}
-                  />
-                )}
-              />
-            </Grid>
+            
           </>
         )}
         <Grid item xs={12} sm={6}>
@@ -931,11 +951,7 @@ const Form = () => {
                 fullWidth
                 error={!!errors.developments}
                 helperText={errors.developments?.message}
-                onChange={(e) => {
-                  const newValue = e.target.value; 
-                  const stringValue = newValue.join(', '); 
-                  field.onChange(stringValue);
-                }}
+                
               />
             )}
           />
@@ -978,7 +994,7 @@ const Form = () => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-        <Controller
+          <Controller
             name="reg_loc"
             control={control}
             render={({ field }) => (
@@ -988,7 +1004,6 @@ const Form = () => {
                 type="text"
                 variant="outlined"
                 fullWidth
-            
               />
             )}
           />
@@ -1026,7 +1041,7 @@ const Form = () => {
                 onKeyDown={handleKeyDown}
                 onChange={(e) => {
                   const value = e.target.value;
-                  const newValue = value.replace(/\D/g, '');
+                  const newValue = value.replace(/\D/g, "");
                   if (newValue.length > 10) {
                     return;
                   }
@@ -1052,7 +1067,7 @@ const Form = () => {
                 onKeyDown={handleKeyDown}
                 onChange={(e) => {
                   const value = e.target.value;
-                  const newValue = value.replace(/\D/g, '');
+                  const newValue = value.replace(/\D/g, "");
                   if (newValue.length > 10) {
                     return;
                   }
@@ -1075,7 +1090,6 @@ const Form = () => {
                 fullWidth
                 error={!!errors.own_name}
                 helperText={errors.own_name?.message}
-                
               />
             )}
           />
@@ -1096,7 +1110,7 @@ const Form = () => {
                 onKeyDown={handleKeyDown}
                 onChange={(e) => {
                   const value = e.target.value;
-                  const newValue = value.replace(/\D/g, '');
+                  const newValue = value.replace(/\D/g, "");
                   if (newValue.length > 10) {
                     return;
                   }
@@ -1122,7 +1136,7 @@ const Form = () => {
                 onKeyDown={handleKeyDown}
                 onChange={(e) => {
                   const value = e.target.value;
-                  const newValue = value.replace(/\D/g, '');
+                  const newValue = value.replace(/\D/g, "");
                   if (newValue.length > 10) {
                     return;
                   }
@@ -1207,8 +1221,13 @@ const Form = () => {
           </Button>
         </Grid>
       </Grid>
-    </Box>
+    </Box>) : (
+      <UploadImages />
+    )}
+    </>
   );
+  
+
 };
 
 export default Form;

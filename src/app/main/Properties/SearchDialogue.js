@@ -32,6 +32,7 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
 
   const initialFormData = {
     p_type: "",
+    bhk:"",
     listing_type: "",
     min_price: "",
     max_price: "",
@@ -446,6 +447,22 @@ const SearchDialogue = ({ FormData, onSearch, isAdminSearch }) => {
                 <MenuItem value="Rera">Rera</MenuItem>
               </Select>
             </FormControl>
+            {formData.p_type == "flat" &&<FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
+              <InputLabel>BHK</InputLabel>
+              <Select
+                name="bhk"
+                value={formData.bhk}
+                onChange={handleChange}
+                label="Select BHK"
+              >
+                <MenuItem value="1">1</MenuItem>
+                <MenuItem value="2">2</MenuItem>
+                <MenuItem value="3">3</MenuItem>
+                <MenuItem value="4">4</MenuItem>
+                <MenuItem value="5">5</MenuItem>
+                <MenuItem value="6">6</MenuItem>
+              </Select>
+            </FormControl>}
             <FormControl fullWidth sx={{ mt: 2, margin: "6px 5px" }}>
               <InputLabel>Loan Eligibility</InputLabel>
               <Select

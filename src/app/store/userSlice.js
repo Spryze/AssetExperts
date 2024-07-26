@@ -325,6 +325,9 @@ export const setUser = createAsyncThunk('user/setUser', async () => {
               requirements:userData.profile.requirements,
               active_notifications:userData.profile.active_notifications,
               photoURL: 'assets/images/avatars/profile.webp',
+              is_whatsapp_user:userData.profile.is_whatsapp_user,
+              langauge:userData.profile.langauge,
+          
 
               
             }
@@ -468,7 +471,7 @@ export const signInWithEmailPassword = createAsyncThunk(
       
       if (user) {
         const userData = await axios.get(`${BaseUrl}/user?user_id=${user.uid}&req_user_id=${user.uid}`)
-        // console.log("userdata",userdata)
+        console.log("userdata",userData)
         let User = {
           uid: user.uid,
           role: userData.data.profile.role,
@@ -481,7 +484,10 @@ export const signInWithEmailPassword = createAsyncThunk(
               phone_num_1:userData.data.profile.phone_num_1,
               phone_num_2:userData.data.profile.phone_num_2,
               profession:userData.data.profile.profession,
+              properties:userData.data.properties,
               requirements:userData.data.profile.requirements,
+              is_whatsapp_user:userData.data.profile.is_whatsapp_user,
+              langauge:userData.data.profile.langauge,
           }
         };
         

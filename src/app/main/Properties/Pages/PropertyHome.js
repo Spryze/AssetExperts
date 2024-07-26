@@ -69,6 +69,7 @@ const PropertyHome = () => {
   const [HomeProperties, SetHomeProperties] = useState();
   const [localLoading, setLocalLoading] = useState(false);
   const [HomePropertiesLoader, SetHomePropertiesLoader] = useState(false);
+ 
 
 
   const HandleFormData = (data) => {
@@ -124,7 +125,7 @@ const PropertyHome = () => {
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - 5
       ) {
-        setPage((prevPage) => prevPage + 1);
+        setoffset((prevoffset) => prevoffset + 40);
       }
     }, 200),
     []
@@ -193,8 +194,8 @@ const PropertyHome = () => {
 
   useEffect(() => {}, [user]);
   useEffect(() => {
-    dispatch(fetchRecentTransactions(page));
-  }, [dispatch, page]);
+    dispatch(fetchRecentTransactions(offset));
+  }, [dispatch, offset]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -320,7 +321,7 @@ const PropertyHome = () => {
                       borderRadius: "5px",
                       margin: "30px 0px",
                     }}
-                    onClick={() => handleClick(item.property_id)}
+                    onClick={() => handleClick(item.prop_id)}
                   >
                     <CardContent sx={{ padding: "0px" }}>
                       <Box
@@ -374,7 +375,7 @@ const PropertyHome = () => {
                           }}
                         >
                           <CurrencyFormatter
-                            value={item?.price}
+                            value={item?.unit_price}
                             currency="INR"
                           />{" "}
                           / {item?.unit}
@@ -394,7 +395,7 @@ const PropertyHome = () => {
                             item?.listing_type === "buy"
                               ? "Wanted"
                               : `${item?.listing_type}ing`
-                          }, ${item?.area}${item?.unit}s ${item?.p_type}`}
+                          }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
                         </Typography>
                         <Box sx={{ display: "flex" }}>
                           <LocationOnIcon sx={{ color: "#0b6c00" }} />
@@ -691,7 +692,7 @@ const PropertyHome = () => {
                       borderRadius: "5px",
                       margin: "30px 0px",
                     }}
-                    onClick={() => handleClick(item.property_id)}
+                    onClick={() => handleClick(item.prop_id)}
                   >
                     <CardContent sx={{ padding: "0px" }}>
                       <Box
@@ -727,7 +728,7 @@ const PropertyHome = () => {
                           }}
                         >
                           <CurrencyFormatter
-                            value={item?.price}
+                            value={item?.unit_price}
                             currency="INR"
                           />{" "}
                           / {item?.unit}
@@ -1222,7 +1223,7 @@ const PropertyHome = () => {
                       borderRadius: "5px",
                       margin: "3px 0px",
                     }}
-                    onClick={() => handleClick(item.property_id)}
+                    onClick={() => handleClick(item.prop_id)}
                   >
                     <CardContent sx={{ padding: "0px" }}>
                       <Box
@@ -1258,7 +1259,7 @@ const PropertyHome = () => {
                           }}
                         >
                           <CurrencyFormatter
-                            value={item?.price}
+                            value={item?.unit_price}
                             currency="INR"
                           />{" "}
                           / {item?.unit}
@@ -1278,7 +1279,7 @@ const PropertyHome = () => {
                             item?.listing_type === "buy"
                               ? "Wanted"
                               : `${item?.listing_type}ing`
-                          }, ${item?.area}${item?.unit}s ${item?.p_type}`}
+                          }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
                         </Typography>
                         <Box sx={{ display: "flex" }}>
                           <LocationOnIcon sx={{ color: "#0b6c00" }} />

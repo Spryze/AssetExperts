@@ -6,10 +6,11 @@ import DefaultImg from "src/assets/Default/DegaultImg.gif";
 import Addproperty from "../Addproperty";
 import { selectUser } from "app/store/userSlice";
 import CloseIcon from "@mui/icons-material/Close";
+import { useEffect } from "react";
 
 const MyProperties = () => {
   const userData = useSelector(selectUser);
-  console.log()
+  console.log("userData",userData)
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -22,6 +23,11 @@ const MyProperties = () => {
     setSelectedProperty(null);
     setIsEditMode(false);
   };
+  // useEffect(() => {
+   
+  //   console.log('Component reloading due to role change');
+
+  // }, [userData]);
   const handlePropertyClick = (propertyId) => {
     const newWindow = window.open(`/property/${propertyId}`, "_blank");
     if (newWindow) {

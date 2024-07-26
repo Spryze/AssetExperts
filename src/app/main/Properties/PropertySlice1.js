@@ -514,21 +514,30 @@ export const fetchRecentTransactions = createAsyncThunk(
   "property/fetchRecentTransactions",
   async (arg, { getState, rejectWithValue }) => {
     try {
+      console.log("arg", arg);
       const state = getState();
-      console.log(state)
+      console.log("Current State:", state);
+
+      // Initialize params object
       const params = {};
 
+      // Conditionally set the status param
       if (state.properties.Stats.length === 0) {
-        params.status = 'True'; 
+        params.status = 'True';
       }
 
-
+      // Create query string from params
       const queryString = qs.stringify(params, { encode: true });
 
+      // Construct the request URL
+      const requestUrl = `${BaseUrl}/home?${queryString}`;
+      console.log("Request URL:", requestUrl);
 
-      console.log(`${BaseUrl}/home?${queryString}`)
-      const response = await axios.get(`${BaseUrl}/home?${queryString}`);
-      console.log("response of recent transaction", response);
+      // Make the GET request with axios
+      const response = await axios.get(requestUrl, {
+        params: { offset: arg }
+      });
+      console.log("Response of recent transaction:", response);
 
       // Extract transactions and stats from response data
       const stats = response.data.property_type_count;
@@ -539,10 +548,10 @@ export const fetchRecentTransactions = createAsyncThunk(
       // Return the transactions and stats as the payload
       return { transactions, stats };
     } catch (error) {
-      console.log(error)
+      console.error("Error fetching recent transactions:", error);
+
       // Handle errors and return the error message as rejected value
-      return rejectWithValue(error);
-      
+      return rejectWithValue(error.response ? error.response.data : error.message);
     }
   }
 );
@@ -564,11 +573,7 @@ export const SearchResults = createAsyncThunk(
         body: formData,
       };
 
-      // const response = await axios.post(`${BaseUrl}/search`, Data, {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // });
+    console.log("data going to backend during scroll",Data)
       const response = await axios.post(`${BaseUrl}/search`, Data, {
         headers: {
           "Content-Type": "application/json",

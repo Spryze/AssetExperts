@@ -107,15 +107,23 @@ export default function FormDialog(userId) {
   const handleAreasChange = (event) => {
     const { value } = event.target;
     console.log("value", value);
-    let selectedAreas = [];
-
-    if (value.includes(allAreasId) && user.data.active_notifications === 0) {
+    
+    let selectedAreas = []; // Assuming you might use this later
+    
+    console.log("All Area Ids", allAreasId);
+    
+    // Check if any element of allAreasId is present in value
+    const anyInValue = allAreasId.some(id => value.includes(id));
+    console.log("anyInValue", anyInValue);
+    
+    if (anyInValue && user?.data?.active_notifications === 0) {
       setErrorMessage('Please subscribe to select this option.');
       setTimeout(() => {
         setErrorMessage('');
       }, 3000);
       return;
-    };
+    }
+    
 
     if (user.data.active_notifications === 0 && value.length > 10) {
       setErrorMessage('Please subscribe to select more options.');

@@ -1,0 +1,167 @@
+{
+    "areas": {
+        "Srikakulam": [
+            1,
+            2,
+            3,
+            20000000000000
+        ],
+        "Visakhapatnam": [
+            {"id" : 4, "area": "gurudwara"},
+            
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            20000000000001
+        ],
+        "West Godavari": [
+            16,
+            17,
+            18,
+            20000000000002
+        ],
+        "Krishna": [
+            19,
+            20,
+            21,
+            20000000000003
+        ],
+        "Hyderabad": [
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            20000000000004
+        ],
+        "Chennai": [
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            20000000000005
+        ],
+        "Coimbatore": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            20000000000006
+        ],
+        "Madurai": [
+            41,
+            42,
+            43,
+            44,
+            45,
+            20000000000007
+        ],
+        "Tiruchirappalli": [
+            46,
+            47,
+            48,
+            49,
+            50,
+            20000000000008
+        ],
+        "Thanjavur": [
+            51,
+            52,
+            53,
+            54,
+            55,
+            20000000000009
+        ]
+    },
+    "district_status": {
+        "Andhra Pradesh": {
+            "Srikakulam": true,
+            "Visakhapatnam": true,
+            "West Godavari": true,
+            "Krishna": true,
+            "East Godavari": false,
+            "Guntur": false,
+            "Prakasam": false,
+            "Nellore": false,
+            "Chittoor": false,
+            "Kadapa": false,
+            "Anantapur": false,
+            "Kurnool": false
+        },
+        "Telangana": {
+            "Hyderabad": true,
+            "Warangal": false,
+            "Nalgonda": false,
+            "Karimnagar": false,
+            "Ranga Reddy": false,
+            "Khammam": false,
+            "Mahbubnagar": false,
+            "Medak": false,
+            "Nizamabad": false,
+            "Adilabad": false,
+            "Sangareddy": false,
+            "Jagtial": false
+        },
+        "Tamil Nadu": {
+            "Chennai": true,
+            "Coimbatore": true,
+            "Madurai": true,
+            "Tiruchirappalli": true,
+            "Thanjavur": true,
+            "Salem": false,
+            "Erode": false
+        },
+        "Karnataka": {
+            "Bangalore": false,
+            "Mysore": false,
+            "Mangalore": false,
+            "Hubli": false,
+            "Belgaum": false,
+            "Dharwad": false
+        },
+        "Maharashtra": {
+            "Mumbai": false,
+            "Pune": false,
+            "Nagpur": false,
+            "Nashik": false,
+            "Aurangabad": false,
+            "Solapur": false
+        },
+        "Kerala": {
+            "Thiruvananthapuram": false,
+            "Kochi": false,
+            "Kozhikode": false,
+            "Thrissur": false,
+            "Kannur": false,
+            "Palakkad": false
+        },
+        "Gujarat": {
+            "Ahmedabad": false,
+            "Surat": false,
+            "Vadodara": false,
+            "Rajkot": false,
+            "Bhavnagar": false,
+            "Jamnagar": false
+        },
+        "Rajasthan": {
+            "Jaipur": false,
+            "Udaipur": false,
+            "Jodhpur": false,
+            "Kota": false,
+            "Ajmer": false,
+            "Bikaner": false
+        }
+    }
+}

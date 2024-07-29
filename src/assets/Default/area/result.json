@@ -1,0 +1,1114 @@
+{
+    "areas": {
+        "Visakhapatnam": [
+            {
+                "id": 1,
+                "area": "All Areas"
+            },
+            {
+                "id": 2,
+                "area": "Akkayyapalem"
+            },
+            {
+                "id": 3,
+                "area": "Aganampudi"
+            },
+            {
+                "id": 4,
+                "area": "Allipuram"
+            },
+            {
+                "id": 5,
+                "area": "Arilova"
+            },
+            {
+                "id": 6,
+                "area": "Auto Nagar"
+            },
+            {
+                "id": 7,
+                "area": "Boyapalem"
+            },
+            {
+                "id": 8,
+                "area": "Bheemunipatnam"
+            },
+            {
+                "id": 9,
+                "area": "Chepalappada"
+            },
+            {
+                "id": 10,
+                "area": "Chinnamushidiwada"
+            },
+            {
+                "id": 11,
+                "area": "Chipurupalle"
+            },
+            {
+                "id": 12,
+                "area": "Devada"
+            },
+            {
+                "id": 13,
+                "area": "Duvada"
+            },
+            {
+                "id": 14,
+                "area": "East Visakhapatnam"
+            },
+            {
+                "id": 15,
+                "area": "Gajuwaka"
+            },
+            {
+                "id": 16,
+                "area": "Gandigundam"
+            },
+            {
+                "id": 17,
+                "area": "Gollalapalem"
+            },
+            {
+                "id": 18,
+                "area": "Gopalapatnam"
+            },
+            {
+                "id": 19,
+                "area": "Gudilova"
+            },
+            {
+                "id": 20,
+                "area": "Gurudwara"
+            },
+            {
+                "id": 21,
+                "area": "Gurrampalem"
+            },
+            {
+                "id": 22,
+                "area": "Jagadammba"
+            },
+            {
+                "id": 23,
+                "area": "Jammu Narayana Puram"
+            },
+            {
+                "id": 24,
+                "area": "Kamakshi Nagar"
+            },
+            {
+                "id": 25,
+                "area": "Kalapaka"
+            },
+            {
+                "id": 26,
+                "area": "Kancherapalem"
+            },
+            {
+                "id": 27,
+                "area": "Kapuluppada"
+            },
+            {
+                "id": 28,
+                "area": "Kommadi"
+            },
+            {
+                "id": 29,
+                "area": "Kothavalasa"
+            },
+            {
+                "id": 30,
+                "area": "Kothagraharam"
+            },
+            {
+                "id": 31,
+                "area": "Kotapadu"
+            },
+            {
+                "id": 32,
+                "area": "Krishnarayapuram"
+            },
+            {
+                "id": 33,
+                "area": "Kurmanapalem"
+            },
+            {
+                "id": 34,
+                "area": "Lankelapalem"
+            },
+            {
+                "id": 35,
+                "area": "Madhurawada "
+            },
+            {
+                "id": 36,
+                "area": "Maddilapalem"
+            },
+            {
+                "id": 37,
+                "area": "Mamidilova"
+            },
+            {
+                "id": 38,
+                "area": "Mudapaka"
+            },
+            {
+                "id": 39,
+                "area": "MVP Colony"
+            },
+            {
+                "id": 40,
+                "area": "NAD"
+            },
+            {
+                "id": 41,
+                "area": "Nadupuru"
+            },
+            {
+                "id": 42,
+                "area": "Nakkapalli"
+            },
+            {
+                "id": 43,
+                "area": "Narva"
+            },
+            {
+                "id": 44,
+                "area": "North Visakhapatnam"
+            },
+            {
+                "id": 45,
+                "area": "Old Advivaram"
+            },
+            {
+                "id": 46,
+                "area": "Paradesipalem"
+            },
+            {
+                "id": 47,
+                "area": "Paravada"
+            },
+            {
+                "id": 48,
+                "area": "Peda Narava"
+            },
+            {
+                "id": 49,
+                "area": "Pedamadaka"
+            },
+            {
+                "id": 50,
+                "area": "Pedagantyada"
+            },
+            {
+                "id": 51,
+                "area": "Pendurthi"
+            },
+            {
+                "id": 52,
+                "area": "Rekhavanipalem"
+            },
+            {
+                "id": 53,
+                "area": "Rushikonda"
+            },
+            {
+                "id": 54,
+                "area": "Sagar Nagar"
+            },
+            {
+                "id": 55,
+                "area": "Sabbavaram"
+            },
+            {
+                "id": 56,
+                "area": "Siva Nagar"
+            },
+            {
+                "id": 57,
+                "area": "Simhachalam"
+            },
+            {
+                "id": 58,
+                "area": "Sontyam"
+            },
+            {
+                "id": 59,
+                "area": "South Visakhapatnam"
+            },
+            {
+                "id": 60,
+                "area": "Sripuram"
+            },
+            {
+                "id": 61,
+                "area": "Srinagar"
+            },
+            {
+                "id": 62,
+                "area": "Sujathanagar"
+            },
+            {
+                "id": 63,
+                "area": "Tallavalasa"
+            },
+            {
+                "id": 64,
+                "area": "Thagarapuvalasa"
+            },
+            {
+                "id": 65,
+                "area": "Thatichetlapalem"
+            },
+            {
+                "id": 66,
+                "area": "Thimmapuram"
+            },
+            {
+                "id": 67,
+                "area": "Vepagunta"
+            },
+            {
+                "id": 68,
+                "area": "Vellanki"
+            },
+            {
+                "id": 69,
+                "area": "West Visakhapatnam"
+            },
+            {
+                "id": 70,
+                "area": "Yarada"
+            },
+            {
+                "id": 71,
+                "area": "Yendada"
+            }
+        ],
+        "Srikakulam": [
+            {
+                "id": 72,
+                "area": "All Areas"
+            },
+            {
+                "id": 73,
+                "area": "Balaga"
+            },
+            {
+                "id": 74,
+                "area": "Bhagavandasupeta"
+            },
+            {
+                "id": 75,
+                "area": "Budumuru"
+            },
+            {
+                "id": 76,
+                "area": "Byrivanipeta"
+            },
+            {
+                "id": 77,
+                "area": "Chilakapalem"
+            },
+            {
+                "id": 78,
+                "area": "Chinnabondilipuram"
+            },
+            {
+                "id": 79,
+                "area": "Jeerupalem"
+            },
+            {
+                "id": 80,
+                "area": "Paydhibhimavaram"
+            },
+            {
+                "id": 81,
+                "area": "Pudivalasa"
+            },
+            {
+                "id": 82,
+                "area": "Radhakrishna Nagar"
+            },
+            {
+                "id": 83,
+                "area": "Ramakrishna Nagar"
+            },
+            {
+                "id": 84,
+                "area": "Ranastalam"
+            },
+            {
+                "id": 85,
+                "area": "Ravivalasa"
+            },
+            {
+                "id": 86,
+                "area": "Tamminaidupeta"
+            }
+        ],
+        "Vizianagaram": [
+            {
+                "id": 87,
+                "area": "All Areas"
+            },
+            {
+                "id": 88,
+                "area": "Ayyannapeta"
+            },
+            {
+                "id": 89,
+                "area": "Badangi"
+            },
+            {
+                "id": 90,
+                "area": "Balijipeta"
+            },
+            {
+                "id": 91,
+                "area": "Bhogapuram"
+            },
+            {
+                "id": 92,
+                "area": "Bobbili"
+            },
+            {
+                "id": 93,
+                "area": "Bondapalle"
+            },
+            {
+                "id": 94,
+                "area": "Cheepurupalle"
+            },
+            {
+                "id": 95,
+                "area": "Dathirajeru"
+            },
+            {
+                "id": 96,
+                "area": "Denkada"
+            },
+            {
+                "id": 97,
+                "area": "Dharmapuri"
+            },
+            {
+                "id": 98,
+                "area": "Dwaraka Nagar"
+            },
+            {
+                "id": 99,
+                "area": "Gajapathinagaram"
+            },
+            {
+                "id": 100,
+                "area": "Garividi"
+            },
+            {
+                "id": 101,
+                "area": "Garugubilli"
+            },
+            {
+                "id": 102,
+                "area": "Gantyada"
+            },
+            {
+                "id": 103,
+                "area": "Gollalapalem"
+            },
+            {
+                "id": 104,
+                "area": "Gummalakshmipuram"
+            },
+            {
+                "id": 105,
+                "area": "Gurla"
+            },
+            {
+                "id": 106,
+                "area": "Hajisahebpeta"
+            },
+            {
+                "id": 107,
+                "area": "Jami"
+            },
+            {
+                "id": 108,
+                "area": "Jiyyammavalasa"
+            },
+            {
+                "id": 109,
+                "area": "Kamakshi Nagar"
+            },
+            {
+                "id": 110,
+                "area": "Krishnapuram"
+            },
+            {
+                "id": 111,
+                "area": "Komarada"
+            },
+            {
+                "id": 112,
+                "area": "Kotha Graharam"
+            },
+            {
+                "id": 113,
+                "area": "Kothavalasa"
+            },
+            {
+                "id": 114,
+                "area": "Kurupam"
+            },
+            {
+                "id": 115,
+                "area": "Lakkavarapukota"
+            },
+            {
+                "id": 116,
+                "area": "Makkuva"
+            },
+            {
+                "id": 117,
+                "area": "Malicherla"
+            },
+            {
+                "id": 118,
+                "area": "Mentada"
+            },
+            {
+                "id": 119,
+                "area": "Merakamudidam"
+            },
+            {
+                "id": 120,
+                "area": "Nellimarla"
+            },
+            {
+                "id": 121,
+                "area": "Natavalasa"
+            },
+            {
+                "id": 122,
+                "area": "Pachipenta"
+            },
+            {
+                "id": 123,
+                "area": "Police Barex"
+            },
+            {
+                "id": 124,
+                "area": "Pusapatirega"
+            },
+            {
+                "id": 125,
+                "area": "Ramabhadrapuram"
+            },
+            {
+                "id": 126,
+                "area": "Salur"
+            },
+            {
+                "id": 127,
+                "area": "Seethanagaram"
+            },
+            {
+                "id": 128,
+                "area": "Srungavarapukota"
+            },
+            {
+                "id": 129,
+                "area": "SVN Nagar"
+            },
+            {
+                "id": 130,
+                "area": "Thotapalem"
+            },
+            {
+                "id": 131,
+                "area": "Vepada"
+            },
+            {
+                "id": 132,
+                "area": "Vyasnarayanmet"
+            },
+            {
+                "id": 133,
+                "area": "YSR Nagar"
+            }
+        ],
+        "East Godavari": [
+            {
+                "id": 134,
+                "area": "All Areas"
+            },
+            {
+                "id": 135,
+                "area": "Amalapuram"
+            },
+            {
+                "id": 136,
+                "area": "Annavaram"
+            },
+            {
+                "id": 137,
+                "area": "Bandiravu"
+            },
+            {
+                "id": 138,
+                "area": "Bhadrachalam"
+            },
+            {
+                "id": 139,
+                "area": "Chaparai"
+            },
+            {
+                "id": 140,
+                "area": "Chavitidibbalu"
+            },
+            {
+                "id": 141,
+                "area": "Chinturu"
+            },
+            {
+                "id": 142,
+                "area": "Dakodu"
+            },
+            {
+                "id": 143,
+                "area": "Dammapeta"
+            },
+            {
+                "id": 144,
+                "area": "Donarayi"
+            },
+            {
+                "id": 145,
+                "area": "Dumpavalasa"
+            },
+            {
+                "id": 146,
+                "area": "Edugurapalli"
+            },
+            {
+                "id": 147,
+                "area": "Gellavada"
+            },
+            {
+                "id": 148,
+                "area": "Gudisa"
+            },
+            {
+                "id": 149,
+                "area": "Guduru"
+            },
+            {
+                "id": 150,
+                "area": "Gurtedu"
+            },
+            {
+                "id": 151,
+                "area": "Kakinada"
+            },
+            {
+                "id": 152,
+                "area": "Korukonda"
+            },
+            {
+                "id": 153,
+                "area": "Kotananduru"
+            },
+            {
+                "id": 154,
+                "area": "Koyyalagudem"
+            },
+            {
+                "id": 155,
+                "area": "Kuturu"
+            },
+            {
+                "id": 156,
+                "area": "Laxmipuram"
+            },
+            {
+                "id": 157,
+                "area": "Mandapeta"
+            },
+            {
+                "id": 158,
+                "area": "Mangapadu"
+            },
+            {
+                "id": 159,
+                "area": "Maredumelli"
+            },
+            {
+                "id": 160,
+                "area": "Mothugudam"
+            },
+            {
+                "id": 161,
+                "area": "Nagalova"
+            },
+            {
+                "id": 162,
+                "area": "Narishingapeta"
+            },
+            {
+                "id": 163,
+                "area": "Palakollu"
+            },
+            {
+                "id": 164,
+                "area": "Perantapelli"
+            },
+            {
+                "id": 165,
+                "area": "Pithapuram"
+            },
+            {
+                "id": 166,
+                "area": "Polavaram"
+            },
+            {
+                "id": 167,
+                "area": "Rajamahendravaram"
+            },
+            {
+                "id": 168,
+                "area": "Rajavommangi"
+            },
+            {
+                "id": 169,
+                "area": "Rowtulapudi"
+            },
+            {
+                "id": 170,
+                "area": "Smaralakota"
+            },
+            {
+                "id": 171,
+                "area": "Thalagudam"
+            },
+            {
+                "id": 172,
+                "area": "Tulugonda"
+            },
+            {
+                "id": 173,
+                "area": "Tuni"
+            },
+            {
+                "id": 174,
+                "area": "Y.Ramavaram"
+            },
+            {
+                "id": 175,
+                "area": "Yatapaka"
+            },
+            {
+                "id": 176,
+                "area": "pathakota"
+            }
+        ],
+        "Chittoor": [
+            {
+                "id": 177,
+                "area": "All Areas"
+            },
+            {
+                "id": 178,
+                "area": "har"
+            }
+        ]
+    },
+    "district_status": {
+        "Andhra Pradesh": {
+            "Alluri Sitarama Raju": false,
+            "Anantapur": false,
+            "Annamayya": false,
+            "Bapatla": false,
+            "Chittoor": true,
+            "East Godavari": true,
+            "Eluru": false,
+            "Guntur": false,
+            "Kadapa": false,
+            "Kakinada": false,
+            "Konaseema": false,
+            "Krishna": false,
+            "Kurnool": false,
+            "Manyam": false,
+            "Nandyal": false,
+            "Nellore": false,
+            "NTR": false,
+            "Palnadu": false,
+            "Parvathipuram Manyam": false,
+            "Prakasam": false,
+            "Sri Potti Sriramulu Nellore": false,
+            "Sri Satya Sai": false,
+            "Srikakulam": true,
+            "Tirupati": false,
+            "Visakhapatnam": true,
+            "Vizianagaram": true,
+            "West Godavari": false
+        },
+        "Telangana": {
+            "Adilabad": false,
+            "Bhadradri Kothagudem": false,
+            "Hyderabad": false,
+            "Jagtial": false,
+            "Jangaon": false,
+            "Jayashankar Bhupalpally": false,
+            "Jogulamba Gadwal": false,
+            "Kamareddy": false,
+            "Karimnagar": false,
+            "Khammam": false,
+            "Komaram Bheem Asifabad": false,
+            "Mahabubabad": false,
+            "Mahbubnagar": false,
+            "Mancherial": false,
+            "Medak": false,
+            "Medchal Malkajgiri": false,
+            "Mulugu": false,
+            "Nagarkurnool": false,
+            "Nalgonda": false,
+            "Narayanpet": false,
+            "Nirmal": false,
+            "Nizamabad": false,
+            "Peddapalli": false,
+            "Rajanna Sircilla": false,
+            "Ranga Reddy": false,
+            "Sangareddy": false,
+            "Siddipet": false,
+            "Suryapet": false,
+            "Vikarabad": false,
+            "Wanaparthy": false,
+            "Warangal Rural": false,
+            "Warangal Urban": false,
+            "Yadadri Bhuvanagiri": false
+        },
+        "Tamil Nadu": {
+            "Chennai": false,
+            "Coimbatore": false,
+            "Madurai": false,
+            "Tiruchirappalli": false,
+            "Thanjavur": false,
+            "Salem": false,
+            "Erode": false
+        },
+        "Karnataka": {
+            "Bangalore": false,
+            "Mysore": false,
+            "Mangalore": false,
+            "Hubli": false,
+            "Belgaum": false,
+            "Dharwad": false
+        },
+        "Maharashtra": {
+            "Mumbai": false,
+            "Pune": false,
+            "Nagpur": false,
+            "Nashik": false,
+            "Aurangabad": false,
+            "Solapur": false
+        },
+        "Kerala": {
+            "Thiruvananthapuram": false,
+            "Kochi": false,
+            "Kozhikode": false,
+            "Thrissur": false,
+            "Kannur": false,
+            "Palakkad": false
+        },
+        "Gujarat": {
+            "Ahmedabad": false,
+            "Surat": false,
+            "Vadodara": false,
+            "Rajkot": false,
+            "Bhavnagar": false,
+            "Jamnagar": false
+        },
+        "Rajasthan": {
+            "Jaipur": false,
+            "Udaipur": false,
+            "Jodhpur": false,
+            "Kota": false,
+            "Ajmer": false,
+            "Bikaner": false
+        },
+        "Arunachal Pradesh": {
+            "Itanagar": false,
+            "Tawang": false,
+            "Ziro": false,
+            "Pasighat": false,
+            "Aalo": false,
+            "Bomdila": false
+        },
+        "Assam": {
+            "Guwahati": false,
+            "Dibrugarh": false,
+            "Silchar": false,
+            "Jorhat": false,
+            "Nagaon": false,
+            "Tezpur": false
+        },
+        "Bihar": {
+            "Patna": false,
+            "Gaya": false,
+            "Bhagalpur": false,
+            "Muzaffarpur": false,
+            "Purnea": false,
+            "Darbhanga": false
+        },
+        "Chhattisgarh": {
+            "Raipur": false,
+            "Bilaspur": false,
+            "Durg": false,
+            "Korba": false,
+            "Rajnandgaon": false,
+            "Jagdalpur": false
+        },
+        "Goa": {
+            "Panaji": false,
+            "Margao": false,
+            "Vasco da Gama": false,
+            "Mapusa": false,
+            "Ponda": false
+        },
+        "Haryana": {
+            "Chandigarh": false,
+            "Gurugram": false,
+            "Faridabad": false,
+            "Hisar": false,
+            "Panipat": false,
+            "Ambala": false
+        },
+        "Himachal Pradesh": {
+            "Shimla": false,
+            "Manali": false,
+            "Dharamshala": false,
+            "Solan": false,
+            "Mandi": false,
+            "Kullu": false
+        },
+        "Jharkhand": {
+            "Ranchi": false,
+            "Jamshedpur": false,
+            "Dhanbad": false,
+            "Bokaro": false,
+            "Deoghar": false,
+            "Hazaribagh": false
+        },
+        "Madhya Pradesh": {
+            "Bhopal": false,
+            "Indore": false,
+            "Gwalior": false,
+            "Jabalpur": false,
+            "Ujjain": false,
+            "Sagar": false
+        },
+        "Manipur": {
+            "Imphal": false,
+            "Thoubal": false,
+            "Bishnupur": false,
+            "Churachandpur": false,
+            "Ukhrul": false,
+            "Tamenglong": false
+        },
+        "Meghalaya": {
+            "Shillong": false,
+            "Tura": false,
+            "Nongstoin": false,
+            "Jowai": false,
+            "Baghmara": false,
+            "Williamnagar": false
+        },
+        "Mizoram": {
+            "Aizawl": false,
+            "Lunglei": false,
+            "Champhai": false,
+            "Serchhip": false,
+            "Kolasib": false,
+            "Mamit": false
+        },
+        "Nagaland": {
+            "Kohima": false,
+            "Dimapur": false,
+            "Mokokchung": false,
+            "Tuensang": false,
+            "Wokha": false,
+            "Mon": false
+        },
+        "Odisha": {
+            "Bhubaneswar": false,
+            "Cuttack": false,
+            "Rourkela": false,
+            "Berhampur": false,
+            "Sambalpur": false,
+            "Puri": false
+        },
+        "Punjab": {
+            "Chandigarh": false,
+            "Ludhiana": false,
+            "Amritsar": false,
+            "Jalandhar": false,
+            "Patiala": false,
+            "Bathinda": false
+        },
+        "Sikkim": {
+            "Gangtok": false,
+            "Namchi": false,
+            "Geyzing": false,
+            "Mangan": false,
+            "Rangpo": false,
+            "Singtam": false
+        },
+        "Tripura": {
+            "Agartala": false,
+            "Dharmanagar": false,
+            "Kailashahar": false,
+            "Udaipur": false,
+            "Amarpur": false,
+            "Belonia": false
+        },
+        "Uttar Pradesh": {
+            "Lucknow": false,
+            "Kanpur": false,
+            "Ghaziabad": false,
+            "Agra": false,
+            "Varanasi": false,
+            "Meerut": false
+        },
+        "Uttarakhand": {
+            "Dehradun": false,
+            "Haridwar": false,
+            "Roorkee": false,
+            "Haldwani": false,
+            "Nainital": false,
+            "Rishikesh": false
+        },
+        "West Bengal": {
+            "Kolkata": false,
+            "Howrah": false,
+            "Darjeeling": false,
+            "Siliguri": false,
+            "Durgapur": false,
+            "Asansol": false
+        }
+    },
+    "state_status": [
+        {
+            "state": "Andhra Pradesh",
+            "status": true
+        },
+        {
+            "state": "Arunachal Pradesh",
+            "status": false
+        },
+        {
+            "state": "Assam",
+            "status": false
+        },
+        {
+            "state": "Bihar",
+            "status": false
+        },
+        {
+            "state": "Chhattisgarh",
+            "status": false
+        },
+        {
+            "state": "Goa",
+            "status": false
+        },
+        {
+            "state": "Gujarat",
+            "status": false
+        },
+        {
+            "state": "Haryana",
+            "status": false
+        },
+        {
+            "state": "Himachal Pradesh",
+            "status": false
+        },
+        {
+            "state": "Jharkhand",
+            "status": false
+        },
+        {
+            "state": "Karnataka",
+            "status": false
+        },
+        {
+            "state": "Kerala",
+            "status": false
+        },
+        {
+            "state": "Madhya Pradesh",
+            "status": false
+        },
+        {
+            "state": "Maharashtra",
+            "status": false
+        },
+        {
+            "state": "Manipur",
+            "status": false
+        },
+        {
+            "state": "Meghalaya",
+            "status": false
+        },
+        {
+            "state": "Mizoram",
+            "status": false
+        },
+        {
+            "state": "Nagaland",
+            "status": false
+        },
+        {
+            "state": "Odisha",
+            "status": false
+        },
+        {
+            "state": "Punjab",
+            "status": false
+        },
+        {
+            "state": "Rajasthan",
+            "status": false
+        },
+        {
+            "state": "Sikkim",
+            "status": false
+        },
+        {
+            "state": "Tamil Nadu",
+            "status": false
+        },
+        {
+            "state": "Telangana",
+            "status": false
+        },
+        {
+            "state": "Tripura",
+            "status": false
+        },
+        {
+            "state": "Uttar Pradesh",
+            "status": false
+        },
+        {
+            "state": "Uttarakhand",
+            "status": false
+        },
+        {
+            "state": "West Bengal",
+            "status": false
+        }
+    ]
+}

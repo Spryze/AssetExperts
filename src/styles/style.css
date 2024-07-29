@@ -1,0 +1,127 @@
+.small-text {
+  font-size: 15px;
+}
+.heading-text {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.detailsFlex {
+  display: flex;
+  justify-content: space-between;
+  margin: 1px 0px;
+  background: aliceblue;
+  padding: 20px 19px;
+}
+.BigText {
+  font-size: 40px;
+  font-weight: bold;
+  margin: 20px 0 0 30px !important;
+  text-align: left;
+}
+.Text-Center {
+  text-align: center !important;
+}
+
+@media only screen and (max-width: 425px) {
+  .HomeImage {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 425px) {
+  .HomeImage {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .HomeImage {
+    opacity: 0.2 !important;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .HomeImage {
+    bottom: -100px;
+    right: -26px;
+  }
+}
+
+@media only screen and (max-width: 1432px) {
+  .SearchBox {
+    width: 700px;
+    height: 70px;
+  }
+}
+
+
+@media only screen and (max-width: 790px) {
+  .Local-cities {
+    justify-content: space-around !important;
+  }
+}
+.TextNone{
+  text-decoration: none !important;
+}
+
+.card-image {
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-image:hover {
+  transform: scale(1.05);
+}
+
+
+@media only screen and (max-width: 900px) {
+  .Plot&LandCards {
+    display: flex;
+    justify-content: center;
+  }
+}
+.recentcards{
+  padding-bottom: 5px !important;
+}
+
+.SpanTextColor{
+  color: #1f6fe8;
+}
+
+button{
+  background-color: #00204A !important;
+  color: white !important;
+
+}
+
+.home-blue-background {
+  position: relative; 
+}
+
+.home-blue-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/public/assets/cardimages/background5.jpg');
+  background-size: cover;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  opacity: 0.7; 
+}
+
+
+
+@media only screen and (max-width: 768px) {
+  .headingtext {
+   font-size: 30px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .AnimatedBox {
+   margin: 30px;
+   text-align: center;
+   
+   justify-content: center;
+  }
+}

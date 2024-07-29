@@ -1,0 +1,258 @@
+{
+  "properties": {
+    "id": 1,
+    "DeveloperName":"Ramesh",
+    "DeveloperPhone":"987654321",
+    "propertyName": "Omsree Skypark",
+    "propertyAddyear":"2003",
+    "TotalProjects":"10",
+    "AboutDeveloper":"Om Sree Builders & Developers. started their business a decade ago with its specialization mainly in the Residential sector of Real Estate. The group has become one of the leading groups in the Real Estate business within a short span of time. The builder group focuses on providing extreme customer satisfaction, thus being always quick to respond to the desires of its customers. They provide high class quality and excellent service to their clients which are the main attributes of the company. The builder uses premium quality material for building projects under the direction of experienced professionals. By using latest architectural tendency and trustworthy engineering techniques, the company creates living space that provides its customers with a chance to improve their lifestyle.",
+    "BuilderImage":"/assets/images/properties/logo.webp",
+    "propertyOverview": [
+      { "ProjectArea": "3.99Acers" },
+      { "Sizes": "5 Buildings - 1400 units" },
+      { "LaunchDate": "Nov, 2021" },
+      { "Avg.Price": "Price on request" },
+      { "PossessionStarts": "Dec, 2025" },
+      { "Configuration": "3 BHK Apartment" }
+    ],
+    "propertyDeveloper": "OM SREE BUILDERS & DEVELOPERS",
+    "address": "Kompally, North Hyderabad, Hyderabad",
+    "propertyConfiguration": [
+      "3, 4 BHK Apartments Configurations",
+      "Dec, 2024 Possession Starts",
+      "7.37 K - ₹7.99 K/sq.ft Avg. Price",
+      "1815.00 sq.ft. - 2850.00 sq.ft. (Saleable Area) Sizes"
+    ],
+    "PropertyLocation": "Kompally, North Hyderabad, Hyderabad",
+    "AroundProject": [
+      { "category": "school", "name": "Pallavi Model School" },
+      { "category": "Hospital", "name": "Surekha Hospital" },
+      { "category": "school", "name": "Pallavi Model School" },
+      { "category": "school", "name": "Pallavi Model School" }
+    ],
+    "price": "₹ 1.45 Cr - 2.1 Cr ",
+    "AboutProject":"Omsree Skypark is a residential project in Kompally, Hyderabad. It is set in an area of 3.99 Acres . Omsree Skypark offers Apartment. Available configurations include 3 BHK, 4 BHK. Apartment, as per the area plan, are in the size range of 1815.0 - 2850.0 sq.ft.. The property is Under Omsree Skypark is a residential project in Kompally, Hyderabad. It is set in an area of 3.99 Acres . Omsree Skypark offers Apartment. Available configurations include 3 BHK, 4 BHK. Apartment, as per the area plan, are in the size range of 1815.0 - 2850.0 sq.ft.. The property is Under Omsree Skypark is a residential project in Kompally, Hyderabad. It is set in an area of 3.99 Acres . Omsree Skypark offers Apartment. Available configurations include 3 BHK, 4 BHK. Apartment, as per the area plan, are in the size range of 1815.0 - 2850.0 sq.ft.. The property is Under",
+    "generalPrice": "7.37 K - ₹7.99 K/sq.ft",
+    "emiprice": "₹71.99 K",
+    
+    "Property Services": [
+      "Home Loans",
+      "Emi Calculator",
+      "Home loan Eligibility Calculator"
+    ],
+    
+    "PropertyBHK": [{ "value": "1BHK" },
+    { "value": "2BHK"  }],
+    "car parking": "Available",
+    
+    "Furnishing": "Furnished",
+    "Availability": "Immediately Available",
+    
+    
+    "PowerBackUp": "yes",
+    "Facing": "East",
+    "Pantry": "Wet Pantry",
+    "Status": "Immediately",
+    "Amenities": ["Power Back Up", "Club House", "Rain Water Harvesting", "Waiting Lounge",
+     "Internet / Wi-Fi",
+     "Sauna Bath",
+     "Spa",
+     "Swimming Pool",
+     "Fountains",
+     "Fire Sprinklers",
+     "Landscaping & Tree Planting",
+     "Water Conservation", "Rain water Harvesting",
+     "Mini Theatre",
+     "Fire Fighting System",
+     "Gymnasium",
+     "Community Buildings",
+     "Car Parking",
+     "Squash Court",
+     "24X7 Water Supply",
+     "Jogging Track",
+     "Yoga/Meditation Area",
+     "Senior Citizen Siteout",
+     "Gated Community",
+     "Internal Roads",
+     "Indoor Games",
+     "Piped Gas Connection",
+     "Party Lawn",
+     "Sewage Treatment Plant",
+     "Intercom",
+     "Club House",
+     "Children's Play Area",
+     "Steam Room",
+     "Creche/Day Care",
+     "Aerobics Room",
+     "Badminton Court",
+     "RO Water System",
+     "Video Door Security",
+     "Meter Room",
+     "Basketball Court",
+     "Paved Compound",
+     "Storm Water Drains",
+     "ATM",
+     "Open Parking",
+     "Rain Water Harvesting",
+     "Library",
+     "Infinity Pool",
+     "CCTV",
+     "24x7 Security",
+     "Energy management",
+     "Power Backup",
+     "DG Availability"],
+    "images": [
+      "/assets/images/properties/1.jpg",
+      "/assets/images/properties/around the prohect.jpg",
+      "/assets/images/properties/FloorPlan.jpg"
+    ],
+    "Propertyimages": [
+      "/assets/images/properties/FloorPlan.jpg",
+      "/assets/images/properties/FloorPlan2.jpg"
+    ],
+    "aroundtheProject": [],
+    "floorplan": [],
+    "moreAboutProject":"",
+    "TourthisProject":"",
+    "RatingandReview":"",
+    "priceTrends":"",
+    "RegidtryRecords":"",
+    "Calculator":"",
+    "locality" : [
+      {
+        "id": 1,
+        "title": "Coaching institute",
+        "description": "This is the description for Card 1"
+      },
+      {
+        "id": 2,
+        "title": "Temple",
+        "description": "This is the description for Card 2"
+      },
+      {
+        "id": 3,
+        "title": "Tuition Center",
+        "description": "This is the description for Card 3"
+      },
+      {
+        "id": 4,
+        "title": "Vegetable market",
+        "description": "This is the description for Card 4"
+      },
+      {
+        "id": 5,
+        "title": "School",
+        "description": "This is the description for Card 5"
+      },
+      {
+        "id": 6,
+        "title": "Hospital",
+        "description": "This is the description for Card 6"
+      },
+      {
+        "id": 7,
+        "title": "Park",
+        "description": "This is the description for Card 7"
+      },
+      {
+        "id": 8,
+        "title": "Shopping mall",
+        "description": "This is the description for Card 8"
+      },
+      {
+        "id": 9,
+        "title": "Restaurant",
+        "description": "This is the description for Card 9"
+      },
+      {
+        "id": 10,
+        "title": "Gym",
+        "description": "This is the description for Card 10"
+      }
+    ],
+    
+    "CompareProperties":"",
+    "PossessionStatus":[
+      {
+        "category": "ReadyToMove",
+        "title": "OmSree Heights",
+        "Cost": "₹ 1.21 Cr - 1.88 Cr",
+        "Flats": "3,4 BHK Flats",
+        "Area": "Golf Enclave, Kowkur, Hyderabad",
+        "src":"assets/images/properties/around the prohect.jpg"
+      },
+      {
+        "category": "ReadyToMove",
+        "title": "Sunrise Apartments",
+        "Cost": "₹ 85 L - 1.5 Cr",
+        "Flats": "2,3 BHK Flats",
+        "Area": "Jubilee Hills, Hyderabad",
+        "src":"assets/images/properties/around the prohect.jpg"
+      },
+      {
+        "category": "ReadyToMove",
+        "title": "Golden Towers",
+        "Cost": "₹ 2.5 Cr - 4.2 Cr",
+        "Flats": "4,5,6 BHK Flats",
+        "Area": "Banjara Hills, Hyderabad",
+        "src":"assets/images/properties/around the prohect.jpg"
+      },
+        {
+          "category": "in3years",
+          "title": "FutureVille Apartments",
+          "Cost": "₹ 80 L - 1.2 Cr",
+          "Flats": "2,3 BHK Flats",
+          "Area": "Tech Park Area, Bangalore",
+          "src":"assets/images/properties/around the prohect.jpg"
+        },
+        {
+          "category": "in3years",
+          "title": "DreamLand Residency",
+          "Cost": "₹ 1.5 Cr - 2.5 Cr",
+          "Flats": "3,4,5 BHK Flats",
+          "Area": "Green Valley, Pune",
+          "src":"assets/images/properties/around the prohect.jpg"
+        },
+        {
+          "category": "in3years",
+          "title": "SkyHigh Towers",
+          "Cost": "₹ 2.8 Cr - 4.5 Cr",
+          "Flats": "4,5,6 BHK Flats",
+          "Area": "Marine Drive, Mumbai",
+          "src":"assets/images/properties/around the prohect.jpg"
+        }, {
+          "category": "abovethreeyears",
+          "title": "Eternal Bliss Homes",
+          "Cost": "₹ 2 Cr - 3.5 Cr",
+          "Flats": "3,4,5 BHK Flats",
+          "Area": "Serenity Valley, Bangalore",
+          "src":"assets/images/properties/around the prohect.jpg"
+        },
+        {
+          "category": "abovethreeyears",
+          "title": "Horizon View Residences",
+          "Cost": "₹ 1.8 Cr - 2.9 Cr",
+          "Flats": "2,3 BHK Flats",
+          "Area": "Hilltop Gardens, Pune",
+          "src":"assets/images/properties/around the prohect.jpg"
+        },
+        {
+          "category": "abovethreeyears",
+          "title": "Skyline Villas",
+          "Cost": "₹ 3.5 Cr - 6 Cr",
+          "Flats": "4,5,6,7 BHK Villas",
+          "Area": "Ocean View, Goa",
+          "src":"assets/images/properties/around the prohect.jpg"
+        }
+      
+      
+    ]
+    ,
+    "Q&A":"",
+    "FAQs":"",
+    "SimilarProject":"",
+    "News":""
+    
+  }
+}

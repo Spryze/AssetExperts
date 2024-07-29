@@ -1,0 +1,42 @@
+.sell{
+    font-weight: 500;
+    font-size:15px ;
+    background-color: wheat;
+    opacity: 0.5;
+    border: none;
+    /* box-shadow: none; */
+    color: brown;
+    font-weight: bold;
+}
+/* .sell::after {
+    content: "Sell";
+    display: inline-block;
+    background-color: #007bff; 
+    color: white;
+    padding: 3px 8px; 
+    margin: 5px;
+    font-weight: bold;
+    border-radius: 10px;
+  } */
+  
+.buy{
+  font-weight: 500; 
+  font-size:15px ;
+  background-color: #ADD19E;
+  opacity: 0.5;
+  border: none;
+  /* box-shadow: none; */
+  color: brown;
+  font-weight: bold;
+}
+/* 
+.buy::after {
+    content: "Buy";
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 3px 8px; 
+    margin: 5px;
+    font-weight: bold;
+    border-radius: 10px;
+  } */

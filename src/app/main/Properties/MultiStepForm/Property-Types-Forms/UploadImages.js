@@ -359,11 +359,11 @@ const UploadImages = ({ responseData }) => {
       formData.append('req_user_id', responseData?.details?.req_user_id || req_by);
       formData.append('user_id', responseData?.details?.user_id || propertyData?.property?.user_id);
 
-      console.log(formData);
+      console.log("formData",formData);
       dispatch(AddImage(formData)).then((response) => {
         console.log("response", response);
         if (response.meta.requestStatus === "fulfilled") {
-          navigate(`/property/${propertyData?.property?.p_id}`);
+          navigate(`/property/${response.payload.data.p_id}`);
           window.location.reload();
         }
       });

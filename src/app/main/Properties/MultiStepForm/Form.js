@@ -51,6 +51,8 @@ const Form = () => {
     approved_by: propertyData?.approved_by || "",
     bound_wall: propertyData?.bound_wall || "",
     comments: propertyData?.comments || "",
+    minPrice: propertyData?.listing_type === "buy" ? propertyData?.minPrice || 100000 : "",
+    maxPrice: propertyData?.listing_type === "buy" ? propertyData?.maxPrice || 5000000 : "",
     developments: propertyData?.developments || "",
     dimensions: propertyData?.dimensions || "",
     direction: propertyData?.direction || "",
@@ -148,6 +150,17 @@ const Form = () => {
     }
   }, [currentPath]);
 
+  useEffect(() => {
+    if (propertyData?.listing_type === "buy") {
+      if (propertyData?.doc_num) {
+       
+        const [minPrice, maxPrice] = propertyData.doc_num.split(" - ").map(Number);
+        setValue("minPrice", minPrice || ""); 
+        setValue("maxPrice", maxPrice || "");
+      }
+    } 
+  }, []);
+
   const propertyTypes = [
     "plot",
     "flat",
@@ -163,55 +176,69 @@ const Form = () => {
 
   const Units = ["sqft", "sqyd", "sq.m", "acre", "cent"];
 
-  function findUpdatedFields(oldData, newData) {
+  // function findUpdatedFields(oldData, newData) {
+  //   const updatedFields = {};
+  //   if (oldData.hasOwnProperty("user_id")) {
+  //     updatedFields["user_id"] = oldData["user_id"];
+  //   }
+  //   for (let key in oldData) {
+  //     if (oldData.hasOwnProperty(key) && newData.hasOwnProperty(key)) {
+  //       if (oldData[key] !== newData[key]) {
+  //         updatedFields[key] = newData[key];
+  //       }
+  //     }
+  //   }
+  //   return updatedFields;
+  // }
+
+  function getUpdatedFields(defaultValues, currentValues) {
     const updatedFields = {};
-    if (oldData.hasOwnProperty("user_id")) {
-      updatedFields["user_id"] = oldData["user_id"];
-    }
-    for (let key in oldData) {
-      if (oldData.hasOwnProperty(key) && newData.hasOwnProperty(key)) {
-        if (oldData[key] !== newData[key]) {
-          updatedFields[key] = newData[key];
-        }
+    for (const key in currentValues) {
+      if (currentValues[key] !== defaultValues[key]) {
+        updatedFields[key] = currentValues[key];
       }
     }
     return updatedFields;
   }
+  function filterNonEmptyFields(data) {
+    return Object.keys(data).reduce((acc, key) => {
+      if (data[key] !== undefined && data[key] !== null && data[key] !== "") {
+        acc[key] = data[key];
+      }
+      return acc;
+    }, {});
+  }
+  
 
   // const getChangedFields = (propertyData, formData) => {
   //   return findUpdatedFields(propertyData, formData);
   // };
 
   const onSubmit = async (data) => {
+    // Handle special cases for specific fields
     if (Array.isArray(data.developments)) {
       data.developments = data.developments.join(", ");
     }
     if (data.minPrice !== undefined && data.maxPrice !== undefined) {
-      const doc_num = `${data.minPrice} - ${data.maxPrice}`;
-
-      data.doc_num = doc_num;
+      data.doc_num = `${data.minPrice} - ${data.maxPrice}`;
     }
-
-    console.log("form data", data);
-
-    const action = isEditMode ? updateProperty : addProperty;
-    const p_id = propertyData?.p_id;
+  
     let payload;
-    if (currentPath === "/UpdateProperty") {
-      payload = data
-      //  getChangedFields(propertyData, data);
-      if (isEditMode) {
-        payload.p_id = p_id;
-      }
+  
+    if (isEditMode) {
+      // In edit mode, send only updated fields
+      const updatedFields = getUpdatedFields(defaultValues, data);
+      payload = { ...updatedFields, p_id: propertyData?.p_id,user_id:propertyData?.user_id }; // Include p_id for edit mode
     } else {
-      payload = data;
-      if (isEditMode) {
-        payload.p_id = p_id;
-      }
+      // In add mode, send only non-empty fields
+      const nonEmptyFields = filterNonEmptyFields(data);
+      payload = nonEmptyFields;
     }
+  
+    // Determine action based on mode
+    const action = isEditMode ? updateProperty : addProperty;
+  
     dispatch(action({ payload })).then((response) => {
-      console.log(response)
-      // alert(response.payload.message);
       if (
         response.payload.message === "property added successfully" ||
         response.payload.message === "Property updated successfully"
@@ -225,6 +252,52 @@ const Form = () => {
       }
     });
   };
+  
+// old functioning code with filtering of updated feilds
+
+  // const onSubmit = async (data) => {
+  //   if (Array.isArray(data.developments)) {
+  //     data.developments = data.developments.join(", ");
+  //   }
+  //   if (data.minPrice !== undefined && data.maxPrice !== undefined) {
+  //     const doc_num = `${data.minPrice} - ${data.maxPrice}`;
+
+  //     data.doc_num = doc_num;
+  //   }
+
+  //   console.log("form data", data);
+
+  //   const action = isEditMode ? updateProperty : addProperty;
+  //   const p_id = propertyData?.p_id;
+  //   let payload;
+  //   if (currentPath === "/UpdateProperty") {
+  //     payload = data
+  //     //  getChangedFields(propertyData, data);
+  //     if (isEditMode) {
+  //       payload.p_id = p_id;
+  //     }
+  //   } else {
+  //     payload = data;
+  //     if (isEditMode) {
+  //       payload.p_id = p_id;
+  //     }
+  //   }
+  //   dispatch(action({ payload })).then((response) => {
+  //     console.log(response)
+  //     // alert(response.payload.message);
+  //     if (
+  //       response.payload.message === "property added successfully" ||
+  //       response.payload.message === "Property updated successfully"
+  //     ) {
+  //       alert(response.payload.message);
+  //       setResponseData(response.payload);
+  //       setShowComponent(false);
+  //     } else {
+  //       console.error(response.payload);
+  //       alert("Some Error Occurred, Action couldn't be performed");
+  //     }
+  //   });
+  // };
 
   const filteredStates = AreaJson.state_status
     .filter((stateObj) => stateObj.status === true)
@@ -708,6 +781,7 @@ const Form = () => {
           <Grid item xs={12} sm={6}>
             <Controller
               name="price"
+              rules={{ required: "Price is required" }}
               control={control}
               render={({ field }) => (
                 <TextField
@@ -732,6 +806,7 @@ const Form = () => {
                 <Controller
                   name="price"
                   control={control}
+                  rules={{ required: "Price is required" }}
                   render={({ field }) => (
                     <TextField
                       {...field}
@@ -754,11 +829,12 @@ const Form = () => {
             <Controller
               name="minPrice"
               control={control}
+              rules={{ required: "Minimum Price is required" }}
               render={({ field }) => (
                 <TextField
                   {...field}
                   label="Minimum Price"
-                  placeholder="Enter minimum price"
+                  placeholder="Enter minimum price*"
                   type="number"
                   variant="outlined"
                   fullWidth
@@ -770,11 +846,12 @@ const Form = () => {
             <Controller
               name="maxPrice"
               control={control}
+              rules={{ required: "Maximum Price is required" }}
               render={({ field }) => (
                 <TextField
                   {...field}
                   label="Maximum Price"
-                  placeholder="Enter maximum price"
+                  placeholder="Enter maximum price*"
                   type="number"
                   variant="outlined"
                   fullWidth
@@ -792,11 +869,12 @@ const Form = () => {
                 <Controller
                   name="minPrice"
                   control={control}
+                  rules={{ required: "Minimum Price is required" }}
                   render={({ field }) => (
                     <TextField
                       {...field}
-                      label="Minimum Price"
-                      placeholder="Enter minimum price"
+                      label="Minimum Price*"
+                      placeholder="Enter minimum price*"
                       type="number"
                       variant="outlined"
                       fullWidth
@@ -808,11 +886,12 @@ const Form = () => {
                 <Controller
                   name="maxPrice"
                   control={control}
+                  rules={{ required: "Maximum Price is required*" }}
                   render={({ field }) => (
                     <TextField
                       {...field}
-                      label="Maximum Price"
-                      placeholder="Enter maximum price"
+                      label="Maximum Price*"
+                      placeholder="Enter maximum price*"
                       type="number"
                       variant="outlined"
                       fullWidth

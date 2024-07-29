@@ -525,6 +525,7 @@ export const fetchRecentTransactions = createAsyncThunk(
       if (state.properties.Stats.length === 0) {
         params.status = 'True';
       }
+      params.status = 'True';
 
       // Create query string from params
       const queryString = qs.stringify(params, { encode: true });
@@ -539,10 +540,10 @@ export const fetchRecentTransactions = createAsyncThunk(
       });
       console.log("Response of recent transaction:", response);
 
-      // Extract transactions and stats from response data
+      
       const stats = response.data.property_type_count;
-      const transactions = response.data.property.buy_properties.concat(
-        response.data.property.sell_properties
+      const transactions = response.data.property.sell_properties.concat(response.data.property.buy_properties
+        
       );
 
       // Return the transactions and stats as the payload
@@ -665,61 +666,61 @@ export const addProperty = createAsyncThunk(
       if (!user) throw new Error("User not found in local storage");
 
       const cont_user_id = user.uid;
-
+      const data = {...payload.payload  ,cont_user_id}
       // Construct data object without formData key
-      const data = {
-        cont_user_id,
-        AboutDeveloper: payload.payload.AboutDeveloper || "",
-        bhk: payload.payload.bhk || "",
-        Flooring: payload.payload.Flooring || "",
-        No_bed_rooms: payload.payload.No_bed_rooms || "",
-        PowerBackup: payload.payload.PowerBackup || "",
-        PropertyAge: payload.payload.PropertyAge || "",
-        PropertyStatus: payload.payloadPropertyStatus || "",
-        WaterSource: payload.payload.WaterSource || "",
-        ad_info: payload.payload.ad_info || "",
-        approved_by: payload.payload.approved_by || "",
-        bound_wall: payload.payload.bound_wall || "",
-        boundry_wall: payload.payload.boundry_wall || "",
-        comments: payload.payload.comments || "",
-        developments: payload.payload.developments || "",
-        dimensions: payload.payload.dimensions || "",
-        direction: payload.payload.direction || "",
-        disputes: payload.payload.disputes || "",
-        district: payload.payload.district || "",
-        doc_num: payload.payload.doc_num || payload.payload.document_number || "",
-        // docfile: formData.docfile || [],
-        furnshied: payload.payload.furnshied || "",
-        govt_price: payload.payload.govt_price || null,
-        landmark: payload.payload.landmark || "",
-        latitude: payload.payload.latitude || 0,
-        lift: payload.payload.lift || "",
-        listing_type: payload.payload.listing_type || "",
-        loan_eligibile: payload.payload.loan_eligibile || false,
-        longitude: payload.payload.longitude || 0,
-        med_name: payload.payload.med_name || "",
-        med_num1: payload.payload.med_num1 || "",
-        med_num2: payload.payload.med_num2 || "",
-        num_open_sides: payload.payload.num_open_sides || "",
-        own_name: payload.payload.own_name || "",
-        own_num1: payload.payload.own_num1 || "",
-        own_num2: payload.payload.own_num2 || "",
-        p_type: payload.payload.p_type || "",
-        parking: payload.payload.parking || false,
-        price: payload.payload.price || 0,
-        prop_name: payload.payload.prop_name || "",
-        rating: payload.payload.rating || "",
-        reg_loc: payload.payload.reg_loc || "",
-        rera: payload.payload.rera || "",
-        size: payload.payload.size || 0,
-        state: payload.payload.state || "",
-        status: payload.payload.status || "",
-        survey_number: payload.payload.survey_number || "",
-        unit: payload.payload.unit || "",
-        user_id: payload.payload.user_id || "",
-        v_comments: payload.payload.v_comments || "",
-        village: payload.payload.village || "",
-      };
+      // const data = {
+      //   cont_user_id,
+      //   AboutDeveloper: payload.payload.AboutDeveloper || "",
+      //   bhk: payload.payload.bhk || "",
+      //   Flooring: payload.payload.Flooring || "",
+      //   No_bed_rooms: payload.payload.No_bed_rooms || "",
+      //   PowerBackup: payload.payload.PowerBackup || "",
+      //   PropertyAge: payload.payload.PropertyAge || "",
+      //   PropertyStatus: payload.payloadPropertyStatus || "",
+      //   WaterSource: payload.payload.WaterSource || "",
+      //   ad_info: payload.payload.ad_info || "",
+      //   approved_by: payload.payload.approved_by || "",
+      //   bound_wall: payload.payload.bound_wall || "",
+      //   boundry_wall: payload.payload.boundry_wall || "",
+      //   comments: payload.payload.comments || "",
+      //   developments: payload.payload.developments || "",
+      //   dimensions: payload.payload.dimensions || "",
+      //   direction: payload.payload.direction || "",
+      //   disputes: payload.payload.disputes || "",
+      //   district: payload.payload.district || "",
+      //   doc_num: payload.payload.doc_num || payload.payload.document_number || "",
+      //   // docfile: formData.docfile || [],
+      //   furnshied: payload.payload.furnshied || "",
+      //   govt_price: payload.payload.govt_price || null,
+      //   landmark: payload.payload.landmark || "",
+      //   latitude: payload.payload.latitude || 0,
+      //   lift: payload.payload.lift || "",
+      //   listing_type: payload.payload.listing_type || "",
+      //   loan_eligibile: payload.payload.loan_eligibile || false,
+      //   longitude: payload.payload.longitude || 0,
+      //   med_name: payload.payload.med_name || "",
+      //   med_num1: payload.payload.med_num1 || "",
+      //   med_num2: payload.payload.med_num2 || "",
+      //   num_open_sides: payload.payload.num_open_sides || "",
+      //   own_name: payload.payload.own_name || "",
+      //   own_num1: payload.payload.own_num1 || "",
+      //   own_num2: payload.payload.own_num2 || "",
+      //   p_type: payload.payload.p_type || "",
+      //   parking: payload.payload.parking || false,
+      //   price: payload.payload.price || 0,
+      //   prop_name: payload.payload.prop_name || "",
+      //   rating: payload.payload.rating || "",
+      //   reg_loc: payload.payload.reg_loc || "",
+      //   rera: payload.payload.rera || "",
+      //   size: payload.payload.size || 0,
+      //   state: payload.payload.state || "",
+      //   status: payload.payload.status || "",
+      //   survey_number: payload.payload.survey_number || "",
+      //   unit: payload.payload.unit || "",
+      //   user_id: payload.payload.user_id || "",
+      //   v_comments: payload.payload.v_comments || "",
+      //   village: payload.payload.village || "",
+      // };
       console.log(data);
       const response = await axios.post(`${BaseUrl}/property`, data);
       return response.data;
@@ -787,12 +788,14 @@ export const AddImage = createAsyncThunk(
     //     "Content-Type": "multipart/form-data",
     //   },
     // });
+    
 
     if (response.status === 201) {
       window.alert("Upload successful");
     } else {
       throw new Error("Image Upload failed");
     }
+    return response;
   }
 );
 

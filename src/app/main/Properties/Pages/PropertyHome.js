@@ -321,7 +321,7 @@ const PropertyHome = () => {
                       borderRadius: "5px",
                       margin: "30px 0px",
                     }}
-                    onClick={() => handleClick(item.prop_id)}
+                    onClick={() => handleClick(item.p_id)}
                   >
                     <CardContent sx={{ padding: "0px" }}>
                       <Box
@@ -692,7 +692,7 @@ const PropertyHome = () => {
                       borderRadius: "5px",
                       margin: "30px 0px",
                     }}
-                    onClick={() => handleClick(item.prop_id)}
+                    onClick={() => handleClick(item.p_id)}
                   >
                     <CardContent sx={{ padding: "0px" }}>
                       <Box
@@ -1223,7 +1223,7 @@ const PropertyHome = () => {
                       borderRadius: "5px",
                       margin: "3px 0px",
                     }}
-                    onClick={() => handleClick(item.prop_id)}
+                    onClick={() => handleClick(item.p_id)}
                   >
                     <CardContent sx={{ padding: "0px" }}>
                       <Box

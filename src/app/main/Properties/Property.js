@@ -15,35 +15,35 @@ import Recentlyadded from "./Recentlyadded";
 import AllDetails from "./AllDetails";
 import ContactDetails from "./ContactDetails";
 import { useParams } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-
-
+import { useNavigate } from "react-router-dom";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 function Property() {
+  const Navigate = useNavigate();
   const user = useSelector(selectUser);
-  console.log("user",user)
+  console.log("user", user);
   const propertiesData = useSelector(selectProperties);
-  
-const propertyData = propertiesData?.data?.property;
-  console.log("propertyData",propertyData)
-  const { propertyId } = useParams();
-  console.log("propertyId in property",propertyId)
-  const PropertyID = propertiesData?.data?.property?.property_id;
 
-  const UserPropertyIDs = user?.data?.myProperties?.map(
+  const propertyData = propertiesData?.data?.property;
+  console.log("propertyData", propertyData);
+  const { propertyId } = useParams();
+  console.log("propertyId in property", propertyId);
+  const PropertyID = propertiesData?.data?.property?.p_id;
+  console.log("UserPropertyID", PropertyID);
+
+  const UserPropertyIDs = user?.data?.properties?.map(
     (property) => property.property_id
   );
-
+  console.log("UserPropertyIDs", UserPropertyIDs);
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const isPropertyInUserProperties = UserPropertyIDs?.includes(PropertyID);
+  console.log("isPropertyInUserProperties", isPropertyInUserProperties);
   const dispatch = useDispatch();
-
-
 
   useEffect(() => {
     if (!propertiesData) {
@@ -56,7 +56,6 @@ const propertyData = propertiesData?.data?.property;
   }, [propertiesData]);
 
   useEffect(() => {
-
     dispatch(fetchProperties(propertyId)).then(() => {
       setLoading(false);
     });
@@ -65,8 +64,8 @@ const propertyData = propertiesData?.data?.property;
   }, []);
 
   const handleClick = () => {
-    
-        setSelectedProperty(propertiesData);
+    Navigate("/UpdateProperty");
+    setSelectedProperty(propertiesData);
 
     setIsEditMode(true);
   };
@@ -77,12 +76,19 @@ const propertyData = propertiesData?.data?.property;
   };
 
   return (
-    <Container
-      maxWidth="lg"
-      sx={{  position: "relative" }}
-    >
-       {user.role == "admin" && (<Typography className="TextNone" component={Link} to="/manage/properties" variant="contained" color="primary">
-      <ArrowBackIosIcon/>Back to Search  </Typography>)}
+    <Container maxWidth="lg" sx={{ position: "relative" }}>
+      {user.role == "admin" && (
+        <Typography
+          className="TextNone"
+          component={Link}
+          to="/manage/properties"
+          variant="contained"
+          color="primary"
+        >
+          <ArrowBackIosIcon />
+          Back to Search{" "}
+        </Typography>
+      )}
       {/* <div style={{display:"flex",justifyContent:"end"}}>
       {isEditMode && (
         <CloseIcon
@@ -95,7 +101,7 @@ const propertyData = propertiesData?.data?.property;
           sx={{ position: "absolute", zIndex: "1", top: "10%", left: "50%" }}
         />
       )}
-      
+
       {loading && (
         <div
           style={{
@@ -106,54 +112,45 @@ const propertyData = propertiesData?.data?.property;
           }}
         ></div>
       )}
-     
-      {!isEditMode  && <PropertyCarousel />}
+
+      {!isEditMode && <PropertyCarousel />}
       <Grid container spacing={5}>
         <Grid item xs={12} md={8}>
           <div>{!isEditMode && <AllDetails />}</div>
         </Grid>
         <Grid item xs={12} md={4}>
           {!isEditMode && <ContactDetails />}
-          {isPropertyInUserProperties || user.role === "admin" &&  !isEditMode && (
+          {console.log("isPropertyInUserProperties",isPropertyInUserProperties)}
+          {isPropertyInUserProperties || user.role === "admin" || user.role ==="staff" ? (
             <Button
               variant="contained"
               onClick={() => {
                 handleClick();
               }}
-              // sx={{
-              //   width: "100%",
-              //   borderRadius: "5px",
-              //   backgroundColor: "#FF6600",
-              //   marginTop: "20px",
-              //   color: "black",
-              //   fontWeight: "500",
-              //   "&:hover": {
-              //     backgroundColor: "#FF6600",
-              //     color: "white",
-              //   },
-              // }}
             >
               Edit Property
             </Button>
-          )}
-          {isEditMode  && (
+          ) : null}
+
+          {/* {isEditMode  && (
             <Addproperty
               isEditMode={isEditMode}
               propertyData={propertyData}
               onClose={handleCloseForm}
             />
-          )}
+          )} */}
         </Grid>
 
         {!isEditMode && <Map color="red" />}
 
-        <Grid>{!isEditMode &&  user.role !== "admin" && (<Recomendedproperties />)}</Grid>
+        <Grid>
+          {!isEditMode && user.role !== "admin" && <Recomendedproperties />}
+        </Grid>
       </Grid>
 
-      {!isEditMode && user.role !== "admin" &&( <Recentlyadded />)}
+      {!isEditMode && user.role !== "admin" && <Recentlyadded />}
     </Container>
   );
 }
 
 export default Property;
-

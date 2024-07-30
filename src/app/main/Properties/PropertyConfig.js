@@ -4,6 +4,7 @@ import en from 'src/app/configs/navigation-i18n/en.js';
 import tr from 'src/app/configs/navigation-i18n/tr.js';
 import ar from 'src/app/configs/navigation-i18n/ar.js';
 import Property from './Property';
+import Form from './MultiStepForm/Form';
 import Addproperty from './Addproperty';
 import SearchProperty from './SearchProperty';
 import PropertyHome from './Pages/PropertyHome';
@@ -14,8 +15,6 @@ import ManageAreas from './Pages/ManageAreas';
 import { auth } from '../sign-in/Config';
 import { authRoles } from 'src/app/auth';
 import Faq from './Faq';
-import UserPaymentDetails from '../user/UserPannel/UserPaymentDetails';
-import SupportCustomer from './SupportCustomer';
 i18next.addResourceBundle('en', 'propertyPage', en);
 i18next.addResourceBundle('tr', 'propertyPage', tr);
 i18next.addResourceBundle('ar', 'propertyPage', ar);
@@ -57,10 +56,6 @@ const PropertyConfig = {
       element: <MySubscriptions />,
     },
     {
-      path: 'myPaymentDetails',
-      element: <UserPaymentDetails />,
-    },
-    {
       path: 'manage/Areas',
       element: <ManageAreas />,
     },
@@ -71,6 +66,10 @@ const PropertyConfig = {
     {
       path: 'AboutUs',
       element: <AboutUs />,
+    },
+    {
+      path: 'UpdateProperty',
+      element: <Form />,
     },
     {
       path: 'SupportCustomer',

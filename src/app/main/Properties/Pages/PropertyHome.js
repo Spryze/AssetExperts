@@ -8,6 +8,7 @@ import {
   selectnormaltotalResults,
   LocalResults,
   CardsClick,
+  selectStats
 } from "../PropertySlice1";
 import {
   Card,
@@ -27,7 +28,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { differenceInDays, parseISO } from "date-fns";
 import CircularRotationCards from "../property-components/CircularRotationCards";
 import AnimatedText from "../property-components/AnimatedText";
-import { Rotate90DegreesCcw } from "@mui/icons-material";
+import ScrollToTopButton from "../property-components/ScrollToButton";
 
 const CurrencyFormatter = ({ value, currency }) => {
   const formattedValue = new Intl.NumberFormat("en-IN", {
@@ -51,6 +52,8 @@ const debounce = (func, delay) => {
 const PropertyHome = () => {
   const dispatch = useDispatch();
   const user = selectUser(selectUser);
+  const Stats = useSelector(selectStats);
+  console.log("Stats",Stats);
   const recentTransactions = useSelector(selectRecentTransactions);
   console.log("recentTransactions", recentTransactions);
   const searchResults = useSelector(selectNormalSearchResults);
@@ -66,6 +69,7 @@ const PropertyHome = () => {
   const [HomeProperties, SetHomeProperties] = useState();
   const [localLoading, setLocalLoading] = useState(false);
   const [HomePropertiesLoader, SetHomePropertiesLoader] = useState(false);
+ 
 
 
   const HandleFormData = (data) => {
@@ -99,7 +103,8 @@ const PropertyHome = () => {
   );
   console.log("transactions", transactions);
   const DataNotFound = useCallback((response) => {
-    if (!response || response.properties.length === 0) {
+    console.log("response in no data founf",response)
+    if (!response || response.payload.properties.length == 0) {
       setNoDataFound(true);
       setTimeout(() => {
         setNoDataFound(false);
@@ -120,7 +125,7 @@ const PropertyHome = () => {
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - 5
       ) {
-        setPage((prevPage) => prevPage + 1);
+        setoffset((prevoffset) => prevoffset + 40);
       }
     }, 200),
     []
@@ -135,7 +140,7 @@ const PropertyHome = () => {
             listing_type: "",
             min_price: "",
             max_price: "",
-            state: "andhra pradesh",
+            state: "Andhra Pradesh",
             district: district,
             approved_by: "",
             status: "",
@@ -189,8 +194,8 @@ const PropertyHome = () => {
 
   useEffect(() => {}, [user]);
   useEffect(() => {
-    dispatch(fetchRecentTransactions(page));
-  }, [dispatch, page]);
+    dispatch(fetchRecentTransactions(offset));
+  }, [dispatch, offset]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -208,6 +213,7 @@ const PropertyHome = () => {
 
   return (
     <Box>
+     
       <Box className="home-blue-background">
         <Box
           sx={{
@@ -258,8 +264,7 @@ const PropertyHome = () => {
                
               </div>
               <WipeImage/>
-              {/* <img src="/assets/cardimages/alerts.png" style={{position:"absolute",right:"445px", top:"0px", height:"auto", width:"270px"}} /> */}
-              {/* <h3 style={{position:"relative", top:"-452px",left:"439px",fontWeight:"bold",background:"white",padding:"10px",color:"#FC5B47"}}>Experience Seamless <br/> Property Alerts</h3> */}
+              
             </Grid>
           </Grid>
         </Box>
@@ -270,13 +275,14 @@ const PropertyHome = () => {
           variant="h6"
           sx={{
             backgroundColor: "orange",
-            padding: "10px 50px",
+            padding: "5px 40px",
             textAlign: "center",
             borderRadius: "5px",
             color: "white",
             position: "fixed",
             top: "100px",
             left: "50%",
+            width:"250px",
             transform: "translateX(-50%)",
             zIndex: 1000,
           }}
@@ -315,7 +321,7 @@ const PropertyHome = () => {
                       borderRadius: "5px",
                       margin: "30px 0px",
                     }}
-                    onClick={() => handleClick(item.property_id)}
+                    onClick={() => handleClick(item.p_id)}
                   >
                     <CardContent sx={{ padding: "0px" }}>
                       <Box
@@ -389,7 +395,7 @@ const PropertyHome = () => {
                             item?.listing_type === "buy"
                               ? "Wanted"
                               : `${item?.listing_type}ing`
-                          }, ${item?.area}${item?.unit}s ${item?.p_type}`}
+                          }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
                         </Typography>
                         <Box sx={{ display: "flex" }}>
                           <LocationOnIcon sx={{ color: "#0b6c00" }} />
@@ -411,12 +417,12 @@ const PropertyHome = () => {
             </div>
             {Loading && (
               <Box sx={{ display: "flex", justifyContent: "center" }}>
-                {" "}
-                <CircularProgress />{" "}
+   
+                <CircularProgress />
               </Box>
             )}
             <Box sx={{ display: "flex", justifyContent: "end" }}>
-              {" "}
+
               <Button
                 onClick={() => {
                   SeeMoreResults();
@@ -431,6 +437,7 @@ const PropertyHome = () => {
       <div>
         <CircularRotationCards />
       </div>
+      <hr/>
 
       <div>
         <Typography
@@ -439,7 +446,6 @@ const PropertyHome = () => {
         >
           We Are Available In Your Local cities..
         </Typography>
-        <hr/>
         <div
           className="Local-cities"
           style={{
@@ -450,7 +456,7 @@ const PropertyHome = () => {
         >
           <Card
             onClick={() => {
-              handleLocalClick("srikakulam");
+              handleLocalClick("Srikakulam");
             }}
             sx={{
               flex: "0 0 auto",
@@ -500,7 +506,7 @@ const PropertyHome = () => {
           </Card>
           <Card
             onClick={() => {
-              handleLocalClick("visakhapatnam");
+              handleLocalClick("Visakhapatnam");
             }}
             sx={{
               flex: "0 0 auto",
@@ -549,7 +555,7 @@ const PropertyHome = () => {
           </Card>
           <Card
             onClick={() => {
-              handleLocalClick("vizianagaram");
+              handleLocalClick("Vizianagaram");
             }}
             sx={{
               flex: "0 0 auto",
@@ -599,7 +605,7 @@ const PropertyHome = () => {
           </Card>
           <Card
             onClick={() => {
-              handleLocalClick("east godavari");
+              handleLocalClick("East Godavari");
             }}
             sx={{
               flex: "0 0 auto",
@@ -686,7 +692,7 @@ const PropertyHome = () => {
                       borderRadius: "5px",
                       margin: "30px 0px",
                     }}
-                    onClick={() => handleClick(item.property_id)}
+                    onClick={() => handleClick(item.p_id)}
                   >
                     <CardContent sx={{ padding: "0px" }}>
                       <Box
@@ -722,7 +728,7 @@ const PropertyHome = () => {
                           }}
                         >
                           <CurrencyFormatter
-                            value={item?.price}
+                            value={item?.unit_price}
                             currency="INR"
                           />{" "}
                           / {item?.unit}
@@ -878,17 +884,17 @@ const PropertyHome = () => {
                 >
                   Plots
                 </Typography>
-                {/* <Typography
+                <Typography
                   className="text"
                   sx={{
-                   
+                    fontWeight:"600",
                     fontSize: "14px",
                     textAlign: "center",
                     transition: "color 0.3s ease",
                   }}
                 >
-                 121
-                </Typography> */}
+                 {Stats.plots_count}
+                </Typography>
               </Box>
             </CardContent>
           </Card>
@@ -975,6 +981,17 @@ const PropertyHome = () => {
                 >
                   Agricultural Land
                 </Typography>
+                <Typography
+                  className="text"
+                  sx={{
+                    fontWeight:"600",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    transition: "color 0.3s ease",
+                  }}
+                >
+                 {Stats.agricultural_count}
+                </Typography>
               </Box>
             </CardContent>
           </Card>
@@ -1059,6 +1076,17 @@ const PropertyHome = () => {
                   }}
                 >
                   Commercial
+                </Typography>
+                <Typography
+                  className="text"
+                  sx={{
+                    fontWeight:"600",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    transition: "color 0.3s ease",
+                  }}
+                >
+                 {Stats.commercial_count}
                 </Typography>
               </Box>
             </CardContent>
@@ -1145,6 +1173,17 @@ const PropertyHome = () => {
                 >
                   Flats
                 </Typography>
+                <Typography
+                  className="text"
+                  sx={{
+                   fontWeight:"600",
+                    fontSize: "14px",
+                    textAlign: "center",
+                    transition: "color 0.3s ease",
+                  }}
+                >
+                 {Stats.flats_count}
+                </Typography>
               </Box>
             </CardContent>
           </Card>
@@ -1184,7 +1223,7 @@ const PropertyHome = () => {
                       borderRadius: "5px",
                       margin: "3px 0px",
                     }}
-                    onClick={() => handleClick(item.property_id)}
+                    onClick={() => handleClick(item.p_id)}
                   >
                     <CardContent sx={{ padding: "0px" }}>
                       <Box
@@ -1220,7 +1259,7 @@ const PropertyHome = () => {
                           }}
                         >
                           <CurrencyFormatter
-                            value={item?.price}
+                            value={item?.unit_price}
                             currency="INR"
                           />{" "}
                           / {item?.unit}
@@ -1240,7 +1279,7 @@ const PropertyHome = () => {
                             item?.listing_type === "buy"
                               ? "Wanted"
                               : `${item?.listing_type}ing`
-                          }, ${item?.area}${item?.unit}s ${item?.p_type}`}
+                          }, ${item?.area}${item?.unit}s ${item?.prop_type}`}
                         </Typography>
                         <Box sx={{ display: "flex" }}>
                           <LocationOnIcon sx={{ color: "#0b6c00" }} />
@@ -1294,7 +1333,7 @@ const PropertyHome = () => {
                   fontSize: "2.5rem",
                 }}
               >
-                Recent <span className="SpanTextColor"> Properties</span>
+                Recent  Properties
               </Typography>
             </div>
             <div

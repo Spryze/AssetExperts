@@ -4,8 +4,8 @@
 const authRoles = {
   admin: ['admin'],
   staff: ['admin', 'staff'],
-  user: ['admin', 'staff', 'User'],
-  guest: ['admin', 'staff', 'user'],
+  user: ['admin', 'staff', 'User', 'user'],
+  guest: ['admin', 'staff', 'user',"guest"],
   onlyGuest: [],
 };
 

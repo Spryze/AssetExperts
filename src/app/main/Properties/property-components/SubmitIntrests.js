@@ -17,14 +17,19 @@ import {
   OutlinedInput,
   Divider,
 } from "@mui/material";
-import { AddIntrests, GetMyIntrests } from "../PropertySlice1";
+import { AddAreaIntrests, GetMyIntrests } from "../PropertySlice1";
 import { useDispatch } from "react-redux";
 import StateandDistrictList from "../../../../assets/Default/area/result.json";
+import { useSelector } from "react-redux";
+import { selectUser } from "app/store/userSlice";
 
 export default function FormDialog(userId) {
   console.log("this was the Submit formDialog",userId)
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const user = useSelector(selectUser);
+  const [errorMessage, setErrorMessage] = useState('');
+  console.log('user in submit inyrest',user)
 
   const [formData, setFormData] = useState({
     // status: "add",
@@ -102,7 +107,33 @@ export default function FormDialog(userId) {
   const handleAreasChange = (event) => {
     const { value } = event.target;
     console.log("value", value);
-    let selectedAreas = [];
+    
+    let selectedAreas = []; // Assuming you might use this later
+    
+    console.log("All Area Ids", allAreasId);
+    
+    // Check if any element of allAreasId is present in value
+    const anyInValue = allAreasId.some(id => value.includes(id));
+    console.log("anyInValue", anyInValue);
+    
+    if (anyInValue && user?.data?.active_notifications === 0) {
+      setErrorMessage('Please subscribe to select this option.');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+      return;
+    }
+    
+
+    if (user.data.active_notifications === 0 && value.length > 10) {
+      setErrorMessage('Please subscribe to select more options.');
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+      return;
+    }
+
+    setErrorMessage('');
 
     if (value.some((id) => allAreasId.includes(id))) {
       console.log("hii");
@@ -120,7 +151,7 @@ export default function FormDialog(userId) {
       areas: selectedAreas,
     });
   };
- 
+
   const handleSubmit = async (event) => {
     console.log("hii")
     console.log("submit interest", userId);
@@ -132,9 +163,7 @@ export default function FormDialog(userId) {
     const deletedAreas = previouslySelectedAreas.filter(
       (area) => !formData.areas.includes(area)
     );
-     const user = JSON.parse(localStorage.getItem("user"));
-    const req_user_id = user?.uid;
-    console.log("This was the submit intrest req_uesr_id:",req_user_id)
+
     // const uid = userId.user_id;
     const user_id = userId.user_id;
     // console.log("uid was the submit file",uid);
@@ -142,10 +171,8 @@ export default function FormDialog(userId) {
     // console.log("user_id was the submit file",user_id);
     console.log(userId)
     const dataToSend = {
-      user_id,
-      req_user_id,
-      isadmin: true,
-      
+      // user_id,
+      // isadmin: true,
       body: [
         {
           district: formData.district,
@@ -164,7 +191,7 @@ export default function FormDialog(userId) {
 
     // await dispatch(AddIntrests({body:dataToSend} ));
     // dispatch(AddIntrests({ userId, isadmin: true, body: dataToSend }));
-    dispatch(AddIntrests(dataToSend));
+    dispatch(AddAreaIntrests(dataToSend));
     console.log("dataToSend", dataToSend);
     console.log("user is was pass or not will be :", userId);
 
@@ -188,8 +215,9 @@ export default function FormDialog(userId) {
     const { areas } = StateandDistrictList;
     return areas[selectedDistrict] || [];
   };
-
+ 
   const separateSelectedAndUnselected = (areas, selectedIds) => {
+
     const selected = areas.filter((area) => selectedIds.includes(area.id));
     const unselected = areas.filter((area) => !selectedIds.includes(area.id));
     return { selected, unselected };
@@ -199,6 +227,7 @@ export default function FormDialog(userId) {
     getAreas(formData.district),
     formData.areas
   );
+  console.log(" selected, unselected", selected, unselected)
 
   return (
     <React.Fragment>
@@ -231,6 +260,7 @@ export default function FormDialog(userId) {
             Please select your State, District, and Areas (multiple selection
             allowed):
           </DialogContentText>
+          {errorMessage && (<p style={{ color: 'red' }}>{errorMessage}</p>)}
           <FormControl fullWidth sx={{ margin: "5px 10px" }}>
             <InputLabel>State</InputLabel>
             <Select
@@ -321,6 +351,7 @@ export default function FormDialog(userId) {
               </Select>
             </FormControl>
           )}
+        
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

@@ -6,8 +6,9 @@ import { selectProperties } from "../PropertySlice1";
 
 const PropertyCarousel = () => {
   const propertydata = useSelector(selectProperties);
-  const images = propertydata?.data?.images || []; 
-
+  console.log("propertydata in carousel",propertydata)
+  const images = propertydata?.data?.images || [];
+  
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const nextSlide = () => {
@@ -28,41 +29,24 @@ const PropertyCarousel = () => {
 
       return () => clearInterval(interval);
     }
-  }, [images]); 
+  }, [images.length]); // Only trigger when images.length changes
 
   if (images.length === 0) {
-    return null;
+    return null; // Render nothing if there are no images
   }
 
   return (
     <div style={{ position: "relative", margin: "40px 0px" }}>
       <Box>
-       
         <CardMedia
           component="img"
-          image={images[currentSlide]}
-          alt="Activity Image"
-          style={{ width: "-webkit-fill-available", height: "400px" }}
+          image={images[currentSlide].img_url} // Assuming img_url is the property name for image URL
+          alt="Property Image"
+          style={{ width: "100%", height: "400px", objectFit: "cover" }}
         />
-         <h6
-          className="small-text"
-          style={{
-            background: "#FFA500",
-            padding: "10px 25px",
-            borderRadius: "0px 10px 10px 0px",
-            textAlign: "center",
-            bottom:"0",
-            fontSize:"20px",
-            display: "inline-block",
-            position:"absolute",
-            textTransform:"capitalize",
-            fontWeight:"600",
-            
-          }}
-        >
-          Listing Type: {propertydata?.data?.property?.listing_type === 'buy'?("Wanted"):(propertydata?.data?.property?.listing_type)}
-        </h6>
+       
       </Box>
+      
 
       {images.length > 1 && (
         <>
@@ -84,16 +68,34 @@ const PropertyCarousel = () => {
           </Box>
           <IconButton
             onClick={prevSlide}
-            style={{ position: "absolute", top: "50%", left: "10px" }}
+            style={{ position: "absolute", top: "50%", left: "10px", transform: "translateY(-50%)" }}
           >
             <ChevronLeft />
           </IconButton>
           <IconButton
             onClick={nextSlide}
-            style={{ position: "absolute", top: "50%", right: "10px" }}
+            style={{ position: "absolute", top: "50%", right: "10px", transform: "translateY(-50%)" }}
           >
             <ChevronRight />
           </IconButton>
+          <h6
+          className="small-text"
+          style={{
+            background: "#FFA500",
+            padding: "10px 25px",
+            borderRadius: "0px 10px 10px 0px",
+            textAlign: "center",
+            bottom: "0",
+            fontSize: "20px",
+            display: "inline-block",
+            position: "absolute",
+            textTransform: "capitalize",
+            fontWeight: "600",
+            boxSizing: "border-box",
+          }}
+        >
+          Listing Type: {propertydata?.data?.property?.listing_type === 'buy' ? "Wanted" : propertydata?.data?.property?.listing_type}
+        </h6>
         </>
       )}
     </div>

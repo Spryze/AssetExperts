@@ -14,15 +14,15 @@ const WipeImage = () => {
   }, []);
 
   const wipeInKeyframes = `
-  @keyframes wipeIn {
-    0% {
-      clip-path: inset(0 0 0 100%);
+    @keyframes wipeIn {
+      0% {
+        clip-path: inset(100% 0 0 0);
+      }
+      100% {
+        clip-path: inset(0 0 0 0);
+      }
     }
-    100% {
-      clip-path: inset(0 0 0 0);
-    }
-  }
-`;
+  `;
 
   const wipeOutKeyframes = `
     @keyframes wipeOut {
@@ -30,17 +30,17 @@ const WipeImage = () => {
         clip-path: inset(0 0 0 0);
       }
       100% {
-        clip-path: inset(0 0 0 100%);
+        clip-path: inset(100% 0 0 0);
       }
     }
   `;
 
   const styles = {
     position: 'absolute',
-    right: '445px',
-    top: '0px',
-    height: 'auto',
-    width: '270px',
+    right: '500px',
+    top: '20%',
+    height: '400px',
+    width: 'auto',
     animation: isVisible ? 'wipeIn 1s forwards' : 'wipeOut 1s forwards',
   };
 
@@ -51,7 +51,7 @@ const WipeImage = () => {
         {wipeOutKeyframes}
       </style>
       <img
-        src="/assets/cardimages/alerts.png"
+        src="/assets/cardimages/pic.png"
         style={styles}
         alt="Alert"
       />

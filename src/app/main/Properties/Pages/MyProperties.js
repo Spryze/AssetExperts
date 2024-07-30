@@ -6,10 +6,11 @@ import DefaultImg from "src/assets/Default/DegaultImg.gif";
 import Addproperty from "../Addproperty";
 import { selectUser } from "app/store/userSlice";
 import CloseIcon from "@mui/icons-material/Close";
+import { useEffect } from "react";
 
 const MyProperties = () => {
   const userData = useSelector(selectUser);
-  console.log()
+  console.log("userData",userData)
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -22,6 +23,11 @@ const MyProperties = () => {
     setSelectedProperty(null);
     setIsEditMode(false);
   };
+  // useEffect(() => {
+   
+  //   console.log('Component reloading due to role change');
+
+  // }, [userData]);
   const handlePropertyClick = (propertyId) => {
     const newWindow = window.open(`/property/${propertyId}`, "_blank");
     if (newWindow) {
@@ -65,7 +71,7 @@ const MyProperties = () => {
       </div>
       {!isEditMode && (
         <Grid container spacing={1}>
-          {userData?.data?.properties?.length > 0 && (
+          {userData?.data?.properties?.length > 0 ? (
             <div style={{ margin: "30px" }}>
               <Typography variant="h6" sx={{ marginBottom: "10px" }}>
                 My Properties
@@ -183,7 +189,13 @@ const MyProperties = () => {
                 ))}
               </div>
             </div>
-          )}
+          ):(<Typography sx={{display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginLeft:"50%",
+            fontWeight:"600",
+            fontSize:"20px",
+            minHeight: '100vh', }}>No Properties</Typography>)}
         </Grid>
       )}
       {isEditMode && (

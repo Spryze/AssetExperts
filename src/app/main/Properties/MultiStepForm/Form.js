@@ -1,6 +1,9 @@
-import React, { useState, useEffect,Link } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextField, Button,Box,
+import {
+  TextField,
+  Button,
+  Box,
   Grid,
   Select,
   MenuItem,
@@ -10,79 +13,153 @@ import { TextField, Button,Box,
   Typography,
   FormHelperText,
 } from "@mui/material";
-import { addProperty, updateProperty } from "../PropertySlice1";
+import { useForm, Controller } from "react-hook-form";
+import { useLocation } from "react-router-dom";
+import {
+  selectProperties,
+  addProperty,
+  updateProperty,
+} from "../PropertySlice1";
 import { selectUser } from "app/store/userSlice";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import UploadImages from "./Property-Types-Forms/UploadImages";
+import AreaJson from "../../../../assets/Default/area/result.json";
 
-const Form = ({ isEditMode = false, propertyData = {} }) => {
-  console.log("isEditMode", isEditMode);
-  console.log("propertyData", propertyData);
+const Form = () => {
+  const propertiesData = useSelector(selectProperties);
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const propertyData = propertiesData?.data?.property || {};
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  console.log("user", user);
 
-  const [formData, setFormData] = useState({
-    prop_name:  propertyData?.propertyData?.property_name || "",
-    p_type: propertyData?.propertyData?.p_type || "",
-    dimensions: "" || propertyData?.propertyData?.dimensions,
-    unit: "" || propertyData?.propertyData?.unit,
-    state: "" || propertyData?.propertyData?.state,
-    district: "" || propertyData?.propertyData?.district,
-    village: "" || propertyData?.propertyData?.village,
-    landmark: "" || propertyData?.propertyData?.landmark,
-    price: 0 || propertyData?.propertyData?.price,
-    survey_number: "" || propertyData?.propertyData?.survey_number,
-    doc_num: "" || propertyData?.propertyData?.doc_num,
-    AboutDeveloper: "" || propertyData?.propertyData?.AboutDeveloper,
-    ad_info: "" || propertyData?.propertyData?.ad_info,
-    size: 0 || propertyData?.propertyData?.size,
-    boundry_wall: "" || propertyData?.propertyData?.boundry_wall,
-    furnshied: "" || propertyData?.propertyData?.furnshied,
-    approved_by: "" || propertyData?.propertyData?.approved_by,
-    parking: false || propertyData?.propertyData?.parking,
-    WaterSource: "" || propertyData?.propertyData?.WaterSource,
-    Flooring: "" || propertyData?.propertyData?.Flooring,
-    PowerBackup: "" || propertyData?.propertyData?.PowerBackup,
-    num_open_sides: "" || propertyData?.propertyData?.num_open_sides,
-    PropertyStatus: "" || propertyData?.propertyData?.PropertyStatus,
-    status: "" || propertyData?.propertyData?.status,
-    rera: "" || propertyData?.propertyData?.rera,
-    bound_wall: "" || propertyData?.propertyData?.bound_wall,
-    BHK: "" || propertyData?.propertyData?.BHK,
-    lift: "" || propertyData?.propertyData?.lift,
-    PropertyAge: "" || propertyData?.propertyData?.PropertyAge,
-    comments: "" || propertyData?.propertyData?.comments,
-    v_comments: "" || propertyData?.propertyData?.v_comments,
-    developments: "" || propertyData?.propertyData?.developments,
-    disputes: "" || propertyData?.propertyData?.disputes,
-    reg_loc: "" || propertyData?.propertyData?.reg_loc,
-    med_name: "" || propertyData?.propertyData?.med_name,
-    med_num1: "" || propertyData?.propertyData?.med_num1,
-    med_num2: "" || propertyData?.propertyData?.med_num2,
-    own_name: "" || propertyData?.propertyData?.own_name,
-    own_num1: "" || propertyData?.propertyData?.own_num1,
-    own_num2: "" || propertyData?.propertyData?.own_num2,
-    longitude: 0 || propertyData?.propertyData?.longitude,
-    latitude: 0 || propertyData?.propertyData?.latitude,
-    direction: "" || propertyData?.propertyData?.direction,
-    listing_type: "" || propertyData?.propertyData?.listing_type,
-    loan_eligibile: false || propertyData?.propertyData?.loan_eligibile,
-    No_bed_rooms: "" || propertyData?.propertyData?.No_bed_rooms,
-    govt_price: "" || propertyData?.propertyData?.govt_price,
-    user_id: "" || propertyData?.propertyData?.user_id,
-    rating: "" || propertyData?.propertyData?.rating,
-  });
-
-  const [formErrors, setFormErrors] = useState({});
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [heading, setHeading] = useState("");
+  const [showComponent, setShowComponent] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [districts, setDistricts] = useState([]);
+  const [areas, setAreas] = useState([]);
   const [responseData, setResponseData] = useState(null);
+  console.log("isEditMode", isEditMode);
+  console.log("propertyData", propertyData);
+  const defaultValues = {
+    AboutDeveloper: propertyData?.AboutDeveloper || "",
+    bhk: propertyData?.bhk || "",
+    Flooring: propertyData?.Flooring || "",
+    PowerBackup: propertyData?.PowerBackup || "",
+    PropertyAge: propertyData?.PropertyAge || "",
+    WaterSource: propertyData?.WaterSource || "",
+    ad_info: propertyData?.ad_info || "",
+    approved_by: propertyData?.approved_by || "",
+    bound_wall: propertyData?.bound_wall || "",
+    comments: propertyData?.comments || "",
+    minPrice: propertyData?.listing_type === "buy" ? propertyData?.minPrice || 100000 : "",
+    maxPrice: propertyData?.listing_type === "buy" ? propertyData?.maxPrice || 5000000 : "",
+    developments: propertyData?.developments || "",
+    dimensions: propertyData?.dimensions || "",
+    direction: propertyData?.direction || "",
+    state: propertyData?.state || "",
+    size: propertyData?.size || "",
+    district: propertyData?.district || "",
+    document_number: propertyData?.doc_num || "",
+    docfile: [],
+    disputes: propertyData?.disputes || "",
+    furnished: propertyData?.furnished || "",
+    govt_price: propertyData?.govt_price || null,
+    landmark: propertyData?.landmark || "",
+    lift: propertyData?.lift || "",
+    listing_type: propertyData?.listing_type || "",
+    latitude: propertyData?.latitude || 0,
+    longitude: propertyData?.longitude || 0,
+    med_name: propertyData?.med_name || "",
+    med_num1: propertyData?.med_num1 || "",
+    med_num2: propertyData?.med_num2 || "",
+    num_open_sides: propertyData?.num_open_sides || "",
+    own_name: propertyData?.own_name || "",
+    own_num1: propertyData?.own_num1 || "",
+    own_num2: propertyData?.own_num2 || "",
+    parking: propertyData?.parking || false,
+    p_type: propertyData?.p_type || "",
+    price: propertyData?.price || 0,
+    prop_name: propertyData?.prop_name || "",
+    rating: propertyData?.rating || "",
+    reg_loc: propertyData?.reg_loc || "",
+    rera: propertyData?.rera || "",
+    status: propertyData?.status || "",
+    survey_number: propertyData?.survey_number || "",
+    unit: propertyData?.unit || "",
+    user_id: propertyData?.user_id || "",
+    v_comments: propertyData?.v_comments || "",
+    v_status: propertyData?.v_status || false,
+    village: propertyData?.village || "",
+    loan_eligibile: propertyData?.loan_eligibile || false,
+  };
+  console.log("set form default Values 1", defaultValues);
+  const {
+    control,
+    watch,
+    handleSubmit,
+    getValues,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues,
+  });
+  useEffect(() => {
+    console.log("resetting default values ", defaultValues);
+    reset(defaultValues);
+  }, [propertiesData]);
+
+  console.log("form default values 2", getValues());
+  const selectedPropertyType = watch("p_type");
+  const selectedState = watch("state");
+  const selectedDistrict = watch("district");
+  const handleKeyDown = (event) => {
+    if (event.key === "-" || event.key === ".") {
+      event.preventDefault();
+    }
+  };
+
 
   useEffect(() => {
-    if (isEditMode && propertyData) {
-      setFormData({ ...propertyData });
+    console.log("state change ", selectedState);
+    if (selectedState) {
+      const districtsInState = Object.keys(
+        AreaJson.district_status[selectedState]
+      ).filter((district) => AreaJson.district_status[selectedState][district]);
+      setDistricts(districtsInState);
+      setValue("district", propertyData?.district || "");
+      setAreas([]);
     }
-  }, [isEditMode, propertyData]);
+  }, [selectedState]);
+
+  useEffect(() => {
+    console.log("selected district ", selectedDistrict);
+    if (selectedDistrict) {
+      setAreas(AreaJson.areas[selectedDistrict] || []);
+      setValue("village", propertyData?.village || "");
+    }
+  }, [selectedDistrict]);
+
+  useEffect(() => {
+    if (currentPath === "/Addproperty") {
+      setHeading("Add Property");
+      setIsEditMode(false);
+    } else if (currentPath === "/UpdateProperty") {
+      setHeading("Update Property");
+      setIsEditMode(true);
+    }
+  }, [currentPath]);
+
+  useEffect(() => {
+    if (propertyData?.listing_type === "buy") {
+      if (propertyData?.doc_num) {
+       
+        const [minPrice, maxPrice] = propertyData.doc_num.split(" - ").map(Number);
+        setValue("minPrice", minPrice || ""); 
+        setValue("maxPrice", maxPrice || "");
+      }
+    } 
+  }, []);
 
   const propertyTypes = [
     "plot",
@@ -91,66 +168,144 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
     "PG",
     "office place",
     "co working place",
-    "student hostels",
-    "agricultural lands",
+    "student hostel",
+    "agricultural land",
     "independent house",
-    "commercial"
+    "commercial",
   ];
-  const Units = ["sqft", "sqyd", "sq.m", "acre","cent"];
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const parsedValue = ["price", "size", "latitude", "longitude"].includes(name)
-      ? parseFloat(value)
-      : name === "loan_eligibile"
-      ? value === "true"
-      : value;
-    setFormData({
-      ...formData,
-      [name]: parsedValue,
+  const Units = ["sqft", "sqyd", "sq.m", "acre", "cent"];
+
+  // function findUpdatedFields(oldData, newData) {
+  //   const updatedFields = {};
+  //   if (oldData.hasOwnProperty("user_id")) {
+  //     updatedFields["user_id"] = oldData["user_id"];
+  //   }
+  //   for (let key in oldData) {
+  //     if (oldData.hasOwnProperty(key) && newData.hasOwnProperty(key)) {
+  //       if (oldData[key] !== newData[key]) {
+  //         updatedFields[key] = newData[key];
+  //       }
+  //     }
+  //   }
+  //   return updatedFields;
+  // }
+
+  function getUpdatedFields(defaultValues, currentValues) {
+    const updatedFields = {};
+    for (const key in currentValues) {
+      if (currentValues[key] !== defaultValues[key]) {
+        updatedFields[key] = currentValues[key];
+      }
+    }
+    return updatedFields;
+  }
+  function filterNonEmptyFields(data) {
+    return Object.keys(data).reduce((acc, key) => {
+      if (data[key] !== undefined && data[key] !== null && data[key] !== "") {
+        acc[key] = data[key];
+      }
+      return acc;
+    }, {});
+  }
+  
+
+  // const getChangedFields = (propertyData, formData) => {
+  //   return findUpdatedFields(propertyData, formData);
+  // };
+
+  const onSubmit = async (data) => {
+    // Handle special cases for specific fields
+    if (Array.isArray(data.developments)) {
+      data.developments = data.developments.join(", ");
+    }
+    if (data.minPrice !== undefined && data.maxPrice !== undefined) {
+      data.doc_num = `${data.minPrice} - ${data.maxPrice}`;
+    }
+  
+    let payload;
+  
+    if (isEditMode) {
+      // In edit mode, send only updated fields
+      const updatedFields = getUpdatedFields(defaultValues, data);
+      payload = { ...updatedFields, p_id: propertyData?.p_id,user_id:propertyData?.user_id }; // Include p_id for edit mode
+    } else {
+      // In add mode, send only non-empty fields
+      const nonEmptyFields = filterNonEmptyFields(data);
+      payload = nonEmptyFields;
+    }
+  
+    // Determine action based on mode
+    const action = isEditMode ? updateProperty : addProperty;
+  
+    dispatch(action({ payload })).then((response) => {
+      if (
+        response.payload.message === "property added successfully" ||
+        response.payload.message === "Property updated successfully"
+      ) {
+        alert(response.payload.message);
+        setResponseData(response.payload);
+        setShowComponent(false);
+      } else {
+        console.error(response.payload);
+        alert("Some Error Occurred, Action couldn't be performed");
+      }
     });
   };
+  
+// old functioning code with filtering of updated feilds
 
-  const validateForm = () => {
-    const errors = {};
-    if (!formData.prop_name)
-      errors.propertyName = "Property Name is required";
-    if (!formData.p_type) errors.p_type = "Property Type is required";
-    if (!formData.price) errors.price = "Price is required";
-    // if (!formData.govt_price) errors.govt_price = "Government Price is required";
-    return errors;
-  };
+  // const onSubmit = async (data) => {
+  //   if (Array.isArray(data.developments)) {
+  //     data.developments = data.developments.join(", ");
+  //   }
+  //   if (data.minPrice !== undefined && data.maxPrice !== undefined) {
+  //     const doc_num = `${data.minPrice} - ${data.maxPrice}`;
 
-  const handleSubmit = async (e) => {
-    console.log("hii");
-    e.preventDefault();
-    const errors = validateForm();
-    console.log("errors", errors);
-    if (Object.keys(errors).length === 0) {
-      const action = propertyData?.isEditMode ? updateProperty : addProperty;
-      const p_id = propertyData?.propertyData?.property_id;
-      const resultAction = dispatch(action({ formData, p_id })).then(
-        (response) => {
-          console.log("response", response);
-          if (response.payload.message === "property added successfully" ||"Property updated successfully") {
-            setResponseData(response.payload);
-            setIsFormSubmitted(true);
-          } else {
-            console.error(resultAction.payload);
-          }
-        }
-      );
-    } else {
-      setFormErrors(errors);
-    }
-  };
+  //     data.doc_num = doc_num;
+  //   }
+
+  //   console.log("form data", data);
+
+  //   const action = isEditMode ? updateProperty : addProperty;
+  //   const p_id = propertyData?.p_id;
+  //   let payload;
+  //   if (currentPath === "/UpdateProperty") {
+  //     payload = data
+  //     //  getChangedFields(propertyData, data);
+  //     if (isEditMode) {
+  //       payload.p_id = p_id;
+  //     }
+  //   } else {
+  //     payload = data;
+  //     if (isEditMode) {
+  //       payload.p_id = p_id;
+  //     }
+  //   }
+  //   dispatch(action({ payload })).then((response) => {
+  //     console.log(response)
+  //     // alert(response.payload.message);
+  //     if (
+  //       response.payload.message === "property added successfully" ||
+  //       response.payload.message === "Property updated successfully"
+  //     ) {
+  //       alert(response.payload.message);
+  //       setResponseData(response.payload);
+  //       setShowComponent(false);
+  //     } else {
+  //       console.error(response.payload);
+  //       alert("Some Error Occurred, Action couldn't be performed");
+  //     }
+  //   });
+  // };
+
+  const filteredStates = AreaJson.state_status
+    .filter((stateObj) => stateObj.status === true)
+    .map((stateObj) => stateObj.state);
 
   if (!user) {
     return (
-      <div
-        className="flex flex-col flex-auto items-center sm:justify-center min-w-0"
-        style={{ height: "100vh" }}
-      >
+      <div className="flex flex-col flex-auto items-center sm:justify-center min-w-0">
         <Paper className="flex items-center w-full sm:w-auto min-h-full sm:min-h-auto rounded-0 py-32 px-16 sm:p-48 sm:rounded-2xl sm:shadow">
           <div className="w-full max-w-320 sm:w-320 mx-auto sm:mx-0">
             <img
@@ -158,7 +313,6 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
               src="assets/images/logo/logo.svg"
               alt="logo"
             />
-
             <Typography className="mt-32 text-4xl font-extrabold tracking-tight leading-tight text-center">
               Please Login!
             </Typography>
@@ -168,594 +322,991 @@ const Form = ({ isEditMode = false, propertyData = {} }) => {
     );
   }
 
-  if (isFormSubmitted) {
+  if (responseData) {
     return <UploadImages responseData={responseData} />;
   }
+  // {showComponent && <UploadImages/>}
+
+
+  console.log("form data ", getValues());
 
   return (
-    <Box
+    <>    {showComponent ? (<Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{ flexGrow: 1, width: "100%", maxWidth: 800, margin: "20px auto" }}
     >
-      
-      {propertyData?.isEditMode === true ? (
-        <Typography variant="h6" sx={{}}>
-          Edit Property
-        </Typography>
-      ) : (
-        <Typography variant="h6" sx={{}}>
-          Add Property
-        </Typography>
-      )}
+      <Typography sx={{ fontSize: "20px", fontWeight: "600" }}>
+        {heading}
+      </Typography>
       <hr />
-      
+      {currentPath === "/UpdateProperty" && (
+        <Button
+          sx={{ marginTop: "20px" }}
+          onClick={() => setShowComponent(!showComponent)}
+        
+        >
+          Update Image/Documents
+        </Button>
+        
+      )}
+        {isEditMode && <Typography sx={{fontWeight:"600",fontSize:"16px",margin:"10px 0px"}}><span style={{color:"red",margin:"0px 10px"}}>*Note</span>Please Add Price in Property Comments To Change the price </Typography>}
       <Grid container spacing={2} sx={{ marginTop: "10px" }}>
-      {(user.role == "admin" || user.role === "staff")&& (
+        {(user.role === "admin" || user.role === "staff") && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>Property Status</InputLabel>
-              <Select
-                label="Property Status"
-                name="PropertyStatus"
-                value={formData.PropertyStatus}
-                onChange={handleChange}
-              >
-                <MenuItem value="Verified">Verified</MenuItem>
-                <MenuItem value="Not Verified">
-                  Not Verified
-                </MenuItem>
-                
-              </Select>
+              <Controller
+                name="v_status"
+                control={control}
+                render={({ field }) => (
+                  <Select {...field} label="Property Status"  onChange={(e) => field.onChange(e.target.value === 'true')}
+                  value={field.value ? 'true' : 'false'}>
+                    <MenuItem value="true">Verified</MenuItem>
+                    <MenuItem value="false">Not Verified</MenuItem>
+                  </Select>
+                )}
+              />
             </FormControl>
           </Grid>
         )}
+        {isEditMode &&
+          (user.role === "admin" ||
+            user.role === "staff" ||
+            user.role === "user") && (
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel> Status</InputLabel>
+                <Controller
+                  name="status"
+                  control={control}
+                  render={({ field }) => (
+                    <Select {...field} label="Property Status">
+                      <MenuItem value="active">Active</MenuItem>
+                      <MenuItem value="inactive">In Active</MenuItem>
+                    </Select>
+                  )}
+                />
+              </FormControl>
+            </Grid>
+          )}
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>Listing Type</InputLabel>
-            <Select
-              label="Listing Type"
+          <FormControl
+            fullWidth
+            variant="outlined"
+            error={!!errors.listing_type}
+          >
+            <InputLabel>Listing Type*</InputLabel>
+            <Controller
               name="listing_type"
-              value={formData.listing_type}
-              onChange={handleChange}
-            >
-              <MenuItem value="buy">Buy</MenuItem>
-              <MenuItem value="sell">Sell</MenuItem>
-            </Select>
+              control={control}
+              rules={{ required: "Listing Type is required" }}
+              render={({ field }) => (
+                <Select {...field} label="Listing Type">
+                  <MenuItem value="buy">Buy</MenuItem>
+                  <MenuItem value="sell">Sell</MenuItem>
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.listing_type?.message}</FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Property Name"
+          <Controller
             name="prop_name"
-            value={formData.prop_name}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-            required
-            error={!!formErrors.propertyName}
-            helperText={formErrors.propertyName}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Property Name"
+                variant="outlined"
+                fullWidth
+                error={!!errors.prop_name}
+                helperText={errors.prop_name?.message}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl
-            fullWidth
-            variant="outlined"
-            required
-            error={!!formErrors.p_type}
-          >
-            <InputLabel>Property Type</InputLabel>
-            <Select
-              label="Property Type"
+          <FormControl fullWidth variant="outlined" error={!!errors.p_type}>
+            <InputLabel>Property Type*</InputLabel>
+            <Controller
               name="p_type"
-              value={formData.p_type}
-              onChange={handleChange}
-            >
-              {propertyTypes.map((type) => (
-                <MenuItem key={type} value={type}>
-                  {type}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>{formErrors.p_type}</FormHelperText>
+              control={control}
+              rules={{ required: "Property Type is required" }}
+              render={({ field }) => (
+                <Select {...field} label="Property Type">
+                  {propertyTypes.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.p_type?.message}</FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl
-            fullWidth
-            variant="outlined"
-            required
-            error={!!formErrors.unit}
-          >
+          <FormControl fullWidth variant="outlined" error={!!errors.unit}>
             <InputLabel>Unit</InputLabel>
-            <Select
-              label="Unit"
+            <Controller
               name="unit"
-              value={formData.unit}
-              onChange={handleChange}
-            >
-              {Units.map((type) => (
-                <MenuItem key={type} value={type}>
-                  {type}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>{formErrors.unit}</FormHelperText>
+              rules={{ required: "Unit is required" }}
+              control={control}
+              render={({ field }) => (
+                <Select {...field} label="Unit*">
+                  {Units.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.unit?.message}</FormHelperText>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Size"
+          <Controller
             name="size"
-            type="number"
-            value={formData.size}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            rules={{ required: "Size is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Size"
+                type="number"
+                variant="outlined"
+                fullWidth
+                required
+                error={!!errors.size}
+                helperText={errors.size?.message}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Dimension"
+          <Controller
             name="dimensions"
-            type="text"
-            value={formData.dimensions}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Dimension"
+                type="text"
+                variant="outlined"
+                fullWidth
+                error={!!errors.dimensions}
+                helperText={errors.dimensions?.message}
+              />
+            )}
           />
         </Grid>
-        {formData.p_type === "Flat" && (
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>No. of Bed Rooms</InputLabel>
-              <Select
-                label="No. of Bed Room"
-                name="No_bed_rooms"
-                value={formData.No_bed_rooms}
-                onChange={handleChange}
-              >
-                <MenuItem value="1">1 BHK</MenuItem>
-                <MenuItem value="2">2 BHK</MenuItem>
-              </Select>
-              <FormHelperText>{formErrors.unit}</FormHelperText>
-            </FormControl>
-          </Grid>
-        )}
 
-        {(formData.p_type === "Flat" ||
-          formData.p_type === "PG" ||
-          formData.p_type === "Office Place" ||
-          formData.p_type === "Co Working Place" ||
-          formData.p_type === "Student Hostels" ||
-          formData.p_type === "Independent House") && (
+        {selectedPropertyType === "flat" && (
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>Furnished</InputLabel>
-              <Select
-                label="Furnished"
-                name="furnshied"
-                value={formData.furnshied}
-                onChange={handleChange}
-              >
-                <MenuItem value="Yes">Yes</MenuItem>
-                <MenuItem value="No">No</MenuItem>
-              </Select>
+            <FormControl fullWidth variant="outlined" error={!!errors.bhk}>
+              <InputLabel>No. of Bed Rooms *</InputLabel>
+              <Controller
+                name="bhk"
+                control={control}
+                rules={{ required: "Bed Room Type is required" }}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    label="No. of Bed Room"
+                    onChange={(e) => {
+                      field.onChange(e); // Ensure onChange is passed down correctly
+                    }}
+                  >
+                    <MenuItem value="1">1 BHK</MenuItem>
+                    <MenuItem value="2">2 BHK</MenuItem>
+                    <MenuItem value="3">3 BHK</MenuItem>
+                    <MenuItem value="4">4 BHK</MenuItem>
+                    <MenuItem value="5">5 BHK</MenuItem>
+                    <MenuItem value="6">6 BHK</MenuItem>
+                  </Select>
+                )}
+              />
+              <FormHelperText>{errors.bhk?.message}</FormHelperText>
             </FormControl>
           </Grid>
         )}
-
-        {formData.p_type === "Plot" && (
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>Boundary Wall</InputLabel>
-              <Select
-                label="Boundary Wall"
-                name="bound_wall"
-                value={formData.bound_wall}
-                onChange={handleChange}
-              >
-                <MenuItem value="Yes">Yes</MenuItem>
-                <MenuItem value="No">No</MenuItem>
-              </Select>
-              <FormHelperText>{formErrors.unit}</FormHelperText>
-            </FormControl>
-          </Grid>
-        )}
-        {formData.p_type === "Plot" && (
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>No. of Open Road Sides</InputLabel>
-              <Select
-                label="No. of Open Road Sides"
-                name="num_open_sides"
-                value={formData.num_open_sides}
-                onChange={handleChange}
-              >
-                <MenuItem value="1">1</MenuItem>
-                <MenuItem value="2">2</MenuItem>
-                <MenuItem value="3">3</MenuItem>
-                <MenuItem value="4">4</MenuItem>
-              </Select>
-              <FormHelperText>{formErrors.unit}</FormHelperText>
-            </FormControl>
-          </Grid>
-        )}
-
-        {formData.p_type === "Flat" && (
+        {selectedPropertyType === "flat" && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>RERA Status</InputLabel>
-              <Select
-                label="RERA Status"
-                name="rera"
-                value={formData.rera}
-                onChange={handleChange}
-              >
-                <MenuItem value="Registered">Registered</MenuItem>
-                <MenuItem value="Not Registered">Not Registered</MenuItem>
-              </Select>
+              <Controller
+                name="rera_status"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    label="RERA Status"
+                    onChange={(e) => {
+                      field.onChange(e);
+                    }}
+                  >
+                    <MenuItem value="Registered">Registered</MenuItem>
+                    <MenuItem value="Not Registered">Not Registered</MenuItem>
+                  </Select>
+                )}
+              />
             </FormControl>
           </Grid>
         )}
-       
-
-        {(formData.p_type === "Flat" ||
-          formData.p_type === "PG" ||
-          formData.p_type === "Office Place" ||
-          formData.p_type === "Co Working Place" ||
-          formData.p_type === "Student Hostels" ||
-          formData.p_type === "Independent House") && (
+        {selectedPropertyType === "flat" && (
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>Furnished</InputLabel>
+              <Controller
+                name="furnished"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    label="Furnished"
+                    onChange={(e) => {
+                      field.onChange(e);
+                    }}
+                  >
+                    <MenuItem value="Yes">Yes</MenuItem>
+                    <MenuItem value="No">No</MenuItem>
+                  </Select>
+                )}
+              />
+            </FormControl>
+          </Grid>
+        )}
+        {(selectedPropertyType === "flat" ||
+          selectedPropertyType === "PG" ||
+          selectedPropertyType === "office place" ||
+          selectedPropertyType === "co working place" ||
+          selectedPropertyType === "student hostels" ||
+          selectedPropertyType === "independent house") && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>Lift</InputLabel>
-              <Select
-                label="Lift"
+              <Controller
                 name="lift"
-                value={formData.lift}
-                onChange={handleChange}
-              >
-                <MenuItem value="Yes">Yes</MenuItem>
-                <MenuItem value="No">No</MenuItem>
-              </Select>
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    label="Lift"
+                    onChange={(e) => {
+                      field.onChange(e);
+                    }}
+                  >
+                    <MenuItem value="Yes">Yes</MenuItem>
+                    <MenuItem value="No">No</MenuItem>
+                  </Select>
+                )}
+              />
             </FormControl>
           </Grid>
         )}
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Village"
-            name="village"
-            value={formData.village}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Landmark"
-            name="landmark"
-            value={formData.landmark}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="District"
-            name="district"
-            value={formData.district}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="State"
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Price (₹)"
-            name="price"
-            type="number"
-            value={formData.price}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-            required
-            error={!!formErrors.price}
-            helperText={formErrors.price}
-          />
-        </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Survey Number"
-            name="survey_number"
-            value={formData.survey_number}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>Direction</InputLabel>
-            <Select
-              label="Direction"
-              name="direction"
-              value={formData.direction}
-              onChange={handleChange}
-            >
-              <MenuItem value="East">East</MenuItem>
-              <MenuItem value="West">West</MenuItem>
-              <MenuItem value="North">North</MenuItem>
-              <MenuItem value="West">South</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Document Number"
-            name="doc_num"
-            value={formData.doc_num}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label="Approoved By"
-            name="approved_by"
-            value={formData.approved_by}
-            onChange={handleChange}
-            variant="outlined"
-            multiline
-            fullWidth
-          />
-        </Grid>
-        {(user.role == "admin" || user.role === "staff") && (
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Internal Comments"
-              name="comments"
-              type="text"
-              value={formData.comments}
-              onChange={handleChange}
-              variant="outlined"
-              fullWidth
-            />
-          </Grid>
-        )}
-        {(user.role == "admin" || user.role === "staff") && (
+        {selectedPropertyType === "plot" && (
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth variant="outlined">
-              <InputLabel>Property Rating</InputLabel>
-              <Select
-                label="property rating"
-                name="rating"
-                value={formData.rating}
-                onChange={handleChange}
-              >
-                <MenuItem value="1">1</MenuItem>
-                <MenuItem value="2">2</MenuItem>
-                <MenuItem value="3">3</MenuItem>
-                <MenuItem value="4">4</MenuItem>
-                <MenuItem value="5">5</MenuItem>
-              </Select>
-              <FormHelperText>{formErrors.unit}</FormHelperText>
+              <InputLabel>Boundary Wall</InputLabel>
+              <Controller
+                name="boundary_wall"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    label="Boundary Wall"
+                    onChange={(e) => {
+                      field.onChange(e);
+                    }}
+                  >
+                    <MenuItem value="Yes">Yes</MenuItem>
+                    <MenuItem value="No">No</MenuItem>
+                  </Select>
+                )}
+              />
             </FormControl>
           </Grid>
         )}
-        {(user.role === "admin" || user.role === "staff") && (
+        {selectedPropertyType === "plot" && (
           <Grid item xs={12} sm={6}>
-            <TextField
-              label="Property Comments"
-              name="v_comments"
-              type="text"
-              value={formData.v_comments}
-              onChange={handleChange}
-              variant="outlined"
-              fullWidth
+         
+              <FormControl fullWidth variant="outlined">
+                <InputLabel>No. of Open Road Sides</InputLabel>
+                <Controller
+                  name="num_open_sides"
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      label="No. of Open Road Sides"
+                      onChange={(e) => {
+                        field.onChange(e);
+                      }}
+                    >
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                    </Select>
+                  )}
+                />
+              </FormControl>
+       
+          </Grid>
+        )}
+
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth variant="outlined" error={!!errors.state}>
+            <InputLabel>State*</InputLabel>
+            <Controller
+              name="state"
+              control={control}
+              rules={{ required: "State is required" }}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  label="State"
+                  onChange={(e) => {
+                    field.onChange(e); // Ensure onChange is passed down correctly
+                    console.log(e);
+                    setDistricts(
+                      Object.keys(AreaJson.district_status[e.target.value])
+                    );
+                    setAreas([]);
+                    // setValue("district", ""); // Reset district when state changes
+                    setValue("village", "");
+                  }}
+                >
+                  {filteredStates.map((state) => (
+                    <MenuItem key={state} value={state}>
+                      {state}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+
+            <FormHelperText>{errors.state?.message}</FormHelperText>
+          </FormControl>
+        </Grid>
+        {isEditMode && <Grid item xs={12} sm={6}>
+              <Controller
+                name="comments"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Property Comments"
+                    type="text"
+                    variant="outlined"
+                    fullWidth
+ 
+                  />
+                )}
+              />
+            </Grid>}
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth variant="outlined" error={!!errors.district}>
+            <InputLabel>District*</InputLabel>
+            <Controller
+              name="district"
+              control={control}
+              rules={{ required: "District  is required" }}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  label="District"
+                  onChange={(e) => {
+                    field.onChange(e);
+                    console.log("disctrict e ", e.target.value);
+                    setValue("district", e.target.value);
+                    // setAreas(AreaJson.areas[e.target.value] || []);
+                    // setValue("village", "");
+                  }}
+                >
+                  {districts.map((district) => (
+                    <MenuItem key={district} value={district}>
+                      {district}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.district?.message}</FormHelperText>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth variant="outlined" error={!!errors.village}>
+            <InputLabel>Area*</InputLabel>
+            <Controller
+              name="village"
+              control={control}
+              rules={{ required: "Area is required" }}
+              render={({ field }) => (
+                <Select {...field} label="Area">
+                  {areas
+                    .filter((area) => area.area !== "All Areas")
+                    .map((area) => (
+                      <MenuItem key={area.id} value={area.area}>
+                        {area.area}
+                      </MenuItem>
+                    ))}
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.village?.message}</FormHelperText>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="landmark"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Landmark"
+                variant="outlined"
+                fullWidth
+                error={!!errors.landmark}
+                helperText={errors.landmark?.message}
+              />
+            )}
+          />
+        </Grid>
+        {(watch("listing_type") === "sell" && !isEditMode && (
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="price"
+              rules={{ required: "Price is required" }}
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Price (₹)"
+                  type="number"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  error={!!errors.price}
+                  helperText={errors.price?.message}
+                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                />
+              )}
+            />
+          </Grid>
+        )) ||
+          (watch("listing_type") === "sell" &&
+            isEditMode &&
+            (user.role === "admin" || user.role === "staff") && (
+              <Grid item xs={12} sm={6}>
+                <Controller
+                  name="price"
+                  control={control}
+                  rules={{ required: "Price is required" }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Price (₹)"
+                      type="number"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.price}
+                      helperText={errors.price?.message}
+                      onChange={(e) =>
+                        field.onChange(parseFloat(e.target.value))
+                      }
+                    />
+                  )}
+                />
+              </Grid>
+            ))}
+        {(watch("listing_type") === "buy" && !isEditMode && (
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="minPrice"
+              control={control}
+              rules={{ required: "Minimum Price is required" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Minimum Price"
+                  placeholder="Enter minimum price*"
+                  type="number"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.minPrice}
+                  helperText={errors.minPrice?.message}
+                />
+              )}
+            />
+            <Controller
+              name="maxPrice"
+              control={control}
+              rules={{ required: "Maximum Price is required" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Maximum Price"
+                  placeholder="Enter maximum price*"
+                  type="number"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.maxPrice}
+                  helperText={errors.maxPrice?.message}
+                />
+              )}
+            />
+          </Grid>
+        )) ||
+          (watch("listing_type") === "buy" &&
+            isEditMode &&
+            (user.role === "admin" || user.role === "staff") && (
+              <Grid item xs={12} sm={6}>
+                <Controller
+                  name="minPrice"
+                  control={control}
+                  rules={{ required: "Minimum Price is required" }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Minimum Price*"
+                      placeholder="Enter minimum price*"
+                      type="number"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.minPrice}
+                      helperText={errors.minPrice?.message}
+                    />
+                  )}
+                />
+                <Controller
+                  name="maxPrice"
+                  control={control}
+                  rules={{ required: "Maximum Price is required*" }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Maximum Price*"
+                      placeholder="Enter maximum price*"
+                      type="number"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.maxPrice}
+                      helperText={errors.maxPrice?.message}
+                    />
+                  )}
+                />
+              </Grid>
+            ))}
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="survey_number"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Survey Number"
+                variant="outlined"
+                fullWidth
+                error={!!errors.survey_number}
+                helperText={errors.survey_number?.message}
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth variant="outlined" error={!!errors.direction}>
+            <InputLabel>Direction</InputLabel>
+            <Controller
+              name="direction"
+              control={control}
+              render={({ field }) => (
+                <Select {...field} label="Direction">
+                  <MenuItem value="East">East</MenuItem>
+                  <MenuItem value="West">West</MenuItem>
+                  <MenuItem value="North">North</MenuItem>
+                  <MenuItem value="South">South</MenuItem>
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.direction?.message}</FormHelperText>
+          </FormControl>
+        </Grid>
+        {watch("listing_type") === "sell" && (
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="document_number"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Document Number"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.document_number}
+                  helperText={errors.document_number?.message}
+                />
+              )}
             />
           </Grid>
         )}
 
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Developments"
-            name="developments"
-            type="text"
-            value={formData.developments}
-            onChange={handleChange}
-            variant="outlined"
+          <FormControl
             fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>Loan Eligible</InputLabel>
-            <Select
-              label="Loan Eligible"
-              name="loan_eligibile"
-              value={formData.loan_eligibile}
-              onChange={handleChange}
-          
-            >
-              <MenuItem value={true}>Yes</MenuItem>
-              <MenuItem value={false}>No</MenuItem>
-            </Select>
+            variant="outlined"
+            error={!!errors.approved_by}
+          >
+            <InputLabel>Approved By</InputLabel>
+            <Controller
+              name="approved_by"
+              control={control}
+              render={({ field }) => (
+                <Select {...field} label="Approved By">
+                  <MenuItem value="VUDA">VUDA</MenuItem>
+                  <MenuItem value="Panchayat">Panchayat</MenuItem>
+                  <MenuItem value="Rera">RERA</MenuItem>
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.approved_by?.message}</FormHelperText>
           </FormControl>
         </Grid>
-
+        {(user.role === "admin" || user.role === "staff") && (
+          <>
+            <Grid item xs={12} sm={6}>
+              <Controller
+                name="v_comments"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Internal Comments"
+                    type="text"
+                    variant="outlined"
+                    fullWidth
+                    error={!!errors.comments}
+                    helperText={errors.comments?.message}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth variant="outlined" error={!!errors.rating}>
+                <InputLabel>Property Rating</InputLabel>
+                <Controller
+                  name="rating"
+                  control={control}
+                  render={({ field }) => (
+                    <Select {...field} label="Property Rating">
+                      <MenuItem value="1">1</MenuItem>
+                      <MenuItem value="2">2</MenuItem>
+                      <MenuItem value="3">3</MenuItem>
+                      <MenuItem value="4">4</MenuItem>
+                      <MenuItem value="5">5</MenuItem>
+                    </Select>
+                  )}
+                />
+                <FormHelperText>{errors.rating?.message}</FormHelperText>
+              </FormControl>
+            </Grid>
+            
+          </>
+        )}
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Disputes"
+          <Controller
+            name="developments"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Developments"
+                type="text"
+                variant="outlined"
+                fullWidth
+                error={!!errors.developments}
+                helperText={errors.developments?.message}
+                
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl
+            fullWidth
+            variant="outlined"
+            error={!!errors.loan_eligibile}
+          >
+            <InputLabel>Loan Eligible</InputLabel>
+            <Controller
+              name="loan_eligibile"
+              control={control}
+              render={({ field }) => (
+                <Select {...field} label="Loan Eligible">
+                  <MenuItem value={true}>Yes</MenuItem>
+                  <MenuItem value={false}>No</MenuItem>
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.loan_eligibile?.message}</FormHelperText>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Controller
             name="disputes"
-            type="text"
-            value={formData.disputes}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Disputes"
+                type="text"
+                variant="outlined"
+                fullWidth
+                error={!!errors.disputes}
+                helperText={errors.disputes?.message}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Registrar Location"
+          <Controller
             name="reg_loc"
-            type="text"
-            value={formData.reg_loc}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Register Location"
+                type="text"
+                variant="outlined"
+                fullWidth
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Mediator Name"
+          <Controller
             name="med_name"
-            type="text"
-            value={formData.med_name}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Mediator Name"
+                type="text"
+                variant="outlined"
+                fullWidth
+                error={!!errors.med_name}
+                helperText={errors.med_name?.message}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Meidator Number1"
+          <Controller
             name="med_num1"
-            type="number"
-            value={formData.med_num1}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Mediator Number1"
+                type="number"
+                variant="outlined"
+                fullWidth
+                error={!!errors.med_num1}
+                helperText={errors.med_num1?.message}
+                onKeyDown={handleKeyDown}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const newValue = value.replace(/\D/g, "");
+                  if (newValue.length > 10) {
+                    return;
+                  }
+                  field.onChange(newValue);
+                }}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Meidator Number 2"
+          <Controller
             name="med_num2"
-            type="number"
-            value={formData.med_num2}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Mediator Number 2"
+                type="number"
+                variant="outlined"
+                fullWidth
+                error={!!errors.med_num2}
+                helperText={errors.med_num2?.message}
+                onKeyDown={handleKeyDown}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const newValue = value.replace(/\D/g, "");
+                  if (newValue.length > 10) {
+                    return;
+                  }
+                  field.onChange(newValue);
+                }}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Owner Name"
+          <Controller
             name="own_name"
-            type="text"
-            value={formData.own_name}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Owner Name"
+                type="text"
+                variant="outlined"
+                fullWidth
+                error={!!errors.own_name}
+                helperText={errors.own_name?.message}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Owner Number 1"
+          <Controller
             name="own_num1"
-            type="number"
-            value={formData.own_num1}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Owner Number 1"
+                type="number"
+                variant="outlined"
+                fullWidth
+                error={!!errors.own_num1}
+                helperText={errors.own_num1?.message}
+                onKeyDown={handleKeyDown}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const newValue = value.replace(/\D/g, "");
+                  if (newValue.length > 10) {
+                    return;
+                  }
+                  field.onChange(newValue);
+                }}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Owner Number 2"
+          <Controller
             name="own_num2"
-            type="number"
-            value={formData.own_num2}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Owner Number 2"
+                type="number"
+                variant="outlined"
+                fullWidth
+                error={!!errors.own_num2}
+                helperText={errors.own_num2?.message}
+                onKeyDown={handleKeyDown}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const newValue = value.replace(/\D/g, "");
+                  if (newValue.length > 10) {
+                    return;
+                  }
+                  field.onChange(newValue);
+                }}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Latitude"
+          <Controller
             name="latitude"
-            type="number"
-            value={formData.latitude}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Latitude"
+                type="number"
+                variant="outlined"
+                fullWidth
+                error={!!errors.latitude}
+                helperText={errors.latitude?.message}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Longitude"
+          <Controller
             name="longitude"
-            type="number"
-            value={formData.longitude}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Longitude"
+                type="number"
+                variant="outlined"
+                fullWidth
+                error={!!errors.longitude}
+                helperText={errors.longitude?.message}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            label="Government Price (₹)"
+          <Controller
             name="govt_price"
-            type="float"
-            value={formData.govt_price}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Government Price (₹)"
+                type="number"
+                variant="outlined"
+                fullWidth
+                error={!!errors.govt_price}
+                helperText={errors.govt_price?.message}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            label="About Developer"
-            name="AboutDeveloper"
-            value={formData.AboutDeveloper}
-            onChange={handleChange}
-            variant="outlined"
-            multiline
-            rows={4}
-            fullWidth
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            label="Property Information"
+          <Controller
             name="ad_info"
-            value={formData.ad_info}
-            onChange={handleChange}
-            variant="outlined"
-            multiline
-            rows={4}
-            fullWidth
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Property Information"
+                variant="outlined"
+                multiline
+                rows={4}
+                fullWidth
+                error={!!errors.ad_info}
+                helperText={errors.ad_info?.message}
+              />
+            )}
           />
         </Grid>
-
         <Grid item xs={12}>
-          <Button type="submit" variant="contained" 
-    //       sx={{backgroundColor:"#4ea944",color:'white','&:hover': {
-    // backgroundColor: "#0d7e00",  }    }} 
-    fullWidth>
+          <Button type="submit" variant="contained" fullWidth>
             Submit
           </Button>
         </Grid>
       </Grid>
-    </Box>
+    </Box>) : (
+      <UploadImages />
+    )}
+    </>
   );
+  
+
 };
 
 export default Form;

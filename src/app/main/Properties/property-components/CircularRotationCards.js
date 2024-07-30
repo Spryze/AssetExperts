@@ -625,7 +625,7 @@ const CardData = [
   {
     title: "Property Surveillance",
     description: "Monitor properties with our surveillance services.",
-    image: "assets/icon images/property survelliance.jfif"
+    image: "assets/icon images/EEF7FE.jpg"
   },
   {
     title: "Verified Listing",
@@ -658,7 +658,7 @@ export default CardList;
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   gap: 20px;
   width: 100%;
@@ -674,7 +674,8 @@ const Card = styled.div`
   border-radius: 12px;
   // padding: 20px;
   // box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  width: 250px;
+  width: 200px;
+  margin: 0px 10px;
   text-align: center;
   transition: transform 0.3s, box-shadow 0.3s;
 
@@ -684,9 +685,13 @@ const Card = styled.div`
 const Image = styled.img`
   max-width: 100%;
   border-radius: 12px 12px 0 0;
+  
   // margin-bottom: 20px;
    &:hover {
     transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+    @media (max-width: 768px) {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
   }
 `;

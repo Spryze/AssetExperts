@@ -47,6 +47,10 @@ const userConfig = {
       path: '/user/:userId',
       element: <ManageUserProfile />,
     },
+    {
+      path: '/forgetPassword',
+      element: <ForgetPassword />,
+    },
     // {
     //   path: '/user/:userId',
     //   element: <EditUseProfile />,

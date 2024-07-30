@@ -30,7 +30,7 @@ const ContactDetails = () => {
         sx={{ borderRadius: "10px", padding: "20px", marginBottom: "20px",position:"relative" }}
       >
         <Typography className="heading-text" variant="h6">
-          {" "}
+
           Mediator Details
         </Typography>
         <div style={{ display: "flex", fontSize: "18px" }}>
